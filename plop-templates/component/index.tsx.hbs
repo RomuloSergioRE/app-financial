@@ -1,0 +1,6 @@
+import { {{pascalCase name}}Props } from "./types";
+import * as S from "./style";
+
+export function {{pascalCase name}}({ children, ...props }: {{pascalCase name}}Props) {
+  return <S.Wrapper {...props}>{children}</S.Wrapper>;
+}
