@@ -16,4 +16,4 @@ export interface CreateCategoryRequest {
   icon?: string;
 }
 
-export interface UpdateCategoryRequest extends Partial<CreateCategoryRequest> {}
+export type UpdateCategoryRequest = Partial<CreateCategoryRequest>;
