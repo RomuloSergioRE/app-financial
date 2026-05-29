@@ -40,7 +40,7 @@ export default function RegisterPage() {
         email: data.email,
         password: data.password,
       });
-      window.location.href = "/";
+      window.location.href = "/dashboard";
     } catch (err: unknown) {
       setApiError(
         extractErrorMessage(err, "Erro ao cadastrar. Tente novamente.")
