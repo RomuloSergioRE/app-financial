@@ -36,7 +36,7 @@ export default function LoginPage() {
     try {
       setApiError(null);
       await login(data);
-      window.location.href = "/";
+      window.location.href = "/dashboard";
     } catch (err: unknown) {
       setApiError(
         extractErrorMessage(err, "Erro ao fazer login. Verifique suas credenciais.")
