@@ -5,17 +5,39 @@ import {
   useContext,
   useState,
   useCallback,
-  useEffect,
   type ReactNode,
 } from "react";
 import Cookies from "js-cookie";
 import { authService } from "@/services/auth";
 import type { User, LoginRequest, RegisterRequest } from "@/types";
 
+function getUserFromToken(): User | null {
+  if (typeof window === "undefined") return null;
+
+  const token = Cookies.get("jwt_token");
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return {
+      id: payload.id,
+      name: payload.name,
+      email: payload.email,
+      role: payload.role,
+      status: payload.status,
+      createdAt: payload.createdAt,
+      updatedAt: payload.updatedAt,
+    };
+  } catch {
+    Cookies.remove("jwt_token");
+    Cookies.remove("refresh_token");
+    return null;
+  }
+}
+
 interface AuthContextData {
   user: User | null;
   isAuthenticated: boolean;
-  isLoading: boolean;
   login: (data: LoginRequest) => Promise<void>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => void;
@@ -24,30 +46,7 @@ interface AuthContextData {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const token = Cookies.get("jwt_token");
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        setUser({
-          id: payload.id,
-          name: payload.name,
-          email: payload.email,
-          role: payload.role,
-          status: payload.status,
-          createdAt: payload.createdAt,
-          updatedAt: payload.updatedAt,
-        });
-      } catch {
-        Cookies.remove("jwt_token");
-        Cookies.remove("refresh_token");
-      }
-    }
-    setIsLoading(false);
-  }, []);
+  const [user, setUser] = useState<User | null>(getUserFromToken);
 
   const login = useCallback(async (data: LoginRequest) => {
     const response = await authService.login(data);
@@ -77,7 +76,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         isAuthenticated: !!user,
-        isLoading,
         login,
         register,
         logout,

@@ -2,19 +2,26 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Link from "next/link";
+import styled from "styled-components";
 import { AuthCard } from "@/components/molecules/AuthCard";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
 import { Button } from "@/components/atoms/Button";
+import { FormLink } from "@/components/molecules/FormLink";
+import { Text } from "@/components/atoms/Text";
 import { loginSchema, type LoginFormData } from "@/schemas/login";
 import { useAuth } from "@/contexts/AuthContext";
+import { extractErrorMessage } from "@/utils/errors";
+
+const FormBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.md};
+`;
 
 export default function LoginPage() {
   const { login } = useAuth();
-  const router = useRouter();
   const [apiError, setApiError] = useState<string | null>(null);
 
   const {
@@ -29,20 +36,18 @@ export default function LoginPage() {
     try {
       setApiError(null);
       await login(data);
-      router.push("/");
+      window.location.href = "/";
     } catch (err: unknown) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : "Erro ao fazer login. Verifique suas credenciais.";
-      setApiError(message);
+      setApiError(
+        extractErrorMessage(err, "Erro ao fazer login. Verifique suas credenciais.")
+      );
     }
   };
 
   return (
     <AuthCard title="Entrar">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+        <FormBody>
           <FormField label="Email" error={errors.email?.message}>
             <Input
               type="email"
@@ -62,31 +67,21 @@ export default function LoginPage() {
           </FormField>
 
           {apiError && (
-            <span style={{ color: "#EF4444", fontSize: "0.875rem" }}>
+            <Text as="span" size="sm" color="error">
               {apiError}
-            </span>
+            </Text>
           )}
 
           <Button type="submit" fullWidth loading={isSubmitting}>
             Entrar
           </Button>
 
-          <p
-            style={{
-              textAlign: "center",
-              fontSize: "0.875rem",
-              color: "#6B7280",
-            }}
-          >
-            Não tem conta?{" "}
-            <Link
-              href="/register"
-              style={{ color: "#4F46E5", fontWeight: 600 }}
-            >
-              Cadastre-se
-            </Link>
-          </p>
-        </div>
+          <FormLink
+            text="Não tem conta?"
+            linkText="Cadastre-se"
+            href="/register"
+          />
+        </FormBody>
       </form>
     </AuthCard>
   );

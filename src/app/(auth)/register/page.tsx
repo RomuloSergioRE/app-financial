@@ -2,19 +2,26 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Link from "next/link";
+import styled from "styled-components";
 import { AuthCard } from "@/components/molecules/AuthCard";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
 import { Button } from "@/components/atoms/Button";
+import { FormLink } from "@/components/molecules/FormLink";
+import { Text } from "@/components/atoms/Text";
 import { registerSchema, type RegisterFormData } from "@/schemas/register";
 import { useAuth } from "@/contexts/AuthContext";
+import { extractErrorMessage } from "@/utils/errors";
+
+const FormBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.md};
+`;
 
 export default function RegisterPage() {
   const { register: registerUser } = useAuth();
-  const router = useRouter();
   const [apiError, setApiError] = useState<string | null>(null);
 
   const {
@@ -33,20 +40,18 @@ export default function RegisterPage() {
         email: data.email,
         password: data.password,
       });
-      router.push("/");
+      window.location.href = "/";
     } catch (err: unknown) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : "Erro ao cadastrar. Tente novamente.";
-      setApiError(message);
+      setApiError(
+        extractErrorMessage(err, "Erro ao cadastrar. Tente novamente.")
+      );
     }
   };
 
   return (
     <AuthCard title="Criar Conta">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+        <FormBody>
           <FormField label="Nome" error={errors.name?.message}>
             <Input
               type="text"
@@ -68,7 +73,7 @@ export default function RegisterPage() {
           <FormField label="Senha" error={errors.password?.message}>
             <Input
               type="password"
-              placeholder="Mínimo 6 caracteres"
+              placeholder="Mínimo 8 caracteres"
               error={errors.password?.message}
               {...register("password")}
             />
@@ -87,28 +92,21 @@ export default function RegisterPage() {
           </FormField>
 
           {apiError && (
-            <span style={{ color: "#EF4444", fontSize: "0.875rem" }}>
+            <Text as="span" size="sm" color="error">
               {apiError}
-            </span>
+            </Text>
           )}
 
           <Button type="submit" fullWidth loading={isSubmitting}>
             Cadastrar
           </Button>
 
-          <p
-            style={{
-              textAlign: "center",
-              fontSize: "0.875rem",
-              color: "#6B7280",
-            }}
-          >
-            Já tem conta?{" "}
-            <Link href="/login" style={{ color: "#4F46E5", fontWeight: 600 }}>
-              Entrar
-            </Link>
-          </p>
-        </div>
+          <FormLink
+            text="Já tem conta?"
+            linkText="Entrar"
+            href="/login"
+          />
+        </FormBody>
       </form>
     </AuthCard>
   );

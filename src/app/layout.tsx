@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { StyledComponentsRegistry } from "@/lib/registry";
 import { Providers } from "./providers";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Financial App",
   description: "Gerenciamento financeiro pessoal",
