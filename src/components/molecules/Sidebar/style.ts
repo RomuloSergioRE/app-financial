@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Link from "next/link";
 
 export const Overlay = styled.div<{ $isOpen: boolean }>`
   display: none;
@@ -49,7 +50,7 @@ export const Nav = styled.nav`
   gap: 2px;
 `;
 
-export const NavItem = styled.a<{ $active: boolean }>`
+export const NavItem = styled(Link)<{ $active: boolean }>`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.sm};
@@ -57,8 +58,7 @@ export const NavItem = styled.a<{ $active: boolean }>`
   border-radius: ${({ theme }) => theme.borderRadius.md};
   text-decoration: none;
   font-size: ${({ theme }) => theme.fontSize.sm};
-  font-weight: ${({ theme }) =>
-    theme.fontWeight.medium};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme, $active }) =>
     $active ? theme.colors.primary : theme.colors.text};
   background: ${({ theme, $active }) =>
