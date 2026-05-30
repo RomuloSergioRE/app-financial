@@ -1,19 +1,9 @@
 "use client";
 
-import styled from "styled-components";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/atoms/Button";
 import { Text } from "@/components/atoms/Text";
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  gap: ${({ theme }) => theme.spacing.md};
-  padding: ${({ theme }) => theme.spacing.md};
-`;
+import * as S from "./style";
 
 export default function Home() {
   const { user, logout } = useAuth();
@@ -24,7 +14,7 @@ export default function Home() {
   };
 
   return (
-    <Wrapper>
+    <S.Wrapper>
       <Text as="h1" size="xl" weight="bold">
         Bem-vindo{user?.name ? `, ${user.name}` : ""}!
       </Text>
@@ -34,6 +24,6 @@ export default function Home() {
       <Button variant="outline" onClick={handleLogout}>
         Sair
       </Button>
-    </Wrapper>
+    </S.Wrapper>
   );
 }

@@ -1,19 +1,13 @@
 "use client";
 
-import styled from "styled-components";
 import { Text } from "@/components/atoms/Text";
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
+import * as S from "./style";
 
 export default function UsuariosPage() {
   return (
-    <Wrapper>
+    <S.Wrapper>
       <Text as="h1" size="xxl" weight="bold">Usuários</Text>
       <Text color="textMuted">Gerenciamento de usuários em desenvolvimento.</Text>
-    </Wrapper>
+    </S.Wrapper>
   );
 }

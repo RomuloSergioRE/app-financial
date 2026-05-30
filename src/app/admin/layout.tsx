@@ -1,32 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import styled from "styled-components";
 import { Sidebar } from "@/components/molecules/Sidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import type { NavItem } from "@/components/molecules/Sidebar/types";
+import {
+  HiOutlineViewColumns,
+  HiOutlineUsers,
+} from "react-icons/hi2";
+import * as S from "./style";
 
 const adminNavItems: NavItem[] = [
-  { label: "Dashboard", href: "/admin", icon: "📊" },
-  { label: "Usuários", href: "/admin/usuarios", icon: "👥" },
+  { label: "Dashboard", href: "/admin", icon: <HiOutlineViewColumns size={20} /> },
+  { label: "Usuários", href: "/admin/usuarios", icon: <HiOutlineUsers size={20} /> },
 ];
-
-const LayoutWrapper = styled.div`
-  display: flex;
-  min-height: 100vh;
-  background: ${({ theme }) => theme.colors.background};
-`;
-
-const Main = styled.main`
-  flex: 1;
-  padding: ${({ theme }) => theme.spacing.lg};
-  overflow-x: hidden;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: ${({ theme }) => theme.spacing.md};
-    padding-top: 64px;
-  }
-`;
 
 export default function AdminLayout({
   children,
@@ -42,14 +29,14 @@ export default function AdminLayout({
   };
 
   return (
-    <LayoutWrapper>
+    <S.LayoutWrapper>
       <Sidebar
         items={adminNavItems}
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen((prev) => !prev)}
         onLogout={handleLogout}
       />
-      <Main>{children}</Main>
-    </LayoutWrapper>
+      <S.Main>{children}</S.Main>
+    </S.LayoutWrapper>
   );
 }

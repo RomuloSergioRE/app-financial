@@ -7,12 +7,12 @@ import type {
 
 export function useTransactions(page = 1, limit = 10) {
   return useQuery({
-    queryKey: ["transactions", page, limit],
+    queryKey: ["transactions", page],
     queryFn: () => transactionService.list(page, limit),
   });
 }
 
-export function useTransaction(id: number) {
+export function useTransaction(id: string) {
   return useQuery({
     queryKey: ["transactions", id],
     queryFn: () => transactionService.getById(id),
@@ -32,7 +32,7 @@ export function useCreateTransaction() {
   });
 }
 
-export function useUpdateTransaction(id: number) {
+export function useUpdateTransaction(id: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: UpdateTransactionRequest) =>
@@ -47,7 +47,7 @@ export function useUpdateTransaction(id: number) {
 export function useDeleteTransaction() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => transactionService.delete(id),
+    mutationFn: (id: string) => transactionService.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["analytics"] });

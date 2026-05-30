@@ -1,62 +1,65 @@
 "use client";
 
-import { Bar } from "react-chartjs-2";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
+  BarChart as RechartsBarChart,
+  Bar,
+  XAxis,
+  YAxis,
   Tooltip,
   Legend,
-} from "chart.js";
+  CartesianGrid,
+  ResponsiveContainer,
+} from "recharts";
 import type { BarChartProps } from "./types";
 import * as S from "./style";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
 export function BarChart({ income, expense }: BarChartProps) {
-  const data = {
-    labels: ["Receitas vs Despesas"],
-    datasets: [
-      {
-        label: "Receitas",
-        data: [income],
-        backgroundColor: "#10B981",
-        borderRadius: 6,
-      },
-      {
-        label: "Despesas",
-        data: [expense],
-        backgroundColor: "#EF4444",
-        borderRadius: 6,
-      },
-    ],
-  };
+  const data = [
+    {
+      name: "Receitas vs Despesas",
+      Receitas: income,
+      Despesas: expense,
+    },
+  ];
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: "bottom" as const,
-      },
-    },
-    scales: {
-      y: {
-        ticks: {
-          callback: (v: unknown) =>
-            "R$ " + Number(v).toLocaleString("pt-BR"),
-        },
-      },
-    },
-  };
+  const currencyFormatter = (v: number) =>
+    "R$ " + v.toLocaleString("pt-BR");
 
   return (
     <S.Wrapper>
       <S.Title>Receitas e Despesas</S.Title>
       <S.ChartContainer>
-        <Bar data={data} options={options} />
+        <ResponsiveContainer width="100%" height={300}>
+          <RechartsBarChart
+            data={data}
+            margin={{ top: 5, right: 20, left: 20, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+            <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+            <YAxis tickFormatter={currencyFormatter} tick={{ fontSize: 12 }} />
+            <Tooltip
+              formatter={(value) => currencyFormatter(Number(value))}
+              contentStyle={{
+                fontSize: 12,
+                borderRadius: 8,
+                border: "1px solid #E5E7EB",
+              }}
+            />
+            <Legend />
+            <Bar
+              dataKey="Receitas"
+              fill="#10B981"
+              radius={[6, 6, 0, 0]}
+              maxBarSize={40}
+            />
+            <Bar
+              dataKey="Despesas"
+              fill="#EF4444"
+              radius={[6, 6, 0, 0]}
+              maxBarSize={40}
+            />
+          </RechartsBarChart>
+        </ResponsiveContainer>
       </S.ChartContainer>
     </S.Wrapper>
   );

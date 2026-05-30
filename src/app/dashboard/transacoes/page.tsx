@@ -1,146 +1,71 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import styled from "styled-components";
-import { transactionService } from "@/services/transactions";
-import { categoryService } from "@/services/categories";
+import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi2";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
 import { Text } from "@/components/atoms/Text";
-import type { CreateTransactionRequest } from "@/types";
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const Form = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
-  align-items: end;
-  flex-wrap: wrap;
-  padding: ${({ theme }) => theme.spacing.lg};
-  background: ${({ theme }) => theme.colors.surface};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-`;
-
-const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-
-const Label = styled.label`
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme }) => theme.colors.textSecondary};
-`;
-
-const Select = styled.select`
-  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  background: ${({ theme }) => theme.colors.surface};
-  color: ${({ theme }) => theme.colors.text};
-  outline: none;
-
-  &:focus {
-    border-color: ${({ theme }) => theme.colors.borderFocus};
-  }
-`;
-
-const TableWrapper = styled.div`
-  overflow-x: auto;
-`;
-
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-`;
-
-const Th = styled.th`
-  text-align: left;
-  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  white-space: nowrap;
-`;
-
-const Td = styled.td`
-  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-`;
-
-const TypeBadge = styled.span<{ $type: string }>`
-  padding: 2px 8px;
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-  background: ${({ theme, $type }) =>
-    $type === "income" ? theme.colors.secondary + "20" : theme.colors.danger + "20"};
-  color: ${({ theme, $type }) =>
-    $type === "income" ? theme.colors.secondary : theme.colors.danger};
-`;
-
-const Pagination = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: ${({ theme }) => theme.spacing.sm};
-  align-items: center;
-`;
+import { useCategories } from "@/hooks/useCategories";
+import {
+  useTransactions,
+  useCreateTransaction,
+  useUpdateTransaction,
+  useDeleteTransaction,
+} from "@/hooks/useTransactions";
+import type { Transaction } from "@/types";
+import * as S from "./style";
 
 export default function TransacoesPage() {
   const [page, setPage] = useState(1);
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
-  const [type, setType] = useState<"income" | "expense">("expense");
+  const [type, setType] = useState<"income" | "outcome">("outcome");
   const [categoryId, setCategoryId] = useState("");
-  const queryClient = useQueryClient();
+  const [editingTx, setEditingTx] = useState<Transaction | null>(null);
+  const [editDescription, setEditDescription] = useState("");
+  const [editAmount, setEditAmount] = useState("");
+  const [editType, setEditType] = useState<"income" | "outcome">("outcome");
+  const [editCategoryId, setEditCategoryId] = useState("");
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["transactions", page],
-    queryFn: () => transactionService.list(page),
-  });
-
-  const { data: categoriesData } = useQuery({
-    queryKey: ["categories"],
-    queryFn: () => categoryService.list(),
-  });
-
-  const createMutation = useMutation({
-    mutationFn: (data: CreateTransactionRequest) =>
-      transactionService.create(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["transactions"] });
-      queryClient.invalidateQueries({ queryKey: ["analytics"] });
-      setDescription("");
-      setAmount("");
-      setCategoryId("");
-    },
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => transactionService.delete(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["transactions"] });
-      queryClient.invalidateQueries({ queryKey: ["analytics"] });
-    },
-  });
+  const { data, isLoading } = useTransactions(page);
+  const { data: categoriesData } = useCategories();
+  const createMutation = useCreateTransaction();
+  const deleteMutation = useDeleteTransaction();
+  const updateMutation = useUpdateTransaction(editingTx?.id ?? "");
 
   const handleCreate = () => {
     if (!description.trim() || !amount || !categoryId) return;
     createMutation.mutate({
       description: description.trim(),
-      amount: parseFloat(amount),
+      amount: Math.round(parseFloat(amount) * 100),
       type,
       date: new Date().toISOString().split("T")[0],
-      categoryId: parseInt(categoryId),
+      categoryId,
     });
+    setDescription("");
+    setAmount("");
+    setCategoryId("");
+  };
+
+  const handleEdit = (tx: Transaction) => {
+    setEditingTx(tx);
+    setEditDescription(tx.description);
+    setEditAmount(tx.amount.toString());
+    setEditType(tx.type);
+    setEditCategoryId(tx.categoryId.toString());
+  };
+
+  const handleUpdate = () => {
+    if (!editDescription.trim() || !editAmount || !editingTx) return;
+    updateMutation.mutate(
+      {
+        description: editDescription.trim(),
+        amount: Math.round(parseFloat(editAmount) * 100),
+        type: editType,
+        categoryId: editCategoryId,
+      },
+      { onSuccess: () => setEditingTx(null) }
+    );
   };
 
   const transactions = data?.data?.data ?? [];
@@ -148,20 +73,20 @@ export default function TransacoesPage() {
   const categories = categoriesData?.data?.data ?? [];
 
   return (
-    <Wrapper>
+    <S.Wrapper>
       <Text as="h1" size="xxl" weight="bold">Transações</Text>
 
-      <Form>
-        <FormGroup>
-          <Label>Descrição</Label>
+      <S.Form>
+        <S.FormGroup>
+          <S.Label>Descrição</S.Label>
           <Input
             placeholder="Ex: Supermercado"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-        </FormGroup>
-        <FormGroup>
-          <Label>Valor</Label>
+        </S.FormGroup>
+        <S.FormGroup>
+          <S.Label>Valor</S.Label>
           <Input
             type="number"
             step="0.01"
@@ -169,25 +94,25 @@ export default function TransacoesPage() {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
-        </FormGroup>
-        <FormGroup>
-          <Label>Tipo</Label>
-          <Select value={type} onChange={(e) => setType(e.target.value as "income" | "expense")}>
-            <option value="expense">Saída</option>
+        </S.FormGroup>
+        <S.FormGroup>
+          <S.Label>Tipo</S.Label>
+          <S.Select value={type} onChange={(e) => setType(e.target.value as "income" | "outcome")}>
+            <option value="outcome">Saída</option>
             <option value="income">Entrada</option>
-          </Select>
-        </FormGroup>
-        <FormGroup>
-          <Label>Categoria</Label>
-          <Select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
+          </S.Select>
+        </S.FormGroup>
+        <S.FormGroup>
+          <S.Label>Categoria</S.Label>
+          <S.Select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
             <option value="">Selecione</option>
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name}
               </option>
             ))}
-          </Select>
-        </FormGroup>
+          </S.Select>
+        </S.FormGroup>
         <Button
           onClick={handleCreate}
           loading={createMutation.isPending}
@@ -195,57 +120,64 @@ export default function TransacoesPage() {
         >
           Adicionar
         </Button>
-      </Form>
+      </S.Form>
 
       {isLoading ? (
         <Text>Carregando...</Text>
       ) : (
         <>
-          <TableWrapper>
-            <Table>
+          <S.TableWrapper>
+            <S.Table>
               <thead>
                 <tr>
-                  <Th>Data</Th>
-                  <Th>Descrição</Th>
-                  <Th>Categoria</Th>
-                  <Th>Tipo</Th>
-                  <Th>Valor</Th>
-                  <Th></Th>
+                  <S.Th>Data</S.Th>
+                  <S.Th>Descrição</S.Th>
+                  <S.Th>Categoria</S.Th>
+                  <S.Th>Tipo</S.Th>
+                  <S.Th>Valor</S.Th>
+                  <S.Th></S.Th>
                 </tr>
               </thead>
               <tbody>
-                {transactions.map((tx) => (
-                  <tr key={tx.id}>
-                    <Td>{new Date(tx.date).toLocaleDateString("pt-BR")}</Td>
-                    <Td>{tx.description}</Td>
-                    <Td>{tx.category?.name ?? "-"}</Td>
-                    <Td>
-                      <TypeBadge $type={tx.type}>
-                        {tx.type === "income" ? "Entrada" : "Saída"}
-                      </TypeBadge>
-                    </Td>
-                    <Td>
-                      {new Intl.NumberFormat("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
-                      }).format(tx.amount)}
-                    </Td>
-                    <Td>
-                      <Button
-                        variant="text"
-                        onClick={() => deleteMutation.mutate(tx.id)}
-                      >
-                        ✕
-                      </Button>
-                    </Td>
-                  </tr>
-                ))}
+                {transactions.map((tx) => {
+                  return (
+                    <tr key={tx.id}>
+                      <S.Td>{new Date(tx.date).toLocaleDateString("pt-BR")}</S.Td>
+                      <S.Td>{tx.description}</S.Td>
+                      <S.Td>{tx.category?.name ?? "-"}</S.Td>
+                      <S.Td>
+                        <S.TypeBadge $type={tx.type}>
+                          {tx.type === "income" ? "Entrada" : "Saída"}
+                        </S.TypeBadge>
+                      </S.Td>
+                      <S.Td>
+                        {new Intl.NumberFormat("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        }).format(tx.amount)}
+                      </S.Td>
+                      <S.Td>
+                        <S.Actions>
+                          <Button variant="text" onClick={() => handleEdit(tx)}>
+                            <HiOutlinePencil size={16} />
+                          </Button>
+                          <Button
+                            variant="text"
+                            onClick={() => deleteMutation.mutate(tx.id)}
+                          >
+                            <HiOutlineTrash size={16} />
+                          </Button>
+                        </S.Actions>
+                      </S.Td>
+                    </tr>
+                  );
+                })}
               </tbody>
-            </Table>
-          </TableWrapper>
+            </S.Table>
+          </S.TableWrapper>
 
           {totalPages > 1 && (
-            <Pagination>
+            <S.Pagination>
               <Button
                 variant="outline"
                 disabled={page <= 1}
@@ -263,10 +195,65 @@ export default function TransacoesPage() {
               >
                 Próximo
               </Button>
-            </Pagination>
+            </S.Pagination>
           )}
         </>
       )}
-    </Wrapper>
+
+      {editingTx && (
+        <S.Overlay onClick={() => setEditingTx(null)} />
+      )}
+
+      {editingTx && (
+        <S.Modal>
+          <Text as="h2" size="lg" weight="bold">Editar Transação</Text>
+          <S.ModalForm>
+            <S.FormGroup>
+              <S.Label>Descrição</S.Label>
+              <Input
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleUpdate()}
+              />
+            </S.FormGroup>
+            <S.FormGroup>
+              <S.Label>Valor</S.Label>
+              <Input
+                type="number"
+                step="0.01"
+                value={editAmount}
+                onChange={(e) => setEditAmount(e.target.value)}
+              />
+            </S.FormGroup>
+            <S.FormGroup>
+              <S.Label>Tipo</S.Label>
+              <S.Select value={editType} onChange={(e) => setEditType(e.target.value as "income" | "outcome")}>
+                <option value="outcome">Saída</option>
+                <option value="income">Entrada</option>
+              </S.Select>
+            </S.FormGroup>
+            <S.FormGroup>
+              <S.Label>Categoria</S.Label>
+              <S.Select value={editCategoryId} onChange={(e) => setEditCategoryId(e.target.value)}>
+                <option value="">Selecione</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </S.Select>
+            </S.FormGroup>
+            <S.ModalActions>
+              <Button variant="outline" onClick={() => setEditingTx(null)}>
+                Cancelar
+              </Button>
+              <Button onClick={handleUpdate} loading={updateMutation.isPending}>
+                Salvar
+              </Button>
+            </S.ModalActions>
+          </S.ModalForm>
+        </S.Modal>
+      )}
+    </S.Wrapper>
   );
 }

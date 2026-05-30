@@ -1,7 +1,7 @@
 export interface NavItem {
   label: string;
   href: string;
-  icon: string;
+  icon: React.ReactNode;
 }
 
 export interface SidebarProps {

@@ -1,23 +1,17 @@
 export interface BalanceResponse {
   totalIncome: number;
-  totalExpense: number;
-  balance: number;
-  periodStart: string;
-  periodEnd: string;
+  totalOutcome: number;
+  netBalance: number;
 }
 
 export interface CategoryDistribution {
-  categoryId: number;
+  categoryId: string;
   categoryName: string;
-  color?: string;
-  total: number;
+  color?: string | null;
+  icon?: string | null;
+  totalAmount: number;
   percentage: number;
-  transactionCount: number;
+  transactionCount?: number;
 }
 
-export interface CategoriesAnalyticsResponse {
-  total: number;
-  categories: CategoryDistribution[];
-  periodStart: string;
-  periodEnd: string;
-}
+

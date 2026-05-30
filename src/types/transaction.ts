@@ -1,12 +1,12 @@
 export interface Transaction {
-  id: number;
+  id: string;
   description: string;
   amount: number;
-  type: "income" | "expense";
+  type: "income" | "outcome";
   date: string;
-  categoryId: number;
+  categoryId: string;
   category?: {
-    id: number;
+    id: string;
     name: string;
     color?: string;
     icon?: string;
@@ -18,9 +18,9 @@ export interface Transaction {
 export interface CreateTransactionRequest {
   description: string;
   amount: number;
-  type: "income" | "expense";
+  type: "income" | "outcome";
   date: string;
-  categoryId: number;
+  categoryId: string;
 }
 
 export interface UpdateTransactionRequest

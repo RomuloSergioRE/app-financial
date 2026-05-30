@@ -3,7 +3,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import styled from "styled-components";
 import { AuthCard } from "@/components/molecules/AuthCard";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
@@ -13,12 +12,7 @@ import { Text } from "@/components/atoms/Text";
 import { registerSchema, type RegisterFormData } from "@/schemas/register";
 import { useAuth } from "@/contexts/AuthContext";
 import { extractErrorMessage } from "@/utils/errors";
-
-const FormBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
+import * as S from "./style";
 
 export default function RegisterPage() {
   const { register: registerUser } = useAuth();
@@ -51,7 +45,7 @@ export default function RegisterPage() {
   return (
     <AuthCard title="Criar Conta">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormBody>
+        <S.FormBody>
           <FormField label="Nome" error={errors.name?.message}>
             <Input
               type="text"
@@ -106,7 +100,7 @@ export default function RegisterPage() {
             linkText="Entrar"
             href="/login"
           />
-        </FormBody>
+        </S.FormBody>
       </form>
     </AuthCard>
   );

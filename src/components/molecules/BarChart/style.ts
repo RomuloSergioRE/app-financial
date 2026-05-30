@@ -16,6 +16,8 @@ export const Title = styled.h3`
 `;
 
 export const ChartContainer = styled.div`
-  position: relative;
-  height: 250px;
+  width: 100%;
+  height: 300px;
+  min-width: 0;
+  min-height: 0;
 `;

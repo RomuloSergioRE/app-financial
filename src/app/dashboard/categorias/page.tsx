@@ -1,112 +1,57 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import styled from "styled-components";
-import { categoryService } from "@/services/categories";
+import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi2";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
 import { Text } from "@/components/atoms/Text";
-import type { CreateCategoryRequest } from "@/types";
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-const Form = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
-  align-items: end;
-  flex-wrap: wrap;
-`;
-
-const List = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
-const Item = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing.md};
-  background: ${({ theme }) => theme.colors.surface};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-`;
-
-const CategoryBadge = styled.div<{ $color?: string }>`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-
-  &::before {
-    content: "";
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: ${({ $color }) => $color || "#4F46E5"};
-  }
-`;
-
-const TypeTag = styled.span<{ $type: string }>`
-  padding: 2px 8px;
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  background: ${({ theme, $type }) =>
-    $type === "income"
-      ? theme.colors.secondary + "20"
-      : $type === "expense"
-      ? theme.colors.danger + "20"
-      : theme.colors.primary + "20"};
-  color: ${({ theme, $type }) =>
-    $type === "income"
-      ? theme.colors.secondary
-      : $type === "expense"
-      ? theme.colors.danger
-      : theme.colors.primary};
-`;
+import {
+  useCategories,
+  useCreateCategory,
+  useUpdateCategory,
+  useDeleteCategory,
+} from "@/hooks/useCategories";
+import type { Category } from "@/types";
+import * as S from "./style";
 
 export default function CategoriasPage() {
   const [name, setName] = useState("");
-  const queryClient = useQueryClient();
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editColor, setEditColor] = useState("");
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["categories"],
-    queryFn: () => categoryService.list(),
-  });
-
-  const createMutation = useMutation({
-    mutationFn: (data: CreateCategoryRequest) => categoryService.create(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
-      setName("");
-    },
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => categoryService.delete(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
-    },
-  });
+  const { data, isLoading } = useCategories();
+  const createMutation = useCreateCategory();
+  const deleteMutation = useDeleteCategory();
+  const updateMutation = useUpdateCategory(editingCategory?.id ?? "");
 
   const handleCreate = () => {
     if (!name.trim()) return;
-    createMutation.mutate({ name: name.trim(), type: "both" });
+    createMutation.mutate({ name: name.trim() });
+    setName("");
+  };
+
+  const handleEdit = (cat: Category) => {
+    setEditingCategory(cat);
+    setEditName(cat.name);
+    setEditColor(cat.color ?? "");
+  };
+
+  const handleUpdate = () => {
+    if (!editName.trim() || !editingCategory) return;
+    updateMutation.mutate(
+      { name: editName.trim(), color: editColor || undefined },
+      { onSuccess: () => setEditingCategory(null) }
+    );
   };
 
   const categories = data?.data?.data ?? [];
 
   return (
-    <Wrapper>
+    <S.Wrapper>
       <Text as="h1" size="xxl" weight="bold">Categorias</Text>
 
-      <Form>
+      <S.Form>
         <Input
           placeholder="Nome da categoria"
           value={name}
@@ -116,32 +61,68 @@ export default function CategoriasPage() {
         <Button onClick={handleCreate} loading={createMutation.isPending}>
           Criar
         </Button>
-      </Form>
+      </S.Form>
 
       {isLoading ? (
         <Text>Carregando...</Text>
       ) : (
-        <List>
+        <S.List>
           {categories.map((cat) => (
-            <Item key={cat.id}>
-              <CategoryBadge $color={cat.color}>
+            <S.Item key={cat.id}>
+              <S.CategoryBadge $color={cat.color ?? undefined}>
                 {cat.name}
-              </CategoryBadge>
-              <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                <TypeTag $type={cat.type}>
-                  {cat.type === "income" ? "Receita" : cat.type === "expense" ? "Despesa" : "Ambos"}
-                </TypeTag>
+              </S.CategoryBadge>
+              <S.Actions>
+                <Button variant="text" onClick={() => handleEdit(cat)}>
+                  <HiOutlinePencil size={16} />
+                </Button>
                 <Button
                   variant="text"
                   onClick={() => deleteMutation.mutate(cat.id)}
                 >
-                  ✕
+                  <HiOutlineTrash size={16} />
                 </Button>
-              </div>
-            </Item>
+              </S.Actions>
+            </S.Item>
           ))}
-        </List>
+        </S.List>
       )}
-    </Wrapper>
+
+      {editingCategory && (
+        <S.Overlay onClick={() => setEditingCategory(null)} />
+      )}
+
+      {editingCategory && (
+        <S.Modal>
+          <Text as="h2" size="lg" weight="bold">Editar Categoria</Text>
+          <S.ModalForm>
+            <S.FormGroup>
+              <S.Label>Nome</S.Label>
+              <Input
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleUpdate()}
+              />
+            </S.FormGroup>
+            <S.FormGroup>
+              <S.Label>Cor (hex)</S.Label>
+              <Input
+                value={editColor}
+                onChange={(e) => setEditColor(e.target.value)}
+                placeholder="#4F46E5"
+              />
+            </S.FormGroup>
+            <S.ModalActions>
+              <Button variant="outline" onClick={() => setEditingCategory(null)}>
+                Cancelar
+              </Button>
+              <Button onClick={handleUpdate} loading={updateMutation.isPending}>
+                Salvar
+              </Button>
+            </S.ModalActions>
+          </S.ModalForm>
+        </S.Modal>
+      )}
+    </S.Wrapper>
   );
 }

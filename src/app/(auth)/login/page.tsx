@@ -3,7 +3,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import styled from "styled-components";
 import { AuthCard } from "@/components/molecules/AuthCard";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
@@ -13,12 +12,7 @@ import { Text } from "@/components/atoms/Text";
 import { loginSchema, type LoginFormData } from "@/schemas/login";
 import { useAuth } from "@/contexts/AuthContext";
 import { extractErrorMessage } from "@/utils/errors";
-
-const FormBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
+import * as S from "./style";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -47,7 +41,7 @@ export default function LoginPage() {
   return (
     <AuthCard title="Entrar">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormBody>
+        <S.FormBody>
           <FormField label="Email" error={errors.email?.message}>
             <Input
               type="email"
@@ -81,7 +75,7 @@ export default function LoginPage() {
             linkText="Cadastre-se"
             href="/register"
           />
-        </FormBody>
+        </S.FormBody>
       </form>
     </AuthCard>
   );

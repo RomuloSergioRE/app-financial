@@ -1,17 +1,15 @@
 export interface Category {
-  id: number;
+  id: string;
   name: string;
-  type: "income" | "expense" | "both";
-  color?: string;
-  icon?: string;
-  isGlobal: boolean;
+  color?: string | null;
+  icon?: string | null;
+  userId?: string | null;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface CreateCategoryRequest {
   name: string;
-  type: "income" | "expense" | "both";
   color?: string;
   icon?: string;
 }

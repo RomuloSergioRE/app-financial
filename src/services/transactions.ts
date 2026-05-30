@@ -12,15 +12,15 @@ export const transactionService = {
       params: { page, limit },
     }),
 
-  getById: (id: number) =>
+  getById: (id: string) =>
     api.get<Transaction>(`/transactions/${id}`),
 
   create: (data: CreateTransactionRequest) =>
     api.post<Transaction>("/transactions", data),
 
-  update: (id: number, data: UpdateTransactionRequest) =>
+  update: (id: string, data: UpdateTransactionRequest) =>
     api.put<Transaction>(`/transactions/${id}`, data),
 
-  delete: (id: number) =>
+  delete: (id: string) =>
     api.delete(`/transactions/${id}`),
 };
