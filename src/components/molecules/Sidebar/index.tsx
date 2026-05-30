@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import Link from "next/link";
 import type { NavItem, SidebarProps } from "./types";
 import * as S from "./style";
 
@@ -27,12 +26,15 @@ export function Sidebar({ items, isOpen, onToggle, onLogout }: SidebarProps) {
 
         <S.Nav>
           {items.map((item: NavItem) => (
-            <Link key={item.href} href={item.href} passHref legacyBehavior>
-              <S.NavItem $active={isActive(item.href)} onClick={onToggle}>
-                <span>{item.icon}</span>
-                {item.label}
-              </S.NavItem>
-            </Link>
+            <S.NavItem
+              key={item.href}
+              href={item.href}
+              $active={isActive(item.href)}
+              onClick={onToggle}
+            >
+              <span>{item.icon}</span>
+              {item.label}
+            </S.NavItem>
           ))}
         </S.Nav>
 
