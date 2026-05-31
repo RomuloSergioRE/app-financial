@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "@/components/atoms/Toast";
 import { transactionService } from "@/services/transactions";
 import type {
   CreateTransactionRequest,
@@ -26,8 +27,12 @@ export function useCreateTransaction() {
     mutationFn: (data: CreateTransactionRequest) =>
       transactionService.create(data),
     onSuccess: () => {
+      toast.success("Transação criada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["analytics"] });
+    },
+    onError: () => {
+      toast.error("Erro ao criar transação");
     },
   });
 }
@@ -38,8 +43,12 @@ export function useUpdateTransaction(id: string) {
     mutationFn: (data: UpdateTransactionRequest) =>
       transactionService.update(id, data),
     onSuccess: () => {
+      toast.success("Transação atualizada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["analytics"] });
+    },
+    onError: () => {
+      toast.error("Erro ao atualizar transação");
     },
   });
 }
@@ -49,8 +58,12 @@ export function useDeleteTransaction() {
   return useMutation({
     mutationFn: (id: string) => transactionService.delete(id),
     onSuccess: () => {
+      toast.success("Transação excluída com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["analytics"] });
+    },
+    onError: () => {
+      toast.error("Erro ao excluir transação");
     },
   });
 }

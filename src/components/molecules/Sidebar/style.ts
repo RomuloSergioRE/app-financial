@@ -20,7 +20,6 @@ export const Wrapper = styled.aside<{ $isOpen: boolean }>`
   border-right: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease;
   flex-shrink: 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -29,6 +28,7 @@ export const Wrapper = styled.aside<{ $isOpen: boolean }>`
     left: 0;
     bottom: 0;
     z-index: 20;
+    transition: transform 0.3s ease;
     transform: ${({ $isOpen }) =>
       $isOpen ? "translateX(0)" : "translateX(-100%)"};
   }
@@ -90,24 +90,25 @@ export const LogoutButton = styled.button`
   }
 `;
 
-export const Hamburger = styled.button`
+export const Hamburger = styled.button<{ $isOpen: boolean }>`
   display: none;
-  position: fixed;
-  top: ${({ theme }) => theme.spacing.md};
-  left: ${({ theme }) => theme.spacing.md};
-  z-index: 30;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
-  font-size: 1.25rem;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: flex;
+    position: fixed;
+    top: ${({ theme }) => theme.spacing.md};
+    left: ${({ $isOpen }) => ($isOpen ? "184px" : "16px")};
+    z-index: 30;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: ${({ theme }) => theme.borderRadius.md};
+    background: ${({ theme }) => theme.colors.primary};
+    color: #fff;
+    font-size: 1.25rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: left 0.3s ease;
   }
 `;

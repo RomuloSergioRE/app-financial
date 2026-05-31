@@ -21,8 +21,18 @@ export default function DashboardPage() {
   const { data: balanceData, isLoading: balanceLoading } = useBalance(startDate, endDate);
   const { data: categoriesData, isLoading: categoriesLoading } = useCategoriesAnalytics(startDate, endDate);
 
-  const balance = balanceData?.data;
-  const categories = categoriesData?.data;
+  const rawBalance = balanceData?.data;
+  const balance = rawBalance
+    ? {
+        totalIncome: rawBalance.totalIncome / 100,
+        totalOutcome: rawBalance.totalOutcome / 100,
+        netBalance: rawBalance.netBalance / 100,
+      }
+    : undefined;
+  const categories = (categoriesData?.data ?? []).map((c) => ({
+    ...c,
+    totalAmount: c.totalAmount / 100,
+  }));
 
   return (
     <S.Wrapper>

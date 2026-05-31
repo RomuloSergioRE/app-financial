@@ -10,6 +10,7 @@ import { Button } from "@/components/atoms/Button";
 import { FormLink } from "@/components/molecules/FormLink";
 import { Text } from "@/components/atoms/Text";
 import { registerSchema, type RegisterFormData } from "@/schemas/register";
+import { toast } from "@/components/atoms/Toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { extractErrorMessage } from "@/utils/errors";
 import * as S from "./style";
@@ -34,6 +35,7 @@ export default function RegisterPage() {
         email: data.email,
         password: data.password,
       });
+      toast.success("Conta criada com sucesso!");
       window.location.href = "/dashboard";
     } catch (err: unknown) {
       setApiError(

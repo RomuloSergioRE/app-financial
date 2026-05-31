@@ -5,6 +5,8 @@ import { Sidebar } from "@/components/molecules/Sidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import type { NavItem } from "@/components/molecules/Sidebar/types";
 import {
+  HiOutlineBars3,
+  HiOutlineXMark,
   HiOutlineViewColumns,
   HiOutlineUsers,
 } from "react-icons/hi2";
@@ -29,14 +31,25 @@ export default function AdminLayout({
   };
 
   return (
-    <S.LayoutWrapper>
-      <Sidebar
-        items={adminNavItems}
-        isOpen={sidebarOpen}
-        onToggle={() => setSidebarOpen((prev) => !prev)}
-        onLogout={handleLogout}
-      />
-      <S.Main>{children}</S.Main>
-    </S.LayoutWrapper>
+    <>
+      <S.HamburgerWrapper>
+        <S.HamburgerButton
+          $isOpen={sidebarOpen}
+          onClick={() => setSidebarOpen((prev) => !prev)}
+          aria-label="Abrir menu"
+        >
+          {sidebarOpen ? <HiOutlineXMark size={24} /> : <HiOutlineBars3 size={24} />}
+        </S.HamburgerButton>
+      </S.HamburgerWrapper>
+      <S.LayoutWrapper>
+        <Sidebar
+          items={adminNavItems}
+          isOpen={sidebarOpen}
+          onToggle={() => setSidebarOpen((prev) => !prev)}
+          onLogout={handleLogout}
+        />
+        <S.Main>{children}</S.Main>
+      </S.LayoutWrapper>
+    </>
   );
 }

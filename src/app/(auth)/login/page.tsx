@@ -10,6 +10,7 @@ import { Button } from "@/components/atoms/Button";
 import { FormLink } from "@/components/molecules/FormLink";
 import { Text } from "@/components/atoms/Text";
 import { loginSchema, type LoginFormData } from "@/schemas/login";
+import { toast } from "@/components/atoms/Toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { extractErrorMessage } from "@/utils/errors";
 import * as S from "./style";
@@ -30,6 +31,7 @@ export default function LoginPage() {
     try {
       setApiError(null);
       await login(data);
+      toast.success("Login realizado com sucesso!");
       window.location.href = "/dashboard";
     } catch (err: unknown) {
       setApiError(

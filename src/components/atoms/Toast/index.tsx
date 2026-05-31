@@ -1,0 +1,86 @@
+"use client";
+
+import { Toaster, toast as sonnerToast } from "sonner";
+import {
+  HiOutlineCheckCircle,
+  HiOutlineXCircle,
+  HiOutlineInformationCircle,
+  HiOutlineExclamationTriangle,
+  HiOutlineXMark,
+} from "react-icons/hi2";
+import * as S from "./style";
+import type { ToastType } from "./style";
+
+interface ToastContentProps {
+  type: ToastType;
+  message: string;
+  toastId: string | number;
+}
+
+function ToastContent({ type, message, toastId }: ToastContentProps) {
+  const icons: Record<ToastType, React.ReactNode> = {
+    success: <HiOutlineCheckCircle color={S.typeColors.success} size={20} />,
+    error: <HiOutlineXCircle color={S.typeColors.error} size={20} />,
+    info: <HiOutlineInformationCircle color={S.typeColors.info} size={20} />,
+    warning: (
+      <HiOutlineExclamationTriangle color={S.typeColors.warning} size={20} />
+    ),
+  };
+
+  return (
+    <S.ToastContainer $type={type}>
+      <S.ToastIcon>{icons[type]}</S.ToastIcon>
+      <S.ToastMessage>{message}</S.ToastMessage>
+      <S.CloseButton onClick={() => sonnerToast.dismiss(toastId)}>
+        <HiOutlineXMark size={16} />
+      </S.CloseButton>
+    </S.ToastContainer>
+  );
+}
+
+export function Toast() {
+  return (
+    <Toaster
+      position="top-right"
+      toastOptions={{
+        style: {
+          background: "transparent",
+          border: "none",
+          padding: 0,
+          boxShadow: "none",
+          borderRadius: 0,
+          gap: 0,
+        },
+      }}
+    />
+  );
+}
+
+export const toast = {
+  success: (message: string) => {
+    sonnerToast.custom(
+      (id) => <ToastContent type="success" message={message} toastId={id} />,
+      { duration: 4000 }
+    );
+  },
+  error: (message: string) => {
+    sonnerToast.custom(
+      (id) => <ToastContent type="error" message={message} toastId={id} />,
+      { duration: 6000 }
+    );
+  },
+  info: (message: string) => {
+    sonnerToast.custom(
+      (id) => <ToastContent type="info" message={message} toastId={id} />,
+      { duration: 4000 }
+    );
+  },
+  warning: (message: string) => {
+    sonnerToast.custom(
+      (id) => (
+        <ToastContent type="warning" message={message} toastId={id} />
+      ),
+      { duration: 5000 }
+    );
+  },
+};

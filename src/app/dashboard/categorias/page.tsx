@@ -27,8 +27,10 @@ export default function CategoriasPage() {
 
   const handleCreate = () => {
     if (!name.trim()) return;
-    createMutation.mutate({ name: name.trim() });
-    setName("");
+    createMutation.mutate(
+      { name: name.trim() },
+      { onSuccess: () => setName("") }
+    );
   };
 
   const handleEdit = (cat: Category) => {
@@ -51,17 +53,19 @@ export default function CategoriasPage() {
     <S.Wrapper>
       <Text as="h1" size="xxl" weight="bold">Categorias</Text>
 
-      <S.Form>
-        <Input
-          placeholder="Nome da categoria"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleCreate()}
-        />
+      <S.FormRow>
+        <S.FormField>
+          <Input
+            placeholder="Nome da categoria"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleCreate()}
+          />
+        </S.FormField>
         <Button onClick={handleCreate} loading={createMutation.isPending}>
           Criar
         </Button>
-      </S.Form>
+      </S.FormRow>
 
       {isLoading ? (
         <Text>Carregando...</Text>

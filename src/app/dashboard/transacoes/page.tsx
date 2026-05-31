@@ -34,23 +34,29 @@ export default function TransacoesPage() {
   const updateMutation = useUpdateTransaction(editingTx?.id ?? "");
 
   const handleCreate = () => {
-    if (!description.trim() || !amount || !categoryId) return;
-    createMutation.mutate({
-      description: description.trim(),
-      amount: Math.round(parseFloat(amount) * 100),
-      type,
-      date: new Date().toISOString().split("T")[0],
-      categoryId,
-    });
-    setDescription("");
-    setAmount("");
-    setCategoryId("");
+    if (!description.trim() || !amount || !categoryId || parseFloat(amount) <= 0) return;
+    createMutation.mutate(
+      {
+        description: description.trim(),
+        amount: Math.round(parseFloat(amount) * 100),
+        type,
+        date: new Date().toISOString(),
+        categoryId,
+      },
+      {
+        onSuccess: () => {
+          setDescription("");
+          setAmount("");
+          setCategoryId("");
+        },
+      }
+    );
   };
 
   const handleEdit = (tx: Transaction) => {
     setEditingTx(tx);
     setEditDescription(tx.description);
-    setEditAmount(tx.amount.toString());
+    setEditAmount((tx.amount / 100).toString());
     setEditType(tx.type);
     setEditCategoryId(tx.categoryId.toString());
   };
@@ -69,7 +75,7 @@ export default function TransacoesPage() {
   };
 
   const transactions = data?.data?.data ?? [];
-  const totalPages = data?.data?.totalPages ?? 1;
+  const totalPages = data?.data?.pagination?.totalPages ?? 1;
   const categories = categoriesData?.data?.data ?? [];
 
   return (
@@ -92,7 +98,10 @@ export default function TransacoesPage() {
             step="0.01"
             placeholder="0,00"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val === "" || parseFloat(val) >= 0) setAmount(val);
+            }}
           />
         </S.FormGroup>
         <S.FormGroup>
@@ -154,7 +163,7 @@ export default function TransacoesPage() {
                         {new Intl.NumberFormat("pt-BR", {
                           style: "currency",
                           currency: "BRL",
-                        }).format(tx.amount)}
+                        }).format(tx.amount / 100)}
                       </S.Td>
                       <S.Td>
                         <S.Actions>

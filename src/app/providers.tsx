@@ -6,6 +6,7 @@ import { useState } from "react";
 import theme from "@/styles/theme";
 import GlobalStyle from "@/styles/global";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { Toast } from "@/components/atoms/Toast";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -25,6 +26,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <ThemeProvider theme={theme}>
         <AuthProvider>
           <GlobalStyle />
+          <Toast />
           {children}
         </AuthProvider>
       </ThemeProvider>

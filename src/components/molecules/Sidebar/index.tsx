@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { HiOutlineBars3, HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
+import { HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
 import type { NavItem, SidebarProps } from "./types";
 import * as S from "./style";
 
@@ -16,10 +16,6 @@ export function Sidebar({ items, isOpen, onToggle, onLogout }: SidebarProps) {
 
   return (
     <>
-      <S.Hamburger onClick={onToggle} aria-label="Abrir menu">
-        <HiOutlineBars3 size={24} />
-      </S.Hamburger>
-
       <S.Overlay $isOpen={isOpen} onClick={onToggle} />
 
       <S.Wrapper $isOpen={isOpen}>

@@ -6,11 +6,16 @@ export const Wrapper = styled.div`
   gap: ${({ theme }) => theme.spacing.lg};
 `;
 
-export const Form = styled.div`
+export const FormRow = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing.sm};
-  align-items: end;
+  align-items: center;
   flex-wrap: wrap;
+`;
+
+export const FormField = styled.div`
+  flex: 1;
+  max-width: 280px;
 `;
 
 export const Select = styled.select`
