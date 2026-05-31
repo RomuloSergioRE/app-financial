@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import {
   PieChart as RechartsPieChart,
   Pie,
@@ -22,7 +23,7 @@ const COLORS = [
   "#14B8A6",
 ];
 
-export function PieChart({ categories }: PieChartProps) {
+const PieChart = memo(function PieChart({ categories }: PieChartProps) {
   const data = categories.map((c) => ({
     name: c.categoryName,
     value: c.totalAmount,
@@ -78,4 +79,6 @@ export function PieChart({ categories }: PieChartProps) {
       </S.ChartContainer>
     </S.Wrapper>
   );
-}
+});
+
+export { PieChart };

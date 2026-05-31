@@ -1,12 +1,10 @@
 "use client";
 
 import { Toaster, toast as sonnerToast } from "sonner";
+import { memo } from "react";
 import {
-  HiOutlineCheckCircle,
-  HiOutlineXCircle,
-  HiOutlineInformationCircle,
-  HiOutlineExclamationTriangle,
-  HiOutlineXMark,
+  HiOutlineCheckCircle, HiOutlineXCircle,
+  HiOutlineInformationCircle, HiOutlineExclamationTriangle, HiOutlineXMark,
 } from "react-icons/hi2";
 import * as S from "./style";
 import type { ToastType } from "./style";
@@ -17,7 +15,7 @@ interface ToastContentProps {
   toastId: string | number;
 }
 
-function ToastContent({ type, message, toastId }: ToastContentProps) {
+const ToastContent = memo(function ToastContent({ type, message, toastId }: ToastContentProps) {
   const icons: Record<ToastType, React.ReactNode> = {
     success: <HiOutlineCheckCircle color={S.typeColors.success} size={20} />,
     error: <HiOutlineXCircle color={S.typeColors.error} size={20} />,
@@ -36,7 +34,7 @@ function ToastContent({ type, message, toastId }: ToastContentProps) {
       </S.CloseButton>
     </S.ToastContainer>
   );
-}
+});
 
 export function Toast() {
   return (

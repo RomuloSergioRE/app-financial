@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import {
   BarChart as RechartsBarChart,
   Bar,
@@ -13,7 +14,7 @@ import {
 import type { BarChartProps } from "./types";
 import * as S from "./style";
 
-export function BarChart({ income, expense }: BarChartProps) {
+const BarChart = memo(function BarChart({ income, expense }: BarChartProps) {
   const data = [
     {
       name: "Receitas vs Despesas",
@@ -63,4 +64,6 @@ export function BarChart({ income, expense }: BarChartProps) {
       </S.ChartContainer>
     </S.Wrapper>
   );
-}
+});
+
+export { BarChart };

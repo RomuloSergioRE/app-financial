@@ -1,7 +1,8 @@
+import { memo } from "react";
 import type { SummaryCardProps } from "./types";
 import * as S from "./style";
 
-export function SummaryCard({ label, value, icon, color }: SummaryCardProps) {
+const SummaryCard = memo(function SummaryCard({ label, value, icon, color }: SummaryCardProps) {
   const formatted = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -18,4 +19,6 @@ export function SummaryCard({ label, value, icon, color }: SummaryCardProps) {
       </S.Content>
     </S.Wrapper>
   );
-}
+});
+
+export { SummaryCard };

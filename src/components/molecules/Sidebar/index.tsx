@@ -1,11 +1,12 @@
 "use client";
 
+import { memo } from "react";
 import { usePathname } from "next/navigation";
 import { HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
 import type { NavItem, SidebarProps } from "./types";
 import * as S from "./style";
 
-export function Sidebar({ items, isOpen, onToggle, onLogout }: SidebarProps) {
+const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout }: SidebarProps) {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
@@ -42,4 +43,6 @@ export function Sidebar({ items, isOpen, onToggle, onLogout }: SidebarProps) {
       </S.Wrapper>
     </>
   );
-}
+});
+
+export { Sidebar };

@@ -1,10 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { SummaryCard } from "@/components/molecules/SummaryCard";
 import { PeriodFilter } from "@/components/molecules/PeriodFilter";
-import { BarChart } from "@/components/molecules/BarChart";
-import { PieChart } from "@/components/molecules/PieChart";
+
+const BarChart = dynamic(
+  () => import("@/components/molecules/BarChart").then((m) => m.BarChart),
+  { ssr: false, loading: () => <p>Carregando gráfico...</p> }
+);
+const PieChart = dynamic(
+  () => import("@/components/molecules/PieChart").then((m) => m.PieChart),
+  { ssr: false, loading: () => <p>Carregando gráfico...</p> }
+);
 import {
   HiOutlineArrowTrendingUp,
   HiOutlineArrowTrendingDown,
