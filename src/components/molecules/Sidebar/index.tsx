@@ -2,7 +2,10 @@
 
 import { memo } from "react";
 import { usePathname } from "next/navigation";
-import { HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
+import {
+  HiOutlineXMark,
+  HiOutlineArrowRightOnRectangle,
+} from "react-icons/hi2";
 import type { NavItem, SidebarProps } from "./types";
 import * as S from "./style";
 
@@ -20,7 +23,12 @@ const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout }: Sid
       <S.Overlay $isOpen={isOpen} onClick={onToggle} />
 
       <S.Wrapper $isOpen={isOpen}>
-        <S.Logo>Financial App</S.Logo>
+        <S.Header>
+          <S.Logo>Financial</S.Logo>
+          <S.CloseButton onClick={onToggle} aria-label="Fechar menu">
+            <HiOutlineXMark size={20} />
+          </S.CloseButton>
+        </S.Header>
 
         <S.Nav>
           {items.map((item: NavItem) => (

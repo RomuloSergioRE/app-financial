@@ -77,11 +77,11 @@ export default function CategoriasPage() {
                 {cat.name}
               </S.CategoryBadge>
               <S.Actions>
-                <Button variant="text" onClick={() => handleEdit(cat)}>
+                <Button variant="ghost" onClick={() => handleEdit(cat)}>
                   <HiOutlinePencil size={16} />
                 </Button>
                 <Button
-                  variant="text"
+                  variant="ghost"
                   onClick={() => deleteMutation.mutate(cat.id)}
                 >
                   <HiOutlineTrash size={16} />

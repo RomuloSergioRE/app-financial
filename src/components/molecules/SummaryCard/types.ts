@@ -1,6 +1,9 @@
+export type SummaryType = "income" | "outcome" | "balance";
+
 export interface SummaryCardProps {
   label: string;
   value: number;
   icon: React.ReactNode;
-  color: "primary" | "secondary" | "danger";
+  type: SummaryType;
+  index?: number;
 }

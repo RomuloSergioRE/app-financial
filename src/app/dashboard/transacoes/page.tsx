@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi2";
+import { Select } from "@/components/atoms/Select";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
 import { Text } from "@/components/atoms/Text";
@@ -104,24 +105,30 @@ export default function TransacoesPage() {
             }}
           />
         </S.FormGroup>
-        <S.FormGroup>
-          <S.Label>Tipo</S.Label>
-          <S.Select value={type} onChange={(e) => setType(e.target.value as "income" | "outcome")}>
-            <option value="outcome">Saída</option>
-            <option value="income">Entrada</option>
-          </S.Select>
-        </S.FormGroup>
-        <S.FormGroup>
-          <S.Label>Categoria</S.Label>
-          <S.Select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
-            <option value="">Selecione</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </S.Select>
-        </S.FormGroup>
+        <S.FormRow>
+          <S.FormGroup>
+            <S.Label>Tipo</S.Label>
+            <Select
+              value={type}
+              onChange={(v) => setType(v as "income" | "outcome")}
+              options={[
+                { value: "outcome", label: "Saída" },
+                { value: "income", label: "Entrada" },
+              ]}
+            />
+          </S.FormGroup>
+          <S.FormGroup>
+            <S.Label>Categoria</S.Label>
+            <Select
+              value={categoryId}
+              onChange={setCategoryId}
+              options={[
+                { value: "", label: "Selecione" },
+                ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
+              ]}
+            />
+          </S.FormGroup>
+        </S.FormRow>
         <Button
           onClick={handleCreate}
           loading={createMutation.isPending}
@@ -159,19 +166,19 @@ export default function TransacoesPage() {
                           {tx.type === "income" ? "Entrada" : "Saída"}
                         </S.TypeBadge>
                       </S.Td>
-                      <S.Td>
+                      <S.TdMono>
                         {new Intl.NumberFormat("pt-BR", {
                           style: "currency",
                           currency: "BRL",
                         }).format(tx.amount / 100)}
-                      </S.Td>
+                      </S.TdMono>
                       <S.Td>
                         <S.Actions>
-                          <Button variant="text" onClick={() => handleEdit(tx)}>
+                          <Button variant="ghost" onClick={() => handleEdit(tx)}>
                             <HiOutlinePencil size={16} />
                           </Button>
                           <Button
-                            variant="text"
+                            variant="ghost"
                             onClick={() => deleteMutation.mutate(tx.id)}
                           >
                             <HiOutlineTrash size={16} />
@@ -236,21 +243,25 @@ export default function TransacoesPage() {
             </S.FormGroup>
             <S.FormGroup>
               <S.Label>Tipo</S.Label>
-              <S.Select value={editType} onChange={(e) => setEditType(e.target.value as "income" | "outcome")}>
-                <option value="outcome">Saída</option>
-                <option value="income">Entrada</option>
-              </S.Select>
+              <Select
+                value={editType}
+                onChange={(v) => setEditType(v as "income" | "outcome")}
+                options={[
+                  { value: "outcome", label: "Saída" },
+                  { value: "income", label: "Entrada" },
+                ]}
+              />
             </S.FormGroup>
             <S.FormGroup>
               <S.Label>Categoria</S.Label>
-              <S.Select value={editCategoryId} onChange={(e) => setEditCategoryId(e.target.value)}>
-                <option value="">Selecione</option>
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </S.Select>
+              <Select
+                value={editCategoryId}
+                onChange={setEditCategoryId}
+                options={[
+                  { value: "", label: "Selecione" },
+                  ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
+                ]}
+              />
             </S.FormGroup>
             <S.ModalActions>
               <Button variant="outline" onClick={() => setEditingTx(null)}>

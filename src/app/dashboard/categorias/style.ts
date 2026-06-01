@@ -18,20 +18,6 @@ export const FormField = styled.div`
   max-width: 280px;
 `;
 
-export const Select = styled.select`
-  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  background: ${({ theme }) => theme.colors.surface};
-  color: ${({ theme }) => theme.colors.text};
-  outline: none;
-
-  &:focus {
-    border-color: ${({ theme }) => theme.colors.borderFocus};
-  }
-`;
-
 export const List = styled.div`
   display: flex;
   flex-direction: column;
@@ -42,24 +28,26 @@ export const Item = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing.md};
+  padding: ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.lg};
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
 `;
 
 export const CategoryBadge = styled.div<{ $color?: string }>`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.sm};
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
 
   &::before {
     content: "";
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: ${({ $color }) => $color || "#4F46E5"};
+    background: ${({ $color }) => $color || "#D4A853"};
   }
 `;
 
@@ -67,18 +55,14 @@ export const TypeTag = styled.span<{ $type: string }>`
   padding: 2px 8px;
   border-radius: ${({ theme }) => theme.borderRadius.sm};
   font-size: ${({ theme }) => theme.fontSize.xs};
-  background: ${({ theme, $type }) =>
-    $type === "income"
-      ? theme.colors.secondary + "20"
-      : $type === "expense"
-      ? theme.colors.danger + "20"
-      : theme.colors.primary + "20"};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  background: ${({ theme }) => theme.colors.surfaceHover};
   color: ${({ theme, $type }) =>
     $type === "income"
-      ? theme.colors.secondary
-      : $type === "expense"
+      ? theme.colors.primary
+      : $type === "outcome"
       ? theme.colors.danger
-      : theme.colors.primary};
+      : theme.colors.textSecondary};
 `;
 
 export const Actions = styled.div`
@@ -90,7 +74,7 @@ export const Actions = styled.div`
 export const Overlay = styled.div`
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: ${({ theme }) => theme.colors.overlay};
   z-index: 100;
 `;
 
@@ -101,9 +85,9 @@ export const Modal = styled.div`
   transform: translate(-50%, -50%);
   z-index: 101;
   background: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   padding: ${({ theme }) => theme.spacing.xl};
-  box-shadow: ${({ theme }) => theme.shadow.lg};
   width: 90%;
   max-width: 400px;
   display: flex;
@@ -124,8 +108,11 @@ export const FormGroup = styled.div`
 `;
 
 export const Label = styled.label`
-  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme }) => theme.colors.textSecondary};
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 `;
 
 export const ModalActions = styled.div`

@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { AuthCard } from "@/components/molecules/AuthCard";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
@@ -17,6 +18,7 @@ import * as S from "./style";
 
 export default function LoginPage() {
   const { login } = useAuth();
+  const router = useRouter();
   const [apiError, setApiError] = useState<string | null>(null);
 
   const {
@@ -32,7 +34,7 @@ export default function LoginPage() {
       setApiError(null);
       await login(data);
       toast.success("Login realizado com sucesso!");
-      window.location.href = "/dashboard";
+      router.push("/dashboard");
     } catch (err: unknown) {
       setApiError(
         extractErrorMessage(err, "Erro ao fazer login. Verifique suas credenciais.")

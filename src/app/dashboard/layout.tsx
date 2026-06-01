@@ -38,15 +38,15 @@ export default function DashboardLayout({
 
   return (
     <>
-      <S.HamburgerWrapper>
-        <S.HamburgerButton
-          $isOpen={sidebarOpen}
+      <S.TopBar>
+        <S.TopBarToggle
           onClick={() => setSidebarOpen((prev) => !prev)}
-          aria-label="Abrir menu"
+          aria-label={sidebarOpen ? "Fechar menu" : "Abrir menu"}
         >
-          {sidebarOpen ? <HiOutlineXMark size={24} /> : <HiOutlineBars3 size={24} />}
-        </S.HamburgerButton>
-      </S.HamburgerWrapper>
+          {sidebarOpen ? <HiOutlineXMark size={20} /> : <HiOutlineBars3 size={20} />}
+        </S.TopBarToggle>
+        <S.TopBarLogo>Financial</S.TopBarLogo>
+      </S.TopBar>
       <S.LayoutWrapper>
         <Sidebar
           items={userNavItems}
@@ -55,7 +55,7 @@ export default function DashboardLayout({
           onLogout={handleLogout}
         />
         <S.Main>{children}</S.Main>
-      </S.LayoutWrapper>
+    </S.LayoutWrapper>
     </>
   );
 }

@@ -1,11 +1,11 @@
 export const TRANSACTION_TYPES = {
   INCOME: "income",
-  EXPENSE: "expense",
+  OUTCOME: "outcome",
 } as const;
 
 export const TRANSACTION_TYPE_LABELS = {
   income: "Receita",
-  expense: "Despesa",
+  outcome: "Despesa",
 } as const;
 
 export const USER_ROLES = {
@@ -23,5 +23,3 @@ export const PAGINATION = {
   DEFAULT_PAGE: 1,
   DEFAULT_LIMIT: 10,
 } as const;
-
-

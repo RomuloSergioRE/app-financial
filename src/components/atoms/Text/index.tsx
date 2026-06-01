@@ -10,7 +10,14 @@ export function Text({
   align = "left",
 }: TextProps) {
   return (
-    <S.Wrapper as={as} $color={color} $size={size} $weight={weight} $align={align}>
+    <S.Wrapper
+      as={as}
+      $color={color}
+      $size={size}
+      $weight={weight}
+      $align={align}
+      $fontFamily="body"
+    >
       {children}
     </S.Wrapper>
   );

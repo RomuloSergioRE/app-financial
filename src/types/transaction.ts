@@ -23,5 +23,4 @@ export interface CreateTransactionRequest {
   categoryId: string;
 }
 
-export interface UpdateTransactionRequest
-  extends Partial<CreateTransactionRequest> {}
+export type UpdateTransactionRequest = Partial<CreateTransactionRequest>

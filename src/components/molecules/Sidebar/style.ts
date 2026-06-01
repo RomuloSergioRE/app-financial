@@ -8,13 +8,13 @@ export const Overlay = styled.div<{ $isOpen: boolean }>`
     display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: ${({ theme }) => theme.colors.overlay};
     z-index: 10;
   }
 `;
 
 export const Wrapper = styled.aside<{ $isOpen: boolean }>`
-  width: 240px;
+  width: 220px;
   min-height: 100vh;
   background: ${({ theme }) => theme.colors.surface};
   border-right: 1px solid ${({ theme }) => theme.colors.border};
@@ -24,22 +24,23 @@ export const Wrapper = styled.aside<{ $isOpen: boolean }>`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     position: fixed;
-    top: 0;
+    top: 56px;
     left: 0;
     bottom: 0;
     z-index: 20;
-    transition: transform 0.3s ease;
+    transition: transform ${({ theme }) => theme.transition.slow};
     transform: ${({ $isOpen }) =>
       $isOpen ? "translateX(0)" : "translateX(-100%)"};
   }
 `;
 
 export const Logo = styled.div`
-  padding: ${({ theme }) => theme.spacing.lg};
-  font-size: ${({ theme }) => theme.fontSize.lg};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-  color: ${({ theme }) => theme.colors.primary};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  padding: ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.lg};
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: ${({ theme }) => theme.fontSize.xl};
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+  letter-spacing: -0.02em;
 `;
 
 export const Nav = styled.nav`
@@ -57,15 +58,29 @@ export const NavItem = styled(Link)<{ $active: boolean }>`
   padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   text-decoration: none;
+  font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme, $active }) =>
-    $active ? theme.colors.primary : theme.colors.text};
-  background: ${({ theme, $active }) =>
-    $active ? theme.colors.primary + "10" : "transparent"};
-  transition: background 0.2s, color 0.2s;
+    $active ? theme.colors.text : theme.colors.textSecondary};
+  position: relative;
+  transition: color ${({ theme }) => theme.transition.base};
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: ${({ $active }) => ($active ? "16px" : "0")};
+    border-radius: 2px;
+    background: ${({ theme }) => theme.colors.secondary};
+    transition: height ${({ theme }) => theme.transition.base};
+  }
 
   &:hover {
+    color: ${({ theme }) => theme.colors.text};
     background: ${({ theme }) => theme.colors.surfaceHover};
   }
 `;
@@ -76,39 +91,43 @@ export const LogoutButton = styled.button`
   gap: ${({ theme }) => theme.spacing.sm};
   padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
   margin: ${({ theme }) => theme.spacing.sm};
-  border: none;
+  border: 1px solid transparent;
   border-radius: ${({ theme }) => theme.borderRadius.md};
   background: transparent;
-  color: ${({ theme }) => theme.colors.danger};
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   cursor: pointer;
-  transition: background 0.2s;
+  transition: color ${({ theme }) => theme.transition.base},
+    background ${({ theme }) => theme.transition.base};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.danger}15;
+    color: ${({ theme }) => theme.colors.text};
+    background: ${({ theme }) => theme.colors.surfaceHover};
   }
 `;
+export const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 
-export const Hamburger = styled.button<{ $isOpen: boolean }>`
+export const CloseButton = styled.button`
   display: none;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: flex;
-    position: fixed;
-    top: ${({ theme }) => theme.spacing.md};
-    left: ${({ $isOpen }) => ($isOpen ? "184px" : "16px")};
-    z-index: 30;
-    width: 40px;
-    height: 40px;
-    border: none;
+    width: 36px;
+    height: 36px;
+    margin-right: ${({ theme }) => theme.spacing.md};
+    border: 1px solid ${({ theme }) => theme.colors.border};
     border-radius: ${({ theme }) => theme.borderRadius.md};
-    background: ${({ theme }) => theme.colors.primary};
-    color: #fff;
-    font-size: 1.25rem;
+    background: transparent;
+    color: ${({ theme }) => theme.colors.text};
+    font-size: 1.125rem;
     cursor: pointer;
     align-items: center;
     justify-content: center;
-    transition: left 0.3s ease;
   }
 `;

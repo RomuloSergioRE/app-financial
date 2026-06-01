@@ -10,7 +10,7 @@ export const Section = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.md};
-  padding: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.xl};
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
@@ -18,9 +18,10 @@ export const Section = styled.div`
 
 export const SectionTitle = styled.h2`
   margin: 0;
+  font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.lg};
+  font-weight: 600;
   color: ${({ theme }) => theme.colors.text};
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;
 
 export const Field = styled.div`
@@ -30,11 +31,15 @@ export const Field = styled.div`
 `;
 
 export const Label = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme }) => theme.colors.textSecondary};
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 `;
 
 export const StaticValue = styled.span`
+  font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.md};
   color: ${({ theme }) => theme.colors.text};
   font-weight: ${({ theme }) => theme.fontWeight.medium};

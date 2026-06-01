@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Text } from "@/components/atoms/Text";
 import { Input } from "@/components/atoms/Input";
 import { Button } from "@/components/atoms/Button";
@@ -11,6 +11,7 @@ export default function PerfilPage() {
   const { data: profileData, isLoading } = useProfile();
   const updateProfile = useUpdateProfile();
   const updatePassword = useUpdatePassword();
+  const loaded = useRef(false);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -19,13 +20,19 @@ export default function PerfilPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const user = profileData?.data;
+
+  useEffect(() => {
+    if (user && !loaded.current) {
+      loaded.current = true;
+      setName(user.name || "");
+      setEmail(user.email || "");
+    }
+  }, [user]);
+
   const isProfileDirty = name !== user?.name || email !== user?.email;
 
   const handleSaveProfile = () => {
-    updateProfile.mutate(
-      { name, email },
-      { onSuccess: () => { setName(""); setEmail(""); } }
-    );
+    updateProfile.mutate({ name, email });
   };
 
   const handleChangePassword = () => {
@@ -59,13 +66,6 @@ export default function PerfilPage() {
       </S.Wrapper>
     );
   }
-
-  useEffect(() => {
-    if (user) {
-      setName(user.name || "");
-      setEmail(user.email || "");
-    }
-  }, [user]);
 
   return (
     <S.Wrapper>

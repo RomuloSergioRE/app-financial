@@ -7,14 +7,32 @@ export const Wrapper = styled.div`
 `;
 
 export const Form = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing.sm};
   align-items: end;
-  flex-wrap: wrap;
-  padding: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.xl};
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
+
+  @media (min-width: 769px) {
+    display: flex;
+    flex-wrap: wrap;
+  }
+`;
+
+export const FormRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: ${({ theme }) => theme.spacing.sm};
+  width: 100%;
+
+  @media (min-width: 769px) {
+    display: flex;
+    width: auto;
+    gap: ${({ theme }) => theme.spacing.sm};
+  }
 `;
 
 export const FormGroup = styled.div`
@@ -24,29 +42,18 @@ export const FormGroup = styled.div`
 `;
 
 export const Label = styled.label`
-  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme }) => theme.colors.textSecondary};
-`;
-
-export const Select = styled.select`
-  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
-  border: 2px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  font-size: ${({ theme }) => theme.fontSize.md};
-  line-height: 1.6;
-  height: 46px;
-  box-sizing: border-box;
-  background: ${({ theme }) => theme.colors.surface};
-  color: ${({ theme }) => theme.colors.text};
-  outline: none;
-
-  &:focus {
-    border-color: ${({ theme }) => theme.colors.borderFocus};
-  }
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 `;
 
 export const TableWrapper = styled.div`
   overflow-x: auto;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  background: ${({ theme }) => theme.colors.surface};
 `;
 
 export const Table = styled.table`
@@ -56,35 +63,50 @@ export const Table = styled.table`
 
 export const Th = styled.th`
   text-align: left;
-  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
-  font-size: ${({ theme }) => theme.fontSize.sm};
+  padding: ${({ theme }) => `${theme.spacing.md} ${theme.spacing.md}`};
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.colors.textSecondary};
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   white-space: nowrap;
 `;
 
 export const Td = styled.td`
-  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
+  padding: ${({ theme }) => `${theme.spacing.md}`};
+  font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.sm};
+  color: ${({ theme }) => theme.colors.text};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  vertical-align: middle;
+`;
+
+export const TdMono = styled.td`
+  padding: ${({ theme }) => `${theme.spacing.md}`};
+  font-family: ${({ theme }) => theme.fonts.mono};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  color: ${({ theme }) => theme.colors.text};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  font-variant-numeric: tabular-nums;
+  vertical-align: middle;
+  white-space: nowrap;
 `;
 
 export const TypeBadge = styled.span<{ $type: string }>`
-  padding: 2px 8px;
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
-  background: ${({ theme, $type }) =>
-    $type === "income" ? theme.colors.secondary + "20" : theme.colors.danger + "20"};
   color: ${({ theme, $type }) =>
-    $type === "income" ? theme.colors.secondary : theme.colors.danger};
+    $type === "income" ? theme.colors.primary : theme.colors.danger};
 `;
 
 export const Pagination = styled.div`
   display: flex;
   justify-content: center;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.spacing.md};
   align-items: center;
+  padding: ${({ theme }) => theme.spacing.md} 0;
 `;
 
 export const Actions = styled.div`
@@ -96,7 +118,7 @@ export const Actions = styled.div`
 export const Overlay = styled.div`
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: ${({ theme }) => theme.colors.overlay};
   z-index: 100;
 `;
 
@@ -107,9 +129,9 @@ export const Modal = styled.div`
   transform: translate(-50%, -50%);
   z-index: 101;
   background: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   padding: ${({ theme }) => theme.spacing.xl};
-  box-shadow: ${({ theme }) => theme.shadow.lg};
   width: 90%;
   max-width: 400px;
   display: flex;

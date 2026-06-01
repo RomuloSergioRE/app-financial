@@ -6,6 +6,7 @@ export const Wrapper = styled.p<{
   $size: TextProps["size"];
   $weight: TextProps["weight"];
   $align: TextProps["align"];
+  $fontFamily: "display" | "body";
 }>`
   ${({ $color, theme }) =>
     $color &&
@@ -25,6 +26,8 @@ export const Wrapper = styled.p<{
       font-weight: ${theme.fontWeight[$weight]};
     `}
 
+  font-family: ${({ $fontFamily, theme }) => theme.fonts[$fontFamily]};
+  line-height: ${({ $fontFamily }) => ($fontFamily === "display" ? 1.2 : 1.5)};
+
   text-align: ${({ $align }) => $align};
-  line-height: 1.5;
 `;
