@@ -1,12 +1,23 @@
 "use client";
 
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider as StyledThemeProvider } from "styled-components";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
-import theme from "@/styles/theme";
 import GlobalStyle from "@/styles/global";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
 import { Toast } from "@/components/atoms/Toast";
+
+function ThemedApp({ children }: { children: React.ReactNode }) {
+  const { themeObject } = useTheme();
+  return (
+    <StyledThemeProvider theme={themeObject}>
+      <GlobalStyle />
+      <Toast />
+      {children}
+    </StyledThemeProvider>
+  );
+}
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -24,11 +35,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider>
         <AuthProvider>
-          <GlobalStyle />
-          <Toast />
-          {children}
+          <ThemedApp>{children}</ThemedApp>
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>

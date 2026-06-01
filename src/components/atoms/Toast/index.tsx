@@ -2,6 +2,7 @@
 
 import { Toaster, toast as sonnerToast } from "sonner";
 import { memo } from "react";
+import { useTheme } from "styled-components";
 import {
   HiOutlineCheckCircle, HiOutlineXCircle,
   HiOutlineInformationCircle, HiOutlineExclamationTriangle, HiOutlineXMark,
@@ -16,17 +17,26 @@ interface ToastContentProps {
 }
 
 const ToastContent = memo(function ToastContent({ type, message, toastId }: ToastContentProps) {
+  const theme = useTheme();
+
+  const typeColors: Record<ToastType, string> = {
+    success: theme.colors.success || theme.colors.primary,
+    error: theme.colors.error || theme.colors.danger,
+    info: theme.colors.info,
+    warning: theme.colors.warning || theme.colors.secondary,
+  };
+
+  const color = typeColors[type];
+
   const icons: Record<ToastType, React.ReactNode> = {
-    success: <HiOutlineCheckCircle color={S.typeColors.success} size={20} />,
-    error: <HiOutlineXCircle color={S.typeColors.error} size={20} />,
-    info: <HiOutlineInformationCircle color={S.typeColors.info} size={20} />,
-    warning: (
-      <HiOutlineExclamationTriangle color={S.typeColors.warning} size={20} />
-    ),
+    success: <HiOutlineCheckCircle color={color} size={20} />,
+    error: <HiOutlineXCircle color={color} size={20} />,
+    info: <HiOutlineInformationCircle color={color} size={20} />,
+    warning: <HiOutlineExclamationTriangle color={color} size={20} />,
   };
 
   return (
-    <S.ToastContainer $type={type}>
+    <S.ToastContainer $color={color}>
       <S.ToastIcon>{icons[type]}</S.ToastIcon>
       <S.ToastMessage>{message}</S.ToastMessage>
       <S.CloseButton onClick={() => sonnerToast.dismiss(toastId)}>

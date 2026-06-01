@@ -1,0 +1,82 @@
+const themeLight = {
+  colors: {
+    primary: "#3D9B6E",
+    primaryLight: "#5CB87A",
+    primaryDark: "#2E7D54",
+    secondary: "#C8913A",
+    secondaryLight: "#D4AD60",
+    secondaryDark: "#A87A2E",
+    danger: "#D94A4A",
+    dangerLight: "#E06060",
+    dangerDark: "#B03030",
+    warning: "#C8913A",
+    info: "#5B8DEF",
+    background: "#F5F1EB",
+    surface: "#FFFFFF",
+    surfaceHover: "#F0EBE4",
+    text: "#1A1614",
+    textSecondary: "#6B6560",
+    textMuted: "#A39B94",
+    border: "#E6E0D6",
+    borderFocus: "#C8913A",
+    error: "#D94A4A",
+    success: "#3D9B6E",
+    overlay: "rgba(0, 0, 0, 0.3)",
+  },
+  fonts: {
+    display: "'Cormorant Garamond', serif",
+    body: "'DM Sans', sans-serif",
+    mono: "'JetBrains Mono', monospace",
+  },
+  breakpoints: {
+    mobile: "480px",
+    tablet: "768px",
+    desktop: "1024px",
+    wide: "1280px",
+  },
+  spacing: {
+    xs: "4px",
+    sm: "8px",
+    md: "16px",
+    lg: "24px",
+    xl: "32px",
+    xxl: "48px",
+    section: "64px",
+  },
+  borderRadius: {
+    sm: "2px",
+    md: "4px",
+    lg: "8px",
+    full: "9999px",
+  },
+  fontSize: {
+    xs: "0.75rem",
+    sm: "0.8125rem",
+    md: "0.9375rem",
+    lg: "1.0625rem",
+    xl: "1.25rem",
+    xxl: "1.5rem",
+    hero: "2.5rem",
+    display: "3rem",
+  },
+  fontWeight: {
+    normal: 400,
+    medium: 500,
+    semibold: 600,
+    bold: 700,
+  },
+  shadow: {
+    sm: "0 1px 2px rgba(0,0,0,0.06)",
+    md: "0 4px 12px rgba(0,0,0,0.08)",
+    lg: "0 8px 24px rgba(0,0,0,0.1)",
+  },
+  transition: {
+    fast: "0.15s ease",
+    base: "0.2s ease",
+    slow: "0.3s ease",
+  },
+} as const;
+
+export type ThemeLight = typeof themeLight;
+
+export default themeLight;

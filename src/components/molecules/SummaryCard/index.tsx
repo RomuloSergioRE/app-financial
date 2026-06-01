@@ -1,8 +1,17 @@
 import { memo } from "react";
-import type { SummaryCardProps } from "./types";
+import { useTheme } from "styled-components";
+import type { SummaryCardProps, SummaryType } from "./types";
 import * as S from "./style";
 
-const SummaryCard = memo(function SummaryCard({ label, value, icon, color }: SummaryCardProps) {
+const SummaryCard = memo(function SummaryCard({ label, value, icon, type, index = 0 }: SummaryCardProps) {
+  const theme = useTheme();
+
+  const accentColors: Record<SummaryType, string> = {
+    income: theme.colors.primary,
+    outcome: theme.colors.danger,
+    balance: theme.colors.secondary,
+  };
+
   const formatted = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -10,13 +19,14 @@ const SummaryCard = memo(function SummaryCard({ label, value, icon, color }: Sum
 
   return (
     <S.Wrapper>
-      <S.IconWrapper $color={color}>
-        <span>{icon}</span>
-      </S.IconWrapper>
-      <S.Content>
+      <S.AccentBar $color={accentColors[type]} />
+      <S.HeaderRow>
+        <S.IconWrapper $color={accentColors[type]}>{icon}</S.IconWrapper>
         <S.Label>{label}</S.Label>
-        <S.Value>{formatted}</S.Value>
-      </S.Content>
+      </S.HeaderRow>
+      <S.Value $color={accentColors[type]} $delay={index * 80}>
+        {formatted}
+      </S.Value>
     </S.Wrapper>
   );
 });

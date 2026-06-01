@@ -1,4 +1,11 @@
+"use client";
+
+import { useTheme } from "styled-components";
+import Link from "next/link";
+
 export default function NotFound() {
+  const theme = useTheme();
+
   return (
     <div
       style={{
@@ -10,27 +17,28 @@ export default function NotFound() {
         gap: "16px",
         padding: "16px",
         textAlign: "center",
+        background: theme.colors.background,
       }}
     >
-      <h1 style={{ fontSize: "1.5rem", color: "#dc3545", margin: 0 }}>
+      <h1 style={{ fontSize: "3rem", color: theme.colors.text, margin: 0 }}>
         404
       </h1>
-      <p style={{ color: "#666", margin: 0 }}>
+      <p style={{ color: theme.colors.textSecondary, margin: 0 }}>
         Página não encontrada
       </p>
-      <a
+      <Link
         href="/"
         style={{
           padding: "8px 16px",
-          background: "#4361ee",
-          color: "#fff",
-          borderRadius: "8px",
+          background: theme.colors.primary,
+          color: "#FFFFFF",
+          borderRadius: theme.borderRadius.md,
           textDecoration: "none",
-          fontWeight: 600,
+          fontWeight: 500,
         }}
       >
         Voltar ao início
-      </a>
+      </Link>
     </div>
   );
 }

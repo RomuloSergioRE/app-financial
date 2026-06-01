@@ -4,6 +4,7 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import { SummaryCard } from "@/components/molecules/SummaryCard";
 import { PeriodFilter } from "@/components/molecules/PeriodFilter";
+import { ThemeToggle } from "@/components/atoms/ThemeToggle";
 
 const BarChart = dynamic(
   () => import("@/components/molecules/BarChart").then((m) => m.BarChart),
@@ -46,27 +47,33 @@ export default function DashboardPage() {
     <S.Wrapper>
       <S.Header>
         <S.Title>Dashboard</S.Title>
-        <PeriodFilter value={period} onChange={setPeriod} />
+        <S.HeaderActions>
+          <PeriodFilter value={period} onChange={setPeriod} />
+          <ThemeToggle />
+        </S.HeaderActions>
       </S.Header>
 
       <S.Cards>
         <SummaryCard
           label="Receitas"
           value={balance?.totalIncome ?? 0}
-          icon={<HiOutlineArrowTrendingUp size={24} />}
-          color="secondary"
+          icon={<HiOutlineArrowTrendingUp size={20} />}
+          type="income"
+          index={0}
         />
         <SummaryCard
           label="Despesas"
           value={balance?.totalOutcome ?? 0}
-          icon={<HiOutlineArrowTrendingDown size={24} />}
-          color="danger"
+          icon={<HiOutlineArrowTrendingDown size={20} />}
+          type="outcome"
+          index={1}
         />
         <SummaryCard
           label="Saldo"
           value={balance?.netBalance ?? 0}
-          icon={<HiOutlineWallet size={24} />}
-          color="primary"
+          icon={<HiOutlineWallet size={20} />}
+          type="balance"
+          index={2}
         />
       </S.Cards>
 

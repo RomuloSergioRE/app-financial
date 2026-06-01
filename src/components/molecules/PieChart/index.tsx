@@ -1,37 +1,62 @@
 "use client";
 
 import { memo } from "react";
+import { useTheme } from "styled-components";
 import {
   PieChart as RechartsPieChart,
   Pie,
   Cell,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import type { PieChartProps } from "./types";
 import * as S from "./style";
 
-const COLORS = [
-  "#4F46E5",
-  "#10B981",
-  "#F59E0B",
-  "#EF4444",
-  "#3B82F6",
-  "#8B5CF6",
-  "#EC4899",
-  "#14B8A6",
-];
+const currencyFormatter = (v: number) =>
+  "R$ " + v.toLocaleString("pt-BR");
 
 const PieChart = memo(function PieChart({ categories }: PieChartProps) {
+  const theme = useTheme();
+
+  const COLORS = [
+    theme.colors.primary,
+    theme.colors.secondary,
+    theme.colors.info,
+    theme.colors.danger,
+    theme.colors.textSecondary,
+    "#6B5B4F",
+  ];
+
+  const CustomTooltip = (props: Record<string, unknown>) => {
+    const active = props.active as boolean | undefined;
+    const payload = props.payload as Array<Record<string, unknown>> | undefined;
+
+    if (!active || !payload?.length) return null;
+    const d = payload[0];
+    return (
+      <div
+        style={{
+          background: theme.colors.surface,
+          border: `1px solid ${theme.colors.border}`,
+          borderRadius: 4,
+          padding: "8px 12px",
+          fontSize: 13,
+          color: theme.colors.text,
+        }}
+      >
+        <div style={{ marginBottom: 4, fontWeight: 500 }}>{d.name as string}</div>
+        <div style={{ color: (d.payload as Record<string, unknown>)?.fill as string }}>
+          {currencyFormatter(Number(d.value))}
+        </div>
+      </div>
+    );
+  };
+
   const data = categories.map((c) => ({
     name: c.categoryName,
     value: c.totalAmount,
     color: c.color ?? undefined,
   }));
-
-  const currencyFormatter = (v: number) =>
-    "R$ " + v.toLocaleString("pt-BR");
 
   return (
     <S.Wrapper>
@@ -45,35 +70,19 @@ const PieChart = memo(function PieChart({ categories }: PieChartProps) {
               nameKey="name"
               cx="50%"
               cy="50%"
-              outerRadius="80%"
-              innerRadius={0}
+              innerRadius={60}
+              outerRadius={100}
               paddingAngle={2}
               strokeWidth={0}
-              label={({ name, percent }) =>
-                `${name ?? ""} ${((percent ?? 0) * 100).toFixed(0)}%`
-              }
-              labelLine
             >
               {data.map((entry, i) => (
                 <Cell
-                  key={entry.name}
+                  key={`${entry.name}-${i}`}
                   fill={entry.color || COLORS[i % COLORS.length]}
                 />
               ))}
             </Pie>
-            <Tooltip
-              formatter={(value) => currencyFormatter(Number(value))}
-              contentStyle={{
-                fontSize: 12,
-                borderRadius: 8,
-                border: "1px solid #E5E7EB",
-              }}
-            />
-            <Legend
-              formatter={(value: string) => (
-                <span style={{ fontSize: 12, color: "#6B7280" }}>{value}</span>
-              )}
-            />
+            <Tooltip content={<CustomTooltip />} />
           </RechartsPieChart>
         </ResponsiveContainer>
       </S.ChartContainer>
