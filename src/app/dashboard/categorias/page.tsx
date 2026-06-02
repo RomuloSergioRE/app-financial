@@ -76,7 +76,7 @@ export default function CategoriasPage() {
             onKeyDown={(e) => e.key === "Enter" && handleCreate()}
           />
         </S.FormField>
-        <Button onClick={handleCreate} loading={createMutation.isPending}>
+        <Button onClick={handleCreate} loading={createMutation.isPending} disabled={!name.trim()}>
           Criar
         </Button>
       </S.FormRow>

@@ -3,7 +3,7 @@ import { useTheme } from "styled-components";
 import type { SummaryCardProps, SummaryType } from "./types";
 import * as S from "./style";
 
-const SummaryCard = memo(function SummaryCard({ label, value, icon, type, index = 0 }: SummaryCardProps) {
+const SummaryCard = memo(function SummaryCard({ label, value, icon, type }: SummaryCardProps) {
   const theme = useTheme();
 
   const accentColors: Record<SummaryType, string> = {
@@ -19,12 +19,11 @@ const SummaryCard = memo(function SummaryCard({ label, value, icon, type, index 
 
   return (
     <S.Wrapper>
-      <S.AccentBar $color={accentColors[type]} />
       <S.HeaderRow>
         <S.IconWrapper $color={accentColors[type]}>{icon}</S.IconWrapper>
         <S.Label>{label}</S.Label>
       </S.HeaderRow>
-      <S.Value $color={accentColors[type]} $delay={index * 80}>
+      <S.Value $color={accentColors[type]}>
         {formatted}
       </S.Value>
     </S.Wrapper>

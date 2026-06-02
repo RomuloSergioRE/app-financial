@@ -2,16 +2,19 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { SummaryCard } from "@/components/molecules/SummaryCard";
 import { PeriodFilter } from "@/components/molecules/PeriodFilter";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle";
 import { Skeleton } from "@/components/atoms/Skeleton";
+import { Text } from "@/components/atoms/Text";
 import {
   HiOutlineArrowTrendingUp,
   HiOutlineArrowTrendingDown,
   HiOutlineWallet,
 } from "react-icons/hi2";
 import { useBalance, useCategoriesAnalytics, getDateRange } from "@/hooks/useAnalytics";
+import { useTransactions } from "@/hooks/useTransactions";
 import type { Period } from "@/components/molecules/PeriodFilter/types";
 import * as S from "./style";
 
@@ -30,6 +33,7 @@ export default function DashboardPage() {
 
   const { data: balanceData, isLoading: balanceLoading } = useBalance(startDate, endDate);
   const { data: categoriesData, isLoading: categoriesLoading } = useCategoriesAnalytics(startDate, endDate);
+  const { data: recentData } = useTransactions(1, 5);
 
   const rawBalance = balanceData?.data;
   const balance = rawBalance
@@ -43,6 +47,7 @@ export default function DashboardPage() {
     ...c,
     totalAmount: c.totalAmount / 100,
   }));
+  const recentTransactions = recentData?.data?.data ?? [];
 
   return (
     <S.Wrapper>
@@ -57,9 +62,9 @@ export default function DashboardPage() {
       <S.Cards>
         {balanceLoading ? (
           <>
-            <Skeleton variant="rect" height="120px" />
-            <Skeleton variant="rect" height="120px" />
-            <Skeleton variant="rect" height="120px" />
+            <Skeleton variant="rect" height="80px" />
+            <Skeleton variant="rect" height="80px" />
+            <Skeleton variant="rect" height="80px" />
           </>
         ) : (
           <>
@@ -68,21 +73,18 @@ export default function DashboardPage() {
               value={balance?.totalIncome ?? 0}
               icon={<HiOutlineArrowTrendingUp size={20} />}
               type="income"
-              index={0}
             />
             <SummaryCard
               label="Despesas"
               value={balance?.totalOutcome ?? 0}
               icon={<HiOutlineArrowTrendingDown size={20} />}
               type="outcome"
-              index={1}
             />
             <SummaryCard
               label="Saldo"
               value={balance?.netBalance ?? 0}
               icon={<HiOutlineWallet size={20} />}
               type="balance"
-              index={2}
             />
           </>
         )}
@@ -104,6 +106,35 @@ export default function DashboardPage() {
           <PieChart categories={categories ?? []} />
         )}
       </S.Charts>
+
+      {recentTransactions.length > 0 && (
+        <S.RecentSection>
+          <S.RecentHeader>
+            <Text as="h2" size="lg" weight="semibold" fontFamily="display">
+              Últimas Transações
+            </Text>
+            <Link href="/dashboard/transacoes" passHref legacyBehavior>
+              <S.RecentLink>Ver todas</S.RecentLink>
+            </Link>
+          </S.RecentHeader>
+          <S.RecentList>
+            {recentTransactions.map((tx) => (
+              <S.RecentItem key={tx.id}>
+                <S.RecentDesc>{tx.description}</S.RecentDesc>
+                <S.RecentValue $type={tx.type}>
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(tx.amount / 100)}
+                </S.RecentValue>
+                <S.RecentDate>
+                  {new Date(tx.date).toLocaleDateString("pt-BR")}
+                </S.RecentDate>
+              </S.RecentItem>
+            ))}
+          </S.RecentList>
+        </S.RecentSection>
+      )}
     </S.Wrapper>
   );
 }

@@ -5,5 +5,4 @@ export interface SummaryCardProps {
   value: number;
   icon: React.ReactNode;
   type: SummaryType;
-  index?: number;
 }

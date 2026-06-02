@@ -1,41 +1,19 @@
-import styled, { keyframes } from "styled-components";
-
-const countUp = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
+import styled from "styled-components";
 
 export const Wrapper = styled.div`
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  padding: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.spacing.md};
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xs};
-  position: relative;
-  overflow: hidden;
-`;
-
-export const AccentBar = styled.div<{ $color: string }>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: ${({ $color }) => $color};
+  gap: 2px;
 `;
 
 export const HeaderRow = styled.div`
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const Label = styled.span`
@@ -47,15 +25,13 @@ export const Label = styled.span`
   letter-spacing: 0.06em;
 `;
 
-export const Value = styled.span<{ $color: string; $delay: number }>`
+export const Value = styled.span<{ $color: string }>`
   font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: ${({ theme }) => theme.fontSize.hero};
+  font-size: ${({ theme }) => theme.fontSize.xxl};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ $color }) => $color};
-  line-height: 1;
+  line-height: 1.2;
   font-variant-numeric: tabular-nums;
-  animation: ${countUp} 0.4s ease-out both;
-  animation-delay: ${({ $delay }) => $delay}ms;
 `;
 
 export const IconWrapper = styled.div<{ $color: string }>`

@@ -12,7 +12,7 @@ const themeLight = {
     tradingUp: "#0ECB81",
     tradingDown: "#F6465D",
     info: "#3B82F6",
-    background: "#F5F5F5",
+    background: "#E8EBEE",
     surface: "#FFFFFF",
     surfaceHover: "#EAECEF",
     text: "#181A20",
