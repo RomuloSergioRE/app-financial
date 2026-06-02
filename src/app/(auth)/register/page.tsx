@@ -90,7 +90,7 @@ export default function RegisterPage() {
           </FormField>
 
           {apiError && (
-            <Text as="span" size="sm" color="error">
+            <Text as="span" size="sm" color="danger">
               {apiError}
             </Text>
           )}

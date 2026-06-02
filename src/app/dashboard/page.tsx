@@ -5,15 +5,7 @@ import dynamic from "next/dynamic";
 import { SummaryCard } from "@/components/molecules/SummaryCard";
 import { PeriodFilter } from "@/components/molecules/PeriodFilter";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle";
-
-const BarChart = dynamic(
-  () => import("@/components/molecules/BarChart").then((m) => m.BarChart),
-  { ssr: false, loading: () => <p>Carregando gráfico...</p> }
-);
-const PieChart = dynamic(
-  () => import("@/components/molecules/PieChart").then((m) => m.PieChart),
-  { ssr: false, loading: () => <p>Carregando gráfico...</p> }
-);
+import { Skeleton } from "@/components/atoms/Skeleton";
 import {
   HiOutlineArrowTrendingUp,
   HiOutlineArrowTrendingDown,
@@ -22,6 +14,15 @@ import {
 import { useBalance, useCategoriesAnalytics, getDateRange } from "@/hooks/useAnalytics";
 import type { Period } from "@/components/molecules/PeriodFilter/types";
 import * as S from "./style";
+
+const BarChart = dynamic(
+  () => import("@/components/molecules/BarChart").then((m) => m.BarChart),
+  { ssr: false, loading: () => <Skeleton variant="rect" height="300px" /> }
+);
+const PieChart = dynamic(
+  () => import("@/components/molecules/PieChart").then((m) => m.PieChart),
+  { ssr: false, loading: () => <Skeleton variant="rect" height="300px" /> }
+);
 
 export default function DashboardPage() {
   const [period, setPeriod] = useState<Period>("month");
@@ -54,32 +55,42 @@ export default function DashboardPage() {
       </S.Header>
 
       <S.Cards>
-        <SummaryCard
-          label="Receitas"
-          value={balance?.totalIncome ?? 0}
-          icon={<HiOutlineArrowTrendingUp size={20} />}
-          type="income"
-          index={0}
-        />
-        <SummaryCard
-          label="Despesas"
-          value={balance?.totalOutcome ?? 0}
-          icon={<HiOutlineArrowTrendingDown size={20} />}
-          type="outcome"
-          index={1}
-        />
-        <SummaryCard
-          label="Saldo"
-          value={balance?.netBalance ?? 0}
-          icon={<HiOutlineWallet size={20} />}
-          type="balance"
-          index={2}
-        />
+        {balanceLoading ? (
+          <>
+            <Skeleton variant="rect" height="120px" />
+            <Skeleton variant="rect" height="120px" />
+            <Skeleton variant="rect" height="120px" />
+          </>
+        ) : (
+          <>
+            <SummaryCard
+              label="Receitas"
+              value={balance?.totalIncome ?? 0}
+              icon={<HiOutlineArrowTrendingUp size={20} />}
+              type="income"
+              index={0}
+            />
+            <SummaryCard
+              label="Despesas"
+              value={balance?.totalOutcome ?? 0}
+              icon={<HiOutlineArrowTrendingDown size={20} />}
+              type="outcome"
+              index={1}
+            />
+            <SummaryCard
+              label="Saldo"
+              value={balance?.netBalance ?? 0}
+              icon={<HiOutlineWallet size={20} />}
+              type="balance"
+              index={2}
+            />
+          </>
+        )}
       </S.Cards>
 
       <S.Charts>
         {balanceLoading ? (
-          <p>Carregando gráfico...</p>
+          <Skeleton variant="rect" height="300px" />
         ) : (
           <BarChart
             income={balance?.totalIncome ?? 0}
@@ -87,7 +98,7 @@ export default function DashboardPage() {
           />
         )}
         {categoriesLoading ? (
-          <p>Carregando gráfico...</p>
+          <Skeleton variant="rect" height="300px" />
         ) : (
           <PieChart categories={categories ?? []} />
         )}

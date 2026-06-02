@@ -83,6 +83,11 @@ export const NavItem = styled(Link)<{ $active: boolean }>`
     color: ${({ theme }) => theme.colors.text};
     background: ${({ theme }) => theme.colors.surfaceHover};
   }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.secondary};
+    outline-offset: 2px;
+  }
 `;
 
 export const LogoutButton = styled.button`
@@ -105,6 +110,11 @@ export const LogoutButton = styled.button`
   &:hover {
     color: ${({ theme }) => theme.colors.text};
     background: ${({ theme }) => theme.colors.surfaceHover};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.secondary};
+    outline-offset: 2px;
   }
 `;
 export const Header = styled.div`

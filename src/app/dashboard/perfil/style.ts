@@ -55,5 +55,5 @@ export const Actions = styled.div`
 
 export const ErrorText = styled.span`
   font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme }) => theme.colors.error};
+  color: ${({ theme }) => theme.colors.danger};
 `;

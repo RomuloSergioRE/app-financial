@@ -4,7 +4,7 @@ import type { ButtonVariant, ButtonSize } from "./types";
 const variantStyles = {
   primary: css`
     background: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.onPrimary};
     border: 1px solid ${({ theme }) => theme.colors.primary};
 
     &:hover:not(:disabled) {
@@ -15,6 +15,11 @@ const variantStyles = {
     &:active:not(:disabled) {
       background: ${({ theme }) => theme.colors.primaryDark};
       border-color: ${({ theme }) => theme.colors.primaryDark};
+    }
+
+    &:focus-visible {
+      outline: 2px solid ${({ theme }) => theme.colors.primaryLight};
+      outline-offset: 2px;
     }
   `,
   accent: css`
@@ -92,6 +97,11 @@ export const Wrapper = styled.button<{
   &:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.secondary};
+    outline-offset: 2px;
   }
 
   ${({ $variant }) => variantStyles[$variant]}

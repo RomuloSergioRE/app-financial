@@ -20,10 +20,10 @@ const ToastContent = memo(function ToastContent({ type, message, toastId }: Toas
   const theme = useTheme();
 
   const typeColors: Record<ToastType, string> = {
-    success: theme.colors.success || theme.colors.primary,
-    error: theme.colors.error || theme.colors.danger,
+    success: theme.colors.primary,
+    error: theme.colors.danger,
     info: theme.colors.info,
-    warning: theme.colors.warning || theme.colors.secondary,
+    warning: theme.colors.secondary,
   };
 
   const color = typeColors[type];

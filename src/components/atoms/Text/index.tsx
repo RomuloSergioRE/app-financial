@@ -8,6 +8,7 @@ export function Text({
   size = "md",
   weight = "normal",
   align = "left",
+  fontFamily = "body",
 }: TextProps) {
   return (
     <S.Wrapper
@@ -16,7 +17,7 @@ export function Text({
       $size={size}
       $weight={weight}
       $align={align}
-      $fontFamily="body"
+      $fontFamily={fontFamily}
     >
       {children}
     </S.Wrapper>

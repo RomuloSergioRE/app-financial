@@ -1,11 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi2";
+import { HiOutlinePencil, HiOutlineTrash, HiOutlinePlusCircle } from "react-icons/hi2";
 import { Select } from "@/components/atoms/Select";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
 import { Text } from "@/components/atoms/Text";
+import { Skeleton } from "@/components/atoms/Skeleton";
+import { Modal } from "@/components/molecules/Modal";
+import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
+import { EmptyState } from "@/components/molecules/EmptyState";
 import { useCategories } from "@/hooks/useCategories";
 import {
   useTransactions,
@@ -27,6 +31,7 @@ export default function TransacoesPage() {
   const [editAmount, setEditAmount] = useState("");
   const [editType, setEditType] = useState<"income" | "outcome">("outcome");
   const [editCategoryId, setEditCategoryId] = useState("");
+  const [deletingTx, setDeletingTx] = useState<Transaction | null>(null);
 
   const { data, isLoading } = useTransactions(page);
   const { data: categoriesData } = useCategories();
@@ -75,13 +80,22 @@ export default function TransacoesPage() {
     );
   };
 
+  const handleDeleteConfirm = () => {
+    if (!deletingTx) return;
+    deleteMutation.mutate(deletingTx.id, {
+      onSuccess: () => setDeletingTx(null),
+    });
+  };
+
   const transactions = data?.data?.data ?? [];
   const totalPages = data?.data?.pagination?.totalPages ?? 1;
   const categories = categoriesData?.data?.data ?? [];
 
   return (
     <S.Wrapper>
-      <Text as="h1" size="xxl" weight="bold">Transações</Text>
+      <Text as="h1" size="3xl" weight="bold" fontFamily="display">
+        Transações
+      </Text>
 
       <S.Form>
         <S.FormGroup>
@@ -90,6 +104,7 @@ export default function TransacoesPage() {
             placeholder="Ex: Supermercado"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleCreate()}
           />
         </S.FormGroup>
         <S.FormGroup>
@@ -139,7 +154,15 @@ export default function TransacoesPage() {
       </S.Form>
 
       {isLoading ? (
-        <Text>Carregando...</Text>
+        <S.TableWrapper>
+          <Skeleton variant="rect" height="240px" />
+        </S.TableWrapper>
+      ) : transactions.length === 0 ? (
+        <EmptyState
+          icon={<HiOutlinePlusCircle />}
+          title="Nenhuma transação"
+          description="Crie sua primeira transação usando o formulário acima."
+        />
       ) : (
         <>
           <S.TableWrapper>
@@ -155,39 +178,34 @@ export default function TransacoesPage() {
                 </tr>
               </thead>
               <tbody>
-                {transactions.map((tx) => {
-                  return (
-                    <tr key={tx.id}>
-                      <S.Td>{new Date(tx.date).toLocaleDateString("pt-BR")}</S.Td>
-                      <S.Td>{tx.description}</S.Td>
-                      <S.Td>{tx.category?.name ?? "-"}</S.Td>
-                      <S.Td>
-                        <S.TypeBadge $type={tx.type}>
-                          {tx.type === "income" ? "Entrada" : "Saída"}
-                        </S.TypeBadge>
-                      </S.Td>
-                      <S.TdMono>
-                        {new Intl.NumberFormat("pt-BR", {
-                          style: "currency",
-                          currency: "BRL",
-                        }).format(tx.amount / 100)}
-                      </S.TdMono>
-                      <S.Td>
-                        <S.Actions>
-                          <Button variant="ghost" onClick={() => handleEdit(tx)}>
-                            <HiOutlinePencil size={16} />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            onClick={() => deleteMutation.mutate(tx.id)}
-                          >
-                            <HiOutlineTrash size={16} />
-                          </Button>
-                        </S.Actions>
-                      </S.Td>
-                    </tr>
-                  );
-                })}
+                {transactions.map((tx) => (
+                  <tr key={tx.id}>
+                    <S.Td>{new Date(tx.date).toLocaleDateString("pt-BR")}</S.Td>
+                    <S.Td>{tx.description}</S.Td>
+                    <S.Td>{tx.category?.name ?? "-"}</S.Td>
+                    <S.Td>
+                      <S.TypeBadge $type={tx.type}>
+                        {tx.type === "income" ? "Entrada" : "Saída"}
+                      </S.TypeBadge>
+                    </S.Td>
+                    <S.TdMono>
+                      {new Intl.NumberFormat("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      }).format(tx.amount / 100)}
+                    </S.TdMono>
+                    <S.Td>
+                      <S.Actions>
+                        <Button variant="ghost" onClick={() => handleEdit(tx)}>
+                          <HiOutlinePencil size={16} />
+                        </Button>
+                        <Button variant="ghost" onClick={() => setDeletingTx(tx)}>
+                          <HiOutlineTrash size={16} />
+                        </Button>
+                      </S.Actions>
+                    </S.Td>
+                  </tr>
+                ))}
               </tbody>
             </S.Table>
           </S.TableWrapper>
@@ -216,64 +234,71 @@ export default function TransacoesPage() {
         </>
       )}
 
-      {editingTx && (
-        <S.Overlay onClick={() => setEditingTx(null)} />
-      )}
+      <Modal
+        open={!!editingTx}
+        onClose={() => setEditingTx(null)}
+        title="Editar Transação"
+      >
+        <S.ModalForm>
+          <S.FormGroup>
+            <S.Label>Descrição</S.Label>
+            <Input
+              value={editDescription}
+              onChange={(e) => setEditDescription(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleUpdate()}
+            />
+          </S.FormGroup>
+          <S.FormGroup>
+            <S.Label>Valor</S.Label>
+            <Input
+              type="number"
+              step="0.01"
+              value={editAmount}
+              onChange={(e) => setEditAmount(e.target.value)}
+            />
+          </S.FormGroup>
+          <S.FormGroup>
+            <S.Label>Tipo</S.Label>
+            <Select
+              value={editType}
+              onChange={(v) => setEditType(v as "income" | "outcome")}
+              options={[
+                { value: "outcome", label: "Saída" },
+                { value: "income", label: "Entrada" },
+              ]}
+            />
+          </S.FormGroup>
+          <S.FormGroup>
+            <S.Label>Categoria</S.Label>
+            <Select
+              value={editCategoryId}
+              onChange={setEditCategoryId}
+              options={[
+                { value: "", label: "Selecione" },
+                ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
+              ]}
+            />
+          </S.FormGroup>
+          <S.ModalActions>
+            <Button variant="outline" onClick={() => setEditingTx(null)}>
+              Cancelar
+            </Button>
+            <Button onClick={handleUpdate} loading={updateMutation.isPending}>
+              Salvar
+            </Button>
+          </S.ModalActions>
+        </S.ModalForm>
+      </Modal>
 
-      {editingTx && (
-        <S.Modal>
-          <Text as="h2" size="lg" weight="bold">Editar Transação</Text>
-          <S.ModalForm>
-            <S.FormGroup>
-              <S.Label>Descrição</S.Label>
-              <Input
-                value={editDescription}
-                onChange={(e) => setEditDescription(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleUpdate()}
-              />
-            </S.FormGroup>
-            <S.FormGroup>
-              <S.Label>Valor</S.Label>
-              <Input
-                type="number"
-                step="0.01"
-                value={editAmount}
-                onChange={(e) => setEditAmount(e.target.value)}
-              />
-            </S.FormGroup>
-            <S.FormGroup>
-              <S.Label>Tipo</S.Label>
-              <Select
-                value={editType}
-                onChange={(v) => setEditType(v as "income" | "outcome")}
-                options={[
-                  { value: "outcome", label: "Saída" },
-                  { value: "income", label: "Entrada" },
-                ]}
-              />
-            </S.FormGroup>
-            <S.FormGroup>
-              <S.Label>Categoria</S.Label>
-              <Select
-                value={editCategoryId}
-                onChange={setEditCategoryId}
-                options={[
-                  { value: "", label: "Selecione" },
-                  ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
-                ]}
-              />
-            </S.FormGroup>
-            <S.ModalActions>
-              <Button variant="outline" onClick={() => setEditingTx(null)}>
-                Cancelar
-              </Button>
-              <Button onClick={handleUpdate} loading={updateMutation.isPending}>
-                Salvar
-              </Button>
-            </S.ModalActions>
-          </S.ModalForm>
-        </S.Modal>
-      )}
+      <ConfirmDialog
+        open={!!deletingTx}
+        onClose={() => setDeletingTx(null)}
+        onConfirm={handleDeleteConfirm}
+        title="Excluir Transação"
+        message={`Tem certeza que deseja excluir a transação "${deletingTx?.description}"? Esta ação não pode ser desfeita.`}
+        confirmLabel="Excluir"
+        loading={deleteMutation.isPending}
+      />
     </S.Wrapper>
   );
 }

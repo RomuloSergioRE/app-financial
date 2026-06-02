@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import { Text } from "@/components/atoms/Text";
 import { Input } from "@/components/atoms/Input";
 import { Button } from "@/components/atoms/Button";
+import { Skeleton } from "@/components/atoms/Skeleton";
+import { toast } from "@/components/atoms/Toast";
 import { useProfile, useUpdateProfile, useUpdatePassword } from "@/hooks/useUser";
 import * as S from "./style";
 
@@ -32,7 +34,13 @@ export default function PerfilPage() {
   const isProfileDirty = name !== user?.name || email !== user?.email;
 
   const handleSaveProfile = () => {
-    updateProfile.mutate({ name, email });
+    updateProfile.mutate(
+      { name, email },
+      {
+        onSuccess: () => toast.success("Perfil atualizado com sucesso!"),
+        onError: () => toast.error("Erro ao atualizar perfil."),
+      }
+    );
   };
 
   const handleChangePassword = () => {
@@ -41,10 +49,12 @@ export default function PerfilPage() {
       { currentPassword, newPassword },
       {
         onSuccess: () => {
+          toast.success("Senha alterada com sucesso!");
           setCurrentPassword("");
           setNewPassword("");
           setConfirmPassword("");
         },
+        onError: () => toast.error("Erro ao alterar senha."),
       }
     );
   };
@@ -52,8 +62,9 @@ export default function PerfilPage() {
   if (isLoading) {
     return (
       <S.Wrapper>
-        <Text as="h1" size="xxl" weight="bold">Perfil</Text>
-        <Text>Carregando...</Text>
+        <Text as="h1" size="3xl" weight="bold" fontFamily="display">Perfil</Text>
+        <Skeleton variant="rect" height="240px" />
+        <Skeleton variant="rect" height="200px" />
       </S.Wrapper>
     );
   }
@@ -61,15 +72,15 @@ export default function PerfilPage() {
   if (!user) {
     return (
       <S.Wrapper>
-        <Text as="h1" size="xxl" weight="bold">Perfil</Text>
-        <Text>Erro ao carregar perfil.</Text>
+        <Text as="h1" size="3xl" weight="bold" fontFamily="display">Perfil</Text>
+        <Text color="danger">Erro ao carregar perfil.</Text>
       </S.Wrapper>
     );
   }
 
   return (
     <S.Wrapper>
-      <Text as="h1" size="xxl" weight="bold">Perfil</Text>
+      <Text as="h1" size="3xl" weight="bold" fontFamily="display">Perfil</Text>
 
       <S.Section>
         <S.SectionTitle>Dados pessoais</S.SectionTitle>

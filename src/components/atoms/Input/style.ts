@@ -19,6 +19,9 @@ export const Wrapper = styled.input<{ $hasError: boolean }>`
 
   &:focus {
     outline: none;
+  }
+
+  &:focus-visible {
     border-color: ${({ theme }) => theme.colors.borderFocus};
     box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.borderFocus};
   }
@@ -26,11 +29,11 @@ export const Wrapper = styled.input<{ $hasError: boolean }>`
   ${({ $hasError, theme }) =>
     $hasError &&
     css`
-      border-color: ${theme.colors.error};
+      border-color: ${theme.colors.danger};
 
-      &:focus {
-        border-color: ${theme.colors.error};
-        box-shadow: 0 0 0 1px ${theme.colors.error};
+      &:focus-visible {
+        border-color: ${theme.colors.danger};
+        box-shadow: 0 0 0 1px ${theme.colors.danger};
       }
     `}
 `;

@@ -65,7 +65,7 @@ export default function LoginPage() {
           </FormField>
 
           {apiError && (
-            <Text as="span" size="sm" color="error">
+            <Text as="span" size="sm" color="danger">
               {apiError}
             </Text>
           )}

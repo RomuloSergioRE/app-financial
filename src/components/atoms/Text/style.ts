@@ -6,7 +6,7 @@ export const Wrapper = styled.p<{
   $size: TextProps["size"];
   $weight: TextProps["weight"];
   $align: TextProps["align"];
-  $fontFamily: "display" | "body";
+  $fontFamily: "display" | "body" | "mono";
 }>`
   ${({ $color, theme }) =>
     $color &&

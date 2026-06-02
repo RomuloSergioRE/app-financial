@@ -11,7 +11,7 @@ export const Trigger = styled.button<{ $isOpen: boolean; $hasError?: boolean }>`
   padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
   padding-right: 36px;
   border: 1px solid
-    ${({ $hasError, theme }) => ($hasError ? theme.colors.error : theme.colors.border)};
+    ${({ $hasError, theme }) => ($hasError ? theme.colors.danger : theme.colors.border)};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   background: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
@@ -26,6 +26,9 @@ export const Trigger = styled.button<{ $isOpen: boolean; $hasError?: boolean }>`
 
   &:focus {
     outline: none;
+  }
+
+  &:focus-visible {
     border-color: ${({ theme }) => theme.colors.borderFocus};
     box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.borderFocus};
   }

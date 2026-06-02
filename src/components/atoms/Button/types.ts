@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, ElementType } from "react";
 
 export type ButtonVariant = "primary" | "accent" | "outline" | "ghost";
 export type ButtonSize = "sm" | "md" | "lg";
@@ -8,4 +8,6 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   fullWidth?: boolean;
   loading?: boolean;
+  as?: ElementType;
+  href?: string;
 }

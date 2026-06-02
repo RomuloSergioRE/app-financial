@@ -23,11 +23,11 @@ export const Card = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-family: ${({ theme }) => theme.fonts.body};
-  font-size: ${({ theme }) => theme.fontSize.xxl};
-  font-weight: 600;
+  font-family: ${({ theme }) => theme.fonts.display};
+  font-size: ${({ theme }) => theme.fontSize["3xl"]};
+  font-weight: 700;
   color: ${({ theme }) => theme.colors.text};
   text-align: center;
   margin-bottom: ${({ theme }) => theme.spacing.lg};
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 `;

@@ -71,30 +71,6 @@ export const Actions = styled.div`
   align-items: center;
 `;
 
-export const Overlay = styled.div`
-  position: fixed;
-  inset: 0;
-  background: ${({ theme }) => theme.colors.overlay};
-  z-index: 100;
-`;
-
-export const Modal = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 101;
-  background: ${({ theme }) => theme.colors.surface};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-  padding: ${({ theme }) => theme.spacing.xl};
-  width: 90%;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
-
 export const ModalForm = styled.div`
   display: flex;
   flex-direction: column;

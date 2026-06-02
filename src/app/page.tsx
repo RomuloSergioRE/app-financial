@@ -21,17 +21,11 @@ export default function Home() {
       </Text>
       <S.Actions>
         {user ? (
-          <Link href="/dashboard" passHref>
-            <Button>Ir para o Dashboard</Button>
-          </Link>
+            <Button as={Link} href="/dashboard">Ir para o Dashboard</Button>
         ) : (
           <>
-            <Link href="/login" passHref>
-              <Button>Entrar</Button>
-            </Link>
-            <Link href="/register" passHref>
-              <Button variant="outline">Criar Conta</Button>
-            </Link>
+            <Button as={Link} href="/login">Entrar</Button>
+            <Button as={Link} href="/register" variant="outline">Criar Conta</Button>
           </>
         )}
       </S.Actions>

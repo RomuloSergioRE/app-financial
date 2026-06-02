@@ -82,6 +82,13 @@ const GlobalStyle = createGlobalStyle`
     display: block;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
   table {
     font-variant-numeric: tabular-nums;
   }
