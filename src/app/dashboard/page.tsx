@@ -121,6 +121,12 @@ export default function DashboardPage() {
             {recentTransactions.map((tx) => (
               <S.RecentItem key={tx.id}>
                 <S.RecentDesc>{tx.description}</S.RecentDesc>
+                <S.RecentType $type={tx.type}>
+                  {tx.type === "income" ? "Entrada" : "Saída"}
+                </S.RecentType>
+                <S.RecentCategory>
+                  {tx.category?.name ?? "-"}
+                </S.RecentCategory>
                 <S.RecentValue $type={tx.type}>
                   {new Intl.NumberFormat("pt-BR", {
                     style: "currency",

@@ -6,10 +6,10 @@ import type {
   UpdateTransactionRequest,
 } from "@/types";
 
-export function useTransactions(page = 1, limit = 10, categoryId?: string) {
+export function useTransactions(page = 1, limit = 10, categoryId?: string, startDate?: string, endDate?: string) {
   return useQuery({
-    queryKey: ["transactions", page, categoryId],
-    queryFn: () => transactionService.list(page, limit, categoryId),
+    queryKey: ["transactions", page, categoryId, startDate, endDate],
+    queryFn: () => transactionService.list(page, limit, categoryId, startDate, endDate),
   });
 }
 

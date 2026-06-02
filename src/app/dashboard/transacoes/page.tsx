@@ -32,9 +32,11 @@ export default function TransacoesPage() {
   const [editType, setEditType] = useState<"income" | "outcome">("outcome");
   const [editCategoryId, setEditCategoryId] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [deletingTx, setDeletingTx] = useState<Transaction | null>(null);
 
-  const { data, isLoading } = useTransactions(page, 10, categoryFilter || undefined);
+  const { data, isLoading } = useTransactions(page, 10, categoryFilter || undefined, startDate || undefined, endDate || undefined);
   const { data: categoriesData } = useCategories();
   const createMutation = useCreateTransaction();
   const deleteMutation = useDeleteTransaction();
@@ -167,6 +169,22 @@ export default function TransacoesPage() {
               { value: "", label: "Todas" },
               ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
             ]}
+          />
+        </S.FormGroup>
+        <S.FormGroup>
+          <S.Label>Data Início</S.Label>
+          <Input
+            type="date"
+            value={startDate}
+            onChange={(e) => { setStartDate(e.target.value); setPage(1); }}
+          />
+        </S.FormGroup>
+        <S.FormGroup>
+          <S.Label>Data Fim</S.Label>
+          <Input
+            type="date"
+            value={endDate}
+            onChange={(e) => { setEndDate(e.target.value); setPage(1); }}
           />
         </S.FormGroup>
       </S.FilterRow>

@@ -174,6 +174,22 @@ export const RecentValue = styled.span<{ $type: string }>`
   margin-right: ${({ theme }) => theme.spacing.md};
 `;
 
+export const RecentType = styled.span<{ $type: string }>`
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  color: ${({ theme, $type }) =>
+    $type === "income" ? theme.colors.tradingUp : theme.colors.tradingDown};
+  margin-right: ${({ theme }) => theme.spacing.sm};
+  white-space: nowrap;
+`;
+
+export const RecentCategory = styled.span`
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  margin-right: ${({ theme }) => theme.spacing.md};
+  white-space: nowrap;
+`;
+
 export const RecentDate = styled.span`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.xs};
