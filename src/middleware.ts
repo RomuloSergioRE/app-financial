@@ -14,7 +14,7 @@ function getUserRole(token: string): string | null {
   }
 }
 
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const token = request.cookies.get("jwt_token")?.value;
   const { pathname } = request.nextUrl;
 

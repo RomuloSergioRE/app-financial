@@ -8,12 +8,12 @@ import type {
 
 export function useTransactions(page = 1, limit = 10, categoryId?: string, startDate?: string, endDate?: string) {
   return useQuery({
-    queryKey: ["transactions", page, categoryId, startDate, endDate],
+    queryKey: ["transactions", page, limit, categoryId, startDate, endDate],
     queryFn: () => transactionService.list(page, limit, categoryId, startDate, endDate),
   });
 }
 
-export function useTransaction(id: string) {
+function useTransaction(id: string) {
   return useQuery({
     queryKey: ["transactions", id],
     queryFn: () => transactionService.getById(id),

@@ -51,20 +51,6 @@ export const CategoryBadge = styled.div<{ $color?: string }>`
   }
 `;
 
-export const TypeTag = styled.span<{ $type: string }>`
-  padding: 2px 8px;
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-  background: ${({ theme }) => theme.colors.surfaceHover};
-  color: ${({ theme, $type }) =>
-    $type === "income"
-      ? theme.colors.primary
-      : $type === "outcome"
-      ? theme.colors.danger
-      : theme.colors.textSecondary};
-`;
-
 export const Actions = styled.div`
   display: flex;
   gap: 8px;

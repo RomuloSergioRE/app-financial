@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/molecules/Sidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import type { NavItem } from "@/components/molecules/Sidebar/types";
@@ -22,20 +23,30 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const handleLogout = () => {
+  useEffect(() => {
+    if (!user) router.replace("/login");
+    else if (user.role !== "admin") router.replace("/dashboard");
+  }, [user, router]);
+
+  const handleLogout = useCallback(() => {
     logout();
-    window.location.href = "/login";
-  };
+    router.replace("/login");
+  }, [logout, router]);
+
+  const handleToggle = useCallback(() => {
+    setSidebarOpen((prev) => !prev);
+  }, []);
 
   return (
     <>
       <S.HamburgerWrapper>
         <S.HamburgerButton
           $isOpen={sidebarOpen}
-          onClick={() => setSidebarOpen((prev) => !prev)}
+          onClick={handleToggle}
           aria-label="Abrir menu"
         >
           {sidebarOpen ? <HiOutlineXMark size={24} /> : <HiOutlineBars3 size={24} />}
@@ -45,7 +56,7 @@ export default function AdminLayout({
         <Sidebar
           items={adminNavItems}
           isOpen={sidebarOpen}
-          onToggle={() => setSidebarOpen((prev) => !prev)}
+          onToggle={handleToggle}
           onLogout={handleLogout}
         />
         <S.Main>{children}</S.Main>

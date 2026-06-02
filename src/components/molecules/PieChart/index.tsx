@@ -15,9 +15,33 @@ import * as S from "./style";
 const currencyFormatter = (v: number) =>
   "R$ " + v.toLocaleString("pt-BR");
 
-const PieChart = memo(function PieChart({ categories }: PieChartProps) {
+const CustomTooltip = (props: Record<string, unknown>) => {
   const theme = useTheme();
+  const active = props.active as boolean | undefined;
+  const payload = props.payload as Array<Record<string, unknown>> | undefined;
 
+  if (!active || !payload?.length) return null;
+  const d = payload[0];
+  return (
+    <div
+      style={{
+        background: theme.colors.surface,
+        border: `1px solid ${theme.colors.border}`,
+        borderRadius: theme.borderRadius.sm,
+        padding: "8px 12px",
+        fontSize: 13,
+        color: theme.colors.text,
+      }}
+    >
+      <div style={{ marginBottom: 4, fontWeight: 500 }}>{d.name as string}</div>
+      <div style={{ color: (d.payload as Record<string, unknown>)?.fill as string }}>
+        {currencyFormatter(Number(d.value))}
+      </div>
+    </div>
+  );
+};
+
+const PieChart = memo(function PieChart({ categories }: PieChartProps) {
   const COLORS = [
     "#3B82F6",
     "#0ECB81",
@@ -28,31 +52,6 @@ const PieChart = memo(function PieChart({ categories }: PieChartProps) {
     "#34D399",
     "#F59E0B",
   ];
-
-  const CustomTooltip = (props: Record<string, unknown>) => {
-    const active = props.active as boolean | undefined;
-    const payload = props.payload as Array<Record<string, unknown>> | undefined;
-
-    if (!active || !payload?.length) return null;
-    const d = payload[0];
-    return (
-      <div
-        style={{
-          background: theme.colors.surface,
-          border: `1px solid ${theme.colors.border}`,
-          borderRadius: theme.borderRadius.sm,
-          padding: "8px 12px",
-          fontSize: 13,
-          color: theme.colors.text,
-        }}
-      >
-        <div style={{ marginBottom: 4, fontWeight: 500 }}>{d.name as string}</div>
-        <div style={{ color: (d.payload as Record<string, unknown>)?.fill as string }}>
-          {currencyFormatter(Number(d.value))}
-        </div>
-      </div>
-    );
-  };
 
   const data = categories.map((c) => ({
     name: c.categoryName,
@@ -84,7 +83,7 @@ const PieChart = memo(function PieChart({ categories }: PieChartProps) {
                 />
               ))}
             </Pie>
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={CustomTooltip} />
           </RechartsPieChart>
         </ResponsiveContainer>
       </S.ChartContainer>

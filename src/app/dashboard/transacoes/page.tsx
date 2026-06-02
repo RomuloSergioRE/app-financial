@@ -43,11 +43,12 @@ export default function TransacoesPage() {
   const updateMutation = useUpdateTransaction(editingTx?.id ?? "");
 
   const handleCreate = () => {
-    if (!description.trim() || !amount || !categoryId || parseFloat(amount) <= 0) return;
+    const parsedAmount = parseFloat(amount);
+    if (!description.trim() || !amount || !categoryId || isNaN(parsedAmount) || parsedAmount <= 0) return;
     createMutation.mutate(
       {
         description: description.trim(),
-        amount: Math.round(parseFloat(amount) * 100),
+        amount: Math.round(parsedAmount * 100),
         type,
         date: new Date().toISOString(),
         categoryId,

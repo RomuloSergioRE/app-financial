@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { SummaryCard } from "@/components/molecules/SummaryCard";
@@ -17,6 +17,17 @@ import { useBalance, useCategoriesAnalytics, getDateRange } from "@/hooks/useAna
 import { useTransactions } from "@/hooks/useTransactions";
 import type { Period } from "@/components/molecules/PeriodFilter/types";
 import * as S from "./style";
+
+const currencyFormat = new Intl.NumberFormat("pt-BR", {
+  style: "currency",
+  currency: "BRL",
+});
+
+const dateFormat = new Intl.DateTimeFormat("pt-BR");
+
+const incomeIcon = <HiOutlineArrowTrendingUp size={20} />;
+const outcomeIcon = <HiOutlineArrowTrendingDown size={20} />;
+const walletIcon = <HiOutlineWallet size={20} />;
 
 const BalanceChart = dynamic(
   () => import("@/components/molecules/BalanceChart").then((m) => m.BalanceChart),
@@ -70,10 +81,13 @@ export default function DashboardPage() {
   const outcomeChange = rawBalance ? calcChange(rawBalance.totalOutcome, prevRawBalance?.totalOutcome) : undefined;
   const netChange = rawBalance ? calcChange(rawBalance.netBalance, prevRawBalance?.netBalance) : undefined;
 
-  const categories = (categoriesData?.data ?? []).map((c) => ({
-    ...c,
-    totalAmount: c.totalAmount / 100,
-  }));
+  const categories = useMemo(
+    () => (categoriesData?.data ?? []).map((c) => ({
+      ...c,
+      totalAmount: c.totalAmount / 100,
+    })),
+    [categoriesData]
+  );
   const recentTransactions = recentData?.data?.data ?? [];
 
   return (
@@ -98,21 +112,21 @@ export default function DashboardPage() {
             <SummaryCard
               label="Receitas"
               value={balance?.totalIncome ?? 0}
-              icon={<HiOutlineArrowTrendingUp size={20} />}
+              icon={incomeIcon}
               type="income"
               change={incomeChange}
             />
             <SummaryCard
               label="Despesas"
               value={balance?.totalOutcome ?? 0}
-              icon={<HiOutlineArrowTrendingDown size={20} />}
+              icon={outcomeIcon}
               type="outcome"
               change={outcomeChange}
             />
             <SummaryCard
               label="Saldo"
               value={balance?.netBalance ?? 0}
-              icon={<HiOutlineWallet size={20} />}
+              icon={walletIcon}
               type="balance"
               change={netChange}
             />
@@ -161,7 +175,7 @@ export default function DashboardPage() {
               <tbody>
                 {recentTransactions.map((tx) => (
                   <tr key={tx.id}>
-                    <S.RecentTd>{new Date(tx.date).toLocaleDateString("pt-BR")}</S.RecentTd>
+                    <S.RecentTd>{dateFormat.format(new Date(tx.date))}</S.RecentTd>
                     <S.RecentTd>{tx.description}</S.RecentTd>
                     <S.RecentTd>{tx.category?.name ?? "-"}</S.RecentTd>
                     <S.RecentTd>
@@ -170,10 +184,7 @@ export default function DashboardPage() {
                       </S.RecentTypeBadge>
                     </S.RecentTd>
                     <S.RecentTdMono>
-                      {new Intl.NumberFormat("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
-                      }).format(tx.amount / 100)}
+                      {currencyFormat.format(tx.amount / 100)}
                     </S.RecentTdMono>
                   </tr>
                 ))}

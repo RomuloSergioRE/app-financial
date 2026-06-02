@@ -8,12 +8,12 @@ import type {
 
 export function useCategories(page = 1, limit = 50) {
   return useQuery({
-    queryKey: ["categories", page],
+    queryKey: ["categories", page, limit],
     queryFn: () => categoryService.list(page, limit),
   });
 }
 
-export function useCategory(id: string) {
+function useCategory(id: string) {
   return useQuery({
     queryKey: ["categories", id],
     queryFn: () => categoryService.getById(id),
