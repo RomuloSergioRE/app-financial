@@ -132,66 +132,59 @@ export const RecentLink = styled.a`
 `;
 
 export const RecentList = styled.div`
-  display: flex;
-  flex-direction: column;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  overflow: hidden;
-`;
-
-export const RecentItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
+  overflow-x: auto;
   background: ${({ theme }) => theme.colors.surface};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  &:last-child {
-    border-bottom: none;
-  }
 `;
 
-export const RecentDesc = styled.span`
-  flex: 1;
+export const RecentTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+`;
+
+export const RecentTh = styled.th`
+  text-align: left;
+  padding: ${({ theme }) => `${theme.spacing.md} ${theme.spacing.md}`};
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  white-space: nowrap;
+`;
+
+export const RecentTd = styled.td`
+  padding: ${({ theme }) => `${theme.spacing.md}`};
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ theme }) => theme.colors.text};
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-right: ${({ theme }) => theme.spacing.md};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  vertical-align: middle;
+
+  &:last-child {
+    text-align: right;
+  }
 `;
 
-export const RecentValue = styled.span<{ $type: string }>`
+export const RecentTdMono = styled.td`
+  padding: ${({ theme }) => `${theme.spacing.md}`};
   font-family: ${({ theme }) => theme.fonts.mono};
   font-size: ${({ theme }) => theme.fontSize.sm};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-  color: ${({ theme, $type }) =>
-    $type === "income" ? theme.colors.tradingUp : theme.colors.tradingDown};
+  color: ${({ theme }) => theme.colors.text};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   font-variant-numeric: tabular-nums;
-  margin-right: ${({ theme }) => theme.spacing.md};
+  vertical-align: middle;
+  white-space: nowrap;
+  text-align: right;
 `;
 
-export const RecentType = styled.span<{ $type: string }>`
+export const RecentTypeBadge = styled.span<{ $type: string }>`
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme, $type }) =>
-    $type === "income" ? theme.colors.tradingUp : theme.colors.tradingDown};
-  margin-right: ${({ theme }) => theme.spacing.sm};
-  white-space: nowrap;
-`;
-
-export const RecentCategory = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  margin-right: ${({ theme }) => theme.spacing.md};
-  white-space: nowrap;
-`;
-
-export const RecentDate = styled.span`
-  font-family: ${({ theme }) => theme.fonts.body};
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  white-space: nowrap;
+    $type === "income" ? theme.colors.primary : theme.colors.danger};
 `;
 

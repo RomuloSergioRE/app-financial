@@ -118,26 +118,37 @@ export default function DashboardPage() {
             </Link>
           </S.RecentHeader>
           <S.RecentList>
-            {recentTransactions.map((tx) => (
-              <S.RecentItem key={tx.id}>
-                <S.RecentDesc>{tx.description}</S.RecentDesc>
-                <S.RecentType $type={tx.type}>
-                  {tx.type === "income" ? "Entrada" : "Saída"}
-                </S.RecentType>
-                <S.RecentCategory>
-                  {tx.category?.name ?? "-"}
-                </S.RecentCategory>
-                <S.RecentValue $type={tx.type}>
-                  {new Intl.NumberFormat("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  }).format(tx.amount / 100)}
-                </S.RecentValue>
-                <S.RecentDate>
-                  {new Date(tx.date).toLocaleDateString("pt-BR")}
-                </S.RecentDate>
-              </S.RecentItem>
-            ))}
+            <S.RecentTable>
+              <thead>
+                <tr>
+                  <S.RecentTh>Data</S.RecentTh>
+                  <S.RecentTh>Descrição</S.RecentTh>
+                  <S.RecentTh>Categoria</S.RecentTh>
+                  <S.RecentTh>Tipo</S.RecentTh>
+                  <S.RecentTh>Valor</S.RecentTh>
+                </tr>
+              </thead>
+              <tbody>
+                {recentTransactions.map((tx) => (
+                  <tr key={tx.id}>
+                    <S.RecentTd>{new Date(tx.date).toLocaleDateString("pt-BR")}</S.RecentTd>
+                    <S.RecentTd>{tx.description}</S.RecentTd>
+                    <S.RecentTd>{tx.category?.name ?? "-"}</S.RecentTd>
+                    <S.RecentTd>
+                      <S.RecentTypeBadge $type={tx.type}>
+                        {tx.type === "income" ? "Entrada" : "Saída"}
+                      </S.RecentTypeBadge>
+                    </S.RecentTd>
+                    <S.RecentTdMono>
+                      {new Intl.NumberFormat("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      }).format(tx.amount / 100)}
+                    </S.RecentTdMono>
+                  </tr>
+                ))}
+              </tbody>
+            </S.RecentTable>
           </S.RecentList>
         </S.RecentSection>
       )}
