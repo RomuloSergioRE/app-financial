@@ -22,6 +22,20 @@ export const Form = styled.div`
   }
 `;
 
+export const SearchWrapper = styled.div`
+  position: relative;
+`;
+
+export const SearchIcon = styled.span`
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: ${({ theme }) => theme.colors.textMuted};
+  pointer-events: none;
+  display: flex;
+`;
+
 export const FormRow = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -107,6 +121,45 @@ export const Pagination = styled.div`
   gap: ${({ theme }) => theme.spacing.md};
   align-items: center;
   padding: ${({ theme }) => theme.spacing.md} 0;
+`;
+
+export const PageButton = styled.button<{ $active: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  border: 1px solid
+    ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.border)};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  background: ${({ theme, $active }) =>
+    $active ? theme.colors.primary : "transparent"};
+  color: ${({ theme, $active }) =>
+    $active ? theme.colors.onPrimary : theme.colors.text};
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  cursor: pointer;
+  transition: border-color ${({ theme }) => theme.transition.base},
+    background ${({ theme }) => theme.transition.base};
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.info};
+    outline-offset: 2px;
+  }
+`;
+
+export const PageDots = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: ${({ theme }) => theme.fontSize.sm};
 `;
 
 export const Actions = styled.div`

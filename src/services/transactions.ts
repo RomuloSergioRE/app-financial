@@ -7,9 +7,9 @@ import type {
 } from "@/types";
 
 export const transactionService = {
-  list: (page = 1, limit = 10, categoryId?: string, startDate?: string, endDate?: string) =>
+  list: (page = 1, limit = 10, categoryId?: string, startDate?: string, endDate?: string, search?: string) =>
     api.get<PaginatedResponse<Transaction>>("/transactions", {
-      params: { page, limit, ...(categoryId && { categoryId }), ...(startDate && { startDate }), ...(endDate && { endDate }) },
+      params: { page, limit, ...(categoryId && { categoryId }), ...(startDate && { startDate }), ...(endDate && { endDate }), ...(search && { search }) },
     }),
 
   getById: (id: string) =>

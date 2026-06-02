@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Text } from "@/components/atoms/Text";
 import { Input } from "@/components/atoms/Input";
+import { PasswordInput } from "@/components/atoms/PasswordInput";
 import { Button } from "@/components/atoms/Button";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { toast } from "@/components/atoms/Toast";
@@ -118,24 +119,21 @@ export default function PerfilPage() {
           <S.SectionTitle>Alterar senha</S.SectionTitle>
           <S.Field>
             <S.Label>Senha atual</S.Label>
-            <Input
-              type="password"
+            <PasswordInput
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
             />
           </S.Field>
           <S.Field>
             <S.Label>Nova senha</S.Label>
-            <Input
-              type="password"
+            <PasswordInput
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
             />
           </S.Field>
           <S.Field>
             <S.Label>Confirmar nova senha</S.Label>
-            <Input
-              type="password"
+            <PasswordInput
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />

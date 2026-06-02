@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { HiOutlinePencil, HiOutlineTrash, HiOutlinePlusCircle } from "react-icons/hi2";
+import { useDebounce } from "@/hooks/useDebounce";
+import { HiOutlinePencil, HiOutlineTrash, HiOutlinePlusCircle, HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import { Select } from "@/components/atoms/Select";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
@@ -34,9 +35,11 @@ export default function TransacoesPage() {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 300);
   const [deletingTx, setDeletingTx] = useState<Transaction | null>(null);
 
-  const { data, isLoading } = useTransactions(page, 10, categoryFilter || undefined, startDate || undefined, endDate || undefined);
+  const { data, isLoading } = useTransactions(page, 10, categoryFilter || undefined, startDate || undefined, endDate || undefined, debouncedSearch || undefined);
   const { data: categoriesData } = useCategories();
   const createMutation = useCreateTransaction();
   const deleteMutation = useDeleteTransaction();
@@ -159,6 +162,18 @@ export default function TransacoesPage() {
 
       <S.FilterRow>
         <S.FormGroup>
+          <S.Label>Pesquisar</S.Label>
+          <S.SearchWrapper>
+            <S.SearchIcon><HiOutlineMagnifyingGlass size={16} /></S.SearchIcon>
+            <Input
+              placeholder="Buscar por descrição..."
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+              style={{ paddingLeft: "36px" }}
+            />
+          </S.SearchWrapper>
+        </S.FormGroup>
+        <S.FormGroup>
           <S.Label>Filtrar por Categoria</S.Label>
           <Select
             value={categoryFilter}
@@ -251,16 +266,41 @@ export default function TransacoesPage() {
             <S.Pagination>
               <Button
                 variant="outline"
+                size="sm"
                 disabled={page <= 1}
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
               >
                 Anterior
               </Button>
-              <Text size="sm">
-                {page} de {totalPages}
-              </Text>
+              {(() => {
+                const pages: (number | "...")[] = [];
+                const range = 2;
+                const start = Math.max(2, page - range);
+                const end = Math.min(totalPages - 1, page + range);
+
+                pages.push(1);
+                if (start > 2) pages.push("...");
+                for (let i = start; i <= end; i++) pages.push(i);
+                if (end < totalPages - 1) pages.push("...");
+                if (totalPages > 1) pages.push(totalPages);
+
+                return pages.map((p, i) =>
+                  p === "..." ? (
+                    <S.PageDots key={`dots-${i}`}>...</S.PageDots>
+                  ) : (
+                    <S.PageButton
+                      key={p}
+                      $active={p === page}
+                      onClick={() => setPage(p)}
+                    >
+                      {p}
+                    </S.PageButton>
+                  )
+                );
+              })()}
               <Button
                 variant="outline"
+                size="sm"
                 disabled={page >= totalPages}
                 onClick={() => setPage((p) => p + 1)}
               >

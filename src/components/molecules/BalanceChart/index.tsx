@@ -6,18 +6,41 @@ import {
   PieChart as RechartsPieChart,
   Pie,
   Cell,
+  Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
 import type { BalanceChartProps } from "./types";
 import * as S from "./style";
 
 const currencyFormatter = (v: number) =>
   "R$ " + v.toLocaleString("pt-BR");
 
+const CustomTooltip = (props: Record<string, unknown>) => {
+  const theme = useTheme();
+  const active = props.active as boolean | undefined;
+  const payload = props.payload as Array<Record<string, unknown>> | undefined;
+
+  if (!active || !payload?.length) return null;
+  const d = payload[0];
+  return (
+    <div
+      style={{
+        background: theme.colors.surface,
+        border: `1px solid ${theme.colors.border}`,
+        borderRadius: theme.borderRadius.sm,
+        padding: "8px 12px",
+        fontSize: 13,
+        color: theme.colors.text,
+      }}
+    >
+      <div style={{ fontWeight: 500, marginBottom: 2 }}>{d.name as string}</div>
+      <div>{currencyFormatter(Number(d.value))}</div>
+    </div>
+  );
+};
+
 const BalanceChart = memo(function BalanceChart({ income, expense, netBalance }: BalanceChartProps) {
   const theme = useTheme();
-  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const data = [
     { name: "Receitas", value: income },
@@ -36,14 +59,15 @@ const BalanceChart = memo(function BalanceChart({ income, expense, netBalance }:
               nameKey="name"
               cx="50%"
               cy="50%"
-              innerRadius={isMobile ? 55 : 85}
-              outerRadius={isMobile ? 80 : 120}
+              innerRadius={60}
+              outerRadius={100}
               paddingAngle={3}
               strokeWidth={0}
             >
               <Cell fill={theme.colors.tradingUp} />
               <Cell fill={theme.colors.tradingDown} />
             </Pie>
+            <Tooltip content={CustomTooltip} />
           </RechartsPieChart>
         </ResponsiveContainer>
       </S.ChartContainer>

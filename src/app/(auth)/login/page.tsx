@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { AuthCard } from "@/components/molecules/AuthCard";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
+import { PasswordInput } from "@/components/atoms/PasswordInput";
 import { Button } from "@/components/atoms/Button";
 import { FormLink } from "@/components/molecules/FormLink";
 import { Text } from "@/components/atoms/Text";
@@ -56,8 +57,7 @@ export default function LoginPage() {
           </FormField>
 
           <FormField label="Senha" error={errors.password?.message}>
-            <Input
-              type="password"
+            <PasswordInput
               placeholder="Sua senha"
               error={errors.password?.message}
               {...register("password")}

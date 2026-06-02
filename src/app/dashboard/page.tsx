@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { SummaryCard } from "@/components/molecules/SummaryCard";
 import { PeriodFilter } from "@/components/molecules/PeriodFilter";
-import { ThemeToggle } from "@/components/atoms/ThemeToggle";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { Text } from "@/components/atoms/Text";
 import {
@@ -96,7 +95,6 @@ export default function DashboardPage() {
         <S.Title>Dashboard</S.Title>
         <S.HeaderActions>
           <PeriodFilter value={period} onChange={setPeriod} />
-          <ThemeToggle />
         </S.HeaderActions>
       </S.Header>
 

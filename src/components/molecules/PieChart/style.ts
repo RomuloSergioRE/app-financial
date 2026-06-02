@@ -17,7 +17,7 @@ export const Title = styled.h3`
 
 export const ChartContainer = styled.div`
   width: 100%;
-  height: 300px;
+  height: 260px;
   min-width: 0;
   min-height: 0;
 `;
@@ -26,7 +26,7 @@ export const Legend = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing.sm};
-  margin-top: ${({ theme }) => theme.spacing.md};
+  margin-top: ${({ theme }) => theme.spacing.sm};
   justify-content: center;
 `;
 
