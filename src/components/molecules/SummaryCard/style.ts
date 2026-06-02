@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ $accent: string }>`
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
+  border-left: 3px solid ${({ $accent }) => $accent};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  padding: ${({ theme }) => theme.spacing.md};
+  padding: ${({ theme }) => theme.spacing.lg};
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 `;
 
 export const HeaderRow = styled.div`
@@ -27,7 +28,7 @@ export const Label = styled.span`
 
 export const Value = styled.span<{ $color: string }>`
   font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: ${({ theme }) => theme.fontSize.xxl};
+  font-size: ${({ theme }) => theme.fontSize["3xl"]};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ $color }) => $color};
   line-height: 1.2;
@@ -38,8 +39,10 @@ export const IconWrapper = styled.div<{ $color: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  background: ${({ $color }) => $color}26;
   color: ${({ $color }) => $color};
   flex-shrink: 0;
 `;
@@ -47,7 +50,15 @@ export const IconWrapper = styled.div<{ $color: string }>`
 export const Change = styled.span<{ $positive: boolean }>`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme, $positive }) =>
     $positive ? theme.colors.tradingUp : theme.colors.tradingDown};
-  line-height: 1;
+  background: ${({ theme, $positive }) =>
+    $positive ? theme.colors.tradingUp : theme.colors.tradingDown}18;
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  line-height: 1.4;
 `;

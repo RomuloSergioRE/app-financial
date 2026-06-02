@@ -18,7 +18,7 @@ const SummaryCard = memo(function SummaryCard({ label, value, icon, type, change
   }).format(value);
 
   return (
-    <S.Wrapper>
+    <S.Wrapper $accent={accentColors[type]}>
       <S.HeaderRow>
         <S.IconWrapper $color={accentColors[type]}>{icon}</S.IconWrapper>
         <S.Label>{label}</S.Label>

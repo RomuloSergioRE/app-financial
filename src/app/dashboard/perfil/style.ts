@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.lg};
+`;
+
+export const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing.lg};
@@ -32,6 +38,12 @@ export const Field = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
+`;
+
+export const FieldRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: ${({ theme }) => theme.spacing.md};
 `;
 
 export const Label = styled.span`

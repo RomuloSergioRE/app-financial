@@ -53,8 +53,12 @@ export default function DashboardPage() {
       }
     : undefined;
 
-  const calcChange = (current: number, previous?: number) =>
-    previous && previous > 0 ? ((current - previous) / previous) * 100 : undefined;
+  const calcChange = (current: number, previous?: number) => {
+    if (previous === undefined || previous === null) return undefined;
+    if (previous === 0 && current > 0) return 100;
+    if (previous === 0 && current === 0) return undefined;
+    return ((current - previous) / previous) * 100;
+  };
 
   const incomeChange = rawBalance ? calcChange(rawBalance.totalIncome, prevRawBalance?.totalIncome) : undefined;
   const outcomeChange = rawBalance ? calcChange(rawBalance.totalOutcome, prevRawBalance?.totalOutcome) : undefined;

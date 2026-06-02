@@ -154,10 +154,6 @@ export const RecentTh = styled.th`
   letter-spacing: 0.05em;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   white-space: nowrap;
-
-  &:last-child {
-    text-align: right;
-  }
 `;
 
 export const RecentTd = styled.td`
@@ -167,10 +163,6 @@ export const RecentTd = styled.td`
   color: ${({ theme }) => theme.colors.text};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   vertical-align: middle;
-
-  &:last-child {
-    text-align: right;
-  }
 `;
 
 export const RecentTdMono = styled.td`
@@ -182,7 +174,7 @@ export const RecentTdMono = styled.td`
   font-variant-numeric: tabular-nums;
   vertical-align: middle;
   white-space: nowrap;
-  text-align: right;
+  text-align: left;
 `;
 
 export const RecentTypeBadge = styled.span<{ $type: string }>`
