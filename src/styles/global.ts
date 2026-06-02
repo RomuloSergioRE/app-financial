@@ -1,4 +1,8 @@
 import { createGlobalStyle } from "styled-components";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -13,25 +17,18 @@ const GlobalStyle = createGlobalStyle`
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    scroll-behavior: smooth;
   }
 
   body {
     font-family: ${({ theme }) => theme.fonts.body};
     background-color: ${({ theme }) => theme.colors.background};
-    background-image:
-      radial-gradient(ellipse at 20% 50%, rgba(212, 168, 83, 0.03) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, rgba(74, 158, 110, 0.03) 0%, transparent 50%),
-      url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.015'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-size: cover, cover, 256px 256px;
     color: ${({ theme }) => theme.colors.text};
     line-height: 1.6;
     min-height: 100vh;
   }
 
   ::selection {
-    background: ${({ theme }) => theme.colors.secondary}40;
+    background: ${({ theme }) => theme.colors.primary}30;
     color: ${({ theme }) => theme.colors.text};
   }
 
@@ -45,7 +42,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   ::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.border};
+    background: ${({ theme }) => theme.colors.surfaceHover};
     border-radius: 4px;
   }
 

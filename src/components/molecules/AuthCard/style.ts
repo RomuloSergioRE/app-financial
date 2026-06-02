@@ -8,9 +8,6 @@ export const Wrapper = styled.main`
   min-height: 100vh;
   padding: ${({ theme }) => theme.spacing.md};
   background: ${({ theme }) => theme.colors.background};
-  background-image:
-    radial-gradient(ellipse at 30% 20%, rgba(212, 168, 83, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 80%, rgba(74, 158, 110, 0.04) 0%, transparent 50%);
 `;
 
 export const Card = styled.div`

@@ -22,8 +22,8 @@ export const Wrapper = styled.input<{ $hasError: boolean }>`
   }
 
   &:focus-visible {
-    border-color: ${({ theme }) => theme.colors.borderFocus};
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.borderFocus};
+    border-color: ${({ theme }) => theme.colors.info};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.info};
   }
 
   ${({ $hasError, theme }) =>

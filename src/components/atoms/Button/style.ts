@@ -8,8 +8,8 @@ const variantStyles = {
     border: 1px solid ${({ theme }) => theme.colors.primary};
 
     &:hover:not(:disabled) {
-      background: ${({ theme }) => theme.colors.primaryLight};
-      border-color: ${({ theme }) => theme.colors.primaryLight};
+      background: ${({ theme }) => theme.colors.primaryDark};
+      border-color: ${({ theme }) => theme.colors.primaryDark};
     }
 
     &:active:not(:disabled) {
@@ -23,18 +23,17 @@ const variantStyles = {
     }
   `,
   accent: css`
-    background: ${({ theme }) => theme.colors.secondary};
-    color: ${({ theme }) => theme.colors.background};
-    border: 1px solid ${({ theme }) => theme.colors.secondary};
+    background: ${({ theme }) => theme.colors.surface};
+    color: ${({ theme }) => theme.colors.text};
+    border: 1px solid ${({ theme }) => theme.colors.border};
 
     &:hover:not(:disabled) {
-      background: ${({ theme }) => theme.colors.secondaryLight};
-      border-color: ${({ theme }) => theme.colors.secondaryLight};
+      background: ${({ theme }) => theme.colors.surfaceHover};
+      border-color: ${({ theme }) => theme.colors.textMuted};
     }
 
     &:active:not(:disabled) {
-      background: ${({ theme }) => theme.colors.secondaryDark};
-      border-color: ${({ theme }) => theme.colors.secondaryDark};
+      background: ${({ theme }) => theme.colors.surfaceHover};
     }
   `,
   outline: css`
@@ -43,8 +42,8 @@ const variantStyles = {
     border: 1px solid ${({ theme }) => theme.colors.border};
 
     &:hover:not(:disabled) {
-      background: ${({ theme }) => theme.colors.surfaceHover};
-      border-color: ${({ theme }) => theme.colors.textMuted};
+      background: ${({ theme }) => theme.colors.surface};
+      border-color: ${({ theme }) => theme.colors.textSecondary};
     }
   `,
   ghost: css`
@@ -100,7 +99,7 @@ export const Wrapper = styled.button<{
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.secondary};
+    outline: 2px solid ${({ theme }) => theme.colors.info};
     outline-offset: 2px;
   }
 

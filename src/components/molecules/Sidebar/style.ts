@@ -24,7 +24,7 @@ export const Wrapper = styled.aside<{ $isOpen: boolean }>`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     position: fixed;
-    top: 56px;
+    top: 0;
     left: 0;
     bottom: 0;
     z-index: 20;
@@ -75,7 +75,7 @@ export const NavItem = styled(Link)<{ $active: boolean }>`
     width: 3px;
     height: ${({ $active }) => ($active ? "16px" : "0")};
     border-radius: 2px;
-    background: ${({ theme }) => theme.colors.secondary};
+    background: ${({ theme }) => theme.colors.primary};
     transition: height ${({ theme }) => theme.transition.base};
   }
 
@@ -85,7 +85,7 @@ export const NavItem = styled(Link)<{ $active: boolean }>`
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.secondary};
+    outline: 2px solid ${({ theme }) => theme.colors.info};
     outline-offset: 2px;
   }
 `;
@@ -113,10 +113,11 @@ export const LogoutButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.secondary};
+    outline: 2px solid ${({ theme }) => theme.colors.info};
     outline-offset: 2px;
   }
 `;
+
 export const Header = styled.div`
   display: flex;
   align-items: center;

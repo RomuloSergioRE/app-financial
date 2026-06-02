@@ -29,8 +29,8 @@ export const Trigger = styled.button<{ $isOpen: boolean; $hasError?: boolean }>`
   }
 
   &:focus-visible {
-    border-color: ${({ theme }) => theme.colors.borderFocus};
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.borderFocus};
+    border-color: ${({ theme }) => theme.colors.info};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.info};
   }
 
   &:disabled {
@@ -74,7 +74,7 @@ export const OptionItem = styled.li<{ $isActive: boolean; $isSelected: boolean }
   cursor: pointer;
   font-size: inherit;
   color: ${({ $isSelected, theme }) =>
-    $isSelected ? theme.colors.secondary : theme.colors.text};
+    $isSelected ? theme.colors.primary : theme.colors.text};
   background: ${({ $isActive, theme }) =>
     $isActive ? theme.colors.surfaceHover : "transparent"};
   transition: background ${({ theme }) => theme.transition.base};
