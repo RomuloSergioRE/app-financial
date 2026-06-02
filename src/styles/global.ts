@@ -1,4 +1,8 @@
 import { createGlobalStyle } from "styled-components";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
 
 const GlobalStyle = createGlobalStyle`
   *,
@@ -16,11 +20,34 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      "Helvetica Neue", Arial, sans-serif;
+    font-family: ${({ theme }) => theme.fonts.body};
     background-color: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
     line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: ${({ theme }) => theme.colors.primary}30;
+    color: ${({ theme }) => theme.colors.text};
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: ${({ theme }) => theme.colors.background};
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.surfaceHover};
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${({ theme }) => theme.colors.textMuted};
   }
 
   a {
@@ -50,6 +77,28 @@ const GlobalStyle = createGlobalStyle`
   img {
     max-width: 100%;
     display: block;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  table {
+    font-variant-numeric: tabular-nums;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: ${({ theme }) => theme.fonts.body};
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  code, pre, .mono {
+    font-family: ${({ theme }) => theme.fonts.mono};
+    font-variant-numeric: tabular-nums;
   }
 `;
 

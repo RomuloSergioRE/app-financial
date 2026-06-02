@@ -1,23 +1,23 @@
 import api from "./api";
 import type {
   BalanceResponse,
-  CategoriesAnalyticsResponse,
+  CategoryDistribution,
 } from "@/types";
 
 export const analyticsService = {
   balance: (params?: {
     startDate?: string;
     endDate?: string;
-    categoryId?: number;
+    categoryId?: string;
   }) =>
     api.get<BalanceResponse>("/analytics/balance", { params }),
 
   categories: (params?: {
     startDate?: string;
     endDate?: string;
-    categoryId?: number;
+    categoryId?: string;
   }) =>
-    api.get<CategoriesAnalyticsResponse>("/analytics/categories", {
+    api.get<CategoryDistribution[]>("/analytics/categories", {
       params,
     }),
 };

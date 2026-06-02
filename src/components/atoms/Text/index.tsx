@@ -8,9 +8,17 @@ export function Text({
   size = "md",
   weight = "normal",
   align = "left",
+  fontFamily = "body",
 }: TextProps) {
   return (
-    <S.Wrapper as={as} $color={color} $size={size} $weight={weight} $align={align}>
+    <S.Wrapper
+      as={as}
+      $color={color}
+      $size={size}
+      $weight={weight}
+      $align={align}
+      $fontFamily={fontFamily}
+    >
       {children}
     </S.Wrapper>
   );

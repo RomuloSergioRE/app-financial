@@ -21,15 +21,15 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      const refreshToken = Cookies.get("refresh_token");
-      if (refreshToken) {
+      const refreshTokenValue = Cookies.get("refresh_token");
+      if (refreshTokenValue) {
         try {
           const { data } = await axios.post(
             `${api.defaults.baseURL}/auth/refresh`,
-            { refreshToken }
+            {},
+            { headers: { Authorization: `Bearer ${refreshTokenValue}` } }
           );
-          Cookies.set("jwt_token", data.token, { expires: 7 });
-          Cookies.set("refresh_token", data.refreshToken, { expires: 30 });
+          Cookies.set("jwt_token", data.token, { expires: 7, sameSite: "strict", secure: process.env.NODE_ENV === "production" });
           error.config.headers.Authorization = `Bearer ${data.token}`;
           return api(error.config);
         } catch {

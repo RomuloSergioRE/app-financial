@@ -5,6 +5,6 @@ export const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: ${({ theme }) => theme.fontSize.md};
+  color: #6B7280;
+  font-size: 1rem;
 `;

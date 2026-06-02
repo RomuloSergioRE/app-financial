@@ -1,36 +1,46 @@
+"use client";
+
+import Link from "next/link";
+import styled, { useTheme } from "styled-components";
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: ${({ theme }) => theme.spacing.md};
+  padding: ${({ theme }) => theme.spacing.md};
+  text-align: center;
+  background: ${({ theme }) => theme.colors.background};
+`;
+
+const Title = styled.h1`
+  font-size: 3rem;
+  color: ${({ theme }) => theme.colors.text};
+  margin: 0;
+`;
+
+const Description = styled.p`
+  color: ${({ theme }) => theme.colors.textSecondary};
+  margin: 0;
+`;
+
+const StyledLink = styled(Link)`
+  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
+  background: ${({ theme }) => theme.colors.primary};
+  color: #ffffff;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  text-decoration: none;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+`;
+
 export default function NotFound() {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100vh",
-        gap: "16px",
-        padding: "16px",
-        textAlign: "center",
-      }}
-    >
-      <h1 style={{ fontSize: "1.5rem", color: "#dc3545", margin: 0 }}>
-        404
-      </h1>
-      <p style={{ color: "#666", margin: 0 }}>
-        Página não encontrada
-      </p>
-      <a
-        href="/"
-        style={{
-          padding: "8px 16px",
-          background: "#4361ee",
-          color: "#fff",
-          borderRadius: "8px",
-          textDecoration: "none",
-          fontWeight: 600,
-        }}
-      >
-        Voltar ao início
-      </a>
-    </div>
+    <Wrapper>
+      <Title>404</Title>
+      <Description>Página não encontrada</Description>
+      <StyledLink href="/">Voltar ao início</StyledLink>
+    </Wrapper>
   );
 }

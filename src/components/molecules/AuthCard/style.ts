@@ -14,15 +14,17 @@ export const Card = styled.div`
   width: 100%;
   max-width: 400px;
   background: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   padding: ${({ theme }) => theme.spacing.xl};
-  box-shadow: ${({ theme }) => theme.shadow.lg};
 `;
 
 export const Title = styled.h1`
-  font-size: ${({ theme }) => theme.fontSize.xxl};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-family: ${({ theme }) => theme.fonts.display};
+  font-size: ${({ theme }) => theme.fontSize["3xl"]};
+  font-weight: 700;
   color: ${({ theme }) => theme.colors.text};
   text-align: center;
   margin-bottom: ${({ theme }) => theme.spacing.lg};
+  letter-spacing: -0.03em;
 `;

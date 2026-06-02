@@ -3,25 +3,23 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import styled from "styled-components";
+import { useRouter } from "next/navigation";
 import { AuthCard } from "@/components/molecules/AuthCard";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
+import { PasswordInput } from "@/components/atoms/PasswordInput";
 import { Button } from "@/components/atoms/Button";
 import { FormLink } from "@/components/molecules/FormLink";
 import { Text } from "@/components/atoms/Text";
 import { loginSchema, type LoginFormData } from "@/schemas/login";
+import { toast } from "@/components/atoms/Toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { extractErrorMessage } from "@/utils/errors";
-
-const FormBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
+import * as S from "./style";
 
 export default function LoginPage() {
   const { login } = useAuth();
+  const router = useRouter();
   const [apiError, setApiError] = useState<string | null>(null);
 
   const {
@@ -36,7 +34,8 @@ export default function LoginPage() {
     try {
       setApiError(null);
       await login(data);
-      window.location.href = "/";
+      toast.success("Login realizado com sucesso!");
+      router.push("/dashboard");
     } catch (err: unknown) {
       setApiError(
         extractErrorMessage(err, "Erro ao fazer login. Verifique suas credenciais.")
@@ -47,7 +46,7 @@ export default function LoginPage() {
   return (
     <AuthCard title="Entrar">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormBody>
+        <S.FormBody>
           <FormField label="Email" error={errors.email?.message}>
             <Input
               type="email"
@@ -58,8 +57,7 @@ export default function LoginPage() {
           </FormField>
 
           <FormField label="Senha" error={errors.password?.message}>
-            <Input
-              type="password"
+            <PasswordInput
               placeholder="Sua senha"
               error={errors.password?.message}
               {...register("password")}
@@ -67,7 +65,7 @@ export default function LoginPage() {
           </FormField>
 
           {apiError && (
-            <Text as="span" size="sm" color="error">
+            <Text as="span" size="sm" color="danger">
               {apiError}
             </Text>
           )}
@@ -81,7 +79,7 @@ export default function LoginPage() {
             linkText="Cadastre-se"
             href="/register"
           />
-        </FormBody>
+        </S.FormBody>
       </form>
     </AuthCard>
   );

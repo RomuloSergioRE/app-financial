@@ -12,15 +12,15 @@ export const categoryService = {
       params: { page, limit },
     }),
 
-  getById: (id: number) =>
+  getById: (id: string) =>
     api.get<Category>(`/categories/${id}`),
 
   create: (data: CreateCategoryRequest) =>
     api.post<Category>("/categories", data),
 
-  update: (id: number, data: UpdateCategoryRequest) =>
+  update: (id: string, data: UpdateCategoryRequest) =>
     api.put<Category>(`/categories/${id}`, data),
 
-  delete: (id: number) =>
+  delete: (id: string) =>
     api.delete(`/categories/${id}`),
 };

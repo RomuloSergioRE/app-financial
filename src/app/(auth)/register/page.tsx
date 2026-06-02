@@ -3,25 +3,23 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import styled from "styled-components";
+import { useRouter } from "next/navigation";
 import { AuthCard } from "@/components/molecules/AuthCard";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
+import { PasswordInput } from "@/components/atoms/PasswordInput";
 import { Button } from "@/components/atoms/Button";
 import { FormLink } from "@/components/molecules/FormLink";
 import { Text } from "@/components/atoms/Text";
 import { registerSchema, type RegisterFormData } from "@/schemas/register";
+import { toast } from "@/components/atoms/Toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { extractErrorMessage } from "@/utils/errors";
-
-const FormBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
+import * as S from "./style";
 
 export default function RegisterPage() {
   const { register: registerUser } = useAuth();
+  const router = useRouter();
   const [apiError, setApiError] = useState<string | null>(null);
 
   const {
@@ -40,7 +38,8 @@ export default function RegisterPage() {
         email: data.email,
         password: data.password,
       });
-      window.location.href = "/";
+      toast.success("Conta criada com sucesso!");
+      router.push("/dashboard");
     } catch (err: unknown) {
       setApiError(
         extractErrorMessage(err, "Erro ao cadastrar. Tente novamente.")
@@ -51,7 +50,7 @@ export default function RegisterPage() {
   return (
     <AuthCard title="Criar Conta">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormBody>
+        <S.FormBody>
           <FormField label="Nome" error={errors.name?.message}>
             <Input
               type="text"
@@ -71,8 +70,7 @@ export default function RegisterPage() {
           </FormField>
 
           <FormField label="Senha" error={errors.password?.message}>
-            <Input
-              type="password"
+            <PasswordInput
               placeholder="Mínimo 8 caracteres"
               error={errors.password?.message}
               {...register("password")}
@@ -83,8 +81,7 @@ export default function RegisterPage() {
             label="Confirmar Senha"
             error={errors.confirmPassword?.message}
           >
-            <Input
-              type="password"
+            <PasswordInput
               placeholder="Repita a senha"
               error={errors.confirmPassword?.message}
               {...register("confirmPassword")}
@@ -92,7 +89,7 @@ export default function RegisterPage() {
           </FormField>
 
           {apiError && (
-            <Text as="span" size="sm" color="error">
+            <Text as="span" size="sm" color="danger">
               {apiError}
             </Text>
           )}
@@ -106,7 +103,7 @@ export default function RegisterPage() {
             linkText="Entrar"
             href="/login"
           />
-        </FormBody>
+        </S.FormBody>
       </form>
     </AuthCard>
   );

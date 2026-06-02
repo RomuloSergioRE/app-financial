@@ -18,5 +18,4 @@ export type {
 export type {
   BalanceResponse,
   CategoryDistribution,
-  CategoriesAnalyticsResponse,
 } from "./analytics";

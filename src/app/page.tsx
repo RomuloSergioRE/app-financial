@@ -1,39 +1,34 @@
 "use client";
 
-import styled from "styled-components";
+import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/atoms/Button";
 import { Text } from "@/components/atoms/Text";
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  gap: ${({ theme }) => theme.spacing.md};
-  padding: ${({ theme }) => theme.spacing.md};
-`;
+import * as S from "./style";
 
 export default function Home() {
-  const { user, logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    window.location.href = "/login";
-  };
+  const { user } = useAuth();
 
   return (
-    <Wrapper>
-      <Text as="h1" size="xl" weight="bold">
-        Bem-vindo{user?.name ? `, ${user.name}` : ""}!
+    <S.Wrapper>
+      <Text as="h1" size="display" weight="bold" align="center">
+        Financial
       </Text>
-      <Text as="p" size="md" color="textMuted">
-        Você está logado.
+      <Text as="p" size="lg" color="textSecondary" align="center">
+        {user?.name
+          ? `Bem-vindo, ${user.name}.`
+          : "Gerencie suas finanças com clareza."}
       </Text>
-      <Button variant="outline" onClick={handleLogout}>
-        Sair
-      </Button>
-    </Wrapper>
+      <S.Actions>
+        {user ? (
+            <Button as={Link} href="/dashboard">Ir para o Dashboard</Button>
+        ) : (
+          <>
+            <Button as={Link} href="/login">Entrar</Button>
+            <Button as={Link} href="/register" variant="outline">Criar Conta</Button>
+          </>
+        )}
+      </S.Actions>
+    </S.Wrapper>
   );
 }

@@ -7,20 +7,20 @@ import type {
 } from "@/types";
 
 export const transactionService = {
-  list: (page = 1, limit = 10) =>
+  list: (page = 1, limit = 10, categoryId?: string, startDate?: string, endDate?: string, search?: string) =>
     api.get<PaginatedResponse<Transaction>>("/transactions", {
-      params: { page, limit },
+      params: { page, limit, ...(categoryId && { categoryId }), ...(startDate && { startDate }), ...(endDate && { endDate }), ...(search && { search }) },
     }),
 
-  getById: (id: number) =>
+  getById: (id: string) =>
     api.get<Transaction>(`/transactions/${id}`),
 
   create: (data: CreateTransactionRequest) =>
     api.post<Transaction>("/transactions", data),
 
-  update: (id: number, data: UpdateTransactionRequest) =>
+  update: (id: string, data: UpdateTransactionRequest) =>
     api.put<Transaction>(`/transactions/${id}`, data),
 
-  delete: (id: number) =>
+  delete: (id: string) =>
     api.delete(`/transactions/${id}`),
 };
