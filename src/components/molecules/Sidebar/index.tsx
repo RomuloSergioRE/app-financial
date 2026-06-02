@@ -42,12 +42,12 @@ const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout }: Sid
               {item.label}
             </S.NavItem>
           ))}
+          <S.Divider />
+          <S.LogoutButton onClick={onLogout}>
+            <HiOutlineArrowRightOnRectangle size={20} />
+            Sair
+          </S.LogoutButton>
         </S.Nav>
-
-        <S.LogoutButton onClick={onLogout}>
-          <HiOutlineArrowRightOnRectangle size={20} />
-          Sair
-        </S.LogoutButton>
       </S.Wrapper>
     </>
   );

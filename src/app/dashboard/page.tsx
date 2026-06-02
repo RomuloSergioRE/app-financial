@@ -157,7 +157,7 @@ export default function DashboardPage() {
             <Text as="h2" size="lg" weight="semibold" fontFamily="display">
               Últimas Transações
             </Text>
-            <Link href="/dashboard/transacoes" passHref legacyBehavior>
+            <Link href="/dashboard/transacoes">
               <S.RecentLink>Ver todas</S.RecentLink>
             </Link>
           </S.RecentHeader>

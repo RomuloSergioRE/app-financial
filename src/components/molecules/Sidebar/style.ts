@@ -51,6 +51,12 @@ export const Nav = styled.nav`
   gap: 2px;
 `;
 
+export const Divider = styled.div`
+  height: 1px;
+  background: ${({ theme }) => theme.colors.border};
+  margin: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
+`;
+
 export const NavItem = styled(Link)<{ $active: boolean }>`
   display: flex;
   align-items: center;
@@ -95,8 +101,7 @@ export const LogoutButton = styled.button`
   align-items: center;
   gap: ${({ theme }) => theme.spacing.sm};
   padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
-  margin: ${({ theme }) => theme.spacing.sm};
-  border: 1px solid transparent;
+  border: none;
   border-radius: ${({ theme }) => theme.borderRadius.md};
   background: transparent;
   color: ${({ theme }) => theme.colors.textMuted};
@@ -104,6 +109,8 @@ export const LogoutButton = styled.button`
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   cursor: pointer;
+  width: 100%;
+  text-align: left;
   transition: color ${({ theme }) => theme.transition.base},
     background ${({ theme }) => theme.transition.base};
 
