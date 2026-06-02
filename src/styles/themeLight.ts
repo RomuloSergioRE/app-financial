@@ -9,6 +9,8 @@ const themeLight = {
     danger: "#F6465D",
     dangerLight: "#FF6B81",
     dangerDark: "#D03048",
+    tradingUp: "#0ECB81",
+    tradingDown: "#F6465D",
     info: "#3B82F6",
     background: "#F5F5F5",
     surface: "#FFFFFF",

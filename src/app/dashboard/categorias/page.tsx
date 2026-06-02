@@ -101,12 +101,12 @@ export default function CategoriasPage() {
                 {cat.name}
               </S.CategoryBadge>
               <S.Actions>
-                <Button variant="ghost" onClick={() => handleEdit(cat)}>
+                <S.IconButton onClick={() => handleEdit(cat)} aria-label="Editar">
                   <HiOutlinePencil size={16} />
-                </Button>
-                <Button variant="ghost" onClick={() => setDeletingCategory(cat)}>
+                </S.IconButton>
+                <S.IconButton onClick={() => setDeletingCategory(cat)} aria-label="Excluir">
                   <HiOutlineTrash size={16} />
-                </Button>
+                </S.IconButton>
               </S.Actions>
             </S.Item>
           ))}

@@ -31,9 +31,10 @@ export default function TransacoesPage() {
   const [editAmount, setEditAmount] = useState("");
   const [editType, setEditType] = useState<"income" | "outcome">("outcome");
   const [editCategoryId, setEditCategoryId] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
   const [deletingTx, setDeletingTx] = useState<Transaction | null>(null);
 
-  const { data, isLoading } = useTransactions(page);
+  const { data, isLoading } = useTransactions(page, 10, categoryFilter || undefined);
   const { data: categoriesData } = useCategories();
   const createMutation = useCreateTransaction();
   const deleteMutation = useDeleteTransaction();
@@ -153,6 +154,23 @@ export default function TransacoesPage() {
         </Button>
       </S.Form>
 
+      <S.FilterRow>
+        <S.FormGroup>
+          <S.Label>Filtrar por Categoria</S.Label>
+          <Select
+            value={categoryFilter}
+            onChange={(v) => {
+              setCategoryFilter(v);
+              setPage(1);
+            }}
+            options={[
+              { value: "", label: "Todas" },
+              ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
+            ]}
+          />
+        </S.FormGroup>
+      </S.FilterRow>
+
       {isLoading ? (
         <S.TableWrapper>
           <Skeleton variant="rect" height="240px" />
@@ -196,12 +214,12 @@ export default function TransacoesPage() {
                     </S.TdMono>
                     <S.Td>
                       <S.Actions>
-                        <Button variant="ghost" onClick={() => handleEdit(tx)}>
+                        <S.IconButton onClick={() => handleEdit(tx)} aria-label="Editar">
                           <HiOutlinePencil size={16} />
-                        </Button>
-                        <Button variant="ghost" onClick={() => setDeletingTx(tx)}>
+                        </S.IconButton>
+                        <S.IconButton onClick={() => setDeletingTx(tx)} aria-label="Excluir">
                           <HiOutlineTrash size={16} />
-                        </Button>
+                        </S.IconButton>
                       </S.Actions>
                     </S.Td>
                   </tr>

@@ -9,7 +9,7 @@ const SummaryCard = memo(function SummaryCard({ label, value, icon, type, index 
   const accentColors: Record<SummaryType, string> = {
     income: theme.colors.primary,
     outcome: theme.colors.danger,
-    balance: theme.colors.secondary,
+    balance: value >= 0 ? theme.colors.tradingUp : theme.colors.tradingDown,
   };
 
   const formatted = new Intl.NumberFormat("pt-BR", {

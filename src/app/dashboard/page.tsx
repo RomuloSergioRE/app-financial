@@ -15,8 +15,8 @@ import { useBalance, useCategoriesAnalytics, getDateRange } from "@/hooks/useAna
 import type { Period } from "@/components/molecules/PeriodFilter/types";
 import * as S from "./style";
 
-const BarChart = dynamic(
-  () => import("@/components/molecules/BarChart").then((m) => m.BarChart),
+const BalanceChart = dynamic(
+  () => import("@/components/molecules/BalanceChart").then((m) => m.BalanceChart),
   { ssr: false, loading: () => <Skeleton variant="rect" height="300px" /> }
 );
 const PieChart = dynamic(
@@ -92,9 +92,10 @@ export default function DashboardPage() {
         {balanceLoading ? (
           <Skeleton variant="rect" height="300px" />
         ) : (
-          <BarChart
+          <BalanceChart
             income={balance?.totalIncome ?? 0}
             expense={balance?.totalOutcome ?? 0}
+            netBalance={balance?.netBalance ?? 0}
           />
         )}
         {categoriesLoading ? (

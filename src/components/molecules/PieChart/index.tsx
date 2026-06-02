@@ -19,12 +19,14 @@ const PieChart = memo(function PieChart({ categories }: PieChartProps) {
   const theme = useTheme();
 
   const COLORS = [
-    theme.colors.primary,
-    theme.colors.secondary,
-    theme.colors.info,
-    theme.colors.danger,
-    theme.colors.textSecondary,
-    "#6B5B4F",
+    "#3B82F6",
+    "#0ECB81",
+    "#F6465D",
+    "#60A5FA",
+    "#D4A853",
+    "#A78BFA",
+    "#34D399",
+    "#F59E0B",
   ];
 
   const CustomTooltip = (props: Record<string, unknown>) => {
@@ -38,7 +40,7 @@ const PieChart = memo(function PieChart({ categories }: PieChartProps) {
         style={{
           background: theme.colors.surface,
           border: `1px solid ${theme.colors.border}`,
-          borderRadius: 4,
+          borderRadius: theme.borderRadius.sm,
           padding: "8px 12px",
           fontSize: 13,
           color: theme.colors.text,
