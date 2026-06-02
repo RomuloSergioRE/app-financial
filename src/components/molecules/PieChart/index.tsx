@@ -53,10 +53,10 @@ const PieChart = memo(function PieChart({ categories }: PieChartProps) {
     "#F59E0B",
   ];
 
-  const data = categories.map((c) => ({
+  const data = categories.map((c, i) => ({
     name: c.categoryName,
     value: c.totalAmount,
-    color: c.color ?? undefined,
+    color: c.color || COLORS[i % COLORS.length],
   }));
 
   return (
@@ -79,7 +79,7 @@ const PieChart = memo(function PieChart({ categories }: PieChartProps) {
               {data.map((entry, i) => (
                 <Cell
                   key={`${entry.name}-${i}`}
-                  fill={entry.color || COLORS[i % COLORS.length]}
+                  fill={entry.color}
                 />
               ))}
             </Pie>
@@ -87,6 +87,14 @@ const PieChart = memo(function PieChart({ categories }: PieChartProps) {
           </RechartsPieChart>
         </ResponsiveContainer>
       </S.ChartContainer>
+      <S.Legend>
+        {data.map((entry) => (
+          <S.LegendItem key={entry.name}>
+            <S.LegendDot $color={entry.color} />
+            <S.LegendLabel>{entry.name}</S.LegendLabel>
+          </S.LegendItem>
+        ))}
+      </S.Legend>
     </S.Wrapper>
   );
 });

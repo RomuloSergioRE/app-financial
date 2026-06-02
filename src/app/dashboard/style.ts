@@ -120,7 +120,7 @@ export const RecentHeader = styled.div`
   align-items: center;
 `;
 
-export const RecentLink = styled.a`
+export const RecentLink = styled.span`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ theme }) => theme.colors.primary};

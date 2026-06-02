@@ -25,3 +25,23 @@ export const ChartContainer = styled.div`
     height: 240px;
   }
 `;
+
+export const BalanceInfo = styled.div`
+  text-align: center;
+  margin-top: ${({ theme }) => theme.spacing.md};
+`;
+
+export const BalanceLabel = styled.span`
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  display: block;
+`;
+
+export const BalanceValue = styled.span<{ $positive: boolean }>`
+  font-family: ${({ theme }) => theme.fonts.mono};
+  font-size: ${({ theme }) => theme.fontSize.xl};
+  font-weight: 700;
+  color: ${({ theme, $positive }) =>
+    $positive ? theme.colors.tradingUp : theme.colors.tradingDown};
+`;
