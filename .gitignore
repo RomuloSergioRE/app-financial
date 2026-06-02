@@ -44,3 +44,6 @@ next-env.d.ts
 # design system docs (Impeccable artifacts)
 PRODUCT.md
 DESIGN.md
+
+# opencode local config
+.opencode/
