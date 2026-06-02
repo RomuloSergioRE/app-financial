@@ -43,3 +43,11 @@ export const IconWrapper = styled.div<{ $color: string }>`
   color: ${({ $color }) => $color};
   flex-shrink: 0;
 `;
+
+export const Change = styled.span<{ $positive: boolean }>`
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  color: ${({ theme, $positive }) =>
+    $positive ? theme.colors.tradingUp : theme.colors.tradingDown};
+  line-height: 1;
+`;

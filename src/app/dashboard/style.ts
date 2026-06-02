@@ -154,6 +154,10 @@ export const RecentTh = styled.th`
   letter-spacing: 0.05em;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   white-space: nowrap;
+
+  &:last-child {
+    text-align: right;
+  }
 `;
 
 export const RecentTd = styled.td`

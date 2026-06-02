@@ -35,7 +35,16 @@ export default function DashboardPage() {
   const { data: categoriesData, isLoading: categoriesLoading } = useCategoriesAnalytics(startDate, endDate);
   const { data: recentData } = useTransactions(1, 5);
 
+  const currentStart = new Date(startDate);
+  const currentEnd = new Date(endDate);
+  const durationMs = currentEnd.getTime() - currentStart.getTime();
+  const prevStart = new Date(currentStart.getTime() - durationMs).toISOString().split("T")[0];
+  const prevEnd = currentStart.toISOString().split("T")[0];
+
+  const { data: prevBalanceData } = useBalance(prevStart, prevEnd);
+
   const rawBalance = balanceData?.data;
+  const prevRawBalance = prevBalanceData?.data;
   const balance = rawBalance
     ? {
         totalIncome: rawBalance.totalIncome / 100,
@@ -43,6 +52,14 @@ export default function DashboardPage() {
         netBalance: rawBalance.netBalance / 100,
       }
     : undefined;
+
+  const calcChange = (current: number, previous?: number) =>
+    previous && previous > 0 ? ((current - previous) / previous) * 100 : undefined;
+
+  const incomeChange = rawBalance ? calcChange(rawBalance.totalIncome, prevRawBalance?.totalIncome) : undefined;
+  const outcomeChange = rawBalance ? calcChange(rawBalance.totalOutcome, prevRawBalance?.totalOutcome) : undefined;
+  const netChange = rawBalance ? calcChange(rawBalance.netBalance, prevRawBalance?.netBalance) : undefined;
+
   const categories = (categoriesData?.data ?? []).map((c) => ({
     ...c,
     totalAmount: c.totalAmount / 100,
@@ -73,18 +90,21 @@ export default function DashboardPage() {
               value={balance?.totalIncome ?? 0}
               icon={<HiOutlineArrowTrendingUp size={20} />}
               type="income"
+              change={incomeChange}
             />
             <SummaryCard
               label="Despesas"
               value={balance?.totalOutcome ?? 0}
               icon={<HiOutlineArrowTrendingDown size={20} />}
               type="outcome"
+              change={outcomeChange}
             />
             <SummaryCard
               label="Saldo"
               value={balance?.netBalance ?? 0}
               icon={<HiOutlineWallet size={20} />}
               type="balance"
+              change={netChange}
             />
           </>
         )}
