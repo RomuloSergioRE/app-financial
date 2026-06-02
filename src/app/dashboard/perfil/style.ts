@@ -1,9 +1,13 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing.lg};
+
+  @media (min-width: 769px) {
+    grid-template-columns: 1fr 1fr;
+  }
 `;
 
 export const Section = styled.div`

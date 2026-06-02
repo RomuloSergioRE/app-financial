@@ -20,4 +20,8 @@ export const ChartContainer = styled.div`
   height: 300px;
   min-width: 0;
   min-height: 0;
+
+  @media (max-width: 768px) {
+    height: 240px;
+  }
 `;

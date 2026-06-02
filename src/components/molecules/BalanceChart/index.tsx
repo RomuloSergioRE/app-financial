@@ -8,6 +8,7 @@ import {
   Cell,
   ResponsiveContainer,
 } from "recharts";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import type { BalanceChartProps } from "./types";
 import * as S from "./style";
 
@@ -16,6 +17,7 @@ const currencyFormatter = (v: number) =>
 
 const BalanceChart = memo(function BalanceChart({ income, expense, netBalance }: BalanceChartProps) {
   const theme = useTheme();
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const data = [
     { name: "Receitas", value: income },
@@ -66,8 +68,8 @@ const BalanceChart = memo(function BalanceChart({ income, expense, netBalance }:
               nameKey="name"
               cx="50%"
               cy="50%"
-              innerRadius={80}
-              outerRadius={115}
+              innerRadius={isMobile ? 55 : 85}
+              outerRadius={isMobile ? 80 : 120}
               paddingAngle={3}
               strokeWidth={0}
             >

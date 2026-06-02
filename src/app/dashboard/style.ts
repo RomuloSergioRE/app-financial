@@ -28,12 +28,10 @@ export const HamburgerButton = styled.button<{ $isOpen: boolean }>`
   background: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.text};
   font-size: 1.125rem;
-  display: flex;
+  display: ${({ $isOpen }) => ($isOpen ? "none" : "flex")};
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: margin-left ${({ theme }) => theme.transition.slow};
-  margin-left: ${({ $isOpen }) => ($isOpen ? "172px" : "0px")};
 
   &:focus-visible {
     outline: 2px solid ${({ theme }) => theme.colors.secondary};

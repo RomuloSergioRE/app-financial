@@ -144,6 +144,7 @@ export const ModalForm = styled.div`
 
 export const FilterRow = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: end;
   gap: ${({ theme }) => theme.spacing.sm};
 `;
