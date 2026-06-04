@@ -39,7 +39,7 @@ const CustomTooltip = (props: Record<string, unknown>) => {
   );
 };
 
-const BalanceChart = memo(function BalanceChart({ income, expense, netBalance }: BalanceChartProps) {
+export const BalanceChart = memo(function BalanceChart({ income, expense, netBalance }: BalanceChartProps) {
   const theme = useTheme();
 
   const data = [
@@ -80,5 +80,3 @@ const BalanceChart = memo(function BalanceChart({ income, expense, netBalance }:
     </S.Wrapper>
   );
 });
-
-export { BalanceChart };
