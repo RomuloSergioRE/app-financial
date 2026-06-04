@@ -1,3 +1,5 @@
+"use client";
+
 import { memo } from "react";
 import { useTheme } from "styled-components";
 import type { SummaryCardProps, SummaryType } from "./types";

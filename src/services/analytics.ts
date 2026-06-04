@@ -1,23 +1,30 @@
 import api from "./api";
-import type {
-  BalanceResponse,
-  CategoryDistribution,
-} from "@/types";
+import { validateResponse } from "@/lib/validate-response";
+import {
+  balanceResponseSchema,
+  categoryDistributionSchema,
+} from "@/schemas/analytics.schema";
+import type { BalanceResponse, CategoryDistribution } from "@/types";
 
 export const analyticsService = {
-  balance: (params?: {
+  balance: async (params?: {
     startDate?: string;
     endDate?: string;
     categoryId?: string;
-  }) =>
-    api.get<BalanceResponse>("/analytics/balance", { params }),
+  }): Promise<BalanceResponse> => {
+    const response = await api.get("/analytics/balance", { params });
+    return validateResponse(balanceResponseSchema, response.data);
+  },
 
-  categories: (params?: {
+  categories: async (params?: {
     startDate?: string;
     endDate?: string;
     categoryId?: string;
-  }) =>
-    api.get<CategoryDistribution[]>("/analytics/categories", {
-      params,
-    }),
+  }): Promise<CategoryDistribution[]> => {
+    const response = await api.get("/analytics/categories", { params });
+    return validateResponse(
+      categoryDistributionSchema.array(),
+      response.data
+    );
+  },
 };

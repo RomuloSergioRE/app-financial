@@ -25,7 +25,7 @@ export default function CategoriasPage() {
   const [editColor, setEditColor] = useState("");
   const [deletingCategory, setDeletingCategory] = useState<Category | null>(null);
 
-  const { data, isLoading } = useCategories();
+  const categoriesState = useCategories();
   const createMutation = useCreateCategory();
   const deleteMutation = useDeleteCategory();
   const updateMutation = useUpdateCategory(editingCategory?.id ?? "");
@@ -59,7 +59,18 @@ export default function CategoriasPage() {
     });
   };
 
-  const categories = data?.data?.data ?? [];
+  if (categoriesState.status === "error") {
+    return (
+      <S.Wrapper>
+        <Text as="h1" size="3xl" weight="bold" fontFamily="display">
+          Categorias
+        </Text>
+        <Text color="danger">Erro ao carregar categorias: {categoriesState.error}</Text>
+      </S.Wrapper>
+    );
+  }
+
+  const categories = categoriesState.status === "success" ? categoriesState.data.data : [];
 
   return (
     <S.Wrapper>
@@ -81,7 +92,7 @@ export default function CategoriasPage() {
         </Button>
       </S.FormRow>
 
-      {isLoading ? (
+      {categoriesState.status === "loading" ? (
         <S.List>
           <Skeleton variant="rect" height="56px" />
           <Skeleton variant="rect" height="56px" />

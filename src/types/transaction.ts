@@ -10,7 +10,7 @@ export interface Transaction {
     name: string;
     color?: string;
     icon?: string;
-  };
+  } | null;
   createdAt: string;
   updatedAt: string;
 }

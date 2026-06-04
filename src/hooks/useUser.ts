@@ -2,13 +2,26 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { userService } from "@/services/users";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/components/atoms/Toast";
+import { mapAsyncState } from "@/lib/map-async-state";
+import type { AsyncState } from "@/types/async";
 
-export function useProfile() {
-  return useQuery({
+export function useProfile(): AsyncState<ProfileDTO> {
+  const query = useQuery({
     queryKey: ["user", "profile"],
     queryFn: () => userService.getProfile(),
   });
+  return mapAsyncState(query);
 }
+
+type ProfileDTO = {
+  id: number;
+  name: string;
+  email: string;
+  role: "user" | "admin";
+  status: "active" | "inactive" | "suspended";
+  createdAt: string;
+  updatedAt: string;
+};
 
 export function useUpdateProfile() {
   const queryClient = useQueryClient();

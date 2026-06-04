@@ -41,9 +41,9 @@ export default function DashboardPage() {
   const [period, setPeriod] = useState<Period>("month");
   const { startDate, endDate } = getDateRange(period);
 
-  const { data: balanceData, isLoading: balanceLoading } = useBalance(startDate, endDate);
-  const { data: categoriesData, isLoading: categoriesLoading } = useCategoriesAnalytics(startDate, endDate);
-  const { data: recentData } = useTransactions(1, 5);
+  const balanceState = useBalance(startDate, endDate);
+  const categoriesState = useCategoriesAnalytics(startDate, endDate);
+  const recentState = useTransactions(1, 5);
 
   const currentStart = new Date(startDate);
   const currentEnd = new Date(endDate);
@@ -51,10 +51,14 @@ export default function DashboardPage() {
   const prevStart = new Date(currentStart.getTime() - durationMs).toISOString().split("T")[0];
   const prevEnd = currentStart.toISOString().split("T")[0];
 
-  const { data: prevBalanceData } = useBalance(prevStart, prevEnd);
+  const prevBalanceState = useBalance(prevStart, prevEnd);
 
-  const rawBalance = balanceData?.data;
-  const prevRawBalance = prevBalanceData?.data;
+  const balanceLoading = balanceState.status === "loading";
+  const categoriesLoading = categoriesState.status === "loading";
+
+  const rawBalance = balanceState.status === "success" ? balanceState.data : undefined;
+  const prevRawBalance = prevBalanceState.status === "success" ? prevBalanceState.data : undefined;
+
   const balance = rawBalance
     ? {
         totalIncome: rawBalance.totalIncome / 100,
@@ -81,13 +85,13 @@ export default function DashboardPage() {
   const netChange = rawBalance ? calcChange(rawBalance.netBalance, prevRawBalance?.netBalance) : undefined;
 
   const categories = useMemo(
-    () => (categoriesData?.data ?? []).map((c) => ({
+    () => (categoriesState.status === "success" ? categoriesState.data : []).map((c) => ({
       ...c,
       totalAmount: c.totalAmount / 100,
     })),
-    [categoriesData]
+    [categoriesState]
   );
-  const recentTransactions = recentData?.data?.data ?? [];
+  const recentTransactions = recentState.status === "success" ? recentState.data.data : [];
 
   return (
     <S.Wrapper>

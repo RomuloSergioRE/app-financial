@@ -1,26 +1,66 @@
 import api from "./api";
-import type {
-  Transaction,
-  CreateTransactionRequest,
-  UpdateTransactionRequest,
-  PaginatedResponse,
-} from "@/types";
+import { validateResponse } from "@/lib/validate-response";
+import { transactionSchema } from "@/schemas/transaction.schema";
+import { paginatedResponseSchema } from "@/schemas/api.schema";
+import type { Transaction } from "@/types";
+import type { PaginatedResponseDTO } from "@/schemas/api.schema";
 
 export const transactionService = {
-  list: (page = 1, limit = 10, categoryId?: string, startDate?: string, endDate?: string, search?: string) =>
-    api.get<PaginatedResponse<Transaction>>("/transactions", {
-      params: { page, limit, ...(categoryId && { categoryId }), ...(startDate && { startDate }), ...(endDate && { endDate }), ...(search && { search }) },
-    }),
+  list: async (
+    page = 1,
+    limit = 10,
+    categoryId?: string,
+    startDate?: string,
+    endDate?: string,
+    search?: string
+  ): Promise<PaginatedResponseDTO<Transaction>> => {
+    const response = await api.get("/transactions", {
+      params: {
+        page,
+        limit,
+        ...(categoryId && { categoryId }),
+        ...(startDate && { startDate }),
+        ...(endDate && { endDate }),
+        ...(search && { search }),
+      },
+    });
+    return validateResponse(
+      paginatedResponseSchema(transactionSchema),
+      response.data
+    );
+  },
 
-  getById: (id: string) =>
-    api.get<Transaction>(`/transactions/${id}`),
+  getById: async (id: string): Promise<Transaction> => {
+    const response = await api.get(`/transactions/${id}`);
+    return validateResponse(transactionSchema, response.data);
+  },
 
-  create: (data: CreateTransactionRequest) =>
-    api.post<Transaction>("/transactions", data),
+  create: async (data: {
+    description: string;
+    amount: number;
+    type: "income" | "outcome";
+    date: string;
+    categoryId: string;
+  }): Promise<Transaction> => {
+    const response = await api.post("/transactions", data);
+    return validateResponse(transactionSchema, response.data);
+  },
 
-  update: (id: string, data: UpdateTransactionRequest) =>
-    api.put<Transaction>(`/transactions/${id}`, data),
+  update: async (
+    id: string,
+    data: Partial<{
+      description: string;
+      amount: number;
+      type: "income" | "outcome";
+      date: string;
+      categoryId: string;
+    }>
+  ): Promise<Transaction> => {
+    const response = await api.put(`/transactions/${id}`, data);
+    return validateResponse(transactionSchema, response.data);
+  },
 
-  delete: (id: string) =>
-    api.delete(`/transactions/${id}`),
+  delete: async (id: string): Promise<void> => {
+    await api.delete(`/transactions/${id}`);
+  },
 };

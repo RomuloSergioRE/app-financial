@@ -11,8 +11,6 @@ import Cookies from "js-cookie";
 import { authService } from "@/services/auth";
 import type { User, LoginRequest, RegisterRequest } from "@/types";
 
-import api from "@/services/api";
-
 function getUserFromToken(): User | null {
   if (typeof window === "undefined") return null;
 
@@ -52,16 +50,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(getUserFromToken);
 
   const login = useCallback(async (data: LoginRequest) => {
-    const response = await authService.login(data);
-    const { user: userData, token, refreshToken } = response.data;
+    const { user: userData, token, refreshToken } = await authService.login(data);
     Cookies.set("jwt_token", token, { expires: 7, sameSite: "strict", secure: process.env.NODE_ENV === "production" });
     Cookies.set("refresh_token", refreshToken, { expires: 30, sameSite: "strict", secure: process.env.NODE_ENV === "production" });
     setUser(userData);
   }, []);
 
   const register = useCallback(async (data: RegisterRequest) => {
-    const response = await authService.register(data);
-    const { user: userData, token, refreshToken } = response.data;
+    const { user: userData, token, refreshToken } = await authService.register(data);
     Cookies.set("jwt_token", token, { expires: 7, sameSite: "strict", secure: process.env.NODE_ENV === "production" });
     Cookies.set("refresh_token", refreshToken, { expires: 30, sameSite: "strict", secure: process.env.NODE_ENV === "production" });
     setUser(userData);
@@ -69,8 +65,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const refreshUser = useCallback(async () => {
     try {
-      const response = await api.get<User>("/auth/me");
-      setUser(response.data);
+      const userData = await authService.getProfile();
+      setUser(userData);
     } catch {
       setUser(null);
     }

@@ -1,26 +1,47 @@
 import api from "./api";
-import type {
-  Category,
-  CreateCategoryRequest,
-  UpdateCategoryRequest,
-  PaginatedResponse,
-} from "@/types";
+import { validateResponse } from "@/lib/validate-response";
+import { categorySchema } from "@/schemas/category.schema";
+import { paginatedResponseSchema } from "@/schemas/api.schema";
+import type { Category } from "@/types";
+import type { PaginatedResponseDTO } from "@/schemas/api.schema";
 
 export const categoryService = {
-  list: (page = 1, limit = 50) =>
-    api.get<PaginatedResponse<Category>>("/categories", {
+  list: async (
+    page = 1,
+    limit = 50
+  ): Promise<PaginatedResponseDTO<Category>> => {
+    const response = await api.get("/categories", {
       params: { page, limit },
-    }),
+    });
+    return validateResponse(
+      paginatedResponseSchema(categorySchema),
+      response.data
+    );
+  },
 
-  getById: (id: string) =>
-    api.get<Category>(`/categories/${id}`),
+  getById: async (id: string): Promise<Category> => {
+    const response = await api.get(`/categories/${id}`);
+    return validateResponse(categorySchema, response.data);
+  },
 
-  create: (data: CreateCategoryRequest) =>
-    api.post<Category>("/categories", data),
+  create: async (data: {
+    name: string;
+    color?: string;
+    icon?: string;
+  }): Promise<Category> => {
+    const response = await api.post("/categories", data);
+    return validateResponse(categorySchema, response.data);
+  },
 
-  update: (id: string, data: UpdateCategoryRequest) =>
-    api.put<Category>(`/categories/${id}`, data),
+  update: async (
+    id: string,
+    data: Partial<{ name: string; color?: string; icon?: string }>
+  ): Promise<Category> => {
+    const response = await api.put(`/categories/${id}`, data);
+    return validateResponse(categorySchema, response.data);
+  },
 
-  delete: (id: string) =>
-    api.delete(`/categories/${id}`),
+  delete: async (id: string): Promise<void> => {
+    await api.delete(`/categories/${id}`);
+  },
 };

@@ -39,8 +39,8 @@ export default function TransacoesPage() {
   const debouncedSearch = useDebounce(search, 300);
   const [deletingTx, setDeletingTx] = useState<Transaction | null>(null);
 
-  const { data, isLoading } = useTransactions(page, 10, categoryFilter || undefined, startDate || undefined, endDate || undefined, debouncedSearch || undefined);
-  const { data: categoriesData } = useCategories();
+  const transactionsState = useTransactions(page, 10, categoryFilter || undefined, startDate || undefined, endDate || undefined, debouncedSearch || undefined);
+  const categoriesState = useCategories();
   const createMutation = useCreateTransaction();
   const deleteMutation = useDeleteTransaction();
   const updateMutation = useUpdateTransaction(editingTx?.id ?? "");
@@ -94,9 +94,20 @@ export default function TransacoesPage() {
     });
   };
 
-  const transactions = data?.data?.data ?? [];
-  const totalPages = data?.data?.pagination?.totalPages ?? 1;
-  const categories = categoriesData?.data?.data ?? [];
+  if (transactionsState.status === "error") {
+    return (
+      <S.Wrapper>
+        <Text as="h1" size="3xl" weight="bold" fontFamily="display">
+          Transações
+        </Text>
+        <Text color="danger">Erro ao carregar transações: {transactionsState.error}</Text>
+      </S.Wrapper>
+    );
+  }
+
+  const transactions = transactionsState.status === "success" ? transactionsState.data.data : [];
+  const totalPages = transactionsState.status === "success" ? transactionsState.data.pagination.totalPages : 1;
+  const categories = categoriesState.status === "success" ? categoriesState.data.data : [];
 
   return (
     <S.Wrapper>
@@ -205,7 +216,7 @@ export default function TransacoesPage() {
         </S.FormGroup>
       </S.FilterRow>
 
-      {isLoading ? (
+      {transactionsState.status === "loading" ? (
         <S.TableWrapper>
           <Skeleton variant="rect" height="240px" />
         </S.TableWrapper>

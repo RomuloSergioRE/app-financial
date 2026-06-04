@@ -1,24 +1,46 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/components/atoms/Toast";
 import { transactionService } from "@/services/transactions";
+import { mapAsyncState } from "@/lib/map-async-state";
+import type { AsyncState } from "@/types/async";
 import type {
   CreateTransactionRequest,
   UpdateTransactionRequest,
 } from "@/types";
+import type { PaginatedResponseDTO } from "@/schemas/api.schema";
 
-export function useTransactions(page = 1, limit = 10, categoryId?: string, startDate?: string, endDate?: string, search?: string) {
-  return useQuery({
+export function useTransactions(page = 1, limit = 10, categoryId?: string, startDate?: string, endDate?: string, search?: string): AsyncState<PaginatedResponseDTO<TransactionDTO>> {
+  const query = useQuery({
     queryKey: ["transactions", page, limit, categoryId, startDate, endDate, search],
     queryFn: () => transactionService.list(page, limit, categoryId, startDate, endDate, search),
   });
+  return mapAsyncState(query);
 }
 
-function useTransaction(id: string) {
-  return useQuery({
+type TransactionDTO = {
+  id: string;
+  description: string;
+  amount: number;
+  type: "income" | "outcome";
+  date: string;
+  categoryId: string;
+  category?: {
+    id: string;
+    name: string;
+    color?: string;
+    icon?: string;
+  } | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+function useTransaction(id: string): AsyncState<TransactionDTO> {
+  const query = useQuery({
     queryKey: ["transactions", id],
     queryFn: () => transactionService.getById(id),
     enabled: !!id,
   });
+  return mapAsyncState(query);
 }
 
 export function useCreateTransaction() {

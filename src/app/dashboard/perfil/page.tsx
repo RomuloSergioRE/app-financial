@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { Text } from "@/components/atoms/Text";
 import { Input } from "@/components/atoms/Input";
 import { PasswordInput } from "@/components/atoms/PasswordInput";
@@ -11,7 +11,7 @@ import { useProfile, useUpdateProfile, useUpdatePassword } from "@/hooks/useUser
 import * as S from "./style";
 
 export default function PerfilPage() {
-  const { data: profileData, isLoading } = useProfile();
+  const profileState = useProfile();
   const updateProfile = useUpdateProfile();
   const updatePassword = useUpdatePassword();
   const loaded = useRef(false);
@@ -22,17 +22,34 @@ export default function PerfilPage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const user = profileData?.data;
+  if (profileState.status === "loading") {
+    return (
+      <S.Wrapper>
+        <Text as="h1" size="3xl" weight="bold" fontFamily="display">Perfil</Text>
+        <Skeleton variant="rect" height="240px" />
+        <Skeleton variant="rect" height="200px" />
+      </S.Wrapper>
+    );
+  }
 
-  useEffect(() => {
-    if (user && !loaded.current) {
-      loaded.current = true;
-      setName(user.name || "");
-      setEmail(user.email || "");
-    }
-  }, [user]);
+  if (profileState.status === "error") {
+    return (
+      <S.Wrapper>
+        <Text as="h1" size="3xl" weight="bold" fontFamily="display">Perfil</Text>
+        <Text color="danger">{profileState.error}</Text>
+      </S.Wrapper>
+    );
+  }
 
-  const isProfileDirty = name !== user?.name || email !== user?.email;
+  const user = profileState.data;
+
+  if (!loaded.current) {
+    loaded.current = true;
+    setName(user.name || "");
+    setEmail(user.email || "");
+  }
+
+  const isProfileDirty = name !== user.name || email !== user.email;
 
   const handleSaveProfile = () => {
     updateProfile.mutate(
@@ -59,25 +76,6 @@ export default function PerfilPage() {
       }
     );
   };
-
-  if (isLoading) {
-    return (
-      <S.Wrapper>
-        <Text as="h1" size="3xl" weight="bold" fontFamily="display">Perfil</Text>
-        <Skeleton variant="rect" height="240px" />
-        <Skeleton variant="rect" height="200px" />
-      </S.Wrapper>
-    );
-  }
-
-  if (!user) {
-    return (
-      <S.Wrapper>
-        <Text as="h1" size="3xl" weight="bold" fontFamily="display">Perfil</Text>
-        <Text color="danger">Erro ao carregar perfil.</Text>
-      </S.Wrapper>
-    );
-  }
 
   return (
     <S.Wrapper>

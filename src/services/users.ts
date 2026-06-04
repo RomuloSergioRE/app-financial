@@ -1,22 +1,26 @@
 import api from "./api";
+import { validateResponse } from "@/lib/validate-response";
+import { userSchema } from "@/schemas/auth.schema";
 import type { User } from "@/types";
 
-interface UpdateProfileRequest {
-  name?: string;
-  email?: string;
-}
-
-interface UpdatePasswordRequest {
-  currentPassword: string;
-  newPassword: string;
-}
-
 export const userService = {
-  getProfile: () => api.get<User>("/auth/me"),
+  getProfile: async (): Promise<User> => {
+    const response = await api.get("/auth/me");
+    return validateResponse(userSchema, response.data);
+  },
 
-  updateProfile: (data: UpdateProfileRequest) =>
-    api.put<User>("/auth/profile", data),
+  updateProfile: async (data: {
+    name?: string;
+    email?: string;
+  }): Promise<User> => {
+    const response = await api.put("/auth/profile", data);
+    return validateResponse(userSchema, response.data);
+  },
 
-  updatePassword: (data: UpdatePasswordRequest) =>
-    api.put("/auth/password", data),
+  updatePassword: async (data: {
+    currentPassword: string;
+    newPassword: string;
+  }): Promise<void> => {
+    await api.put("/auth/password", data);
+  },
 };
