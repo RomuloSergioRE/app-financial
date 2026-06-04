@@ -1,26 +1,6 @@
-export interface Transaction {
-  id: string;
-  description: string;
-  amount: number;
-  type: "income" | "outcome";
-  date: string;
-  categoryId: string;
-  category?: {
-    id: string;
-    name: string;
-    color?: string;
-    icon?: string;
-  } | null;
-  createdAt: string;
-  updatedAt: string;
-}
+import type { z } from "zod/v4";
+import type { transactionSchema, createTransactionSchema } from "@/schemas/transaction.schema";
 
-export interface CreateTransactionRequest {
-  description: string;
-  amount: number;
-  type: "income" | "outcome";
-  date: string;
-  categoryId: string;
-}
-
-export type UpdateTransactionRequest = Partial<CreateTransactionRequest>
+export type Transaction = z.infer<typeof transactionSchema>;
+export type CreateTransactionRequest = z.infer<typeof createTransactionSchema>;
+export type UpdateTransactionRequest = Partial<CreateTransactionRequest>;

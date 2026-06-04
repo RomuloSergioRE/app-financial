@@ -1,17 +1,6 @@
-export interface Category {
-  id: string;
-  name: string;
-  color?: string | null;
-  icon?: string | null;
-  userId?: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
+import type { z } from "zod/v4";
+import type { categorySchema, createCategorySchema } from "@/schemas/category.schema";
 
-export interface CreateCategoryRequest {
-  name: string;
-  color?: string;
-  icon?: string;
-}
-
+export type Category = z.infer<typeof categorySchema>;
+export type CreateCategoryRequest = z.infer<typeof createCategorySchema>;
 export type UpdateCategoryRequest = Partial<CreateCategoryRequest>;

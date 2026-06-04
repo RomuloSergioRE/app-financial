@@ -7,7 +7,7 @@ export function validateResponse<T extends z.ZodTypeAny>(
   const result = schema.safeParse(data);
   if (!result.success) {
     console.error("[API Validation Error]", result.error.issues);
-    throw new Error(`Resposta da API inválida: ${result.error.message}`);
+    throw new Error("Resposta da API inválida");
   }
   return result.data;
 }

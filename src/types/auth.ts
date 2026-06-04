@@ -1,26 +1,7 @@
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
+import type { z } from "zod/v4";
+import type { userSchema, authResponseSchema, loginSchema, registerSchema } from "@/schemas/auth.schema";
 
-export interface RegisterRequest {
-  name: string;
-  email: string;
-  password: string;
-}
-
-export interface AuthResponse {
-  user: User;
-  token: string;
-  refreshToken: string;
-}
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: "user" | "admin";
-  status: "active" | "inactive" | "suspended";
-  createdAt: string;
-  updatedAt: string;
-}
+export type User = z.infer<typeof userSchema>;
+export type AuthResponse = z.infer<typeof authResponseSchema>;
+export type LoginRequest = z.infer<typeof loginSchema>;
+export type RegisterRequest = Omit<z.infer<typeof registerSchema>, "confirmPassword">;

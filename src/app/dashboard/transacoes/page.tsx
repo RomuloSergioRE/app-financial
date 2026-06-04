@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/atoms/Skeleton";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
+import { Pagination } from "@/components/molecules/Pagination";
 import { useCategories } from "@/hooks/useCategories";
 import {
   useTransactions,
@@ -81,7 +82,7 @@ export default function TransacoesPage() {
         description: data.description,
         amount: Math.round(data.amount * 100),
         type: data.type,
-        date: new Date().toISOString(),
+        date: new Date(data.date).toISOString(),
         categoryId: data.categoryId,
       },
       {
@@ -109,6 +110,7 @@ export default function TransacoesPage() {
         description: data.description,
         amount: Math.round(data.amount * 100),
         type: data.type,
+        date: new Date(data.date).toISOString(),
         categoryId: data.categoryId,
       },
       { onSuccess: () => setEditingTx(null) }
@@ -184,6 +186,14 @@ export default function TransacoesPage() {
                   { value: "", label: "Selecione" },
                   ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
                 ]}
+              />
+            </S.FormGroup>
+            <S.FormGroup>
+              <S.Label>Data</S.Label>
+              <Input
+                type="date"
+                error={createForm.formState.errors.date?.message}
+                {...createForm.register("date")}
               />
             </S.FormGroup>
           </S.FormRow>
@@ -299,52 +309,7 @@ export default function TransacoesPage() {
             </S.Table>
           </S.TableWrapper>
 
-          {totalPages > 1 && (
-            <S.Pagination>
-              <Button
-                variant="outline"
-                size="sm"
-                disabled={page <= 1}
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
-              >
-                Anterior
-              </Button>
-              {(() => {
-                const pages: (number | "...")[] = [];
-                const range = 2;
-                const start = Math.max(2, page - range);
-                const end = Math.min(totalPages - 1, page + range);
-
-                pages.push(1);
-                if (start > 2) pages.push("...");
-                for (let i = start; i <= end; i++) pages.push(i);
-                if (end < totalPages - 1) pages.push("...");
-                if (totalPages > 1) pages.push(totalPages);
-
-                return pages.map((p, i) =>
-                  p === "..." ? (
-                    <S.PageDots key={`dots-${i}`}>...</S.PageDots>
-                  ) : (
-                    <S.PageButton
-                      key={p}
-                      $active={p === page}
-                      onClick={() => setPage(p)}
-                    >
-                      {p}
-                    </S.PageButton>
-                  )
-                );
-              })()}
-              <Button
-                variant="outline"
-                size="sm"
-                disabled={page >= totalPages}
-                onClick={() => setPage((p) => p + 1)}
-              >
-                Próximo
-              </Button>
-            </S.Pagination>
-          )}
+          <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
         </>
       )}
 
@@ -391,6 +356,14 @@ export default function TransacoesPage() {
                   { value: "", label: "Selecione" },
                   ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
                 ]}
+              />
+            </S.FormGroup>
+            <S.FormGroup>
+              <S.Label>Data</S.Label>
+              <Input
+                type="date"
+                error={editForm.formState.errors.date?.message}
+                {...editForm.register("date")}
               />
             </S.FormGroup>
             <S.ModalActions>

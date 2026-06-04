@@ -1,9 +1,8 @@
 "use client";
 
 import { createContext, useContext, useState, useCallback, useMemo, useEffect } from "react";
-import theme from "@/styles/theme";
+import theme, { type Theme } from "@/styles/theme";
 import themeLight from "@/styles/themeLight";
-import type { Theme } from "@/styles/theme";
 
 type ThemeMode = "dark" | "light";
 
@@ -42,7 +41,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo<ThemeContextValue>(
     () => ({
       mode,
-      themeObject: mode === "dark" ? theme : (themeLight as unknown as Theme),
+      themeObject: mode === "dark" ? theme : (themeLight satisfies Theme),
       toggleTheme,
       setTheme,
     }),

@@ -29,7 +29,7 @@ api.interceptors.response.use(
             {},
             { headers: { Authorization: `Bearer ${refreshTokenValue}` } }
           );
-          Cookies.set("jwt_token", data.token, { expires: 7, sameSite: "strict", secure: process.env.NODE_ENV === "production" });
+          Cookies.set("jwt_token", data.token, { expires: 7, sameSite: "lax", secure: true, partitioned: true });
           error.config.headers.Authorization = `Bearer ${data.token}`;
           return api(error.config);
         } catch {

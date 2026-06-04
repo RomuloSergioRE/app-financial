@@ -8,6 +8,7 @@ import type {
   UpdateTransactionRequest,
 } from "@/types";
 import type { PaginatedResponseDTO } from "@/schemas/api.schema";
+import type { TransactionDTO } from "@/schemas/transaction.schema";
 
 export function useTransactions(page = 1, limit = 10, categoryId?: string, startDate?: string, endDate?: string, search?: string): AsyncState<PaginatedResponseDTO<TransactionDTO>> {
   const query = useQuery({
@@ -16,23 +17,6 @@ export function useTransactions(page = 1, limit = 10, categoryId?: string, start
   });
   return mapAsyncState(query);
 }
-
-type TransactionDTO = {
-  id: string;
-  description: string;
-  amount: number;
-  type: "income" | "outcome";
-  date: string;
-  categoryId: string;
-  category?: {
-    id: string;
-    name: string;
-    color?: string;
-    icon?: string;
-  } | null;
-  createdAt: string;
-  updatedAt: string;
-};
 
 function useTransaction(id: string): AsyncState<TransactionDTO> {
   const query = useQuery({
