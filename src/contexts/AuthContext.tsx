@@ -7,14 +7,14 @@ import {
   useCallback,
   type ReactNode,
 } from "react";
-import Cookies from "js-cookie";
+import { cookie } from "@/lib/cookie";
 import { authService } from "@/services/auth.service";
 import type { User, LoginRequest, RegisterRequest } from "@/types";
 
 function getUserFromToken(): User | null {
   if (typeof window === "undefined") return null;
 
-  const token = Cookies.get("jwt_token");
+  const token = cookie.getToken("jwt_token");
   if (!token) return null;
 
   try {
@@ -32,8 +32,8 @@ function getUserFromToken(): User | null {
       updatedAt: payload.updatedAt || "",
     };
   } catch {
-    Cookies.remove("jwt_token");
-    Cookies.remove("refresh_token");
+    cookie.removeToken("jwt_token");
+    cookie.removeToken("refresh_token");
     return null;
   }
 }
@@ -53,16 +53,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(getUserFromToken);
 
   const login = useCallback(async (data: LoginRequest) => {
-    const { user: userData, token, refreshToken } = await authService.login(data);
-    Cookies.set("jwt_token", token, { expires: 7, sameSite: "lax", secure: true, partitioned: true });
-    Cookies.set("refresh_token", refreshToken, { expires: 30, sameSite: "lax", secure: true, partitioned: true });
+    const { user: userData, accessToken, refreshToken } = await authService.login(data);
+    cookie.setToken("jwt_token", accessToken, 7);
+    cookie.setToken("refresh_token", refreshToken, 30);
     setUser(userData);
   }, []);
 
   const register = useCallback(async (data: RegisterRequest) => {
-    const { user: userData, token, refreshToken } = await authService.register(data);
-    Cookies.set("jwt_token", token, { expires: 7, sameSite: "lax", secure: true, partitioned: true });
-    Cookies.set("refresh_token", refreshToken, { expires: 30, sameSite: "lax", secure: true, partitioned: true });
+    const { user: userData, accessToken, refreshToken } = await authService.register(data);
+    cookie.setToken("jwt_token", accessToken, 7);
+    cookie.setToken("refresh_token", refreshToken, 30);
     setUser(userData);
   }, []);
 
@@ -76,8 +76,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(() => {
-    Cookies.remove("jwt_token");
-    Cookies.remove("refresh_token");
+    cookie.removeToken("jwt_token");
+    cookie.removeToken("refresh_token");
     setUser(null);
     window.location.href = "/login";
   }, []);

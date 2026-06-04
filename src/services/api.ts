@@ -1,5 +1,5 @@
 import axios from "axios";
-import Cookies from "js-cookie";
+import { cookie } from "@/lib/cookie";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
@@ -10,7 +10,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = Cookies.get("jwt_token");
+  const token = cookie.getToken("jwt_token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -21,20 +21,19 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      const refreshTokenValue = Cookies.get("refresh_token");
+      const refreshTokenValue = cookie.getToken("refresh_token");
       if (refreshTokenValue) {
         try {
           const { data } = await axios.post(
             `${api.defaults.baseURL}/auth/refresh`,
-            {},
-            { headers: { Authorization: `Bearer ${refreshTokenValue}` } }
+            { refreshToken: refreshTokenValue }
           );
-          Cookies.set("jwt_token", data.token, { expires: 7, sameSite: "lax", secure: true, partitioned: true });
-          error.config.headers.Authorization = `Bearer ${data.token}`;
+          cookie.setToken("jwt_token", data.accessToken, 7);
+          error.config.headers.Authorization = `Bearer ${data.accessToken}`;
           return api(error.config);
         } catch {
-          Cookies.remove("jwt_token");
-          Cookies.remove("refresh_token");
+          cookie.removeToken("jwt_token");
+          cookie.removeToken("refresh_token");
           if (typeof window !== "undefined") {
             window.location.href = "/login";
           }

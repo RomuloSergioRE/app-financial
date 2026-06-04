@@ -1,10 +1,10 @@
 import { z } from "zod/v4";
 
 export const userSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   name: z.string(),
   email: z.string().email(),
-  role: z.enum(["user", "admin"]),
+  role: z.enum(["user", "admin", "company"]),
   status: z.enum(["active", "inactive", "suspended"]),
   createdAt: z.string(),
   updatedAt: z.string(),
@@ -14,7 +14,7 @@ export type UserDTO = z.infer<typeof userSchema>;
 
 export const authResponseSchema = z.object({
   user: userSchema,
-  token: z.string(),
+  accessToken: z.string(),
   refreshToken: z.string(),
 });
 
