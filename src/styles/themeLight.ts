@@ -32,9 +32,11 @@ const themeLight = {
   },
   breakpoints: {
     mobile: "480px",
+    sm: "640px",
     tablet: "768px",
     desktop: "1024px",
     wide: "1280px",
+    "2xl": "1536px",
   },
   spacing: {
     xs: "4px",
@@ -79,7 +81,5 @@ const themeLight = {
     slow: "0.3s ease",
   },
 } as const;
-
-export type ThemeLight = typeof themeLight;
 
 export default themeLight;

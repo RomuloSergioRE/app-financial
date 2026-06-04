@@ -8,7 +8,9 @@ export const Wrapper = styled.div<{ $accent: string }>`
   padding: ${({ theme }) => theme.spacing.lg};
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
+  overflow-wrap: break-word;
+  word-break: break-word;
 `;
 
 export const HeaderRow = styled.div`

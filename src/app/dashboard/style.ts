@@ -21,8 +21,8 @@ export const HamburgerWrapper = styled.div`
 
 export const HamburgerButton = styled.button<{ $isOpen: boolean }>`
   pointer-events: auto;
-  width: 36px;
-  height: 36px;
+  min-width: 44px;
+  min-height: 44px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   background: ${({ theme }) => theme.colors.surface};
@@ -77,7 +77,7 @@ export const HeaderActions = styled.div`
 export const Title = styled.h1`
   margin: 0;
   font-family: ${({ theme }) => theme.fonts.display};
-  font-size: ${({ theme }) => theme.fontSize["3xl"]};
+  font-size: clamp(1.25rem, 4vw, 2rem);
   font-weight: 700;
   color: ${({ theme }) => theme.colors.text};
   letter-spacing: -0.03em;

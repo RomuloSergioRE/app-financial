@@ -21,7 +21,7 @@ export const Card = styled.div`
 
 export const Title = styled.h1`
   font-family: ${({ theme }) => theme.fonts.display};
-  font-size: ${({ theme }) => theme.fontSize["3xl"]};
+  font-size: clamp(1.25rem, 4vw, 2rem);
   font-weight: 700;
   color: ${({ theme }) => theme.colors.text};
   text-align: center;

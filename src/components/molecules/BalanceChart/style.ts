@@ -17,13 +17,9 @@ export const Title = styled.h3`
 
 export const ChartContainer = styled.div`
   width: 100%;
-  height: 260px;
+  height: clamp(180px, 30vw, 260px);
   min-width: 0;
   min-height: 0;
-
-  @media (max-width: 768px) {
-    height: 210px;
-  }
 `;
 
 export const BalanceInfo = styled.div`

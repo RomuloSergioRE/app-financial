@@ -5,15 +5,16 @@ export type ToastType = "success" | "error" | "info" | "warning";
 export const ToastContainer = styled.div<{ $color: string }>`
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-width: 320px;
-  max-width: 420px;
-  padding: 12px 14px;
+  gap: ${({ theme }) => theme.spacing.sm};
+  width: min(420px, calc(100vw - 32px));
+  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   box-shadow: ${({ theme }) => theme.shadow.md};
   border-left: 3px solid ${({ $color }) => $color};
+  overflow-wrap: break-word;
+  word-break: break-word;
 `;
 
 export const ToastIcon = styled.span`
@@ -21,14 +22,14 @@ export const ToastIcon = styled.span`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 18px;
+  font-size: ${({ theme }) => theme.fontSize.lg};
   line-height: 1;
 `;
 
 export const ToastMessage = styled.span`
   flex: 1;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.colors.text};
   line-height: 1.4;
 `;
@@ -38,8 +39,8 @@ export const CloseButton = styled.button`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0;
   border: none;
   background: transparent;
