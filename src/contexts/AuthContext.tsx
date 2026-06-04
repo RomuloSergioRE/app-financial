@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import Cookies from "js-cookie";
-import { authService } from "@/services/auth";
+import { authService } from "@/services/auth.service";
 import type { User, LoginRequest, RegisterRequest } from "@/types";
 
 function getUserFromToken(): User | null {

@@ -9,12 +9,7 @@ import {
 } from "react-icons/hi2";
 import * as S from "./style";
 import type { ToastType } from "./style";
-
-interface ToastContentProps {
-  type: ToastType;
-  message: string;
-  toastId: string | number;
-}
+import type { ToastContentProps } from "./types";
 
 const ToastContent = memo(function ToastContent({ type, message, toastId }: ToastContentProps) {
   const theme = useTheme();

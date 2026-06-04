@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/components/atoms/Toast";
-import { transactionService } from "@/services/transactions";
+import { transactionService } from "@/services/transaction.service";
 import { mapAsyncState } from "@/lib/map-async-state";
 import type { AsyncState } from "@/types/async";
 import type {
