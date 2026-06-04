@@ -1,14 +1,7 @@
-import { ReactNode } from "react";
+import type { EmptyStateProps } from "./types";
 import * as S from "./style";
 
-interface EmptyStateProps {
-  icon?: ReactNode;
-  title: string;
-  description?: string;
-  action?: ReactNode;
-}
-
-export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
+export function EmptyState({ icon = undefined, title, description = undefined, action = undefined }: EmptyStateProps) {
   return (
     <S.Wrapper>
       {icon && <S.Icon>{icon}</S.Icon>}

@@ -9,9 +9,9 @@ export function Select({
   value,
   onChange,
   options,
-  placeholder,
-  error,
-  disabled,
+  placeholder = "Selecione...",
+  error = undefined,
+  disabled = false,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { userService } from "@/services/users";
+import { userService } from "@/services/user.service";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/components/atoms/Toast";
 import { mapAsyncState } from "@/lib/map-async-state";
