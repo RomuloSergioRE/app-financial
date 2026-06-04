@@ -17,7 +17,7 @@ type ProfileDTO = {
   id: number;
   name: string;
   email: string;
-  role: "user" | "admin";
+  role: "user" | "admin" | "company";
   status: "active" | "inactive" | "suspended";
   createdAt: string;
   updatedAt: string;
