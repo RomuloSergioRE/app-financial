@@ -16,10 +16,12 @@ export const Wrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   padding: ${({ theme }) => theme.spacing.lg};
-  min-width: 400px;
+  width: min(400px, calc(100vw - 32px));
   max-width: 90vw;
   max-height: 85vh;
   overflow-y: auto;
+  overflow-wrap: break-word;
+  word-break: break-word;
   z-index: 999;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 `;

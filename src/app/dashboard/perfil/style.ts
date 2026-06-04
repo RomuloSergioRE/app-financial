@@ -59,7 +59,7 @@ export const StaticValue = styled.span`
   font-size: ${({ theme }) => theme.fontSize.md};
   color: ${({ theme }) => theme.colors.text};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
-  padding: 8px 0;
+  padding: ${({ theme }) => theme.spacing.sm} 0;
 `;
 
 export const Actions = styled.div`

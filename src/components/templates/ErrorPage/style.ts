@@ -23,7 +23,7 @@ export const Description = styled.p`
 export const RetryButton = styled.button`
   padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.onPrimary};
   border: none;
   border-radius: ${({ theme }) => theme.borderRadius.md};
   cursor: pointer;

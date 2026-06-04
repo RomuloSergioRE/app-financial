@@ -32,9 +32,11 @@ const theme = {
   },
   breakpoints: {
     mobile: "480px",
+    sm: "640px",
     tablet: "768px",
     desktop: "1024px",
     wide: "1280px",
+    "2xl": "1536px",
   },
   spacing: {
     xs: "4px",
@@ -80,6 +82,16 @@ const theme = {
   },
 } as const;
 
-export type Theme = typeof theme;
+export interface Theme {
+  colors: Record<keyof typeof theme.colors, string>;
+  fonts: Record<keyof typeof theme.fonts, string>;
+  breakpoints: Record<keyof typeof theme.breakpoints, string>;
+  spacing: Record<keyof typeof theme.spacing, string>;
+  borderRadius: Record<keyof typeof theme.borderRadius, string>;
+  fontSize: Record<keyof typeof theme.fontSize, string>;
+  fontWeight: Record<keyof typeof theme.fontWeight, number>;
+  shadow: Record<keyof typeof theme.shadow, string>;
+  transition: Record<keyof typeof theme.transition, string>;
+}
 
 export default theme;

@@ -13,8 +13,8 @@ export const ToggleButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  min-width: 44px;
+  min-height: 44px;
   border: none;
   background: transparent;
   color: ${({ theme }) => theme.colors.textMuted};

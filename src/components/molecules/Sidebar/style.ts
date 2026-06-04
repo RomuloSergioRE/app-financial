@@ -14,7 +14,8 @@ export const Overlay = styled.div<{ $isOpen: boolean }>`
 `;
 
 export const Wrapper = styled.aside<{ $isOpen: boolean }>`
-  width: 220px;
+  width: 100%;
+  max-width: 220px;
   min-height: 100vh;
   background: ${({ theme }) => theme.colors.surface};
   border-right: 1px solid ${({ theme }) => theme.colors.border};
@@ -48,7 +49,7 @@ export const Nav = styled.nav`
   padding: ${({ theme }) => theme.spacing.sm};
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const Divider = styled.div`
@@ -136,8 +137,8 @@ export const CloseButton = styled.button`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: flex;
-    width: 36px;
-    height: 36px;
+    min-width: 44px;
+    min-height: 44px;
     margin-right: ${({ theme }) => theme.spacing.md};
     border: 1px solid ${({ theme }) => theme.colors.border};
     border-radius: ${({ theme }) => theme.borderRadius.md};

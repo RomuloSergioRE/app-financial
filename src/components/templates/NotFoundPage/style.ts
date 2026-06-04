@@ -23,7 +23,7 @@ export const Description = styled.p`
 export const HomeLink = styled.a`
   padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.onPrimary};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   text-decoration: none;
   font-weight: ${({ theme }) => theme.fontWeight.semibold};

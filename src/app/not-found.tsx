@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 3rem;
+  font-size: ${({ theme }) => theme.fontSize.display};
   color: ${({ theme }) => theme.colors.text};
   margin: 0;
 `;
@@ -29,7 +29,7 @@ const Description = styled.p`
 const StyledLink = styled(Link)`
   padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
   background: ${({ theme }) => theme.colors.primary};
-  color: #ffffff;
+  color: ${({ theme }) => theme.colors.onPrimary};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   text-decoration: none;
   font-weight: ${({ theme }) => theme.fontWeight.medium};

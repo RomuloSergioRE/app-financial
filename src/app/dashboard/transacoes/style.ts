@@ -118,7 +118,7 @@ export const TypeBadge = styled.span<{ $type: string }>`
 
 export const Actions = styled.div`
   display: flex;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
   align-items: center;
 `;
 
@@ -126,8 +126,8 @@ export const IconButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: ${({ theme }) => theme.borderRadius.sm};
   background: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.onPrimary};
