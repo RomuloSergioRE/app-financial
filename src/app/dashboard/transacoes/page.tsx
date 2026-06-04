@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useDebounce } from "@/hooks/useDebounce";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlinePlusCircle, HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import { Select } from "@/components/atoms/Select";
@@ -18,25 +20,19 @@ import {
   useUpdateTransaction,
   useDeleteTransaction,
 } from "@/hooks/useTransactions";
+import { createTransactionSchema } from "@/schemas/transaction.schema";
+import type { CreateTransactionDTO } from "@/schemas/transaction.schema";
 import type { Transaction } from "@/types";
 import * as S from "./style";
 
 export default function TransacoesPage() {
   const [page, setPage] = useState(1);
-  const [description, setDescription] = useState("");
-  const [amount, setAmount] = useState("");
-  const [type, setType] = useState<"income" | "outcome">("outcome");
-  const [categoryId, setCategoryId] = useState("");
-  const [editingTx, setEditingTx] = useState<Transaction | null>(null);
-  const [editDescription, setEditDescription] = useState("");
-  const [editAmount, setEditAmount] = useState("");
-  const [editType, setEditType] = useState<"income" | "outcome">("outcome");
-  const [editCategoryId, setEditCategoryId] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 300);
+  const [editingTx, setEditingTx] = useState<Transaction | null>(null);
   const [deletingTx, setDeletingTx] = useState<Transaction | null>(null);
 
   const transactionsState = useTransactions(page, 10, categoryFilter || undefined, startDate || undefined, endDate || undefined, debouncedSearch || undefined);
@@ -45,22 +41,58 @@ export default function TransacoesPage() {
   const deleteMutation = useDeleteTransaction();
   const updateMutation = useUpdateTransaction(editingTx?.id ?? "");
 
-  const handleCreate = () => {
-    const parsedAmount = parseFloat(amount);
-    if (!description.trim() || !amount || !categoryId || isNaN(parsedAmount) || parsedAmount <= 0) return;
+  const createForm = useForm<CreateTransactionDTO>({
+    resolver: zodResolver(createTransactionSchema),
+    defaultValues: {
+      description: "",
+      amount: 0,
+      type: "outcome",
+      date: new Date().toISOString().split("T")[0],
+      categoryId: "",
+    },
+  });
+
+  const editForm = useForm<CreateTransactionDTO>({
+    resolver: zodResolver(createTransactionSchema),
+    defaultValues: {
+      description: "",
+      amount: 0,
+      type: "outcome",
+      date: new Date().toISOString().split("T")[0],
+      categoryId: "",
+    },
+  });
+
+  useEffect(() => {
+    if (editingTx) {
+      editForm.reset({
+        description: editingTx.description,
+        amount: editingTx.amount / 100,
+        type: editingTx.type,
+        date: editingTx.date.split("T")[0],
+        categoryId: editingTx.categoryId.toString(),
+      });
+    }
+  }, [editingTx, editForm]);
+
+  const handleCreate = (data: CreateTransactionDTO) => {
     createMutation.mutate(
       {
-        description: description.trim(),
-        amount: Math.round(parsedAmount * 100),
-        type,
+        description: data.description,
+        amount: Math.round(data.amount * 100),
+        type: data.type,
         date: new Date().toISOString(),
-        categoryId,
+        categoryId: data.categoryId,
       },
       {
         onSuccess: () => {
-          setDescription("");
-          setAmount("");
-          setCategoryId("");
+          createForm.reset({
+            description: "",
+            amount: 0,
+            type: "outcome",
+            date: new Date().toISOString().split("T")[0],
+            categoryId: "",
+          });
         },
       }
     );
@@ -68,20 +100,16 @@ export default function TransacoesPage() {
 
   const handleEdit = (tx: Transaction) => {
     setEditingTx(tx);
-    setEditDescription(tx.description);
-    setEditAmount((tx.amount / 100).toString());
-    setEditType(tx.type);
-    setEditCategoryId(tx.categoryId.toString());
   };
 
-  const handleUpdate = () => {
-    if (!editDescription.trim() || !editAmount || !editingTx) return;
+  const handleUpdate = (data: CreateTransactionDTO) => {
+    if (!editingTx) return;
     updateMutation.mutate(
       {
-        description: editDescription.trim(),
-        amount: Math.round(parseFloat(editAmount) * 100),
-        type: editType,
-        categoryId: editCategoryId,
+        description: data.description,
+        amount: Math.round(data.amount * 100),
+        type: data.type,
+        categoryId: data.categoryId,
       },
       { onSuccess: () => setEditingTx(null) }
     );
@@ -115,61 +143,59 @@ export default function TransacoesPage() {
         Transações
       </Text>
 
-      <S.Form>
-        <S.FormGroup>
-          <S.Label>Descrição</S.Label>
-          <Input
-            placeholder="Ex: Supermercado"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleCreate()}
-          />
-        </S.FormGroup>
-        <S.FormGroup>
-          <S.Label>Valor</S.Label>
-          <Input
-            type="number"
-            step="0.01"
-            placeholder="0,00"
-            value={amount}
-            onChange={(e) => {
-              const val = e.target.value;
-              if (val === "" || parseFloat(val) >= 0) setAmount(val);
-            }}
-          />
-        </S.FormGroup>
-        <S.FormRow>
+      <form onSubmit={createForm.handleSubmit(handleCreate)}>
+        <S.Form>
           <S.FormGroup>
-            <S.Label>Tipo</S.Label>
-            <Select
-              value={type}
-              onChange={(v) => setType(v as "income" | "outcome")}
-              options={[
-                { value: "outcome", label: "Saída" },
-                { value: "income", label: "Entrada" },
-              ]}
+            <S.Label>Descrição</S.Label>
+            <Input
+              placeholder="Ex: Supermercado"
+              error={createForm.formState.errors.description?.message}
+              {...createForm.register("description")}
             />
           </S.FormGroup>
           <S.FormGroup>
-            <S.Label>Categoria</S.Label>
-            <Select
-              value={categoryId}
-              onChange={setCategoryId}
-              options={[
-                { value: "", label: "Selecione" },
-                ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
-              ]}
+            <S.Label>Valor (R$)</S.Label>
+            <Input
+              type="number"
+              step="0.01"
+              placeholder="0,00"
+              error={createForm.formState.errors.amount?.message}
+              {...createForm.register("amount", { valueAsNumber: true })}
             />
           </S.FormGroup>
-        </S.FormRow>
-        <Button
-          onClick={handleCreate}
-          loading={createMutation.isPending}
-          disabled={!description.trim() || !amount || !categoryId}
-        >
-          Adicionar
-        </Button>
-      </S.Form>
+          <S.FormRow>
+            <S.FormGroup>
+              <S.Label>Tipo</S.Label>
+              <Select
+                value={createForm.watch("type")}
+                onChange={(v) => createForm.setValue("type", v as "income" | "outcome")}
+                options={[
+                  { value: "outcome", label: "Saída" },
+                  { value: "income", label: "Entrada" },
+                ]}
+              />
+            </S.FormGroup>
+            <S.FormGroup>
+              <S.Label>Categoria</S.Label>
+              <Select
+                value={createForm.watch("categoryId")}
+                onChange={(v) => createForm.setValue("categoryId", v)}
+                options={[
+                  { value: "", label: "Selecione" },
+                  ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
+                ]}
+              />
+            </S.FormGroup>
+          </S.FormRow>
+          <Button
+            type="submit"
+            loading={createMutation.isPending}
+            disabled={!createForm.formState.isValid}
+          >
+            Adicionar
+          </Button>
+        </S.Form>
+      </form>
 
       <S.FilterRow>
         <S.FormGroup>
@@ -327,55 +353,56 @@ export default function TransacoesPage() {
         onClose={() => setEditingTx(null)}
         title="Editar Transação"
       >
-        <S.ModalForm>
-          <S.FormGroup>
-            <S.Label>Descrição</S.Label>
-            <Input
-              value={editDescription}
-              onChange={(e) => setEditDescription(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleUpdate()}
-            />
-          </S.FormGroup>
-          <S.FormGroup>
-            <S.Label>Valor</S.Label>
-            <Input
-              type="number"
-              step="0.01"
-              value={editAmount}
-              onChange={(e) => setEditAmount(e.target.value)}
-            />
-          </S.FormGroup>
-          <S.FormGroup>
-            <S.Label>Tipo</S.Label>
-            <Select
-              value={editType}
-              onChange={(v) => setEditType(v as "income" | "outcome")}
-              options={[
-                { value: "outcome", label: "Saída" },
-                { value: "income", label: "Entrada" },
-              ]}
-            />
-          </S.FormGroup>
-          <S.FormGroup>
-            <S.Label>Categoria</S.Label>
-            <Select
-              value={editCategoryId}
-              onChange={setEditCategoryId}
-              options={[
-                { value: "", label: "Selecione" },
-                ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
-              ]}
-            />
-          </S.FormGroup>
-          <S.ModalActions>
-            <Button variant="outline" onClick={() => setEditingTx(null)}>
-              Cancelar
-            </Button>
-            <Button onClick={handleUpdate} loading={updateMutation.isPending}>
-              Salvar
-            </Button>
-          </S.ModalActions>
-        </S.ModalForm>
+        <form onSubmit={editForm.handleSubmit(handleUpdate)}>
+          <S.ModalForm>
+            <S.FormGroup>
+              <S.Label>Descrição</S.Label>
+              <Input
+                error={editForm.formState.errors.description?.message}
+                {...editForm.register("description")}
+              />
+            </S.FormGroup>
+            <S.FormGroup>
+              <S.Label>Valor (R$)</S.Label>
+              <Input
+                type="number"
+                step="0.01"
+                error={editForm.formState.errors.amount?.message}
+                {...editForm.register("amount", { valueAsNumber: true })}
+              />
+            </S.FormGroup>
+            <S.FormGroup>
+              <S.Label>Tipo</S.Label>
+              <Select
+                value={editForm.watch("type")}
+                onChange={(v) => editForm.setValue("type", v as "income" | "outcome")}
+                options={[
+                  { value: "outcome", label: "Saída" },
+                  { value: "income", label: "Entrada" },
+                ]}
+              />
+            </S.FormGroup>
+            <S.FormGroup>
+              <S.Label>Categoria</S.Label>
+              <Select
+                value={editForm.watch("categoryId")}
+                onChange={(v) => editForm.setValue("categoryId", v)}
+                options={[
+                  { value: "", label: "Selecione" },
+                  ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
+                ]}
+              />
+            </S.FormGroup>
+            <S.ModalActions>
+              <Button variant="outline" onClick={() => setEditingTx(null)} type="button">
+                Cancelar
+              </Button>
+              <Button type="submit" loading={updateMutation.isPending}>
+                Salvar
+              </Button>
+            </S.ModalActions>
+          </S.ModalForm>
+        </form>
       </Modal>
 
       <ConfirmDialog

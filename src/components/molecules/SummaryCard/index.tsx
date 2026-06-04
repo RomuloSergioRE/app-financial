@@ -5,7 +5,7 @@ import { useTheme } from "styled-components";
 import type { SummaryCardProps, SummaryType } from "./types";
 import * as S from "./style";
 
-const SummaryCard = memo(function SummaryCard({ label, value, icon, type, change }: SummaryCardProps) {
+export const SummaryCard = memo(function SummaryCard({ label, value, icon, type, change }: SummaryCardProps) {
   const theme = useTheme();
 
   const accentColors: Record<SummaryType, string> = {
@@ -36,5 +36,3 @@ const SummaryCard = memo(function SummaryCard({ label, value, icon, type, change
     </S.Wrapper>
   );
 });
-
-export { SummaryCard };

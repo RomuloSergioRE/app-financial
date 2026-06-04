@@ -9,7 +9,7 @@ import {
 import type { NavItem, SidebarProps } from "./types";
 import * as S from "./style";
 
-const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout }: SidebarProps) {
+export const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout }: SidebarProps) {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
@@ -52,5 +52,3 @@ const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout }: Sid
     </>
   );
 });
-
-export { Sidebar };

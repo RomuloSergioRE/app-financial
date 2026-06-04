@@ -41,7 +41,7 @@ const CustomTooltip = (props: Record<string, unknown>) => {
   );
 };
 
-const PieChart = memo(function PieChart({ categories }: PieChartProps) {
+export const PieChart = memo(function PieChart({ categories }: PieChartProps) {
   const COLORS = [
     "#3B82F6",
     "#0ECB81",
@@ -98,5 +98,3 @@ const PieChart = memo(function PieChart({ categories }: PieChartProps) {
     </S.Wrapper>
   );
 });
-
-export { PieChart };

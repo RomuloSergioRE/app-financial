@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { Text } from "@/components/atoms/Text";
 import { Input } from "@/components/atoms/Input";
 import { PasswordInput } from "@/components/atoms/PasswordInput";
@@ -8,19 +10,32 @@ import { Button } from "@/components/atoms/Button";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { toast } from "@/components/atoms/Toast";
 import { useProfile, useUpdateProfile, useUpdatePassword } from "@/hooks/useUser";
+import { updateProfileSchema, updatePasswordSchema } from "@/schemas/profile.schema";
+import type { UpdateProfileFormData, UpdatePasswordFormData } from "@/schemas/profile.schema";
 import * as S from "./style";
 
 export default function PerfilPage() {
   const profileState = useProfile();
   const updateProfile = useUpdateProfile();
   const updatePassword = useUpdatePassword();
-  const loaded = useRef(false);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const profileForm = useForm<UpdateProfileFormData>({
+    resolver: zodResolver(updateProfileSchema),
+    defaultValues: { name: "", email: "" },
+  });
+
+  const passwordForm = useForm<UpdatePasswordFormData>({
+    resolver: zodResolver(updatePasswordSchema),
+    defaultValues: { currentPassword: "", newPassword: "", confirmPassword: "" },
+  });
+
+  const user = profileState.status === "success" ? profileState.data : null;
+
+  useEffect(() => {
+    if (user) {
+      profileForm.reset({ name: user.name, email: user.email });
+    }
+  }, [user, profileForm]);
 
   if (profileState.status === "loading") {
     return (
@@ -41,19 +56,12 @@ export default function PerfilPage() {
     );
   }
 
-  const user = profileState.data;
+  const profileUser = profileState.data;
+  const isProfileDirty = profileForm.formState.isDirty;
 
-  if (!loaded.current) {
-    loaded.current = true;
-    setName(user.name || "");
-    setEmail(user.email || "");
-  }
-
-  const isProfileDirty = name !== user.name || email !== user.email;
-
-  const handleSaveProfile = () => {
+  const handleSaveProfile = (data: UpdateProfileFormData) => {
     updateProfile.mutate(
-      { name, email },
+      { name: data.name, email: data.email },
       {
         onSuccess: () => toast.success("Perfil atualizado com sucesso!"),
         onError: () => toast.error("Erro ao atualizar perfil."),
@@ -61,16 +69,13 @@ export default function PerfilPage() {
     );
   };
 
-  const handleChangePassword = () => {
-    if (newPassword !== confirmPassword) return;
+  const handleChangePassword = (data: UpdatePasswordFormData) => {
     updatePassword.mutate(
-      { currentPassword, newPassword },
+      { currentPassword: data.currentPassword, newPassword: data.newPassword },
       {
         onSuccess: () => {
           toast.success("Senha alterada com sucesso!");
-          setCurrentPassword("");
-          setNewPassword("");
-          setConfirmPassword("");
+          passwordForm.reset();
         },
         onError: () => toast.error("Erro ao alterar senha."),
       }
@@ -84,70 +89,74 @@ export default function PerfilPage() {
       <S.Grid>
         <S.Section>
           <S.SectionTitle>Dados pessoais</S.SectionTitle>
-          <S.Field>
-            <S.Label>Nome</S.Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} />
-          </S.Field>
-          <S.Field>
-            <S.Label>Email</S.Label>
-            <Input value={email} onChange={(e) => setEmail(e.target.value)} />
-          </S.Field>
-          <S.FieldRow>
+          <form onSubmit={profileForm.handleSubmit(handleSaveProfile)}>
             <S.Field>
-              <S.Label>Função</S.Label>
-              <S.StaticValue>{user.role === "admin" ? "Administrador" : "Usuário"}</S.StaticValue>
+              <S.Label>Nome</S.Label>
+              <Input error={profileForm.formState.errors.name?.message} {...profileForm.register("name")} />
             </S.Field>
             <S.Field>
-              <S.Label>Membro desde</S.Label>
-              <S.StaticValue>
-                {user.createdAt
-                  ? new Date(user.createdAt).toLocaleDateString("pt-BR")
-                  : "-"}
-              </S.StaticValue>
+              <S.Label>Email</S.Label>
+              <Input error={profileForm.formState.errors.email?.message} {...profileForm.register("email")} />
             </S.Field>
-          </S.FieldRow>
-          <S.Actions>
-            <Button onClick={handleSaveProfile} disabled={!isProfileDirty} loading={updateProfile.isPending}>
-              Salvar
-            </Button>
-          </S.Actions>
+            <S.FieldRow>
+              <S.Field>
+                <S.Label>Função</S.Label>
+                <S.StaticValue>{profileUser.role === "admin" ? "Administrador" : "Usuário"}</S.StaticValue>
+              </S.Field>
+              <S.Field>
+                <S.Label>Membro desde</S.Label>
+                <S.StaticValue>
+                  {profileUser.createdAt
+                    ? new Date(profileUser.createdAt).toLocaleDateString("pt-BR")
+                    : "-"}
+                </S.StaticValue>
+              </S.Field>
+            </S.FieldRow>
+            <S.Actions>
+              <Button type="submit" disabled={!isProfileDirty} loading={updateProfile.isPending}>
+                Salvar
+              </Button>
+            </S.Actions>
+          </form>
         </S.Section>
 
         <S.Section>
           <S.SectionTitle>Alterar senha</S.SectionTitle>
-          <S.Field>
-            <S.Label>Senha atual</S.Label>
-            <PasswordInput
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-            />
-          </S.Field>
-          <S.Field>
-            <S.Label>Nova senha</S.Label>
-            <PasswordInput
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-          </S.Field>
-          <S.Field>
-            <S.Label>Confirmar nova senha</S.Label>
-            <PasswordInput
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </S.Field>
-          {newPassword && confirmPassword && newPassword !== confirmPassword && (
-            <S.ErrorText>As senhas não conferem</S.ErrorText>
-          )}
-          <S.Actions>
-            <Button
-              onClick={handleChangePassword}
-              disabled={!currentPassword || !newPassword || !confirmPassword || newPassword !== confirmPassword}
-              loading={updatePassword.isPending}
-            >
-              Alterar senha
-            </Button>
-          </S.Actions>
+          <form onSubmit={passwordForm.handleSubmit(handleChangePassword)}>
+            <S.Field>
+              <S.Label>Senha atual</S.Label>
+              <PasswordInput
+                error={passwordForm.formState.errors.currentPassword?.message}
+                {...passwordForm.register("currentPassword")}
+              />
+            </S.Field>
+            <S.Field>
+              <S.Label>Nova senha</S.Label>
+              <PasswordInput
+                error={passwordForm.formState.errors.newPassword?.message}
+                {...passwordForm.register("newPassword")}
+              />
+            </S.Field>
+            <S.Field>
+              <S.Label>Confirmar nova senha</S.Label>
+              <PasswordInput
+                error={passwordForm.formState.errors.confirmPassword?.message}
+                {...passwordForm.register("confirmPassword")}
+              />
+            </S.Field>
+            {passwordForm.formState.errors.confirmPassword && (
+              <S.ErrorText>{passwordForm.formState.errors.confirmPassword.message}</S.ErrorText>
+            )}
+            <S.Actions>
+              <Button
+                type="submit"
+                disabled={!passwordForm.formState.isDirty}
+                loading={updatePassword.isPending}
+              >
+                Alterar senha
+              </Button>
+            </S.Actions>
+          </form>
         </S.Section>
       </S.Grid>
     </S.Wrapper>
