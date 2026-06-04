@@ -1,17 +1,5 @@
-export interface BalanceResponse {
-  totalIncome: number;
-  totalOutcome: number;
-  netBalance: number;
-}
+import type { z } from "zod/v4";
+import type { balanceResponseSchema, categoryDistributionSchema } from "@/schemas/analytics.schema";
 
-export interface CategoryDistribution {
-  categoryId: string;
-  categoryName: string;
-  color?: string | null;
-  icon?: string | null;
-  totalAmount: number;
-  percentage: number;
-  transactionCount?: number;
-}
-
-
+export type BalanceResponse = z.infer<typeof balanceResponseSchema>;
+export type CategoryDistribution = z.infer<typeof categoryDistributionSchema>;

@@ -19,10 +19,13 @@ function getUserFromToken(): User | null {
 
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
+    if (!payload.role || !payload.email) {
+      throw new Error("Token inválido: payload incompleto");
+    }
     return {
       id: payload.userId || payload.id,
       name: payload.name || "",
-      email: payload.email || "",
+      email: payload.email,
       role: payload.role,
       status: payload.status,
       createdAt: payload.createdAt || "",
@@ -51,15 +54,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(async (data: LoginRequest) => {
     const { user: userData, token, refreshToken } = await authService.login(data);
-    Cookies.set("jwt_token", token, { expires: 7, sameSite: "strict", secure: process.env.NODE_ENV === "production" });
-    Cookies.set("refresh_token", refreshToken, { expires: 30, sameSite: "strict", secure: process.env.NODE_ENV === "production" });
+    Cookies.set("jwt_token", token, { expires: 7, sameSite: "lax", secure: true, partitioned: true });
+    Cookies.set("refresh_token", refreshToken, { expires: 30, sameSite: "lax", secure: true, partitioned: true });
     setUser(userData);
   }, []);
 
   const register = useCallback(async (data: RegisterRequest) => {
     const { user: userData, token, refreshToken } = await authService.register(data);
-    Cookies.set("jwt_token", token, { expires: 7, sameSite: "strict", secure: process.env.NODE_ENV === "production" });
-    Cookies.set("refresh_token", refreshToken, { expires: 30, sameSite: "strict", secure: process.env.NODE_ENV === "production" });
+    Cookies.set("jwt_token", token, { expires: 7, sameSite: "lax", secure: true, partitioned: true });
+    Cookies.set("refresh_token", refreshToken, { expires: 30, sameSite: "lax", secure: true, partitioned: true });
     setUser(userData);
   }, []);
 

@@ -8,6 +8,7 @@ import type {
   UpdateCategoryRequest,
 } from "@/types";
 import type { PaginatedResponseDTO } from "@/schemas/api.schema";
+import type { CategoryDTO } from "@/schemas/category.schema";
 
 export function useCategories(page = 1, limit = 50): AsyncState<PaginatedResponseDTO<CategoryDTO>> {
   const query = useQuery({
@@ -16,16 +17,6 @@ export function useCategories(page = 1, limit = 50): AsyncState<PaginatedRespons
   });
   return mapAsyncState(query);
 }
-
-type CategoryDTO = {
-  id: string;
-  name: string;
-  color?: string | null;
-  icon?: string | null;
-  userId?: string | null;
-  createdAt: string;
-  updatedAt: string;
-};
 
 function useCategory(id: string): AsyncState<CategoryDTO> {
   const query = useQuery({

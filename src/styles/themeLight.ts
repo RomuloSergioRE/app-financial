@@ -28,7 +28,7 @@ const themeLight = {
   fonts: {
     display: "'Inter', sans-serif",
     body: "'Inter', sans-serif",
-    mono: "'JetBrains Mono', monospace",
+    mono: "var(--font-mono), 'JetBrains Mono', monospace",
   },
   breakpoints: {
     mobile: "480px",
