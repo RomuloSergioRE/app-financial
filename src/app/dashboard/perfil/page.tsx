@@ -101,7 +101,7 @@ export default function PerfilPage() {
             <S.FieldRow>
               <S.Field>
                 <S.Label>Função</S.Label>
-                <S.StaticValue>{profileUser.role === "admin" ? "Administrador" : "Usuário"}</S.StaticValue>
+                <S.StaticValue>{profileUser.role === "admin" ? "Administrador" : profileUser.role === "company" ? "Empresa" : "Usuário"}</S.StaticValue>
               </S.Field>
               <S.Field>
                 <S.Label>Membro desde</S.Label>
