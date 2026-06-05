@@ -67,3 +67,50 @@ export function useDeleteCategory() {
     },
   });
 }
+
+function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+export function useExportCategoriesCsv() {
+  return useMutation({
+    mutationFn: () => categoryService.exportCsv(),
+    onSuccess: (blob) => {
+      downloadBlob(blob, `categorias-${new Date().toISOString().split("T")[0]}.csv`);
+      toast.success("CSV exportado com sucesso!");
+    },
+    onError: () => toast.error("Erro ao exportar CSV"),
+  });
+}
+
+export function useExportCategoriesPdf() {
+  return useMutation({
+    mutationFn: () => categoryService.exportPdf(),
+    onSuccess: (blob) => {
+      downloadBlob(blob, `categorias-${new Date().toISOString().split("T")[0]}.pdf`);
+      toast.success("PDF exportado com sucesso!");
+    },
+    onError: () => toast.error("Erro ao exportar PDF"),
+  });
+}
+
+export function useImportCategoriesCsv() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (file: File) => categoryService.importCsv(file),
+    onSuccess: (result) => {
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      if (result.errors.length > 0) {
+        toast.warning(`${result.imported} importado(s), ${result.errors.length} erro(s)`);
+      } else {
+        toast.success(`${result.imported} categoria(s) importada(s) com sucesso!`);
+      }
+    },
+    onError: () => toast.error("Erro ao importar CSV"),
+  });
+}

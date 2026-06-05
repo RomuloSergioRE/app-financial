@@ -61,4 +61,46 @@ export const transactionService = {
     const response = await api.delete(`/transactions/${id}/tags/${tagId}`);
     return validateResponse(transactionSchema, response.data);
   },
+
+  exportCsv: async (params?: {
+    categoryId?: string;
+    startDate?: string;
+    endDate?: string;
+    search?: string;
+  }): Promise<Blob> => {
+    const response = await api.get("/transactions/export/csv", {
+      params,
+      responseType: "blob",
+    });
+    return response.data;
+  },
+
+  exportPdf: async (params?: {
+    categoryId?: string;
+    startDate?: string;
+    endDate?: string;
+    search?: string;
+  }): Promise<Blob> => {
+    const response = await api.get("/transactions/export/pdf", {
+      params,
+      responseType: "blob",
+    });
+    return response.data;
+  },
+
+  exportTemplate: async (): Promise<Blob> => {
+    const response = await api.get("/transactions/export/template", {
+      responseType: "blob",
+    });
+    return response.data;
+  },
+
+  importCsv: async (file: File): Promise<{ imported: number; errors: Array<{ row: number; error: string }> }> => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await api.post("/transactions/import/csv", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  },
 };
