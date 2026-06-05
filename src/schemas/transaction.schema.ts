@@ -1,5 +1,11 @@
 import { z } from "zod/v4";
 
+const tagOnTransactionSchema = z.object({
+  id: z.union([z.string(), z.number()]).transform(String),
+  name: z.string(),
+  color: z.string().nullable().optional(),
+});
+
 export const transactionSchema = z.object({
   id: z.union([z.string(), z.number()]).transform(String),
   description: z.string(),
@@ -15,6 +21,7 @@ export const transactionSchema = z.object({
       icon: z.string().optional(),
     })
     .nullish(),
+  tags: z.array(tagOnTransactionSchema).optional(),
   createdAt: z.string(),
   updatedAt: z.string(),
 });

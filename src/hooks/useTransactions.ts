@@ -74,3 +74,33 @@ export function useDeleteTransaction() {
     },
   });
 }
+
+export function useLinkTags() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, tagIds }: { id: string; tagIds: string[] }) =>
+      transactionService.linkTags(id, tagIds),
+    onSuccess: () => {
+      toast.success("Tags vinculadas com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+    },
+    onError: () => {
+      toast.error("Erro ao vincular tags");
+    },
+  });
+}
+
+export function useUnlinkTag() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, tagId }: { id: string; tagId: string }) =>
+      transactionService.unlinkTag(id, tagId),
+    onSuccess: () => {
+      toast.success("Tag removida com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+    },
+    onError: () => {
+      toast.error("Erro ao remover tag");
+    },
+  });
+}
