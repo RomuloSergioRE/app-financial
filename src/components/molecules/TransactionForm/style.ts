@@ -12,7 +12,23 @@ export const Form = styled.div`
 
   @media (min-width: 769px) {
     display: flex;
-    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: ${({ theme }) => theme.spacing.sm};
+    flex-wrap: nowrap;
+
+    & > * {
+      flex: 1;
+    }
+
+    & > button {
+      flex: 0 0 auto;
+    }
+
+    & input,
+    & button {
+      min-height: 38px;
+      box-sizing: border-box;
+    }
   }
 `;
 
@@ -30,6 +46,10 @@ export const FormRow = styled.div`
     display: flex;
     width: auto;
     gap: ${({ theme }) => theme.spacing.sm};
+
+    & > * {
+      flex: 1;
+    }
   }
 `;
 

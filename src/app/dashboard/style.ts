@@ -8,12 +8,15 @@ export const LayoutWrapper = styled.div`
 
 export const TopBar = styled.div`
   display: none;
+  position: sticky;
+  top: 0;
+  z-index: 15;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: flex;
     align-items: center;
     gap: ${({ theme }) => theme.spacing.md};
-    padding: ${({ theme }) => theme.spacing.md};
+    padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
     background: ${({ theme }) => theme.colors.surface};
     border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   }
@@ -43,14 +46,14 @@ export const HamburgerWrapper = styled.div`
 
 export const HamburgerButton = styled.button<{ $isOpen: boolean }>`
   pointer-events: auto;
-  min-width: 44px;
-  min-height: 44px;
+  min-width: 40px;
+  min-height: 40px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   background: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.text};
   font-size: 1.125rem;
-  display: ${({ $isOpen }) => ($isOpen ? "none" : "flex")};
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -80,6 +83,10 @@ export const Wrapper = styled.div`
   gap: ${({ theme }) => theme.spacing.section};
   max-width: 1280px;
   margin: 0 auto;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: ${({ theme }) => theme.spacing.xl};
+  }
 `;
 
 export const Header = styled.div`
@@ -88,6 +95,10 @@ export const Header = styled.div`
   align-items: center;
   flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing.md};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: ${({ theme }) => theme.spacing.sm};
+  }
 `;
 
 export const HeaderActions = styled.div`
