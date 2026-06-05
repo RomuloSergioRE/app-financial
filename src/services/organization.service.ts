@@ -39,12 +39,12 @@ export const organizationService = {
   },
 
   select: async (id: string): Promise<{ organization: Organization; token: string }> => {
-    const response = await api.post(`/organizations/${id}/select`);
+    const response = await api.patch(`/organizations/${id}/select`);
     return response.data;
   },
 
   selectNone: async (): Promise<{ token: string }> => {
-    const response = await api.post("/organizations/select-none");
+    const response = await api.patch("/organizations/select-none");
     return response.data;
   },
 
@@ -54,17 +54,17 @@ export const organizationService = {
   },
 
   inviteMember: async (orgId: string, email: string, role?: string): Promise<{ id: string; userId: string; role: string; status: string }> => {
-    const response = await api.post(`/organizations/${orgId}/invite`, { email, role });
+    const response = await api.post(`/organizations/${orgId}/members`, { email, role });
     return response.data;
   },
 
   acceptInvite: async (orgId: string): Promise<{ role: string; status: string }> => {
-    const response = await api.post(`/organizations/${orgId}/accept`);
+    const response = await api.patch(`/organizations/${orgId}/accept`, { status: "active" as const });
     return response.data;
   },
 
   updateMemberRole: async (orgId: string, memberId: string, role: string): Promise<{ role: string }> => {
-    const response = await api.put(`/organizations/${orgId}/members/${memberId}`, { role });
+    const response = await api.put(`/organizations/${orgId}/members/${memberId}/role`, { role });
     return response.data;
   },
 
