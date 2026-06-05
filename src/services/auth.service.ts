@@ -32,4 +32,8 @@ export const authService = {
     const response = await api.get("/auth/me");
     return validateResponse(userSchema, response.data);
   },
+
+  logout: async (): Promise<void> => {
+    await api.post("/auth/logout");
+  },
 };

@@ -91,44 +91,44 @@ export const adminService = {
   },
 
   getOverview: async (): Promise<Overview> => {
-    const response = await api.get("/admin/overview");
+    const response = await api.get("/admin/analytics/overview");
     return validateResponse(overviewSchema, response.data);
   },
 
   getUserAnalytics: async (userId: string): Promise<UserAnalytics> => {
-    const response = await api.get(`/admin/users/${userId}/analytics`);
+    const response = await api.get(`/admin/analytics/users/${userId}`);
     return validateResponse(userAnalyticsSchema, response.data);
   },
 
   getUserGrowth: async (params: { startDate: string; endDate: string; granularity?: "day" | "month" }): Promise<UserGrowthItem[]> => {
-    const response = await api.get("/admin/user-growth", { params });
+    const response = await api.get("/admin/analytics/user-growth", { params });
     return validateResponse(userGrowthItemSchema.array(), response.data);
   },
 
   getPerformance: async (): Promise<Performance> => {
-    const response = await api.get("/admin/performance");
+    const response = await api.get("/admin/analytics/performance");
     return validateResponse(performanceSchema, response.data);
   },
 
   exportUsersCsv: async (): Promise<Blob> => {
-    const response = await api.get("/admin/export/users", { responseType: "blob" });
+    const response = await api.get("/admin/export/users/csv", { responseType: "blob" });
     return response.data;
   },
 
   exportTransactionsCsv: async (params?: { userId?: string; startDate?: string; endDate?: string }): Promise<Blob> => {
-    const response = await api.get("/admin/export/transactions", { params, responseType: "blob" });
+    const response = await api.get("/admin/export/transactions/csv", { params, responseType: "blob" });
     return response.data;
   },
 
   exportAuditLogsCsv: async (): Promise<Blob> => {
-    const response = await api.get("/admin/export/audit-logs", { responseType: "blob" });
+    const response = await api.get("/admin/export/audit-logs/csv", { responseType: "blob" });
     return response.data;
   },
 
   importTransactionsCsv: async (file: File): Promise<Record<string, unknown>> => {
     const formData = new FormData();
     formData.append("file", file);
-    const response = await api.post("/admin/import/transactions", formData, {
+    const response = await api.post("/admin/import/transactions/csv", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     return response.data;

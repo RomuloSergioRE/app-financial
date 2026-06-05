@@ -76,10 +76,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(() => {
-    cookie.removeToken("jwt_token");
-    cookie.removeToken("refresh_token");
-    setUser(null);
-    window.location.href = "/login";
+    authService.logout().finally(() => {
+      cookie.removeToken("jwt_token");
+      cookie.removeToken("refresh_token");
+      setUser(null);
+      window.location.href = "/login";
+    });
   }, []);
 
   return (
