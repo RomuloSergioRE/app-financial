@@ -51,4 +51,14 @@ export const transactionService = {
   delete: async (id: string): Promise<void> => {
     await api.delete(`/transactions/${id}`);
   },
+
+  linkTags: async (id: string, tagIds: string[]): Promise<Transaction> => {
+    const response = await api.post(`/transactions/${id}/tags`, { tagIds });
+    return validateResponse(transactionSchema, response.data);
+  },
+
+  unlinkTag: async (id: string, tagId: string): Promise<Transaction> => {
+    const response = await api.delete(`/transactions/${id}/tags/${tagId}`);
+    return validateResponse(transactionSchema, response.data);
+  },
 };

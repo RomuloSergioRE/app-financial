@@ -173,3 +173,75 @@ export const ModalActions = styled.div`
   justify-content: flex-end;
   margin-top: ${({ theme }) => theme.spacing.sm};
 `;
+
+export const TagList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+`;
+
+export const TagPill = styled.span<{ $color?: string }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: ${({ $color }) => ($color ? `${$color}20` : "#D4A85320")};
+  color: ${({ $color }) => $color || "#D4A853"};
+  white-space: nowrap;
+
+  &::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: ${({ $color }) => $color || "#D4A853"};
+  }
+`;
+
+export const TextMuted = styled.span`
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+`;
+
+export const TagGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${({ theme }) => theme.spacing.sm};
+`;
+
+export const TagCheckbox = styled.button<{ $selected: boolean; $color?: string }>`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 2px solid ${({ $selected, $color }) => ($selected ? ($color || "#D4A853") : "transparent")};
+  background: ${({ $selected, $color }) => ($selected ? `${$color || "#D4A853"}20` : "transparent")};
+  color: ${({ $selected, $color }) => ($selected ? ($color || "#D4A853") : "inherit")};
+  cursor: pointer;
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-family: ${({ theme }) => theme.fonts.body};
+  transition: all ${({ theme }) => theme.transition.fast};
+
+  &:hover {
+    background: ${({ $color }) => ($color ? `${$color}15` : "#D4A85315")};
+  }
+
+  &::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: ${({ $color }) => $color || "#D4A853"};
+    opacity: ${({ $selected }) => ($selected ? 1 : 0.4)};
+  }
+`;
+
+export const Divider = styled.hr`
+  border: none;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  margin: ${({ theme }) => theme.spacing.md} 0;
+`;

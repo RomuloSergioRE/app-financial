@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { HiOutlinePencil, HiOutlineTrash, HiOutlinePlusCircle, HiOutlineMagnifyingGlass } from "react-icons/hi2";
+import { HiOutlinePencil, HiOutlineTrash, HiOutlinePlusCircle, HiOutlineMagnifyingGlass, HiOutlineTag } from "react-icons/hi2";
 import { Select } from "@/components/molecules/Select";
 import { Input } from "@/components/atoms/Input";
+import { Button } from "@/components/atoms/Button";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { Modal } from "@/components/molecules/Modal";
@@ -13,15 +14,20 @@ import { Pagination } from "@/components/molecules/Pagination";
 import { TransactionForm } from "@/components/molecules/TransactionForm";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useCategories } from "@/hooks/useCategories";
+import { useTags, useCreateTag } from "@/hooks/useTags";
 import {
   useTransactions,
   useCreateTransaction,
   useUpdateTransaction,
   useDeleteTransaction,
+  useLinkTags,
+  useUnlinkTag,
 } from "@/hooks/useTransactions";
+import { TagForm } from "@/components/molecules/TagForm";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { fromCents, toCents } from "@/lib/currency";
 import type { Transaction } from "@/types";
+import type { CreateTagDTO } from "@/schemas/tag.schema";
 import * as S from "./style";
 
 export default function TransacoesPage() {
@@ -33,6 +39,8 @@ export default function TransacoesPage() {
   const debouncedSearch = useDebounce(search, 300);
   const [editingTx, setEditingTx] = useState<Transaction | null>(null);
   const [deletingTx, setDeletingTx] = useState<Transaction | null>(null);
+  const [taggingTx, setTaggingTx] = useState<Transaction | null>(null);
+  const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
 
   const transactionsState = useTransactions({
     page,
@@ -42,9 +50,13 @@ export default function TransacoesPage() {
     search: debouncedSearch || undefined,
   });
   const categoriesState = useCategories();
+  const tagsState = useTags();
   const createMutation = useCreateTransaction();
   const deleteMutation = useDeleteTransaction();
   const updateMutation = useUpdateTransaction(editingTx?.id ?? "");
+  const linkTagsMutation = useLinkTags();
+  const unlinkTagMutation = useUnlinkTag();
+  const createTagMutation = useCreateTag();
 
   const handleCreate = (data: { description: string; amount: number; type: "income" | "outcome"; date: string; categoryId: string }) => {
     createMutation.mutate(
@@ -81,6 +93,43 @@ export default function TransacoesPage() {
     if (!deletingTx) return;
     deleteMutation.mutate(deletingTx.id, {
       onSuccess: () => setDeletingTx(null),
+    });
+  };
+
+  const handleManageTags = (tx: Transaction) => {
+    setTaggingTx(tx);
+    setSelectedTagIds(tx.tags?.map((t) => t.id) ?? []);
+  };
+
+  const handleTagToggle = (tagId: string) => {
+    setSelectedTagIds((prev) =>
+      prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]
+    );
+  };
+
+  const handleSaveTags = () => {
+    if (!taggingTx) return;
+    const currentTagIds = taggingTx.tags?.map((t) => t.id) ?? [];
+    const toAdd = selectedTagIds.filter((id) => !currentTagIds.includes(id));
+    const toRemove = currentTagIds.filter((id) => !selectedTagIds.includes(id));
+
+    if (toAdd.length > 0) {
+      linkTagsMutation.mutate(
+        { id: taggingTx.id, tagIds: toAdd },
+        { onSuccess: () => {} }
+      );
+    }
+
+    toRemove.forEach((tagId) => {
+      unlinkTagMutation.mutate({ id: taggingTx.id, tagId });
+    });
+
+    setTaggingTx(null);
+  };
+
+  const handleCreateTagInline = (data: CreateTagDTO) => {
+    createTagMutation.mutate(data, {
+      onSuccess: () => {},
     });
   };
 
@@ -176,6 +225,7 @@ export default function TransacoesPage() {
                   <S.Th>Data</S.Th>
                   <S.Th>Descrição</S.Th>
                   <S.Th>Categoria</S.Th>
+                  <S.Th>Tags</S.Th>
                   <S.Th>Tipo</S.Th>
                   <S.Th>Valor</S.Th>
                   <S.Th></S.Th>
@@ -188,6 +238,19 @@ export default function TransacoesPage() {
                     <S.Td>{tx.description}</S.Td>
                     <S.Td>{tx.category?.name ?? "-"}</S.Td>
                     <S.Td>
+                      {tx.tags && tx.tags.length > 0 ? (
+                        <S.TagList>
+                          {tx.tags.map((tag) => (
+                            <S.TagPill key={tag.id} $color={tag.color ?? undefined}>
+                              {tag.name}
+                            </S.TagPill>
+                          ))}
+                        </S.TagList>
+                      ) : (
+                        <S.TextMuted>—</S.TextMuted>
+                      )}
+                    </S.Td>
+                    <S.Td>
                       <S.TypeBadge $type={tx.type}>
                         {tx.type === "income" ? "Entrada" : "Saída"}
                       </S.TypeBadge>
@@ -197,6 +260,9 @@ export default function TransacoesPage() {
                     </S.TdMono>
                     <S.Td>
                       <S.Actions>
+                        <S.IconButton onClick={() => handleManageTags(tx)} aria-label="Gerenciar tags">
+                          <HiOutlineTag size={16} />
+                        </S.IconButton>
                         <S.IconButton onClick={() => handleEdit(tx)} aria-label="Editar">
                           <HiOutlinePencil size={16} />
                         </S.IconButton>
@@ -245,6 +311,52 @@ export default function TransacoesPage() {
         confirmLabel="Excluir"
         loading={deleteMutation.isPending}
       />
+
+      <Modal
+        open={!!taggingTx}
+        onClose={() => setTaggingTx(null)}
+        title={`Gerenciar Tags — ${taggingTx?.description ?? ""}`}
+      >
+        <S.ModalForm>
+          {tagsState.status === "success" && (
+            <S.TagGrid>
+              {tagsState.data.map((tag) => {
+                const isSelected = selectedTagIds.includes(tag.id);
+                return (
+                  <S.TagCheckbox
+                    key={tag.id}
+                    $selected={isSelected}
+                    $color={tag.color ?? undefined}
+                    onClick={() => handleTagToggle(tag.id)}
+                  >
+                    {tag.name}
+                  </S.TagCheckbox>
+                );
+              })}
+            </S.TagGrid>
+          )}
+
+          <S.Divider />
+
+          <Text as="span" size="xs" color="textSecondary">
+            Criar nova tag
+          </Text>
+          <TagForm
+            onSubmit={handleCreateTagInline}
+            isLoading={createTagMutation.isPending}
+            submitLabel="Criar"
+          />
+
+          <S.ModalActions>
+            <Button variant="outline" onClick={() => setTaggingTx(null)} type="button">
+              Cancelar
+            </Button>
+            <Button type="button" onClick={handleSaveTags} loading={linkTagsMutation.isPending || unlinkTagMutation.isPending}>
+              Salvar
+            </Button>
+          </S.ModalActions>
+        </S.ModalForm>
+      </Modal>
     </S.Wrapper>
   );
 }

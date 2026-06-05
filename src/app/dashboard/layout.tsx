@@ -13,6 +13,9 @@ import {
   HiOutlineFolderOpen,
   HiOutlineCreditCard,
   HiOutlineCog6Tooth,
+  HiOutlineTag,
+  HiOutlineCurrencyDollar,
+  HiOutlineTrophy,
 } from "react-icons/hi2";
 import * as S from "./style";
 
@@ -20,6 +23,9 @@ const userNavItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: <HiOutlineViewColumns size={20} /> },
   { label: "Perfil", href: "/dashboard/perfil", icon: <HiOutlineUser size={20} /> },
   { label: "Categorias", href: "/dashboard/categorias", icon: <HiOutlineFolderOpen size={20} /> },
+  { label: "Tags", href: "/dashboard/tags", icon: <HiOutlineTag size={20} /> },
+  { label: "Orçamentos", href: "/dashboard/orcamentos", icon: <HiOutlineCurrencyDollar size={20} /> },
+  { label: "Metas", href: "/dashboard/metas", icon: <HiOutlineTrophy size={20} /> },
   { label: "Transações", href: "/dashboard/transacoes", icon: <HiOutlineCreditCard size={20} /> },
   { label: "Configurações", href: "/dashboard/configuracoes", icon: <HiOutlineCog6Tooth size={20} /> },
 ];
