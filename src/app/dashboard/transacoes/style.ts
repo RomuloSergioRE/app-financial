@@ -150,10 +150,19 @@ export const ModalForm = styled.div`
 `;
 
 export const FilterRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: end;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing.sm};
+  align-items: end;
+
+  @media (min-width: 640px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (min-width: 769px) {
+    display: flex;
+    flex-wrap: wrap;
+  }
 `;
 
 export const ModalActions = styled.div`

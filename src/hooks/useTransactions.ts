@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "@/components/atoms/Toast";
+import { toast } from "@/components/molecules/Toast";
 import { transactionService } from "@/services/transaction.service";
 import { mapAsyncState } from "@/lib/map-async-state";
 import type { AsyncState } from "@/types/async";
@@ -10,19 +10,20 @@ import type {
 import type { PaginatedResponseDTO } from "@/schemas/api.schema";
 import type { TransactionDTO } from "@/schemas/transaction.schema";
 
-export function useTransactions(page = 1, limit = 10, categoryId?: string, startDate?: string, endDate?: string, search?: string): AsyncState<PaginatedResponseDTO<TransactionDTO>> {
+interface UseTransactionsParams {
+  page?: number;
+  limit?: number;
+  categoryId?: string;
+  startDate?: string;
+  endDate?: string;
+  search?: string;
+}
+
+export function useTransactions(params: UseTransactionsParams = {}): AsyncState<PaginatedResponseDTO<TransactionDTO>> {
+  const { page = 1, limit = 10, categoryId, startDate, endDate, search } = params;
   const query = useQuery({
     queryKey: ["transactions", page, limit, categoryId, startDate, endDate, search],
     queryFn: () => transactionService.list(page, limit, categoryId, startDate, endDate, search),
-  });
-  return mapAsyncState(query);
-}
-
-function useTransaction(id: string): AsyncState<TransactionDTO> {
-  const query = useQuery({
-    queryKey: ["transactions", id],
-    queryFn: () => transactionService.getById(id),
-    enabled: !!id,
   });
   return mapAsyncState(query);
 }

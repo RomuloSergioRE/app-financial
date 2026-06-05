@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { ErrorPage } from "@/components/templates/ErrorPage";
+import { logger } from "@/lib/logger";
 
 export default function AdminError({
   error,
@@ -11,7 +12,7 @@ export default function AdminError({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("Admin error:", error);
+    logger.error("Admin error:", error);
   }, [error]);
 
   return <ErrorPage reset={reset} />;

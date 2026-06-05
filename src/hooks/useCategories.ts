@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "@/components/atoms/Toast";
+import { toast } from "@/components/molecules/Toast";
 import { categoryService } from "@/services/category.service";
 import { mapAsyncState } from "@/lib/map-async-state";
 import type { AsyncState } from "@/types/async";
@@ -10,19 +10,16 @@ import type {
 import type { PaginatedResponseDTO } from "@/schemas/api.schema";
 import type { CategoryDTO } from "@/schemas/category.schema";
 
-export function useCategories(page = 1, limit = 50): AsyncState<PaginatedResponseDTO<CategoryDTO>> {
+interface UseCategoriesParams {
+  page?: number;
+  limit?: number;
+}
+
+export function useCategories(params: UseCategoriesParams = {}): AsyncState<PaginatedResponseDTO<CategoryDTO>> {
+  const { page = 1, limit = 50 } = params;
   const query = useQuery({
     queryKey: ["categories", page, limit],
     queryFn: () => categoryService.list(page, limit),
-  });
-  return mapAsyncState(query);
-}
-
-function useCategory(id: string): AsyncState<CategoryDTO> {
-  const query = useQuery({
-    queryKey: ["categories", id],
-    queryFn: () => categoryService.getById(id),
-    enabled: !!id,
   });
   return mapAsyncState(query);
 }

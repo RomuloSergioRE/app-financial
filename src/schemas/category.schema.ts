@@ -1,11 +1,11 @@
 import { z } from "zod/v4";
 
 export const categorySchema = z.object({
-  id: z.string(),
+  id: z.union([z.string(), z.number()]).transform(String),
   name: z.string(),
   color: z.string().nullable().optional(),
   icon: z.string().nullable().optional(),
-  userId: z.string().nullable().optional(),
+  userId: z.union([z.string(), z.number()]).nullable().optional().transform((v) => v !== null && v !== undefined ? String(v) : v),
   createdAt: z.string(),
   updatedAt: z.string(),
 });

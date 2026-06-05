@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { logger } from "@/lib/logger";
 
 const protectedRoutes = ["/", "/dashboard", "/admin"];
 const authRoutes = ["/login", "/register"];
@@ -39,7 +40,7 @@ export function proxy(request: NextRequest) {
   if (isAdminRoute && token) {
     const role = getUserRole(token);
     if (role !== "admin") {
-      console.warn(`[PROXY] Acesso negado à rota admin. Role: "${role}", Path: ${pathname}`);
+      logger.warn(`[PROXY] Acesso negado à rota admin. Role: "${role}", Path: ${pathname}`);
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
   }

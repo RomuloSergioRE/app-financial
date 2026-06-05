@@ -1,12 +1,12 @@
 import { z } from "zod/v4";
 
 export const transactionSchema = z.object({
-  id: z.string(),
+  id: z.union([z.string(), z.number()]).transform(String),
   description: z.string(),
   amount: z.number(),
   type: z.enum(["income", "outcome"]),
   date: z.string(),
-  categoryId: z.string(),
+  categoryId: z.union([z.string(), z.number()]).transform(String),
   category: z
     .object({
       id: z.string(),

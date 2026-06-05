@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { ErrorPage } from "@/components/templates/ErrorPage";
+import { logger } from "@/lib/logger";
 
 export default function Error({
   error,
@@ -11,7 +12,7 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("Erro na aplicação:", error);
+    logger.error("Erro na aplicação:", error);
   }, [error]);
 
   return <ErrorPage reset={reset} />;

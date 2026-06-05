@@ -1,7 +1,7 @@
 "use client";
 
 import { Text } from "@/components/atoms/Text";
-import { Select } from "@/components/atoms/Select";
+import { Select } from "@/components/molecules/Select";
 import { useTheme } from "@/contexts/ThemeContext";
 import * as S from "./style";
 

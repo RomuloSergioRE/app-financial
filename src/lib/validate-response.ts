@@ -1,4 +1,5 @@
 import { z } from "zod/v4";
+import { logger } from "@/lib/logger";
 
 export function validateResponse<T extends z.ZodTypeAny>(
   schema: T,
@@ -6,7 +7,7 @@ export function validateResponse<T extends z.ZodTypeAny>(
 ): z.infer<T> {
   const result = schema.safeParse(data);
   if (!result.success) {
-    console.error("[API Validation Error]", result.error.issues);
+    logger.error("[API Validation Error]", result.error.issues);
     throw new Error("Resposta da API inválida");
   }
   return result.data;
