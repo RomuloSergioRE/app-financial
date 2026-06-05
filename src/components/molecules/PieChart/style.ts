@@ -17,7 +17,7 @@ export const Title = styled.h3`
 
 export const ChartContainer = styled.div`
   width: 100%;
-  height: clamp(180px, 30vw, 260px);
+  height: clamp(220px, 35vw, 300px);
   min-width: 0;
   min-height: 0;
 `;

@@ -51,7 +51,7 @@ export const BalanceChart = memo(function BalanceChart({ income, expense, netBal
     <S.Wrapper>
       <S.Title>Receitas e Despesas</S.Title>
       <S.ChartContainer>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height="100%">
           <RechartsPieChart>
             <Pie
               data={data}

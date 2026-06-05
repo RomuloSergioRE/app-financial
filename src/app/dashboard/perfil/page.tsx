@@ -89,7 +89,7 @@ export default function PerfilPage() {
       <S.Grid>
         <S.Section>
           <S.SectionTitle>Dados pessoais</S.SectionTitle>
-          <form onSubmit={profileForm.handleSubmit(handleSaveProfile)}>
+          <S.Form onSubmit={profileForm.handleSubmit(handleSaveProfile)}>
             <S.Field>
               <S.Label>Nome</S.Label>
               <Input error={profileForm.formState.errors.name?.message} {...profileForm.register("name")} />
@@ -117,12 +117,12 @@ export default function PerfilPage() {
                 Salvar
               </Button>
             </S.Actions>
-          </form>
+          </S.Form>
         </S.Section>
 
         <S.Section>
           <S.SectionTitle>Alterar senha</S.SectionTitle>
-          <form onSubmit={passwordForm.handleSubmit(handleChangePassword)}>
+          <S.Form onSubmit={passwordForm.handleSubmit(handleChangePassword)}>
             <S.Field>
               <S.Label>Senha atual</S.Label>
               <PasswordInput
@@ -156,7 +156,7 @@ export default function PerfilPage() {
                 Alterar senha
               </Button>
             </S.Actions>
-          </form>
+          </S.Form>
         </S.Section>
       </S.Grid>
     </S.Wrapper>
