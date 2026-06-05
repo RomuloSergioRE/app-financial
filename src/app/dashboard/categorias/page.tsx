@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { HiOutlinePencil, HiOutlineTrash, HiOutlineTag } from "react-icons/hi2";
+import { useState, useRef } from "react";
+import { HiOutlinePencil, HiOutlineTrash, HiOutlineTag, HiOutlineDocumentArrowDown, HiOutlineDocumentArrowUp } from "react-icons/hi2";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
+import { Button } from "@/components/atoms/Button";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
@@ -13,6 +14,9 @@ import {
   useCreateCategory,
   useUpdateCategory,
   useDeleteCategory,
+  useExportCategoriesCsv,
+  useExportCategoriesPdf,
+  useImportCategoriesCsv,
 } from "@/hooks/useCategories";
 import type { Category } from "@/types";
 import * as S from "./style";
@@ -25,6 +29,10 @@ export default function CategoriasPage() {
   const createMutation = useCreateCategory();
   const deleteMutation = useDeleteCategory();
   const updateMutation = useUpdateCategory(editingCategory?.id ?? "");
+  const exportCsvMutation = useExportCategoriesCsv();
+  const exportPdfMutation = useExportCategoriesPdf();
+  const importCsvMutation = useImportCategoriesCsv();
+  const importFileRef = useRef<HTMLInputElement>(null);
 
   const handleCreate = (data: { name: string; color?: string; icon?: string }) => {
     createMutation.mutate(
@@ -67,9 +75,32 @@ export default function CategoriasPage() {
 
   return (
     <S.Wrapper>
-      <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-        Categorias
-      </Text>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+        <Text as="h1" size="3xl" weight="bold" fontFamily="display">
+          Categorias
+        </Text>
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          <Button variant="outline" size="sm" onClick={() => exportCsvMutation.mutate()} loading={exportCsvMutation.isPending}>
+            <HiOutlineDocumentArrowDown size={14} /> CSV
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => exportPdfMutation.mutate()} loading={exportPdfMutation.isPending}>
+            <HiOutlineDocumentArrowDown size={14} /> PDF
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => importFileRef.current?.click()} loading={importCsvMutation.isPending}>
+            <HiOutlineDocumentArrowUp size={14} /> Importar
+          </Button>
+          <input
+            ref={importFileRef}
+            type="file"
+            accept=".csv"
+            style={{ display: "none" }}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) importCsvMutation.mutate(file, { onSettled: () => { if (importFileRef.current) importFileRef.current.value = ""; } });
+            }}
+          />
+        </div>
+      </div>
 
       <CategoryForm
         onSubmit={handleCreate}

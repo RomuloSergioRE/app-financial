@@ -1,7 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { HiOutlinePencil, HiOutlineTrash, HiOutlinePlusCircle, HiOutlineMagnifyingGlass, HiOutlineTag } from "react-icons/hi2";
+import { useState, useRef } from "react";
+import {
+  HiOutlinePencil, HiOutlineTrash, HiOutlinePlusCircle,
+  HiOutlineMagnifyingGlass, HiOutlineTag,
+  HiOutlineDocumentArrowDown, HiOutlineDocumentArrowUp,
+  HiOutlineDocumentText,
+} from "react-icons/hi2";
 import { Select } from "@/components/molecules/Select";
 import { Input } from "@/components/atoms/Input";
 import { Button } from "@/components/atoms/Button";
@@ -22,6 +27,10 @@ import {
   useDeleteTransaction,
   useLinkTags,
   useUnlinkTag,
+  useExportTransactionsCsv,
+  useExportTransactionsPdf,
+  useExportTransactionsTemplate,
+  useImportTransactionsCsv,
 } from "@/hooks/useTransactions";
 import { TagForm } from "@/components/molecules/TagForm";
 import { formatCurrency, formatDate } from "@/lib/format";
@@ -57,6 +66,11 @@ export default function TransacoesPage() {
   const linkTagsMutation = useLinkTags();
   const unlinkTagMutation = useUnlinkTag();
   const createTagMutation = useCreateTag();
+  const exportCsvMutation = useExportTransactionsCsv();
+  const exportPdfMutation = useExportTransactionsPdf();
+  const exportTemplateMutation = useExportTransactionsTemplate();
+  const importCsvMutation = useImportTransactionsCsv();
+  const importFileRef = useRef<HTMLInputElement>(null);
 
   const handleCreate = (data: { description: string; amount: number; type: "income" | "outcome"; date: string; categoryId: string }) => {
     createMutation.mutate(
@@ -150,9 +164,35 @@ export default function TransacoesPage() {
 
   return (
     <S.Wrapper>
-      <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-        Transações
-      </Text>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+        <Text as="h1" size="3xl" weight="bold" fontFamily="display">
+          Transações
+        </Text>
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          <Button variant="outline" size="sm" onClick={() => exportCsvMutation.mutate({ startDate: startDate || undefined, endDate: endDate || undefined, search: debouncedSearch || undefined })} loading={exportCsvMutation.isPending}>
+            <HiOutlineDocumentArrowDown size={14} /> CSV
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => exportPdfMutation.mutate({ startDate: startDate || undefined, endDate: endDate || undefined })} loading={exportPdfMutation.isPending}>
+            <HiOutlineDocumentArrowDown size={14} /> PDF
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => exportTemplateMutation.mutate()} loading={exportTemplateMutation.isPending}>
+            <HiOutlineDocumentText size={14} /> Template
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => importFileRef.current?.click()} loading={importCsvMutation.isPending}>
+            <HiOutlineDocumentArrowUp size={14} /> Importar
+          </Button>
+          <input
+            ref={importFileRef}
+            type="file"
+            accept=".csv"
+            style={{ display: "none" }}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) importCsvMutation.mutate(file, { onSettled: () => { if (importFileRef.current) importFileRef.current.value = ""; } });
+            }}
+          />
+        </div>
+      </div>
 
       <TransactionForm
         categories={categories}

@@ -104,3 +104,64 @@ export function useUnlinkTag() {
     },
   });
 }
+
+function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+export function useExportTransactionsCsv() {
+  return useMutation({
+    mutationFn: (params?: { categoryId?: string; startDate?: string; endDate?: string; search?: string }) =>
+      transactionService.exportCsv(params),
+    onSuccess: (blob) => {
+      downloadBlob(blob, `transacoes-${new Date().toISOString().split("T")[0]}.csv`);
+      toast.success("CSV exportado com sucesso!");
+    },
+    onError: () => toast.error("Erro ao exportar CSV"),
+  });
+}
+
+export function useExportTransactionsPdf() {
+  return useMutation({
+    mutationFn: (params?: { categoryId?: string; startDate?: string; endDate?: string; search?: string }) =>
+      transactionService.exportPdf(params),
+    onSuccess: (blob) => {
+      downloadBlob(blob, `transacoes-${new Date().toISOString().split("T")[0]}.pdf`);
+      toast.success("PDF exportado com sucesso!");
+    },
+    onError: () => toast.error("Erro ao exportar PDF"),
+  });
+}
+
+export function useExportTransactionsTemplate() {
+  return useMutation({
+    mutationFn: () => transactionService.exportTemplate(),
+    onSuccess: (blob) => {
+      downloadBlob(blob, `template-importacao-transacoes.csv`);
+      toast.success("Template baixado com sucesso!");
+    },
+    onError: () => toast.error("Erro ao baixar template"),
+  });
+}
+
+export function useImportTransactionsCsv() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (file: File) => transactionService.importCsv(file),
+    onSuccess: (result) => {
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["analytics"] });
+      if (result.errors.length > 0) {
+        toast.warning(`${result.imported} importado(s), ${result.errors.length} erro(s)`);
+      } else {
+        toast.success(`${result.imported} transação(ões) importada(s) com sucesso!`);
+      }
+    },
+    onError: () => toast.error("Erro ao importar CSV"),
+  });
+}
