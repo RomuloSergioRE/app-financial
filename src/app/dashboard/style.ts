@@ -6,15 +6,37 @@ export const LayoutWrapper = styled.div`
   background: ${({ theme }) => theme.colors.background};
 `;
 
+export const TopBar = styled.div`
+  display: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.spacing.md};
+    padding: ${({ theme }) => theme.spacing.md};
+    background: ${({ theme }) => theme.colors.surface};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  }
+`;
+
+export const TopBarTitle = styled.span`
+  display: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: block;
+    font-family: ${({ theme }) => theme.fonts.body};
+    font-size: ${({ theme }) => theme.fontSize.lg};
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.text};
+    letter-spacing: -0.02em;
+  }
+`;
+
 export const HamburgerWrapper = styled.div`
   display: none;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: block;
-    position: fixed;
-    top: ${({ theme }) => theme.spacing.md};
-    left: ${({ theme }) => theme.spacing.md};
-    z-index: 30;
     pointer-events: none;
   }
 `;

@@ -1,12 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useDebounce } from "@/hooks/useDebounce";
+import { useState } from "react";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlinePlusCircle, HiOutlineMagnifyingGlass } from "react-icons/hi2";
-import { Select } from "@/components/atoms/Select";
-import { Button } from "@/components/atoms/Button";
+import { Select } from "@/components/molecules/Select";
 import { Input } from "@/components/atoms/Input";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
@@ -14,6 +10,8 @@ import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
 import { Pagination } from "@/components/molecules/Pagination";
+import { TransactionForm } from "@/components/molecules/TransactionForm";
+import { useDebounce } from "@/hooks/useDebounce";
 import { useCategories } from "@/hooks/useCategories";
 import {
   useTransactions,
@@ -21,8 +19,8 @@ import {
   useUpdateTransaction,
   useDeleteTransaction,
 } from "@/hooks/useTransactions";
-import { createTransactionSchema } from "@/schemas/transaction.schema";
-import type { CreateTransactionDTO } from "@/schemas/transaction.schema";
+import { formatCurrency, formatDate } from "@/lib/format";
+import { fromCents, toCents } from "@/lib/currency";
 import type { Transaction } from "@/types";
 import * as S from "./style";
 
@@ -36,66 +34,28 @@ export default function TransacoesPage() {
   const [editingTx, setEditingTx] = useState<Transaction | null>(null);
   const [deletingTx, setDeletingTx] = useState<Transaction | null>(null);
 
-  const transactionsState = useTransactions(page, 10, categoryFilter || undefined, startDate || undefined, endDate || undefined, debouncedSearch || undefined);
+  const transactionsState = useTransactions({
+    page,
+    categoryId: categoryFilter || undefined,
+    startDate: startDate || undefined,
+    endDate: endDate || undefined,
+    search: debouncedSearch || undefined,
+  });
   const categoriesState = useCategories();
   const createMutation = useCreateTransaction();
   const deleteMutation = useDeleteTransaction();
   const updateMutation = useUpdateTransaction(editingTx?.id ?? "");
 
-  const createForm = useForm<CreateTransactionDTO>({
-    resolver: zodResolver(createTransactionSchema),
-    defaultValues: {
-      description: "",
-      amount: 0,
-      type: "outcome",
-      date: new Date().toISOString().split("T")[0],
-      categoryId: "",
-    },
-  });
-
-  const editForm = useForm<CreateTransactionDTO>({
-    resolver: zodResolver(createTransactionSchema),
-    defaultValues: {
-      description: "",
-      amount: 0,
-      type: "outcome",
-      date: new Date().toISOString().split("T")[0],
-      categoryId: "",
-    },
-  });
-
-  useEffect(() => {
-    if (editingTx) {
-      editForm.reset({
-        description: editingTx.description,
-        amount: editingTx.amount / 100,
-        type: editingTx.type,
-        date: editingTx.date.split("T")[0],
-        categoryId: editingTx.categoryId.toString(),
-      });
-    }
-  }, [editingTx, editForm]);
-
-  const handleCreate = (data: CreateTransactionDTO) => {
+  const handleCreate = (data: { description: string; amount: number; type: "income" | "outcome"; date: string; categoryId: string }) => {
     createMutation.mutate(
       {
         description: data.description,
-        amount: Math.round(data.amount * 100),
+        amount: toCents(data.amount),
         type: data.type,
         date: new Date(data.date).toISOString(),
         categoryId: data.categoryId,
       },
-      {
-        onSuccess: () => {
-          createForm.reset({
-            description: "",
-            amount: 0,
-            type: "outcome",
-            date: new Date().toISOString().split("T")[0],
-            categoryId: "",
-          });
-        },
-      }
+      {}
     );
   };
 
@@ -103,12 +63,12 @@ export default function TransacoesPage() {
     setEditingTx(tx);
   };
 
-  const handleUpdate = (data: CreateTransactionDTO) => {
+  const handleUpdate = (data: { description: string; amount: number; type: "income" | "outcome"; date: string; categoryId: string }) => {
     if (!editingTx) return;
     updateMutation.mutate(
       {
         description: data.description,
-        amount: Math.round(data.amount * 100),
+        amount: toCents(data.amount),
         type: data.type,
         date: new Date(data.date).toISOString(),
         categoryId: data.categoryId,
@@ -145,67 +105,12 @@ export default function TransacoesPage() {
         Transações
       </Text>
 
-      <form onSubmit={createForm.handleSubmit(handleCreate)}>
-        <S.Form>
-          <S.FormGroup>
-            <S.Label>Descrição</S.Label>
-            <Input
-              placeholder="Ex: Supermercado"
-              error={createForm.formState.errors.description?.message}
-              {...createForm.register("description")}
-            />
-          </S.FormGroup>
-          <S.FormGroup>
-            <S.Label>Valor (R$)</S.Label>
-            <Input
-              type="number"
-              step="0.01"
-              placeholder="0,00"
-              error={createForm.formState.errors.amount?.message}
-              {...createForm.register("amount", { valueAsNumber: true })}
-            />
-          </S.FormGroup>
-          <S.FormRow>
-            <S.FormGroup>
-              <S.Label>Tipo</S.Label>
-              <Select
-                value={createForm.watch("type")}
-                onChange={(v) => createForm.setValue("type", v as "income" | "outcome")}
-                options={[
-                  { value: "outcome", label: "Saída" },
-                  { value: "income", label: "Entrada" },
-                ]}
-              />
-            </S.FormGroup>
-            <S.FormGroup>
-              <S.Label>Categoria</S.Label>
-              <Select
-                value={createForm.watch("categoryId")}
-                onChange={(v) => createForm.setValue("categoryId", v)}
-                options={[
-                  { value: "", label: "Selecione" },
-                  ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
-                ]}
-              />
-            </S.FormGroup>
-            <S.FormGroup>
-              <S.Label>Data</S.Label>
-              <Input
-                type="date"
-                error={createForm.formState.errors.date?.message}
-                {...createForm.register("date")}
-              />
-            </S.FormGroup>
-          </S.FormRow>
-          <Button
-            type="submit"
-            loading={createMutation.isPending}
-            disabled={!createForm.formState.isValid}
-          >
-            Adicionar
-          </Button>
-        </S.Form>
-      </form>
+      <TransactionForm
+        categories={categories}
+        onSubmit={handleCreate}
+        isLoading={createMutation.isPending}
+        submitLabel="Adicionar"
+      />
 
       <S.FilterRow>
         <S.FormGroup>
@@ -279,7 +184,7 @@ export default function TransacoesPage() {
               <tbody>
                 {transactions.map((tx) => (
                   <tr key={tx.id}>
-                    <S.Td>{new Date(tx.date).toLocaleDateString("pt-BR")}</S.Td>
+                    <S.Td>{formatDate(tx.date)}</S.Td>
                     <S.Td>{tx.description}</S.Td>
                     <S.Td>{tx.category?.name ?? "-"}</S.Td>
                     <S.Td>
@@ -288,10 +193,7 @@ export default function TransacoesPage() {
                       </S.TypeBadge>
                     </S.Td>
                     <S.TdMono>
-                      {new Intl.NumberFormat("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
-                      }).format(tx.amount / 100)}
+                      {formatCurrency(fromCents(tx.amount))}
                     </S.TdMono>
                     <S.Td>
                       <S.Actions>
@@ -318,64 +220,20 @@ export default function TransacoesPage() {
         onClose={() => setEditingTx(null)}
         title="Editar Transação"
       >
-        <form onSubmit={editForm.handleSubmit(handleUpdate)}>
-          <S.ModalForm>
-            <S.FormGroup>
-              <S.Label>Descrição</S.Label>
-              <Input
-                error={editForm.formState.errors.description?.message}
-                {...editForm.register("description")}
-              />
-            </S.FormGroup>
-            <S.FormGroup>
-              <S.Label>Valor (R$)</S.Label>
-              <Input
-                type="number"
-                step="0.01"
-                error={editForm.formState.errors.amount?.message}
-                {...editForm.register("amount", { valueAsNumber: true })}
-              />
-            </S.FormGroup>
-            <S.FormGroup>
-              <S.Label>Tipo</S.Label>
-              <Select
-                value={editForm.watch("type")}
-                onChange={(v) => editForm.setValue("type", v as "income" | "outcome")}
-                options={[
-                  { value: "outcome", label: "Saída" },
-                  { value: "income", label: "Entrada" },
-                ]}
-              />
-            </S.FormGroup>
-            <S.FormGroup>
-              <S.Label>Categoria</S.Label>
-              <Select
-                value={editForm.watch("categoryId")}
-                onChange={(v) => editForm.setValue("categoryId", v)}
-                options={[
-                  { value: "", label: "Selecione" },
-                  ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
-                ]}
-              />
-            </S.FormGroup>
-            <S.FormGroup>
-              <S.Label>Data</S.Label>
-              <Input
-                type="date"
-                error={editForm.formState.errors.date?.message}
-                {...editForm.register("date")}
-              />
-            </S.FormGroup>
-            <S.ModalActions>
-              <Button variant="outline" onClick={() => setEditingTx(null)} type="button">
-                Cancelar
-              </Button>
-              <Button type="submit" loading={updateMutation.isPending}>
-                Salvar
-              </Button>
-            </S.ModalActions>
-          </S.ModalForm>
-        </form>
+        <TransactionForm
+          categories={categories}
+          onSubmit={handleUpdate}
+          isLoading={updateMutation.isPending}
+          submitLabel="Salvar"
+          initialData={editingTx ? {
+            description: editingTx.description,
+            amount: fromCents(editingTx.amount),
+            type: editingTx.type,
+            date: editingTx.date.split("T")[0],
+            categoryId: editingTx.categoryId.toString(),
+          } : undefined}
+          onCancel={() => setEditingTx(null)}
+        />
       </Modal>
 
       <ConfirmDialog

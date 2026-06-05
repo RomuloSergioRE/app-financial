@@ -12,17 +12,14 @@ import {
   HiOutlineArrowTrendingDown,
   HiOutlineWallet,
 } from "react-icons/hi2";
-import { useBalance, useCategoriesAnalytics, getDateRange } from "@/hooks/useAnalytics";
+import { useBalance, useCategoriesAnalytics } from "@/hooks/useAnalytics";
+import { getDateRange } from "@/lib/date";
+import { calcChange } from "@/lib/analytics";
 import { useTransactions } from "@/hooks/useTransactions";
+import { formatCurrency, formatDate } from "@/lib/format";
+import { fromCents } from "@/lib/currency";
 import type { Period } from "@/components/molecules/PeriodFilter/types";
 import * as S from "./style";
-
-const currencyFormat = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-});
-
-const dateFormat = new Intl.DateTimeFormat("pt-BR");
 
 const incomeIcon = <HiOutlineArrowTrendingUp size={20} />;
 const outcomeIcon = <HiOutlineArrowTrendingDown size={20} />;
@@ -43,7 +40,7 @@ export default function DashboardPage() {
 
   const balanceState = useBalance(startDate, endDate);
   const categoriesState = useCategoriesAnalytics(startDate, endDate);
-  const recentState = useTransactions(1, 5);
+  const recentState = useTransactions({ page: 1, limit: 5 });
 
   const currentStart = new Date(startDate);
   const currentEnd = new Date(endDate);
@@ -61,24 +58,11 @@ export default function DashboardPage() {
 
   const balance = rawBalance
     ? {
-        totalIncome: rawBalance.totalIncome / 100,
-        totalOutcome: rawBalance.totalOutcome / 100,
-        netBalance: rawBalance.netBalance / 100,
+        totalIncome: fromCents(rawBalance.totalIncome),
+        totalOutcome: fromCents(rawBalance.totalOutcome),
+        netBalance: fromCents(rawBalance.netBalance),
       }
     : undefined;
-
-  const calcChange = (current: number, previous?: number) => {
-    if (previous === undefined || previous === null) return undefined;
-    if (previous === 0 && current > 0) return 100;
-    if (previous === 0 && current === 0) return undefined;
-
-    if (previous < 0) {
-      if (current >= 0) return 100;
-      return ((Math.abs(previous) - Math.abs(current)) / Math.abs(previous)) * 100;
-    }
-
-    return ((current - previous) / previous) * 100;
-  };
 
   const incomeChange = rawBalance ? calcChange(rawBalance.totalIncome, prevRawBalance?.totalIncome) : undefined;
   const outcomeChange = rawBalance ? calcChange(rawBalance.totalOutcome, prevRawBalance?.totalOutcome) : undefined;
@@ -87,7 +71,7 @@ export default function DashboardPage() {
   const categories = useMemo(
     () => (categoriesState.status === "success" ? categoriesState.data : []).map((c) => ({
       ...c,
-      totalAmount: c.totalAmount / 100,
+      totalAmount: fromCents(c.totalAmount),
     })),
     [categoriesState]
   );
@@ -177,7 +161,7 @@ export default function DashboardPage() {
               <tbody>
                 {recentTransactions.map((tx) => (
                   <tr key={tx.id}>
-                    <S.RecentTd>{dateFormat.format(new Date(tx.date))}</S.RecentTd>
+                    <S.RecentTd>{formatDate(tx.date)}</S.RecentTd>
                     <S.RecentTd>{tx.description}</S.RecentTd>
                     <S.RecentTd>{tx.category?.name ?? "-"}</S.RecentTd>
                     <S.RecentTd>
@@ -186,7 +170,7 @@ export default function DashboardPage() {
                       </S.RecentTypeBadge>
                     </S.RecentTd>
                     <S.RecentTdMono>
-                      {currencyFormat.format(tx.amount / 100)}
+                      {formatCurrency(fromCents(tx.amount))}
                     </S.RecentTdMono>
                   </tr>
                 ))}

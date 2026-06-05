@@ -2,7 +2,7 @@ import api from "./api";
 import { validateResponse } from "@/lib/validate-response";
 import { categorySchema } from "@/schemas/category.schema";
 import { paginatedResponseSchema } from "@/schemas/api.schema";
-import type { Category } from "@/types";
+import type { Category, CreateCategoryRequest, UpdateCategoryRequest } from "@/types";
 import type { PaginatedResponseDTO } from "@/schemas/api.schema";
 
 export const categoryService = {
@@ -24,18 +24,14 @@ export const categoryService = {
     return validateResponse(categorySchema, response.data);
   },
 
-  create: async (data: {
-    name: string;
-    color?: string;
-    icon?: string;
-  }): Promise<Category> => {
+  create: async (data: CreateCategoryRequest): Promise<Category> => {
     const response = await api.post("/categories", data);
     return validateResponse(categorySchema, response.data);
   },
 
   update: async (
     id: string,
-    data: Partial<{ name: string; color?: string; icon?: string }>
+    data: UpdateCategoryRequest
   ): Promise<Category> => {
     const response = await api.put(`/categories/${id}`, data);
     return validateResponse(categorySchema, response.data);

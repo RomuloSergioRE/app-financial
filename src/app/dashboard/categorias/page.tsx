@@ -1,24 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineTag } from "react-icons/hi2";
-import { Button } from "@/components/atoms/Button";
-import { Input } from "@/components/atoms/Input";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
+import { CategoryForm } from "@/components/molecules/CategoryForm";
 import {
   useCategories,
   useCreateCategory,
   useUpdateCategory,
   useDeleteCategory,
 } from "@/hooks/useCategories";
-import { createCategorySchema } from "@/schemas/category.schema";
-import type { CreateCategoryDTO } from "@/schemas/category.schema";
 import type { Category } from "@/types";
 import * as S from "./style";
 
@@ -31,32 +26,18 @@ export default function CategoriasPage() {
   const deleteMutation = useDeleteCategory();
   const updateMutation = useUpdateCategory(editingCategory?.id ?? "");
 
-  const createForm = useForm<CreateCategoryDTO>({
-    resolver: zodResolver(createCategorySchema),
-    defaultValues: { name: "" },
-  });
-
-  const editForm = useForm<CreateCategoryDTO>({
-    resolver: zodResolver(createCategorySchema),
-    defaultValues: { name: "", color: "" },
-  });
-
-  const handleCreate = (data: CreateCategoryDTO) => {
+  const handleCreate = (data: { name: string; color?: string; icon?: string }) => {
     createMutation.mutate(
       { name: data.name },
-      {
-        onSuccess: () => createForm.reset({ name: "" }),
-        onError: () => {},
-      }
+      { onSuccess: () => {} }
     );
   };
 
   const handleEdit = (cat: Category) => {
     setEditingCategory(cat);
-    editForm.reset({ name: cat.name, color: cat.color ?? undefined });
   };
 
-  const handleUpdate = (data: CreateCategoryDTO) => {
+  const handleUpdate = (data: { name: string; color?: string; icon?: string }) => {
     if (!editingCategory) return;
     updateMutation.mutate(
       { name: data.name, color: data.color || undefined },
@@ -90,20 +71,11 @@ export default function CategoriasPage() {
         Categorias
       </Text>
 
-      <form onSubmit={createForm.handleSubmit(handleCreate)}>
-        <S.FormRow>
-          <S.FormField>
-            <Input
-              placeholder="Nome da categoria"
-              error={createForm.formState.errors.name?.message}
-              {...createForm.register("name")}
-            />
-          </S.FormField>
-          <Button type="submit" loading={createMutation.isPending} disabled={!createForm.formState.isValid}>
-            Criar
-          </Button>
-        </S.FormRow>
-      </form>
+      <CategoryForm
+        onSubmit={handleCreate}
+        isLoading={createMutation.isPending}
+        submitLabel="Criar"
+      />
 
       {categoriesState.status === "loading" ? (
         <S.List>
@@ -142,33 +114,13 @@ export default function CategoriasPage() {
         onClose={() => setEditingCategory(null)}
         title="Editar Categoria"
       >
-        <form onSubmit={editForm.handleSubmit(handleUpdate)}>
-          <S.ModalForm>
-            <S.FormGroup>
-              <S.Label>Nome</S.Label>
-              <Input
-                error={editForm.formState.errors.name?.message}
-                {...editForm.register("name")}
-              />
-            </S.FormGroup>
-            <S.FormGroup>
-              <S.Label>Cor (hex)</S.Label>
-              <Input
-                placeholder="#4F46E5"
-                error={editForm.formState.errors.color?.message}
-                {...editForm.register("color")}
-              />
-            </S.FormGroup>
-            <S.ModalActions>
-              <Button variant="outline" onClick={() => setEditingCategory(null)} type="button">
-                Cancelar
-              </Button>
-              <Button type="submit" loading={updateMutation.isPending}>
-                Salvar
-              </Button>
-            </S.ModalActions>
-          </S.ModalForm>
-        </form>
+        <CategoryForm
+          onSubmit={handleUpdate}
+          isLoading={updateMutation.isPending}
+          submitLabel="Salvar"
+          initialData={editingCategory ? { name: editingCategory.name, color: editingCategory.color ?? undefined } : undefined}
+          onCancel={() => setEditingCategory(null)}
+        />
       </Modal>
 
       <ConfirmDialog

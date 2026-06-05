@@ -2,7 +2,7 @@ import api from "./api";
 import { validateResponse } from "@/lib/validate-response";
 import { transactionSchema } from "@/schemas/transaction.schema";
 import { paginatedResponseSchema } from "@/schemas/api.schema";
-import type { Transaction } from "@/types";
+import type { Transaction, CreateTransactionRequest, UpdateTransactionRequest } from "@/types";
 import type { PaginatedResponseDTO } from "@/schemas/api.schema";
 
 export const transactionService = {
@@ -35,26 +35,14 @@ export const transactionService = {
     return validateResponse(transactionSchema, response.data);
   },
 
-  create: async (data: {
-    description: string;
-    amount: number;
-    type: "income" | "outcome";
-    date: string;
-    categoryId: string;
-  }): Promise<Transaction> => {
+  create: async (data: CreateTransactionRequest): Promise<Transaction> => {
     const response = await api.post("/transactions", data);
     return validateResponse(transactionSchema, response.data);
   },
 
   update: async (
     id: string,
-    data: Partial<{
-      description: string;
-      amount: number;
-      type: "income" | "outcome";
-      date: string;
-      categoryId: string;
-    }>
+    data: UpdateTransactionRequest
   ): Promise<Transaction> => {
     const response = await api.put(`/transactions/${id}`, data);
     return validateResponse(transactionSchema, response.data);

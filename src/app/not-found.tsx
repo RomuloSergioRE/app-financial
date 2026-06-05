@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import styled, { useTheme } from "styled-components";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   display: flex;

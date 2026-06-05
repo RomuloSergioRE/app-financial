@@ -6,7 +6,7 @@ import { useState } from "react";
 import GlobalStyle from "@/styles/global";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
-import { Toast } from "@/components/atoms/Toast";
+import { Toast } from "@/components/molecules/Toast";
 
 function ThemedApp({ children }: { children: React.ReactNode }) {
   const { themeObject } = useTheme();

@@ -44,15 +44,18 @@ export default function DashboardLayout({
 
   return (
     <>
-      <S.HamburgerWrapper>
-        <S.HamburgerButton
-          $isOpen={sidebarOpen}
-          onClick={handleToggle}
-          aria-label={sidebarOpen ? "Fechar menu" : "Abrir menu"}
-        >
-          {sidebarOpen ? <HiOutlineXMark size={24} /> : <HiOutlineBars3 size={24} />}
-        </S.HamburgerButton>
-      </S.HamburgerWrapper>
+      <S.TopBar>
+        <S.HamburgerWrapper>
+          <S.HamburgerButton
+            $isOpen={sidebarOpen}
+            onClick={handleToggle}
+            aria-label={sidebarOpen ? "Fechar menu" : "Abrir menu"}
+          >
+            {sidebarOpen ? <HiOutlineXMark size={24} /> : <HiOutlineBars3 size={24} />}
+          </S.HamburgerButton>
+        </S.HamburgerWrapper>
+        <S.TopBarTitle>Financial</S.TopBarTitle>
+      </S.TopBar>
       <S.LayoutWrapper>
         <Sidebar
           items={userNavItems}

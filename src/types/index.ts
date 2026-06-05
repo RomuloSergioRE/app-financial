@@ -1,4 +1,3 @@
-export type { PaginatedResponse, ApiError } from "./api";
 export type {
   LoginRequest,
   RegisterRequest,

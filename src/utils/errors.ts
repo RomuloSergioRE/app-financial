@@ -1,4 +1,5 @@
 import axios from "axios";
+import { logger } from "@/lib/logger";
 
 export function extractErrorMessage(
   err: unknown,
@@ -9,6 +10,6 @@ export function extractErrorMessage(
     if (typeof data.error === "string") return data.error;
     if (typeof data.message === "string") return data.message;
   }
-  console.error("Erro não tratado:", err);
+  logger.error("Erro não tratado:", err);
   return defaultMessage;
 }
