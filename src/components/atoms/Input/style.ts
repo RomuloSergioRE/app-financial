@@ -10,7 +10,8 @@ export const Wrapper = styled.input<{ $hasError: boolean }>`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.sm};
   line-height: 1.5;
-  transition: border-color ${({ theme }) => theme.transition.base},
+  transition:
+    border-color ${({ theme }) => theme.transition.base},
     box-shadow ${({ theme }) => theme.transition.base};
 
   &::placeholder {

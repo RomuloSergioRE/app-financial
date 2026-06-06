@@ -2,7 +2,11 @@ import { z } from "zod/v4";
 
 export const goalSchema = z.object({
   id: z.union([z.string(), z.number()]).transform(String),
-  categoryId: z.union([z.string(), z.number()]).nullable().optional().transform((v) => v !== null && v !== undefined ? String(v) : v),
+  categoryId: z
+    .union([z.string(), z.number()])
+    .nullable()
+    .optional()
+    .transform((v) => (v !== null && v !== undefined ? String(v) : v)),
   name: z.string(),
   targetAmount: z.number(),
   currentAmount: z.number(),

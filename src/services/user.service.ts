@@ -9,18 +9,12 @@ export const userService = {
     return validateResponse(userSchema, response.data);
   },
 
-  updateProfile: async (data: {
-    name?: string;
-    email?: string;
-  }): Promise<User> => {
+  updateProfile: async (data: { name?: string; email?: string }): Promise<User> => {
     const response = await api.put("/auth/profile", data);
     return validateResponse(userSchema, response.data);
   },
 
-  updatePassword: async (data: {
-    currentPassword: string;
-    newPassword: string;
-  }): Promise<void> => {
+  updatePassword: async (data: { currentPassword: string; newPassword: string }): Promise<void> => {
     await api.put("/auth/password", data);
   },
 };

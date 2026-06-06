@@ -5,7 +5,7 @@ export const categorySchema = z.object({
   name: z.string(),
   color: z.string().nullable().optional(),
   icon: z.string().nullable().optional(),
-  userId: z.union([z.string(), z.number()]).nullable().optional().transform((v) => v !== null && v !== undefined ? String(v) : v),
+  userId: z.union([z.string(), z.number()]).nullable().optional().transform(String),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
@@ -23,3 +23,15 @@ export type CreateCategoryDTO = z.infer<typeof createCategorySchema>;
 export const updateCategorySchema = createCategorySchema.partial();
 
 export type UpdateCategoryDTO = z.infer<typeof updateCategorySchema>;
+
+export const importCsvResponseSchema = z.object({
+  imported: z.number(),
+  errors: z.array(
+    z.object({
+      row: z.number(),
+      error: z.string(),
+    }),
+  ),
+});
+
+export type ImportCsvResponseDTO = z.infer<typeof importCsvResponseSchema>;

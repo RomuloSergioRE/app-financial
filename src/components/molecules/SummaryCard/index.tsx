@@ -5,7 +5,13 @@ import { useTheme } from "styled-components";
 import type { SummaryCardProps, SummaryType } from "./types";
 import * as S from "./style";
 
-export const SummaryCard = memo(function SummaryCard({ label, value, icon, type, change }: SummaryCardProps) {
+export const SummaryCard = memo(function SummaryCard({
+  label,
+  value,
+  icon,
+  type,
+  change,
+}: SummaryCardProps) {
   const theme = useTheme();
 
   const accentColors: Record<SummaryType, string> = {
@@ -25,9 +31,7 @@ export const SummaryCard = memo(function SummaryCard({ label, value, icon, type,
         <S.IconWrapper $color={accentColors[type]}>{icon}</S.IconWrapper>
         <S.Label>{label}</S.Label>
       </S.HeaderRow>
-      <S.Value $color={accentColors[type]}>
-        {formatted}
-      </S.Value>
+      <S.Value $color={accentColors[type]}>{formatted}</S.Value>
       {change !== undefined && (
         <S.Change $positive={change >= 0}>
           {change >= 0 ? "↑" : "↓"} {Math.abs(change).toFixed(1)}%

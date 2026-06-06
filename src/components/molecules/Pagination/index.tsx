@@ -38,14 +38,10 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         p === "..." ? (
           <S.PageDots key={`dots-${i}`}>...</S.PageDots>
         ) : (
-          <S.PageButton
-            key={p}
-            $active={p === currentPage}
-            onClick={() => onPageChange(p)}
-          >
+          <S.PageButton key={p} $active={p === currentPage} onClick={() => onPageChange(p)}>
             {p}
           </S.PageButton>
-        )
+        ),
       )}
       <Button
         variant="outline"

@@ -13,11 +13,7 @@ export function PeriodFilter({ value, onChange }: PeriodFilterProps) {
   return (
     <S.Wrapper>
       {periods.map((p) => (
-        <S.Tab
-          key={p.value}
-          $active={value === p.value}
-          onClick={() => onChange(p.value)}
-        >
+        <S.Tab key={p.value} $active={value === p.value} onClick={() => onChange(p.value)}>
           {p.label}
         </S.Tab>
       ))}

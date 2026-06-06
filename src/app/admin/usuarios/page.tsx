@@ -32,13 +32,16 @@ export default function AdminUsuariosPage() {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
 
-  const queryParams = useMemo(() => ({
-    page,
-    limit: 20,
-    ...(roleFilter ? { role: roleFilter } : {}),
-    ...(statusFilter ? { status: statusFilter } : {}),
-    ...(search ? { search } : {}),
-  }), [page, roleFilter, statusFilter, search]);
+  const queryParams = useMemo(
+    () => ({
+      page,
+      limit: 20,
+      ...(roleFilter ? { role: roleFilter } : {}),
+      ...(statusFilter ? { status: statusFilter } : {}),
+      ...(search ? { search } : {}),
+    }),
+    [page, roleFilter, statusFilter, search],
+  );
 
   const usersQuery = useAdminUsers(queryParams);
   const userDetailsState = useAdminUserDetails(selectedUserId ?? "");
@@ -73,11 +76,17 @@ export default function AdminUsuariosPage() {
           <S.Input
             placeholder="Buscar por nome ou email..."
             value={search}
-            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
           />
           <Select
             value={roleFilter}
-            onChange={(v) => { setRoleFilter(v); setPage(1); }}
+            onChange={(v) => {
+              setRoleFilter(v);
+              setPage(1);
+            }}
             options={[
               { value: "", label: "Todas as funções" },
               { value: "user", label: "Usuário" },
@@ -87,7 +96,10 @@ export default function AdminUsuariosPage() {
           />
           <Select
             value={statusFilter}
-            onChange={(v) => { setStatusFilter(v); setPage(1); }}
+            onChange={(v) => {
+              setStatusFilter(v);
+              setPage(1);
+            }}
             options={[
               { value: "", label: "Todos os status" },
               { value: "active", label: "Ativo" },
@@ -129,7 +141,12 @@ export default function AdminUsuariosPage() {
                   <S.Td>
                     <Select
                       value={u.role}
-                      onChange={(v) => roleMutation.mutate({ userId: u.id, role: v as "admin" | "user" | "company" })}
+                      onChange={(v) =>
+                        roleMutation.mutate({
+                          userId: u.id,
+                          role: v as "admin" | "user" | "company",
+                        })
+                      }
                       options={[
                         { value: "user", label: "Usuário" },
                         { value: "admin", label: "Admin" },
@@ -140,7 +157,12 @@ export default function AdminUsuariosPage() {
                   <S.Td>
                     <Select
                       value={u.status}
-                      onChange={(v) => statusMutation.mutate({ userId: u.id, status: v as "active" | "inactive" | "suspended" })}
+                      onChange={(v) =>
+                        statusMutation.mutate({
+                          userId: u.id,
+                          status: v as "active" | "inactive" | "suspended",
+                        })
+                      }
                       options={[
                         { value: "active", label: "Ativo" },
                         { value: "inactive", label: "Inativo" },
@@ -180,8 +202,12 @@ export default function AdminUsuariosPage() {
           <Skeleton variant="rect" height="200px" />
         ) : userDetailsState.status === "success" ? (
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <Text size="md" weight="semibold">{userDetailsState.data.user.name}</Text>
-            <Text size="sm" color="textSecondary">{userDetailsState.data.user.email}</Text>
+            <Text size="md" weight="semibold">
+              {userDetailsState.data.user.name}
+            </Text>
+            <Text size="sm" color="textSecondary">
+              {userDetailsState.data.user.email}
+            </Text>
             <S.Row>
               <S.StatCard>
                 <S.StatLabel>Transações</S.StatLabel>

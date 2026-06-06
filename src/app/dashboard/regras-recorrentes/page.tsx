@@ -67,7 +67,7 @@ export default function RegrasRecorrentesPage() {
         nextDate: data.nextDate,
         endDate: data.endDate || undefined,
       },
-      {}
+      {},
     );
   };
 
@@ -97,7 +97,7 @@ export default function RegrasRecorrentesPage() {
         nextDate: data.nextDate,
         endDate: data.endDate || undefined,
       },
-      { onSuccess: () => setEditingRule(null) }
+      { onSuccess: () => setEditingRule(null) },
     );
   };
 
@@ -184,9 +184,7 @@ export default function RegrasRecorrentesPage() {
               <S.RuleDetails>
                 <S.DetailItem>
                   <S.DetailLabel>Valor</S.DetailLabel>
-                  <S.DetailValue>
-                    {formatCurrency(fromCents(rule.amount))}
-                  </S.DetailValue>
+                  <S.DetailValue>{formatCurrency(fromCents(rule.amount))}</S.DetailValue>
                 </S.DetailItem>
                 <S.DetailItem>
                   <S.DetailLabel>Tipo</S.DetailLabel>
@@ -222,16 +220,20 @@ export default function RegrasRecorrentesPage() {
           onSubmit={handleUpdate}
           isLoading={updateMutation.isPending}
           submitLabel="Salvar"
-          initialData={editingRule ? {
-            categoryId: editingRule.categoryId,
-            description: editingRule.description,
-            amount: fromCents(editingRule.amount),
-            type: editingRule.type,
-            frequency: editingRule.frequency,
-            interval: editingRule.interval,
-            nextDate: editingRule.nextDate.split("T")[0],
-            endDate: editingRule.endDate ? editingRule.endDate.split("T")[0] : undefined,
-          } : undefined}
+          initialData={
+            editingRule
+              ? {
+                  categoryId: editingRule.categoryId,
+                  description: editingRule.description,
+                  amount: fromCents(editingRule.amount),
+                  type: editingRule.type,
+                  frequency: editingRule.frequency,
+                  interval: editingRule.interval,
+                  nextDate: editingRule.nextDate.split("T")[0],
+                  endDate: editingRule.endDate ? editingRule.endDate.split("T")[0] : undefined,
+                }
+              : undefined
+          }
           onCancel={() => setEditingRule(null)}
         />
       </Modal>

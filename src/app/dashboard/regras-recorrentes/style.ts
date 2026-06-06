@@ -20,7 +20,8 @@ export const RuleCard = styled.div<{ $active?: boolean }>`
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  border-left: 4px solid ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.textMuted)};
+  border-left: 4px solid
+    ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.textMuted)};
   opacity: ${({ $active }) => ($active ? 1 : 0.6)};
 `;
 
@@ -112,8 +113,7 @@ export const DetailValue = styled.span`
 export const TypeBadge = styled.span<{ $type: string }>`
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
-  color: ${({ theme, $type }) =>
-    $type === "income" ? theme.colors.primary : theme.colors.danger};
+  color: ${({ theme, $type }) => ($type === "income" ? theme.colors.primary : theme.colors.danger)};
 `;
 
 export const StatusBadge = styled.span<{ $active?: boolean }>`
@@ -121,6 +121,7 @@ export const StatusBadge = styled.span<{ $active?: boolean }>`
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   padding: 2px 8px;
   border-radius: 999px;
-  background: ${({ theme, $active }) => ($active ? `${theme.colors.primary}20` : `${theme.colors.textMuted}20`)};
+  background: ${({ theme, $active }) =>
+    $active ? `${theme.colors.primary}20` : `${theme.colors.textMuted}20`};
   color: ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.textMuted)};
 `;

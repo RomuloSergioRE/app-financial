@@ -1,7 +1,12 @@
 import type { EmptyStateProps } from "./types";
 import * as S from "./style";
 
-export function EmptyState({ icon = undefined, title, description = undefined, action = undefined }: EmptyStateProps) {
+export function EmptyState({
+  icon = undefined,
+  title,
+  description = undefined,
+  action = undefined,
+}: EmptyStateProps) {
   return (
     <S.Wrapper>
       {icon && <S.Icon>{icon}</S.Icon>}

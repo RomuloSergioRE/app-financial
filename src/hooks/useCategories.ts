@@ -3,19 +3,18 @@ import { toast } from "@/components/molecules/Toast";
 import { categoryService } from "@/services/category.service";
 import { mapAsyncState } from "@/lib/map-async-state";
 import type { AsyncState } from "@/types/async";
-import type {
-  CreateCategoryRequest,
-  UpdateCategoryRequest,
-} from "@/types";
+import type { CreateCategoryRequest, UpdateCategoryRequest } from "@/types";
 import type { PaginatedResponseDTO } from "@/schemas/api.schema";
-import type { CategoryDTO } from "@/schemas/category.schema";
+import type { Category } from "@/types";
 
 interface UseCategoriesParams {
   page?: number;
   limit?: number;
 }
 
-export function useCategories(params: UseCategoriesParams = {}): AsyncState<PaginatedResponseDTO<CategoryDTO>> {
+export function useCategories(
+  params: UseCategoriesParams = {},
+): AsyncState<PaginatedResponseDTO<Category>> {
   const { page = 1, limit = 50 } = params;
   const query = useQuery({
     queryKey: ["categories", page, limit],
@@ -27,8 +26,7 @@ export function useCategories(params: UseCategoriesParams = {}): AsyncState<Pagi
 export function useCreateCategory() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: CreateCategoryRequest) =>
-      categoryService.create(data),
+    mutationFn: (data: CreateCategoryRequest) => categoryService.create(data),
     onSuccess: () => {
       toast.success("Categoria criada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["categories"] });
@@ -42,8 +40,7 @@ export function useCreateCategory() {
 export function useUpdateCategory(id: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: UpdateCategoryRequest) =>
-      categoryService.update(id, data),
+    mutationFn: (data: UpdateCategoryRequest) => categoryService.update(id, data),
     onSuccess: () => {
       toast.success("Categoria atualizada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["categories"] });
@@ -68,14 +65,7 @@ export function useDeleteCategory() {
   });
 }
 
-function downloadBlob(blob: Blob, filename: string) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
-}
+import { downloadBlob } from "@/lib/download";
 
 export function useExportCategoriesCsv() {
   return useMutation({

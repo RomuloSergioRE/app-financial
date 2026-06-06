@@ -42,3 +42,28 @@ export const fiscalReportItemSchema = z.object({
 });
 
 export type FiscalReportItemDTO = z.infer<typeof fiscalReportItemSchema>;
+
+export const selectOrgResponseSchema = z.object({
+  organization: organizationSchema,
+  token: z.string(),
+});
+
+export const selectNoneResponseSchema = z.object({
+  token: z.string(),
+});
+
+export const invitedMemberSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  role: z.string(),
+  status: z.string(),
+});
+
+export const acceptInviteResponseSchema = z.object({
+  role: z.string(),
+  status: z.string(),
+});
+
+export const updateMemberRoleResponseSchema = z.object({
+  role: z.string(),
+});

@@ -12,8 +12,8 @@ export default function AdminPage() {
       <S.Section>
         <S.SectionTitle>Em breve</S.SectionTitle>
         <S.Description>
-          O dashboard administrativo está sendo desenvolvido. Em breve você
-          terá acesso a métricas e visão geral do sistema.
+          O dashboard administrativo está sendo desenvolvido. Em breve você terá acesso a métricas e
+          visão geral do sistema.
         </S.Description>
       </S.Section>
     </S.Wrapper>

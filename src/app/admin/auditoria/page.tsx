@@ -7,10 +7,7 @@ import { Skeleton } from "@/components/atoms/Skeleton";
 import { Button } from "@/components/atoms/Button";
 import { Pagination } from "@/components/molecules/Pagination";
 import { Select } from "@/components/molecules/Select";
-import {
-  useAuditLogs,
-  useAdminExportAuditLogsCsv,
-} from "@/hooks/useAdmin";
+import { useAuditLogs, useAdminExportAuditLogsCsv } from "@/hooks/useAdmin";
 import * as S from "./style";
 
 export default function AdminAuditoriaPage() {
@@ -18,12 +15,15 @@ export default function AdminAuditoriaPage() {
   const [actionFilter, setActionFilter] = useState("");
   const [targetFilter, setTargetFilter] = useState("");
 
-  const queryParams = useMemo(() => ({
-    page,
-    limit: 50,
-    ...(actionFilter ? { action: actionFilter } : {}),
-    ...(targetFilter ? { targetType: targetFilter } : {}),
-  }), [page, actionFilter, targetFilter]);
+  const queryParams = useMemo(
+    () => ({
+      page,
+      limit: 50,
+      ...(actionFilter ? { action: actionFilter } : {}),
+      ...(targetFilter ? { targetType: targetFilter } : {}),
+    }),
+    [page, actionFilter, targetFilter],
+  );
 
   const auditQuery = useAuditLogs(queryParams);
   const exportCsv = useAdminExportAuditLogsCsv();
@@ -46,7 +46,10 @@ export default function AdminAuditoriaPage() {
         <S.FiltersRow>
           <Select
             value={actionFilter}
-            onChange={(v) => { setActionFilter(v); setPage(1); }}
+            onChange={(v) => {
+              setActionFilter(v);
+              setPage(1);
+            }}
             options={[
               { value: "", label: "Todas as ações" },
               { value: "create", label: "Criação" },
@@ -58,7 +61,10 @@ export default function AdminAuditoriaPage() {
           />
           <Select
             value={targetFilter}
-            onChange={(v) => { setTargetFilter(v); setPage(1); }}
+            onChange={(v) => {
+              setTargetFilter(v);
+              setPage(1);
+            }}
             options={[
               { value: "", label: "Todos os alvos" },
               { value: "user", label: "Usuário" },
@@ -97,13 +103,25 @@ export default function AdminAuditoriaPage() {
               {logs.map((log) => (
                 <tr key={log.id}>
                   <S.Td>{new Date(log.createdAt).toLocaleString("pt-BR")}</S.Td>
-                  <S.Td style={{ fontFamily: "monospace", fontSize: 12 }}>{log.adminId.slice(0, 8)}...</S.Td>
+                  <S.Td style={{ fontFamily: "monospace", fontSize: 12 }}>
+                    {log.adminId.slice(0, 8)}...
+                  </S.Td>
                   <S.Td>
-                    <S.RoleBadge $role={log.action === "delete" ? "admin" : log.action === "create" ? "company" : "user"}>
+                    <S.RoleBadge
+                      $role={
+                        log.action === "delete"
+                          ? "admin"
+                          : log.action === "create"
+                            ? "company"
+                            : "user"
+                      }
+                    >
                       {log.action}
                     </S.RoleBadge>
                   </S.Td>
-                  <S.Td style={{ fontFamily: "monospace", fontSize: 12 }}>{log.targetId.slice(0, 8)}...</S.Td>
+                  <S.Td style={{ fontFamily: "monospace", fontSize: 12 }}>
+                    {log.targetId.slice(0, 8)}...
+                  </S.Td>
                   <S.Td>{log.targetType}</S.Td>
                   <S.Td>{log.details ?? "-"}</S.Td>
                 </tr>

@@ -40,9 +40,11 @@ export const BudgetCard = styled.div<{ $overBudget?: boolean }>`
   gap: ${({ theme }) => theme.spacing.sm};
   padding: ${({ theme }) => theme.spacing.lg};
   background: ${({ theme }) => theme.colors.surface};
-  border: 1px solid ${({ theme, $overBudget }) => ($overBudget ? theme.colors.danger : theme.colors.border)};
+  border: 1px solid
+    ${({ theme, $overBudget }) => ($overBudget ? theme.colors.danger : theme.colors.border)};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  border-left: 4px solid ${({ theme, $overBudget }) => ($overBudget ? theme.colors.danger : theme.colors.primary)};
+  border-left: 4px solid
+    ${({ theme, $overBudget }) => ($overBudget ? theme.colors.danger : theme.colors.primary)};
 `;
 
 export const BudgetHeader = styled.div`
@@ -115,7 +117,11 @@ export const ValueAmount = styled.span<{ $type?: "spent" | "over" }>`
   font-size: ${({ theme }) => theme.fontSize.md};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme, $type }) =>
-    $type === "over" ? theme.colors.danger : $type === "spent" ? theme.colors.text : theme.colors.text};
+    $type === "over"
+      ? theme.colors.danger
+      : $type === "spent"
+        ? theme.colors.text
+        : theme.colors.text};
   font-variant-numeric: tabular-nums;
 `;
 
@@ -131,15 +137,18 @@ export const ProgressBarFill = styled.div<{ $percentage: number; $overBudget?: b
   width: ${({ $percentage }) => $percentage}%;
   height: 100%;
   border-radius: 999px;
-  background: ${({ theme, $overBudget }) => ($overBudget ? theme.colors.danger : theme.colors.primary)};
+  background: ${({ theme, $overBudget }) =>
+    $overBudget ? theme.colors.danger : theme.colors.primary};
   transition: width 0.3s ease;
 `;
 
 export const PercentageLabel = styled.span<{ $overBudget?: boolean }>`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.xs};
-  color: ${({ theme, $overBudget }) => ($overBudget ? theme.colors.danger : theme.colors.textSecondary)};
-  font-weight: ${({ theme, $overBudget }) => ($overBudget ? theme.fontWeight.medium : theme.fontWeight.normal)};
+  color: ${({ theme, $overBudget }) =>
+    $overBudget ? theme.colors.danger : theme.colors.textSecondary};
+  font-weight: ${({ theme, $overBudget }) =>
+    $overBudget ? theme.fontWeight.medium : theme.fontWeight.normal};
 `;
 
 export const ModalForm = styled.div`

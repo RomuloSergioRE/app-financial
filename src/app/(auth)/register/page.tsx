@@ -42,9 +42,7 @@ export default function RegisterPage() {
       toast.success("Conta criada com sucesso!");
       router.push("/dashboard");
     } catch (err: unknown) {
-      setApiError(
-        extractErrorMessage(err, "Erro ao cadastrar. Tente novamente.")
-      );
+      setApiError(extractErrorMessage(err, "Erro ao cadastrar. Tente novamente."));
     }
   };
 
@@ -78,10 +76,7 @@ export default function RegisterPage() {
             />
           </FormField>
 
-          <FormField
-            label="Confirmar Senha"
-            error={errors.confirmPassword?.message}
-          >
+          <FormField label="Confirmar Senha" error={errors.confirmPassword?.message}>
             <PasswordInput
               placeholder="Repita a senha"
               error={errors.confirmPassword?.message}
@@ -99,11 +94,7 @@ export default function RegisterPage() {
             Cadastrar
           </Button>
 
-          <FormLink
-            text="Já tem conta?"
-            linkText="Entrar"
-            href="/login"
-          />
+          <FormLink text="Já tem conta?" linkText="Entrar" href="/login" />
         </S.FormBody>
       </form>
     </AuthCard>

@@ -79,11 +79,7 @@ export function GoalForm({
       </FormField>
 
       <FormField label="Prazo (opcional)" error={errors.deadline?.message}>
-        <Input
-          type="date"
-          error={errors.deadline?.message}
-          {...register("deadline")}
-        />
+        <Input type="date" error={errors.deadline?.message} {...register("deadline")} />
       </FormField>
     </>
   );

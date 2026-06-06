@@ -3,15 +3,14 @@ import { toast } from "@/components/molecules/Toast";
 import { budgetService } from "@/services/budget.service";
 import { mapAsyncState } from "@/lib/map-async-state";
 import type { AsyncState } from "@/types/async";
-import type { CreateBudgetRequest, UpdateBudgetRequest } from "@/types";
-import type { BudgetDTO } from "@/schemas/budget.schema";
+import type { CreateBudgetRequest, UpdateBudgetRequest, Budget } from "@/types";
 
 interface UseBudgetsParams {
   month?: number;
   year?: number;
 }
 
-export function useBudgets(params: UseBudgetsParams = {}): AsyncState<BudgetDTO[]> {
+export function useBudgets(params: UseBudgetsParams = {}): AsyncState<Budget[]> {
   const { month, year } = params;
   const query = useQuery({
     queryKey: ["budgets", month, year],
@@ -31,8 +30,7 @@ export function useBudget(id: string) {
 export function useCreateBudget() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: CreateBudgetRequest) =>
-      budgetService.create(data),
+    mutationFn: (data: CreateBudgetRequest) => budgetService.create(data),
     onSuccess: () => {
       toast.success("Orçamento criado com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["budgets"] });
@@ -46,8 +44,7 @@ export function useCreateBudget() {
 export function useUpdateBudget(id: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: UpdateBudgetRequest) =>
-      budgetService.update(id, data),
+    mutationFn: (data: UpdateBudgetRequest) => budgetService.update(id, data),
     onSuccess: () => {
       toast.success("Orçamento atualizado com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["budgets"] });

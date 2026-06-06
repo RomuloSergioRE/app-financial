@@ -4,8 +4,7 @@ import { HiOutlineArrowTrendingUp, HiOutlineArrowTrendingDown } from "react-icon
 import type { ComparisonSummaryProps } from "./types";
 import * as S from "./style";
 
-const currencyFormatter = (v: number) =>
-  "R$ " + v.toLocaleString("pt-BR");
+const currencyFormatter = (v: number) => "R$ " + v.toLocaleString("pt-BR");
 
 function formatChangePct(v: number | null): string {
   if (v === null || v === undefined) return "—";

@@ -8,12 +8,6 @@ export function Skeleton({
   ...props
 }: SkeletonProps) {
   return (
-    <S.Wrapper
-      $width={width}
-      $height={height}
-      $variant={variant}
-      aria-hidden="true"
-      {...props}
-    />
+    <S.Wrapper $width={width} $height={height} $variant={variant} aria-hidden="true" {...props} />
   );
 }

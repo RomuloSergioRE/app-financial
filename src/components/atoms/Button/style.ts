@@ -86,7 +86,8 @@ export const Wrapper = styled.button<{
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   font-family: ${({ theme }) => theme.fonts.body};
   cursor: pointer;
-  transition: background ${({ theme }) => theme.transition.base},
+  transition:
+    background ${({ theme }) => theme.transition.base},
     border-color ${({ theme }) => theme.transition.base},
     color ${({ theme }) => theme.transition.base};
   width: ${({ $fullWidth }) => ($fullWidth ? "100%" : "auto")};

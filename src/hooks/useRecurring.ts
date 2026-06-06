@@ -3,14 +3,13 @@ import { toast } from "@/components/molecules/Toast";
 import { recurringService } from "@/services/recurring.service";
 import { mapAsyncState } from "@/lib/map-async-state";
 import type { AsyncState } from "@/types/async";
-import type { CreateRecurringRequest, UpdateRecurringRequest } from "@/types";
-import type { RecurringDTO } from "@/schemas/recurring.schema";
+import type { CreateRecurringRequest, UpdateRecurringRequest, Recurring } from "@/types";
 
 interface UseRecurringParams {
   active?: boolean;
 }
 
-export function useRecurring(params: UseRecurringParams = {}): AsyncState<RecurringDTO[]> {
+export function useRecurring(params: UseRecurringParams = {}): AsyncState<Recurring[]> {
   const { active } = params;
   const query = useQuery({
     queryKey: ["recurring", active],
@@ -30,8 +29,7 @@ export function useRecurringRule(id: string) {
 export function useCreateRecurring() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: CreateRecurringRequest) =>
-      recurringService.create(data),
+    mutationFn: (data: CreateRecurringRequest) => recurringService.create(data),
     onSuccess: () => {
       toast.success("Regra recorrente criada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["recurring"] });
@@ -45,8 +43,7 @@ export function useCreateRecurring() {
 export function useUpdateRecurring(id: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: UpdateRecurringRequest) =>
-      recurringService.update(id, data),
+    mutationFn: (data: UpdateRecurringRequest) => recurringService.update(id, data),
     onSuccess: () => {
       toast.success("Regra recorrente atualizada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["recurring"] });

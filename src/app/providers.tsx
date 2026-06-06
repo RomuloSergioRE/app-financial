@@ -30,7 +30,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
             staleTime: 5 * 60 * 1000,
           },
         },
-      })
+      }),
   );
 
   return (

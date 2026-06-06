@@ -3,10 +3,9 @@ import { toast } from "@/components/molecules/Toast";
 import { tagService } from "@/services/tag.service";
 import { mapAsyncState } from "@/lib/map-async-state";
 import type { AsyncState } from "@/types/async";
-import type { CreateTagRequest, UpdateTagRequest } from "@/types";
-import type { TagDTO } from "@/schemas/tag.schema";
+import type { CreateTagRequest, UpdateTagRequest, Tag } from "@/types";
 
-export function useTags(): AsyncState<TagDTO[]> {
+export function useTags(): AsyncState<Tag[]> {
   const query = useQuery({
     queryKey: ["tags"],
     queryFn: () => tagService.list(),
@@ -25,8 +24,7 @@ export function useTag(id: string) {
 export function useCreateTag() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: CreateTagRequest) =>
-      tagService.create(data),
+    mutationFn: (data: CreateTagRequest) => tagService.create(data),
     onSuccess: () => {
       toast.success("Tag criada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["tags"] });
@@ -40,8 +38,7 @@ export function useCreateTag() {
 export function useUpdateTag(id: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: UpdateTagRequest) =>
-      tagService.update(id, data),
+    mutationFn: (data: UpdateTagRequest) => tagService.update(id, data),
     onSuccess: () => {
       toast.success("Tag atualizada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["tags"] });

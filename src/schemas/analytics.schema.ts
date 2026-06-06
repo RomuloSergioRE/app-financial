@@ -78,10 +78,12 @@ export const summarySchema = z.object({
   totalIncome: z.number(),
   totalOutcome: z.number(),
   netBalance: z.number(),
-  topCategory: z.object({
-    name: z.string(),
-    amount: z.number(),
-  }).optional(),
+  topCategory: z
+    .object({
+      name: z.string(),
+      amount: z.number(),
+    })
+    .optional(),
   transactionCount: z.number(),
   dailyAverage: z.number(),
   biggestExpense: biggestExpenseSchema.optional(),

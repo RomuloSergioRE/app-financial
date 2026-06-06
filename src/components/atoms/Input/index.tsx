@@ -4,10 +4,8 @@ import * as S from "./style";
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ error = undefined, ...props }, ref) => {
-    return (
-      <S.Wrapper ref={ref} $hasError={!!error} {...props} />
-    );
-  }
+    return <S.Wrapper ref={ref} $hasError={!!error} {...props} />;
+  },
 );
 
 Input.displayName = "Input";

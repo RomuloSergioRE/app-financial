@@ -69,12 +69,15 @@ export default function OrganizacoesPage() {
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault();
     if (!createName.trim()) return;
-    createMutation.mutate({ name: createName.trim() }, {
-      onSuccess: () => {
-        setCreateName("");
-        setShowCreate(false);
+    createMutation.mutate(
+      { name: createName.trim() },
+      {
+        onSuccess: () => {
+          setCreateName("");
+          setShowCreate(false);
+        },
       },
-    });
+    );
   };
 
   const handleEdit = (org: Organization) => {
@@ -85,9 +88,12 @@ export default function OrganizacoesPage() {
   const handleUpdate = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingOrg || !editName.trim()) return;
-    updateMutation.mutate({ name: editName.trim() }, {
-      onSuccess: () => setEditingOrg(null),
-    });
+    updateMutation.mutate(
+      { name: editName.trim() },
+      {
+        onSuccess: () => setEditingOrg(null),
+      },
+    );
   };
 
   const handleDeleteConfirm = () => {
@@ -131,7 +137,9 @@ export default function OrganizacoesPage() {
             <S.OrgCard key={org.id}>
               <S.OrgInfo>
                 <S.OrgName>{org.name}</S.OrgName>
-                <S.OrgMeta>{org.memberCount} membro(s) · {org.role}</S.OrgMeta>
+                <S.OrgMeta>
+                  {org.memberCount} membro(s) · {org.role}
+                </S.OrgMeta>
               </S.OrgInfo>
               <S.Actions>
                 <S.IconButton
@@ -141,13 +149,18 @@ export default function OrganizacoesPage() {
                   <HiOutlineCheck size={16} />
                 </S.IconButton>
                 <S.IconButton
-                  onClick={() => { setSelectedOrgId(org.id); }}
+                  onClick={() => {
+                    setSelectedOrgId(org.id);
+                  }}
                   title="Membros"
                 >
                   <HiOutlineUserGroup size={16} />
                 </S.IconButton>
                 <S.IconButton
-                  onClick={() => { setSelectedOrgId(org.id); setShowFiscal(true); }}
+                  onClick={() => {
+                    setSelectedOrgId(org.id);
+                    setShowFiscal(true);
+                  }}
                   title="Relatório fiscal"
                 >
                   <HiOutlineDocumentText size={16} />
@@ -185,11 +198,7 @@ export default function OrganizacoesPage() {
         <S.Form onSubmit={handleUpdate}>
           <S.Field>
             <S.Label>Nome</S.Label>
-            <S.Input
-              value={editName}
-              onChange={(e) => setEditName(e.target.value)}
-              autoFocus
-            />
+            <S.Input value={editName} onChange={(e) => setEditName(e.target.value)} autoFocus />
           </S.Field>
           <Button type="submit" loading={updateMutation.isPending}>
             Salvar
@@ -209,11 +218,24 @@ export default function OrganizacoesPage() {
 
       <Modal
         open={!!selectedOrgId && !showFiscal}
-        onClose={() => { setSelectedOrgId(null); setInviteEmail(""); }}
+        onClose={() => {
+          setSelectedOrgId(null);
+          setInviteEmail("");
+        }}
         title="Membros"
       >
-        <S.Form onSubmit={(e) => { e.preventDefault(); inviteMutation.mutate({ email: inviteEmail, role: inviteRole }, { onSuccess: () => setInviteEmail("") }); }}>
-          <Text as="h3" size="sm" weight="semibold">Convidar Membro</Text>
+        <S.Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            inviteMutation.mutate(
+              { email: inviteEmail, role: inviteRole },
+              { onSuccess: () => setInviteEmail("") },
+            );
+          }}
+        >
+          <Text as="h3" size="sm" weight="semibold">
+            Convidar Membro
+          </Text>
           <S.Field>
             <S.Label>Email</S.Label>
             <S.Input
@@ -235,7 +257,9 @@ export default function OrganizacoesPage() {
               ]}
             />
           </S.Field>
-          <Button type="submit" loading={inviteMutation.isPending}>Convidar</Button>
+          <Button type="submit" loading={inviteMutation.isPending}>
+            Convidar
+          </Button>
         </S.Form>
 
         {membersState.status === "loading" ? (
@@ -299,7 +323,11 @@ export default function OrganizacoesPage() {
         ) : null}
       </Modal>
 
-      <Modal open={showFiscal && !!selectedOrgId} onClose={() => setShowFiscal(false)} title="Relatório Fiscal">
+      <Modal
+        open={showFiscal && !!selectedOrgId}
+        onClose={() => setShowFiscal(false)}
+        title="Relatório Fiscal"
+      >
         <S.Field>
           <S.Label>Ano</S.Label>
           <Select
@@ -307,7 +335,10 @@ export default function OrganizacoesPage() {
             onChange={(v) => setFiscalYear(Number(v))}
             options={[
               { value: String(new Date().getFullYear()), label: String(new Date().getFullYear()) },
-              { value: String(new Date().getFullYear() - 1), label: String(new Date().getFullYear() - 1) },
+              {
+                value: String(new Date().getFullYear() - 1),
+                label: String(new Date().getFullYear() - 1),
+              },
             ]}
           />
         </S.Field>
@@ -336,7 +367,9 @@ export default function OrganizacoesPage() {
             </S.MemberTable>
           </S.List>
         ) : fiscalState.status === "success" ? (
-          <Text color="textSecondary" size="sm">Nenhum dado para o ano selecionado.</Text>
+          <Text color="textSecondary" size="sm">
+            Nenhum dado para o ano selecionado.
+          </Text>
         ) : null}
       </Modal>
     </S.Wrapper>

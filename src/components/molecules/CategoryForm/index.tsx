@@ -43,18 +43,11 @@ export function CategoryForm({
         <S.ModalForm>
           <S.FormGroup>
             <S.Label>Nome</S.Label>
-            <Input
-              error={errors.name?.message}
-              {...register("name")}
-            />
+            <Input error={errors.name?.message} {...register("name")} />
           </S.FormGroup>
           <S.FormGroup>
             <S.Label>Cor (hex)</S.Label>
-            <Input
-              placeholder="#4F46E5"
-              error={errors.color?.message}
-              {...register("color")}
-            />
+            <Input placeholder="#4F46E5" error={errors.color?.message} {...register("color")} />
           </S.FormGroup>
           <S.ModalActions>
             <Button variant="outline" onClick={onCancel} type="button">

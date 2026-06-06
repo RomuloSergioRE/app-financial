@@ -1,0 +1,78 @@
+import styled from "styled-components";
+
+export const LayoutWrapper = styled.div`
+  display: flex;
+  min-height: 100vh;
+  background: ${({ theme }) => theme.colors.background};
+`;
+
+export const TopBar = styled.div`
+  display: none;
+  position: sticky;
+  top: 0;
+  z-index: 15;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.spacing.md};
+    padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+    background: ${({ theme }) => theme.colors.surface};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  }
+`;
+
+export const TopBarTitle = styled.span`
+  display: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: block;
+    font-family: ${({ theme }) => theme.fonts.body};
+    font-size: ${({ theme }) => theme.fontSize.lg};
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.text};
+    letter-spacing: -0.02em;
+  }
+`;
+
+export const HamburgerWrapper = styled.div`
+  display: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: block;
+    pointer-events: none;
+  }
+`;
+
+export const HamburgerButton = styled.button<{ $isOpen: boolean }>`
+  pointer-events: auto;
+  min-width: 40px;
+  min-height: 40px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  background: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 1.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.secondary};
+    outline-offset: 2px;
+  }
+`;
+
+export const Main = styled.main`
+  flex: 1;
+  padding: ${({ theme }) => theme.spacing.lg};
+  padding-bottom: ${({ theme }) => theme.spacing.section};
+  overflow-x: hidden;
+
+  @media (min-width: 769px) {
+    padding: ${({ theme }) => theme.spacing.xl};
+    padding-top: ${({ theme }) => theme.spacing.xl};
+    padding-bottom: ${({ theme }) => theme.spacing.section};
+  }
+`;

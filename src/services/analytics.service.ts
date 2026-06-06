@@ -10,7 +10,14 @@ import {
   comparisonSchema,
 } from "@/schemas/analytics.schema";
 import type { ComparisonDTO } from "@/schemas/analytics.schema";
-import type { BalanceResponse, CategoryDistribution, MonthlySeries, TopCategory, Summary, CashFlow } from "@/types";
+import type {
+  BalanceResponse,
+  CategoryDistribution,
+  MonthlySeries,
+  TopCategory,
+  Summary,
+  CashFlow,
+} from "@/types";
 
 export const analyticsService = {
   balance: async (params?: {
@@ -28,10 +35,7 @@ export const analyticsService = {
     categoryId?: string;
   }): Promise<CategoryDistribution[]> => {
     const response = await api.get("/analytics/categories", { params });
-    return validateResponse(
-      categoryDistributionSchema.array(),
-      response.data
-    );
+    return validateResponse(categoryDistributionSchema.array(), response.data);
   },
 
   monthlySeries: async (params: {
@@ -42,10 +46,7 @@ export const analyticsService = {
     return validateResponse(monthlySeriesSchema.array(), response.data);
   },
 
-  comparison: async (params: {
-    month: number;
-    year: number;
-  }): Promise<ComparisonDTO> => {
+  comparison: async (params: { month: number; year: number }): Promise<ComparisonDTO> => {
     const response = await api.get("/analytics/comparison", { params });
     return validateResponse(comparisonSchema, response.data);
   },
@@ -59,17 +60,12 @@ export const analyticsService = {
     return validateResponse(topCategorySchema.array(), response.data);
   },
 
-  summary: async (params?: {
-    month?: number;
-    year?: number;
-  }): Promise<Summary> => {
+  summary: async (params?: { month?: number; year?: number }): Promise<Summary> => {
     const response = await api.get("/analytics/summary", { params });
     return validateResponse(summarySchema, response.data);
   },
 
-  cashFlow: async (params?: {
-    months?: number;
-  }): Promise<CashFlow[]> => {
+  cashFlow: async (params?: { months?: number }): Promise<CashFlow[]> => {
     const response = await api.get("/analytics/cash-flow", { params });
     return validateResponse(cashFlowSchema.array(), response.data);
   },
@@ -86,10 +82,7 @@ export const analyticsService = {
     return response.data;
   },
 
-  exportPdf: async (params: {
-    startDate: string;
-    endDate: string;
-  }): Promise<Blob> => {
+  exportPdf: async (params: { startDate: string; endDate: string }): Promise<Blob> => {
     const response = await api.get("/analytics/export/pdf", {
       params,
       responseType: "blob",

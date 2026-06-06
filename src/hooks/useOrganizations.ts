@@ -1,12 +1,16 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { organizationService } from "@/services/organization.service";
 import { mapAsyncState } from "@/lib/map-async-state";
-import { cookie } from "@/lib/cookie";
 import type { AsyncState } from "@/types/async";
-import type { OrganizationDTO, OrgMemberDTO, FiscalReportItemDTO } from "@/schemas/organization.schema";
-import type { CreateOrganizationRequest, UpdateOrganizationRequest } from "@/types";
+import type {
+  Organization,
+  OrgMember,
+  FiscalReportItem,
+  CreateOrganizationRequest,
+  UpdateOrganizationRequest,
+} from "@/types";
 
-export function useOrganizations(): AsyncState<OrganizationDTO[]> {
+export function useOrganizations(): AsyncState<Organization[]> {
   const query = useQuery({
     queryKey: ["organizations"],
     queryFn: () => organizationService.list(),
@@ -14,7 +18,7 @@ export function useOrganizations(): AsyncState<OrganizationDTO[]> {
   return mapAsyncState(query);
 }
 
-export function useOrganization(id: string): AsyncState<OrganizationDTO> {
+export function useOrganization(id: string): AsyncState<Organization> {
   const query = useQuery({
     queryKey: ["organizations", id],
     queryFn: () => organizationService.getById(id),
@@ -27,8 +31,7 @@ export function useCreateOrganization() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: CreateOrganizationRequest) => organizationService.create(data),
-    onSuccess: (result) => {
-      cookie.setToken("jwt_token", result.token, 7);
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
   });
@@ -59,8 +62,7 @@ export function useSelectOrganization() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => organizationService.select(id),
-    onSuccess: (result) => {
-      cookie.setToken("jwt_token", result.token, 7);
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
   });
@@ -70,14 +72,13 @@ export function useSelectNoneOrganization() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => organizationService.selectNone(),
-    onSuccess: (result) => {
-      cookie.setToken("jwt_token", result.token, 7);
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
   });
 }
 
-export function useOrgMembers(orgId: string): AsyncState<OrgMemberDTO[]> {
+export function useOrgMembers(orgId: string): AsyncState<OrgMember[]> {
   const query = useQuery({
     queryKey: ["organizations", orgId, "members"],
     queryFn: () => organizationService.listMembers(orgId),
@@ -130,7 +131,7 @@ export function useRemoveMember(orgId: string) {
   });
 }
 
-export function useFiscalReport(orgId: string, year: number): AsyncState<FiscalReportItemDTO[]> {
+export function useFiscalReport(orgId: string, year: number): AsyncState<FiscalReportItem[]> {
   const query = useQuery({
     queryKey: ["organizations", orgId, "fiscal-report", year],
     queryFn: () => organizationService.getFiscalReport(orgId, year),

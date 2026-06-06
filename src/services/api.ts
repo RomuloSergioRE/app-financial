@@ -1,5 +1,18 @@
 import axios from "axios";
-import { cookie } from "@/lib/cookie";
+
+let isRefreshing = false;
+let failedQueue: Array<{
+  resolve: () => void;
+  reject: (error: unknown) => void;
+}> = [];
+
+function processQueue(error: unknown) {
+  failedQueue.forEach(({ resolve, reject }) => {
+    if (error) reject(error);
+    else resolve();
+  });
+  failedQueue = [];
+}
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
@@ -10,38 +23,44 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = cookie.getToken("jwt_token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+  config.withCredentials = true;
   return config;
 });
 
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 401) {
-      const refreshTokenValue = cookie.getToken("refresh_token");
-      if (refreshTokenValue) {
-        try {
-          const { data } = await axios.post(
-            `${api.defaults.baseURL}/auth/refresh`,
-            { refreshToken: refreshTokenValue }
-          );
-          cookie.setToken("jwt_token", data.accessToken, 7);
-          error.config.headers.Authorization = `Bearer ${data.accessToken}`;
-          return api(error.config);
-        } catch {
-          cookie.removeToken("jwt_token");
-          cookie.removeToken("refresh_token");
-          if (typeof window !== "undefined") {
-            window.location.href = "/login";
-          }
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise<void>((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then(() => api(originalRequest))
+          .catch((err) => Promise.reject(err));
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        await axios.post(`${api.defaults.baseURL}/auth/refresh`, {}, { withCredentials: true });
+        processQueue(null);
+        return api(originalRequest);
+      } catch (refreshError) {
+        processQueue(refreshError);
+        if (typeof window !== "undefined") {
+          window.location.href = "/login";
         }
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
       }
     }
+
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

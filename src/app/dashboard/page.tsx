@@ -36,23 +36,23 @@ const walletIcon = <HiOutlineWallet size={20} />;
 
 const BalanceChart = dynamic(
   () => import("@/components/molecules/BalanceChart").then((m) => m.BalanceChart),
-  { ssr: false, loading: () => <Skeleton variant="rect" height="300px" /> }
+  { ssr: false, loading: () => <Skeleton variant="rect" height="300px" /> },
 );
-const PieChart = dynamic(
-  () => import("@/components/molecules/PieChart").then((m) => m.PieChart),
-  { ssr: false, loading: () => <Skeleton variant="rect" height="300px" /> }
-);
+const PieChart = dynamic(() => import("@/components/molecules/PieChart").then((m) => m.PieChart), {
+  ssr: false,
+  loading: () => <Skeleton variant="rect" height="300px" />,
+});
 const MonthlySeriesChart = dynamic(
   () => import("@/components/molecules/MonthlySeriesChart").then((m) => m.MonthlySeriesChart),
-  { ssr: false, loading: () => <Skeleton variant="rect" height="300px" /> }
+  { ssr: false, loading: () => <Skeleton variant="rect" height="300px" /> },
 );
 const TopCategoriesChart = dynamic(
   () => import("@/components/molecules/TopCategoriesChart").then((m) => m.TopCategoriesChart),
-  { ssr: false, loading: () => <Skeleton variant="rect" height="300px" /> }
+  { ssr: false, loading: () => <Skeleton variant="rect" height="300px" /> },
 );
 const ComparisonSummary = dynamic(
   () => import("@/components/molecules/ComparisonSummary").then((m) => m.ComparisonSummary),
-  { ssr: false, loading: () => <Skeleton variant="rect" height="120px" /> }
+  { ssr: false, loading: () => <Skeleton variant="rect" height="120px" /> },
 );
 
 export default function DashboardPage() {
@@ -99,34 +99,43 @@ export default function DashboardPage() {
       }
     : undefined;
 
-  const incomeChange = rawBalance ? calcChange(rawBalance.totalIncome, prevRawBalance?.totalIncome) : undefined;
-  const outcomeChange = rawBalance ? calcChange(rawBalance.totalOutcome, prevRawBalance?.totalOutcome) : undefined;
-  const netChange = rawBalance ? calcChange(rawBalance.netBalance, prevRawBalance?.netBalance) : undefined;
+  const incomeChange = rawBalance
+    ? calcChange(rawBalance.totalIncome, prevRawBalance?.totalIncome)
+    : undefined;
+  const outcomeChange = rawBalance
+    ? calcChange(rawBalance.totalOutcome, prevRawBalance?.totalOutcome)
+    : undefined;
+  const netChange = rawBalance
+    ? calcChange(rawBalance.netBalance, prevRawBalance?.netBalance)
+    : undefined;
 
   const categories = useMemo(
-    () => (categoriesState.status === "success" ? categoriesState.data : []).map((c) => ({
-      ...c,
-      totalAmount: fromCents(c.totalAmount),
-    })),
-    [categoriesState]
+    () =>
+      (categoriesState.status === "success" ? categoriesState.data : []).map((c) => ({
+        ...c,
+        totalAmount: fromCents(c.totalAmount),
+      })),
+    [categoriesState],
   );
 
   const monthlySeriesData = useMemo(
-    () => (monthlySeriesState.status === "success" ? monthlySeriesState.data : []).map((m) => ({
-      ...m,
-      totalIncome: fromCents(m.totalIncome),
-      totalOutcome: fromCents(m.totalOutcome),
-      netBalance: fromCents(m.netBalance),
-    })),
-    [monthlySeriesState]
+    () =>
+      (monthlySeriesState.status === "success" ? monthlySeriesState.data : []).map((m) => ({
+        ...m,
+        totalIncome: fromCents(m.totalIncome),
+        totalOutcome: fromCents(m.totalOutcome),
+        netBalance: fromCents(m.netBalance),
+      })),
+    [monthlySeriesState],
   );
 
   const topCategoriesData = useMemo(
-    () => (topCategoriesState.status === "success" ? topCategoriesState.data : []).map((c) => ({
-      ...c,
-      totalAmount: fromCents(c.totalAmount),
-    })),
-    [topCategoriesState]
+    () =>
+      (topCategoriesState.status === "success" ? topCategoriesState.data : []).map((c) => ({
+        ...c,
+        totalAmount: fromCents(c.totalAmount),
+      })),
+    [topCategoriesState],
   );
 
   const comparison = comparisonState.status === "success" ? comparisonState.data : undefined;
@@ -269,9 +278,7 @@ export default function DashboardPage() {
                         {tx.type === "income" ? "Entrada" : "Saída"}
                       </S.RecentTypeBadge>
                     </S.RecentTd>
-                    <S.RecentTdMono>
-                      {formatCurrency(fromCents(tx.amount))}
-                    </S.RecentTdMono>
+                    <S.RecentTdMono>{formatCurrency(fromCents(tx.amount))}</S.RecentTdMono>
                   </tr>
                 ))}
               </tbody>

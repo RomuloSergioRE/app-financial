@@ -1,42 +1,8 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  type ReactNode,
-} from "react";
-import { cookie } from "@/lib/cookie";
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
 import { authService } from "@/services/auth.service";
 import type { User, LoginRequest, RegisterRequest } from "@/types";
-
-function getUserFromToken(): User | null {
-  if (typeof window === "undefined") return null;
-
-  const token = cookie.getToken("jwt_token");
-  if (!token) return null;
-
-  try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    if (!payload.role || !payload.email) {
-      throw new Error("Token inválido: payload incompleto");
-    }
-    return {
-      id: payload.userId || payload.id,
-      name: payload.name || "",
-      email: payload.email,
-      role: payload.role,
-      status: payload.status,
-      createdAt: payload.createdAt || "",
-      updatedAt: payload.updatedAt || "",
-    };
-  } catch {
-    cookie.removeToken("jwt_token");
-    cookie.removeToken("refresh_token");
-    return null;
-  }
-}
 
 interface AuthContextData {
   user: User | null;
@@ -50,19 +16,24 @@ interface AuthContextData {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(getUserFromToken);
+  const [user, setUser] = useState<User | null>(null);
+  const [initializing, setInitializing] = useState(true);
+
+  useEffect(() => {
+    authService
+      .getProfile()
+      .then(setUser)
+      .catch(() => setUser(null))
+      .finally(() => setInitializing(false));
+  }, []);
 
   const login = useCallback(async (data: LoginRequest) => {
-    const { user: userData, accessToken, refreshToken } = await authService.login(data);
-    cookie.setToken("jwt_token", accessToken, 7);
-    cookie.setToken("refresh_token", refreshToken, 30);
+    const userData = await authService.login(data);
     setUser(userData);
   }, []);
 
   const register = useCallback(async (data: RegisterRequest) => {
-    const { user: userData, accessToken, refreshToken } = await authService.register(data);
-    cookie.setToken("jwt_token", accessToken, 7);
-    cookie.setToken("refresh_token", refreshToken, 30);
+    const userData = await authService.register(data);
     setUser(userData);
   }, []);
 
@@ -77,12 +48,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(() => {
     authService.logout().finally(() => {
-      cookie.removeToken("jwt_token");
-      cookie.removeToken("refresh_token");
       setUser(null);
       window.location.href = "/login";
     });
   }, []);
+
+  if (initializing) {
+    return null;
+  }
 
   return (
     <AuthContext.Provider

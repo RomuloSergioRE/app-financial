@@ -15,17 +15,21 @@ export default function Home() {
         Financial
       </Text>
       <Text as="p" size="lg" color="textSecondary" align="center">
-        {user?.name
-          ? `Bem-vindo, ${user.name}.`
-          : "Gerencie suas finanças com clareza."}
+        {user?.name ? `Bem-vindo, ${user.name}.` : "Gerencie suas finanças com clareza."}
       </Text>
       <S.Actions>
         {user ? (
-            <Button as={Link} href="/dashboard">Ir para o Dashboard</Button>
+          <Button as={Link} href="/dashboard">
+            Ir para o Dashboard
+          </Button>
         ) : (
           <>
-            <Button as={Link} href="/login">Entrar</Button>
-            <Button as={Link} href="/register" variant="outline">Criar Conta</Button>
+            <Button as={Link} href="/login">
+              Entrar
+            </Button>
+            <Button as={Link} href="/register" variant="outline">
+              Criar Conta
+            </Button>
           </>
         )}
       </S.Actions>

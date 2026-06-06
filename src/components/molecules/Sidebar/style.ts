@@ -30,8 +30,7 @@ export const Wrapper = styled.aside<{ $isOpen: boolean }>`
     bottom: 0;
     z-index: 20;
     transition: transform ${({ theme }) => theme.transition.slow};
-    transform: ${({ $isOpen }) =>
-      $isOpen ? "translateX(0)" : "translateX(-100%)"};
+    transform: ${({ $isOpen }) => ($isOpen ? "translateX(0)" : "translateX(-100%)")};
   }
 `;
 
@@ -68,8 +67,7 @@ export const NavItem = styled(Link)<{ $active: boolean }>`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
-  color: ${({ theme, $active }) =>
-    $active ? theme.colors.text : theme.colors.textSecondary};
+  color: ${({ theme, $active }) => ($active ? theme.colors.text : theme.colors.textSecondary)};
   position: relative;
   transition: color ${({ theme }) => theme.transition.base};
 
@@ -112,7 +110,8 @@ export const LogoutButton = styled.button`
   cursor: pointer;
   width: 100%;
   text-align: left;
-  transition: color ${({ theme }) => theme.transition.base},
+  transition:
+    color ${({ theme }) => theme.transition.base},
     background ${({ theme }) => theme.transition.base};
 
   &:hover {

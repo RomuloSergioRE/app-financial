@@ -15,8 +15,7 @@ import {
 import type { MonthlySeriesChartProps } from "./types";
 import * as S from "./style";
 
-const currencyFormatter = (v: number) =>
-  "R$ " + v.toLocaleString("pt-BR");
+const currencyFormatter = (v: number) => "R$ " + v.toLocaleString("pt-BR");
 
 const CustomTooltip = (props: Record<string, unknown>) => {
   const theme = useTheme();
@@ -47,13 +46,25 @@ const CustomTooltip = (props: Record<string, unknown>) => {
 const formatMonth = (m: string) => {
   const [y, mon] = m.split("-");
   const months = [
-    "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
-    "Jul", "Ago", "Set", "Out", "Nov", "Dez",
+    "Jan",
+    "Fev",
+    "Mar",
+    "Abr",
+    "Mai",
+    "Jun",
+    "Jul",
+    "Ago",
+    "Set",
+    "Out",
+    "Nov",
+    "Dez",
   ];
   return `${months[parseInt(mon, 10) - 1]}/${y.slice(2)}`;
 };
 
-export const MonthlySeriesChart = memo(function MonthlySeriesChart({ data }: MonthlySeriesChartProps) {
+export const MonthlySeriesChart = memo(function MonthlySeriesChart({
+  data,
+}: MonthlySeriesChartProps) {
   const theme = useTheme();
 
   return (
@@ -79,9 +90,7 @@ export const MonthlySeriesChart = memo(function MonthlySeriesChart({ data }: Mon
               tickLine={false}
             />
             <Tooltip content={CustomTooltip} />
-            <Legend
-              wrapperStyle={{ fontSize: 12, color: theme.colors.textSecondary }}
-            />
+            <Legend wrapperStyle={{ fontSize: 12, color: theme.colors.textSecondary }} />
             <Bar
               dataKey="totalIncome"
               name="Receitas"
