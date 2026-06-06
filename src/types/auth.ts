@@ -1,5 +1,10 @@
 import type { z } from "zod/v4";
-import type { userSchema, authResponseSchema, loginSchema, registerSchema } from "@/schemas/auth.schema";
+import type {
+  userSchema,
+  authResponseSchema,
+  loginSchema,
+  registerSchema,
+} from "@/schemas/auth.schema";
 
 export type User = z.infer<typeof userSchema>;
 export type AuthResponse = z.infer<typeof authResponseSchema>;

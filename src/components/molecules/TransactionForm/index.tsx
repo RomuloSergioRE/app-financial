@@ -91,11 +91,7 @@ export function TransactionForm({
             />
           </FormField>
           <FormField label="Data" error={errors.date?.message}>
-            <Input
-              type="date"
-              error={errors.date?.message}
-              {...register("date")}
-            />
+            <Input type="date" error={errors.date?.message} {...register("date")} />
           </FormField>
         </>
       ) : (
@@ -121,11 +117,7 @@ export function TransactionForm({
             />
           </FormField>
           <FormField label="Data" error={errors.date?.message}>
-            <Input
-              type="date"
-              error={errors.date?.message}
-              {...register("date")}
-            />
+            <Input type="date" error={errors.date?.message} {...register("date")} />
           </FormField>
         </S.FormRow>
       )}

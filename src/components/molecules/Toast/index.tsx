@@ -4,8 +4,11 @@ import { Toaster, toast as sonnerToast } from "sonner";
 import { memo } from "react";
 import { useTheme } from "styled-components";
 import {
-  HiOutlineCheckCircle, HiOutlineXCircle,
-  HiOutlineInformationCircle, HiOutlineExclamationTriangle, HiOutlineXMark,
+  HiOutlineCheckCircle,
+  HiOutlineXCircle,
+  HiOutlineInformationCircle,
+  HiOutlineExclamationTriangle,
+  HiOutlineXMark,
 } from "react-icons/hi2";
 import * as S from "./style";
 import type { ToastType } from "./style";
@@ -61,29 +64,23 @@ export function Toast() {
 
 export const toast = {
   success: (message: string) => {
-    sonnerToast.custom(
-      (id) => <ToastContent type="success" message={message} toastId={id} />,
-      { duration: 4000 }
-    );
+    sonnerToast.custom((id) => <ToastContent type="success" message={message} toastId={id} />, {
+      duration: 4000,
+    });
   },
   error: (message: string) => {
-    sonnerToast.custom(
-      (id) => <ToastContent type="error" message={message} toastId={id} />,
-      { duration: 6000 }
-    );
+    sonnerToast.custom((id) => <ToastContent type="error" message={message} toastId={id} />, {
+      duration: 6000,
+    });
   },
   info: (message: string) => {
-    sonnerToast.custom(
-      (id) => <ToastContent type="info" message={message} toastId={id} />,
-      { duration: 4000 }
-    );
+    sonnerToast.custom((id) => <ToastContent type="info" message={message} toastId={id} />, {
+      duration: 4000,
+    });
   },
   warning: (message: string) => {
-    sonnerToast.custom(
-      (id) => (
-        <ToastContent type="warning" message={message} toastId={id} />
-      ),
-      { duration: 5000 }
-    );
+    sonnerToast.custom((id) => <ToastContent type="warning" message={message} toastId={id} />, {
+      duration: 5000,
+    });
   },
 };

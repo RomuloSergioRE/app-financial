@@ -3,16 +3,16 @@ import { analyticsService } from "@/services/analytics.service";
 import { mapAsyncState } from "@/lib/map-async-state";
 import type { AsyncState } from "@/types/async";
 import type {
-  BalanceResponseDTO,
-  CategoryDistributionDTO,
-  MonthlySeriesDTO,
-  ComparisonDTO,
-  TopCategoryDTO,
-  SummaryDTO,
-  CashFlowDTO,
-} from "@/schemas/analytics.schema";
+  BalanceResponse,
+  CategoryDistribution,
+  MonthlySeries,
+  Comparison,
+  TopCategory,
+  Summary,
+  CashFlow,
+} from "@/types";
 
-export function useBalance(startDate?: string, endDate?: string): AsyncState<BalanceResponseDTO> {
+export function useBalance(startDate?: string, endDate?: string): AsyncState<BalanceResponse> {
   const query = useQuery({
     queryKey: ["analytics", "balance", startDate, endDate],
     queryFn: () => analyticsService.balance({ startDate, endDate }),
@@ -20,7 +20,10 @@ export function useBalance(startDate?: string, endDate?: string): AsyncState<Bal
   return mapAsyncState(query);
 }
 
-export function useCategoriesAnalytics(startDate?: string, endDate?: string): AsyncState<CategoryDistributionDTO[]> {
+export function useCategoriesAnalytics(
+  startDate?: string,
+  endDate?: string,
+): AsyncState<CategoryDistribution[]> {
   const query = useQuery({
     queryKey: ["analytics", "categories", startDate, endDate],
     queryFn: () => analyticsService.categories({ startDate, endDate }),
@@ -28,7 +31,7 @@ export function useCategoriesAnalytics(startDate?: string, endDate?: string): As
   return mapAsyncState(query);
 }
 
-export function useMonthlySeries(startDate: string, endDate: string): AsyncState<MonthlySeriesDTO[]> {
+export function useMonthlySeries(startDate: string, endDate: string): AsyncState<MonthlySeries[]> {
   const query = useQuery({
     queryKey: ["analytics", "monthly-series", startDate, endDate],
     queryFn: () => analyticsService.monthlySeries({ startDate, endDate }),
@@ -36,7 +39,7 @@ export function useMonthlySeries(startDate: string, endDate: string): AsyncState
   return mapAsyncState(query);
 }
 
-export function useComparison(month: number, year: number): AsyncState<ComparisonDTO> {
+export function useComparison(month: number, year: number): AsyncState<Comparison> {
   const query = useQuery({
     queryKey: ["analytics", "comparison", month, year],
     queryFn: () => analyticsService.comparison({ month, year }),
@@ -44,7 +47,11 @@ export function useComparison(month: number, year: number): AsyncState<Compariso
   return mapAsyncState(query);
 }
 
-export function useTopCategories(startDate: string, endDate: string, limit?: number): AsyncState<TopCategoryDTO[]> {
+export function useTopCategories(
+  startDate: string,
+  endDate: string,
+  limit?: number,
+): AsyncState<TopCategory[]> {
   const query = useQuery({
     queryKey: ["analytics", "top-categories", startDate, endDate, limit],
     queryFn: () => analyticsService.topCategories({ startDate, endDate, limit }),
@@ -52,7 +59,7 @@ export function useTopCategories(startDate: string, endDate: string, limit?: num
   return mapAsyncState(query);
 }
 
-export function useSummary(month?: number, year?: number): AsyncState<SummaryDTO> {
+export function useSummary(month?: number, year?: number): AsyncState<Summary> {
   const query = useQuery({
     queryKey: ["analytics", "summary", month, year],
     queryFn: () => analyticsService.summary({ month, year }),
@@ -60,7 +67,7 @@ export function useSummary(month?: number, year?: number): AsyncState<SummaryDTO
   return mapAsyncState(query);
 }
 
-export function useCashFlow(months?: number): AsyncState<CashFlowDTO[]> {
+export function useCashFlow(months?: number): AsyncState<CashFlow[]> {
   const query = useQuery({
     queryKey: ["analytics", "cash-flow", months],
     queryFn: () => analyticsService.cashFlow({ months }),
@@ -68,14 +75,7 @@ export function useCashFlow(months?: number): AsyncState<CashFlowDTO[]> {
   return mapAsyncState(query);
 }
 
-function downloadBlob(blob: Blob, filename: string) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
-}
+import { downloadBlob } from "@/lib/download";
 
 export function useExportCsv() {
   return useMutation({
@@ -96,13 +96,8 @@ export function useExportCsv() {
 
 export function useExportPdf() {
   return useMutation({
-    mutationFn: ({
-      startDate,
-      endDate,
-    }: {
-      startDate: string;
-      endDate: string;
-    }) => analyticsService.exportPdf({ startDate, endDate }),
+    mutationFn: ({ startDate, endDate }: { startDate: string; endDate: string }) =>
+      analyticsService.exportPdf({ startDate, endDate }),
     onSuccess: (blob) => {
       downloadBlob(blob, `relatorio-${new Date().toISOString().split("T")[0]}.pdf`);
     },

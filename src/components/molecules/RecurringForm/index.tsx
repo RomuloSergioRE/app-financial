@@ -126,19 +126,11 @@ export function RecurringForm({
 
       <S.Row>
         <FormField label="Próxima Data" error={errors.nextDate?.message}>
-          <Input
-            type="date"
-            error={errors.nextDate?.message}
-            {...register("nextDate")}
-          />
+          <Input type="date" error={errors.nextDate?.message} {...register("nextDate")} />
         </FormField>
 
         <FormField label="Data Final (opcional)" error={errors.endDate?.message}>
-          <Input
-            type="date"
-            error={errors.endDate?.message}
-            {...register("endDate")}
-          />
+          <Input type="date" error={errors.endDate?.message} {...register("endDate")} />
         </FormField>
       </S.Row>
     </>

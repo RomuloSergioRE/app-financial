@@ -1,7 +1,8 @@
 import api from "./api";
 import { validateResponse } from "@/lib/validate-response";
-import { recurringSchema } from "@/schemas/recurring.schema";
+import { recurringSchema, executeRecurringResponseSchema } from "@/schemas/recurring.schema";
 import type { Recurring, CreateRecurringRequest, UpdateRecurringRequest } from "@/types";
+import type { ExecuteRecurringResponseDTO } from "@/schemas/recurring.schema";
 
 export const recurringService = {
   list: async (active?: boolean): Promise<Recurring[]> => {
@@ -10,7 +11,7 @@ export const recurringService = {
         ...(active !== undefined && { active }),
       },
     });
-    return response.data.map((item: unknown) => validateResponse(recurringSchema, item));
+    return validateResponse(recurringSchema.array(), response.data);
   },
 
   getById: async (id: string): Promise<Recurring> => {
@@ -32,8 +33,8 @@ export const recurringService = {
     await api.delete(`/recurring/${id}`);
   },
 
-  execute: async (id: string): Promise<{ transactionId: string; nextDate: string }> => {
+  execute: async (id: string): Promise<ExecuteRecurringResponseDTO> => {
     const response = await api.post(`/recurring/${id}/execute`);
-    return response.data;
+    return validateResponse(executeRecurringResponseSchema, response.data);
   },
 };

@@ -1,22 +1,17 @@
 import api from "./api";
 import { validateResponse } from "@/lib/validate-response";
-import { categorySchema } from "@/schemas/category.schema";
+import { categorySchema, importCsvResponseSchema } from "@/schemas/category.schema";
 import { paginatedResponseSchema } from "@/schemas/api.schema";
 import type { Category, CreateCategoryRequest, UpdateCategoryRequest } from "@/types";
 import type { PaginatedResponseDTO } from "@/schemas/api.schema";
+import type { ImportCsvResponseDTO } from "@/schemas/category.schema";
 
 export const categoryService = {
-  list: async (
-    page = 1,
-    limit = 50
-  ): Promise<PaginatedResponseDTO<Category>> => {
+  list: async (page = 1, limit = 50): Promise<PaginatedResponseDTO<Category>> => {
     const response = await api.get("/categories", {
       params: { page, limit },
     });
-    return validateResponse(
-      paginatedResponseSchema(categorySchema),
-      response.data
-    );
+    return validateResponse(paginatedResponseSchema(categorySchema), response.data);
   },
 
   getById: async (id: string): Promise<Category> => {
@@ -29,10 +24,7 @@ export const categoryService = {
     return validateResponse(categorySchema, response.data);
   },
 
-  update: async (
-    id: string,
-    data: UpdateCategoryRequest
-  ): Promise<Category> => {
+  update: async (id: string, data: UpdateCategoryRequest): Promise<Category> => {
     const response = await api.put(`/categories/${id}`, data);
     return validateResponse(categorySchema, response.data);
   },
@@ -51,12 +43,12 @@ export const categoryService = {
     return response.data;
   },
 
-  importCsv: async (file: File): Promise<{ imported: number; errors: Array<{ row: number; error: string }> }> => {
+  importCsv: async (file: File): Promise<ImportCsvResponseDTO> => {
     const formData = new FormData();
     formData.append("file", file);
     const response = await api.post("/categories/import/csv", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-    return response.data;
+    return validateResponse(importCsvResponseSchema, response.data);
   },
 };

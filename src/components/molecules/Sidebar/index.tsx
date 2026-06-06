@@ -2,10 +2,7 @@
 
 import { memo } from "react";
 import { usePathname } from "next/navigation";
-import {
-  HiOutlineXMark,
-  HiOutlineArrowRightOnRectangle,
-} from "react-icons/hi2";
+import { HiOutlineXMark, HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
 import type { NavItem, SidebarProps } from "./types";
 import * as S from "./style";
 

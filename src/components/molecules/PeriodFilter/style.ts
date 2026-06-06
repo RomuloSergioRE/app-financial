@@ -19,10 +19,8 @@ export const Tab = styled.button<{ $active: boolean }>`
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   cursor: pointer;
   transition: all ${({ theme }) => theme.transition.fast};
-  color: ${({ theme, $active }) =>
-    $active ? theme.colors.text : theme.colors.textMuted};
-  background: ${({ theme, $active }) =>
-    $active ? theme.colors.surfaceHover : "transparent"};
+  color: ${({ theme, $active }) => ($active ? theme.colors.text : theme.colors.textMuted)};
+  background: ${({ theme, $active }) => ($active ? theme.colors.surfaceHover : "transparent")};
   text-transform: uppercase;
   letter-spacing: 0.05em;
 

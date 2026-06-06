@@ -12,7 +12,7 @@ export const transactionService = {
     categoryId?: string,
     startDate?: string,
     endDate?: string,
-    search?: string
+    search?: string,
   ): Promise<PaginatedResponseDTO<Transaction>> => {
     const response = await api.get("/transactions", {
       params: {
@@ -24,10 +24,7 @@ export const transactionService = {
         ...(search && { search }),
       },
     });
-    return validateResponse(
-      paginatedResponseSchema(transactionSchema),
-      response.data
-    );
+    return validateResponse(paginatedResponseSchema(transactionSchema), response.data);
   },
 
   getById: async (id: string): Promise<Transaction> => {
@@ -40,10 +37,7 @@ export const transactionService = {
     return validateResponse(transactionSchema, response.data);
   },
 
-  update: async (
-    id: string,
-    data: UpdateTransactionRequest
-  ): Promise<Transaction> => {
+  update: async (id: string, data: UpdateTransactionRequest): Promise<Transaction> => {
     const response = await api.put(`/transactions/${id}`, data);
     return validateResponse(transactionSchema, response.data);
   },
@@ -95,7 +89,9 @@ export const transactionService = {
     return response.data;
   },
 
-  importCsv: async (file: File): Promise<{ imported: number; errors: Array<{ row: number; error: string }> }> => {
+  importCsv: async (
+    file: File,
+  ): Promise<{ imported: number; errors: Array<{ row: number; error: string }> }> => {
     const formData = new FormData();
     formData.append("file", file);
     const response = await api.post("/transactions/import/csv", formData, {

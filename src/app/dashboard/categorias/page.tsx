@@ -1,7 +1,13 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { HiOutlinePencil, HiOutlineTrash, HiOutlineTag, HiOutlineDocumentArrowDown, HiOutlineDocumentArrowUp } from "react-icons/hi2";
+import {
+  HiOutlinePencil,
+  HiOutlineTrash,
+  HiOutlineTag,
+  HiOutlineDocumentArrowDown,
+  HiOutlineDocumentArrowUp,
+} from "react-icons/hi2";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { Button } from "@/components/atoms/Button";
@@ -35,10 +41,7 @@ export default function CategoriasPage() {
   const importFileRef = useRef<HTMLInputElement>(null);
 
   const handleCreate = (data: { name: string; color?: string; icon?: string }) => {
-    createMutation.mutate(
-      { name: data.name },
-      { onSuccess: () => {} }
-    );
+    createMutation.mutate({ name: data.name }, { onSuccess: () => {} });
   };
 
   const handleEdit = (cat: Category) => {
@@ -49,7 +52,7 @@ export default function CategoriasPage() {
     if (!editingCategory) return;
     updateMutation.mutate(
       { name: data.name, color: data.color || undefined },
-      { onSuccess: () => setEditingCategory(null) }
+      { onSuccess: () => setEditingCategory(null) },
     );
   };
 
@@ -75,18 +78,41 @@ export default function CategoriasPage() {
 
   return (
     <S.Wrapper>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: 8,
+        }}
+      >
         <Text as="h1" size="3xl" weight="bold" fontFamily="display">
           Categorias
         </Text>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-          <Button variant="outline" size="sm" onClick={() => exportCsvMutation.mutate()} loading={exportCsvMutation.isPending}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => exportCsvMutation.mutate()}
+            loading={exportCsvMutation.isPending}
+          >
             <HiOutlineDocumentArrowDown size={14} /> CSV
           </Button>
-          <Button variant="outline" size="sm" onClick={() => exportPdfMutation.mutate()} loading={exportPdfMutation.isPending}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => exportPdfMutation.mutate()}
+            loading={exportPdfMutation.isPending}
+          >
             <HiOutlineDocumentArrowDown size={14} /> PDF
           </Button>
-          <Button variant="outline" size="sm" onClick={() => importFileRef.current?.click()} loading={importCsvMutation.isPending}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => importFileRef.current?.click()}
+            loading={importCsvMutation.isPending}
+          >
             <HiOutlineDocumentArrowUp size={14} /> Importar
           </Button>
           <input
@@ -96,7 +122,12 @@ export default function CategoriasPage() {
             style={{ display: "none" }}
             onChange={(e) => {
               const file = e.target.files?.[0];
-              if (file) importCsvMutation.mutate(file, { onSettled: () => { if (importFileRef.current) importFileRef.current.value = ""; } });
+              if (file)
+                importCsvMutation.mutate(file, {
+                  onSettled: () => {
+                    if (importFileRef.current) importFileRef.current.value = "";
+                  },
+                });
             }}
           />
         </div>
@@ -124,9 +155,7 @@ export default function CategoriasPage() {
         <S.List>
           {categories.map((cat) => (
             <S.Item key={cat.id}>
-              <S.CategoryBadge $color={cat.color ?? undefined}>
-                {cat.name}
-              </S.CategoryBadge>
+              <S.CategoryBadge $color={cat.color ?? undefined}>{cat.name}</S.CategoryBadge>
               <S.Actions>
                 <S.IconButton onClick={() => handleEdit(cat)} aria-label="Editar">
                   <HiOutlinePencil size={16} />
@@ -149,7 +178,11 @@ export default function CategoriasPage() {
           onSubmit={handleUpdate}
           isLoading={updateMutation.isPending}
           submitLabel="Salvar"
-          initialData={editingCategory ? { name: editingCategory.name, color: editingCategory.color ?? undefined } : undefined}
+          initialData={
+            editingCategory
+              ? { name: editingCategory.name, color: editingCategory.color ?? undefined }
+              : undefined
+          }
           onCancel={() => setEditingCategory(null)}
         />
       </Modal>

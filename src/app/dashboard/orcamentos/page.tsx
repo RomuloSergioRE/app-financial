@@ -10,12 +10,7 @@ import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
 import { BudgetForm } from "@/components/molecules/BudgetForm";
 import { useCategories } from "@/hooks/useCategories";
-import {
-  useBudgets,
-  useCreateBudget,
-  useUpdateBudget,
-  useDeleteBudget,
-} from "@/hooks/useBudgets";
+import { useBudgets, useCreateBudget, useUpdateBudget, useDeleteBudget } from "@/hooks/useBudgets";
 import { formatCurrency } from "@/lib/format";
 import { fromCents, toCents } from "@/lib/currency";
 import type { Budget } from "@/types";
@@ -55,7 +50,12 @@ export default function OrcamentosPage() {
 
   const categories = categoriesState.status === "success" ? categoriesState.data.data : [];
 
-  const handleCreate = (data: { categoryId: string; month: number; year: number; limit: number }) => {
+  const handleCreate = (data: {
+    categoryId: string;
+    month: number;
+    year: number;
+    limit: number;
+  }) => {
     createMutation.mutate(
       {
         categoryId: data.categoryId,
@@ -63,7 +63,7 @@ export default function OrcamentosPage() {
         year: data.year,
         limit: toCents(data.limit),
       },
-      {}
+      {},
     );
   };
 
@@ -71,7 +71,12 @@ export default function OrcamentosPage() {
     setEditingBudget(budget);
   };
 
-  const handleUpdate = (data: { categoryId: string; month: number; year: number; limit: number }) => {
+  const handleUpdate = (data: {
+    categoryId: string;
+    month: number;
+    year: number;
+    limit: number;
+  }) => {
     if (!editingBudget) return;
     updateMutation.mutate(
       {
@@ -80,7 +85,7 @@ export default function OrcamentosPage() {
         year: data.year,
         limit: toCents(data.limit),
       },
-      { onSuccess: () => setEditingBudget(null) }
+      { onSuccess: () => setEditingBudget(null) },
     );
   };
 
@@ -120,11 +125,7 @@ export default function OrcamentosPage() {
       <S.FilterRow>
         <S.FormGroup>
           <S.Label>Filtrar por Mês</S.Label>
-          <Select
-            value={monthFilter}
-            onChange={(v) => setMonthFilter(v)}
-            options={MONTHS}
-          />
+          <Select value={monthFilter} onChange={(v) => setMonthFilter(v)} options={MONTHS} />
         </S.FormGroup>
         <S.FormGroup>
           <S.Label>Filtrar por Ano</S.Label>
@@ -186,9 +187,7 @@ export default function OrcamentosPage() {
                 </S.ValueItem>
                 <S.ValueItem>
                   <S.ValueLabel>Limite</S.ValueLabel>
-                  <S.ValueAmount>
-                    {formatCurrency(fromCents(budget.limit))}
-                  </S.ValueAmount>
+                  <S.ValueAmount>{formatCurrency(fromCents(budget.limit))}</S.ValueAmount>
                 </S.ValueItem>
                 {budget.overBudget && (
                   <S.ValueItem>
@@ -214,22 +213,22 @@ export default function OrcamentosPage() {
         </S.List>
       )}
 
-      <Modal
-        open={!!editingBudget}
-        onClose={() => setEditingBudget(null)}
-        title="Editar Orçamento"
-      >
+      <Modal open={!!editingBudget} onClose={() => setEditingBudget(null)} title="Editar Orçamento">
         <BudgetForm
           categories={categories}
           onSubmit={handleUpdate}
           isLoading={updateMutation.isPending}
           submitLabel="Salvar"
-          initialData={editingBudget ? {
-            categoryId: editingBudget.categoryId,
-            month: editingBudget.month,
-            year: editingBudget.year,
-            limit: fromCents(editingBudget.limit),
-          } : undefined}
+          initialData={
+            editingBudget
+              ? {
+                  categoryId: editingBudget.categoryId,
+                  month: editingBudget.month,
+                  year: editingBudget.year,
+                  limit: fromCents(editingBudget.limit),
+                }
+              : undefined
+          }
           onCancel={() => setEditingBudget(null)}
         />
       </Modal>

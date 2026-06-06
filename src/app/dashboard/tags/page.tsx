@@ -8,12 +8,7 @@ import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
 import { TagForm } from "@/components/molecules/TagForm";
-import {
-  useTags,
-  useCreateTag,
-  useUpdateTag,
-  useDeleteTag,
-} from "@/hooks/useTags";
+import { useTags, useCreateTag, useUpdateTag, useDeleteTag } from "@/hooks/useTags";
 import type { Tag } from "@/types";
 import * as S from "./style";
 
@@ -27,10 +22,7 @@ export default function TagsPage() {
   const updateMutation = useUpdateTag(editingTag?.id ?? "");
 
   const handleCreate = (data: { name: string; color?: string }) => {
-    createMutation.mutate(
-      { name: data.name },
-      { onSuccess: () => {} }
-    );
+    createMutation.mutate({ name: data.name }, { onSuccess: () => {} });
   };
 
   const handleEdit = (tag: Tag) => {
@@ -41,7 +33,7 @@ export default function TagsPage() {
     if (!editingTag) return;
     updateMutation.mutate(
       { name: data.name, color: data.color || undefined },
-      { onSuccess: () => setEditingTag(null) }
+      { onSuccess: () => setEditingTag(null) },
     );
   };
 
@@ -71,11 +63,7 @@ export default function TagsPage() {
         Tags
       </Text>
 
-      <TagForm
-        onSubmit={handleCreate}
-        isLoading={createMutation.isPending}
-        submitLabel="Criar"
-      />
+      <TagForm onSubmit={handleCreate} isLoading={createMutation.isPending} submitLabel="Criar" />
 
       {tagsState.status === "loading" ? (
         <S.List>
@@ -93,9 +81,7 @@ export default function TagsPage() {
         <S.List>
           {tags.map((tag) => (
             <S.Item key={tag.id}>
-              <S.TagBadge $color={tag.color ?? undefined}>
-                {tag.name}
-              </S.TagBadge>
+              <S.TagBadge $color={tag.color ?? undefined}>{tag.name}</S.TagBadge>
               <S.Actions>
                 <S.IconButton onClick={() => handleEdit(tag)} aria-label="Editar">
                   <HiOutlinePencil size={16} />
@@ -109,16 +95,14 @@ export default function TagsPage() {
         </S.List>
       )}
 
-      <Modal
-        open={!!editingTag}
-        onClose={() => setEditingTag(null)}
-        title="Editar Tag"
-      >
+      <Modal open={!!editingTag} onClose={() => setEditingTag(null)} title="Editar Tag">
         <TagForm
           onSubmit={handleUpdate}
           isLoading={updateMutation.isPending}
           submitLabel="Salvar"
-          initialData={editingTag ? { name: editingTag.name, color: editingTag.color ?? undefined } : undefined}
+          initialData={
+            editingTag ? { name: editingTag.name, color: editingTag.color ?? undefined } : undefined
+          }
           onCancel={() => setEditingTag(null)}
         />
       </Modal>

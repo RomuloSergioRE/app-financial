@@ -111,10 +111,8 @@ export const TdMono = styled.td`
 export const TypeBadge = styled.span<{ $type: string }>`
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
-  color: ${({ theme, $type }) =>
-    $type === "income" ? theme.colors.primary : theme.colors.danger};
+  color: ${({ theme, $type }) => ($type === "income" ? theme.colors.primary : theme.colors.danger)};
 `;
-
 
 export const Actions = styled.div`
   display: flex;
@@ -218,9 +216,10 @@ export const TagCheckbox = styled.button<{ $selected: boolean; $color?: string }
   gap: 6px;
   padding: 6px 12px;
   border-radius: 999px;
-  border: 2px solid ${({ $selected, $color }) => ($selected ? ($color || "#D4A853") : "transparent")};
-  background: ${({ $selected, $color }) => ($selected ? `${$color || "#D4A853"}20` : "transparent")};
-  color: ${({ $selected, $color }) => ($selected ? ($color || "#D4A853") : "inherit")};
+  border: 2px solid ${({ $selected, $color }) => ($selected ? $color || "#D4A853" : "transparent")};
+  background: ${({ $selected, $color }) =>
+    $selected ? `${$color || "#D4A853"}20` : "transparent"};
+  color: ${({ $selected, $color }) => ($selected ? $color || "#D4A853" : "inherit")};
   cursor: pointer;
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-family: ${({ theme }) => theme.fonts.body};

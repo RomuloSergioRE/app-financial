@@ -42,7 +42,11 @@ export const Value = styled.span<{ $positive?: boolean }>`
   font-size: ${({ theme }) => theme.fontSize.md};
   font-weight: 600;
   color: ${({ theme, $positive }) =>
-    $positive === undefined ? theme.colors.text : $positive ? theme.colors.tradingUp : theme.colors.tradingDown};
+    $positive === undefined
+      ? theme.colors.text
+      : $positive
+        ? theme.colors.tradingUp
+        : theme.colors.tradingDown};
 `;
 
 export const Pill = styled.span<{ $positive?: boolean }>`
@@ -55,7 +59,15 @@ export const Pill = styled.span<{ $positive?: boolean }>`
   padding: 2px 6px;
   border-radius: ${({ theme }) => theme.borderRadius.sm};
   background: ${({ theme, $positive }) =>
-    $positive === undefined ? "transparent" : $positive ? `${theme.colors.tradingUp}1A` : `${theme.colors.tradingDown}1A`};
+    $positive === undefined
+      ? "transparent"
+      : $positive
+        ? `${theme.colors.tradingUp}1A`
+        : `${theme.colors.tradingDown}1A`};
   color: ${({ theme, $positive }) =>
-    $positive === undefined ? theme.colors.textSecondary : $positive ? theme.colors.tradingUp : theme.colors.tradingDown};
+    $positive === undefined
+      ? theme.colors.textSecondary
+      : $positive
+        ? theme.colors.tradingUp
+        : theme.colors.tradingDown};
 `;

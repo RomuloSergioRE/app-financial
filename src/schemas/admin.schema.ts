@@ -89,7 +89,7 @@ export const userAnalyticsSchema = z.object({
       categoryName: z.string(),
       totalAmount: z.number(),
       percentage: z.number(),
-    })
+    }),
   ),
 });
 

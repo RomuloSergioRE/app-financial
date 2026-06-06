@@ -6,7 +6,7 @@ import type { Goal, CreateGoalRequest, UpdateGoalRequest } from "@/types";
 export const goalService = {
   list: async (): Promise<Goal[]> => {
     const response = await api.get("/goals");
-    return response.data.map((item: unknown) => validateResponse(goalSchema, item));
+    return validateResponse(goalSchema.array(), response.data);
   },
 
   getById: async (id: string): Promise<Goal> => {

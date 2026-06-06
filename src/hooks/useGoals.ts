@@ -3,10 +3,9 @@ import { toast } from "@/components/molecules/Toast";
 import { goalService } from "@/services/goal.service";
 import { mapAsyncState } from "@/lib/map-async-state";
 import type { AsyncState } from "@/types/async";
-import type { CreateGoalRequest, UpdateGoalRequest } from "@/types";
-import type { GoalDTO } from "@/schemas/goal.schema";
+import type { CreateGoalRequest, UpdateGoalRequest, Goal } from "@/types";
 
-export function useGoals(): AsyncState<GoalDTO[]> {
+export function useGoals(): AsyncState<Goal[]> {
   const query = useQuery({
     queryKey: ["goals"],
     queryFn: () => goalService.list(),
@@ -25,8 +24,7 @@ export function useGoal(id: string) {
 export function useCreateGoal() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: CreateGoalRequest) =>
-      goalService.create(data),
+    mutationFn: (data: CreateGoalRequest) => goalService.create(data),
     onSuccess: () => {
       toast.success("Meta criada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["goals"] });
@@ -40,8 +38,7 @@ export function useCreateGoal() {
 export function useUpdateGoal(id: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: UpdateGoalRequest) =>
-      goalService.update(id, data),
+    mutationFn: (data: UpdateGoalRequest) => goalService.update(id, data),
     onSuccess: () => {
       toast.success("Meta atualizada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["goals"] });

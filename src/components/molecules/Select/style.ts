@@ -21,7 +21,8 @@ export const Trigger = styled.button<{ $isOpen: boolean; $hasError?: boolean }>`
   text-align: left;
   cursor: pointer;
   min-height: 38px;
-  transition: border-color ${({ theme }) => theme.transition.base},
+  transition:
+    border-color ${({ theme }) => theme.transition.base},
     box-shadow ${({ theme }) => theme.transition.base};
 
   &:focus {
@@ -73,10 +74,8 @@ export const OptionItem = styled.li<{ $isActive: boolean; $isSelected: boolean }
   border-radius: ${({ theme }) => theme.borderRadius.sm};
   cursor: pointer;
   font-size: inherit;
-  color: ${({ $isSelected, theme }) =>
-    $isSelected ? theme.colors.primary : theme.colors.text};
-  background: ${({ $isActive, theme }) =>
-    $isActive ? theme.colors.surfaceHover : "transparent"};
+  color: ${({ $isSelected, theme }) => ($isSelected ? theme.colors.primary : theme.colors.text)};
+  background: ${({ $isActive, theme }) => ($isActive ? theme.colors.surfaceHover : "transparent")};
   transition: background ${({ theme }) => theme.transition.base};
 
   &:hover {

@@ -28,7 +28,10 @@ export const adminService = {
     role?: string;
     status?: string;
     search?: string;
-  }): Promise<{ data: AdminUser[]; pagination: { page: number; limit: number; total: number; totalPages: number } }> => {
+  }): Promise<{
+    data: AdminUser[];
+    pagination: { page: number; limit: number; total: number; totalPages: number };
+  }> => {
     const response = await api.get("/admin/users", { params });
     return {
       data: validateResponse(adminUserSchema.array(), response.data.data),
@@ -60,12 +63,19 @@ export const adminService = {
     return validateResponse(globalCategorySchema.array(), response.data);
   },
 
-  createGlobalCategory: async (data: { name: string; icon?: string; color?: string }): Promise<GlobalCategory> => {
+  createGlobalCategory: async (data: {
+    name: string;
+    icon?: string;
+    color?: string;
+  }): Promise<GlobalCategory> => {
     const response = await api.post("/admin/categories", data);
     return validateResponse(globalCategorySchema, response.data);
   },
 
-  updateGlobalCategory: async (id: string, data: { name?: string; icon?: string; color?: string }): Promise<GlobalCategory> => {
+  updateGlobalCategory: async (
+    id: string,
+    data: { name?: string; icon?: string; color?: string },
+  ): Promise<GlobalCategory> => {
     const response = await api.put(`/admin/categories/${id}`, data);
     return validateResponse(globalCategorySchema, response.data);
   },
@@ -82,7 +92,10 @@ export const adminService = {
     targetType?: string;
     startDate?: string;
     endDate?: string;
-  }): Promise<{ data: AuditLog[]; pagination: { page: number; limit: number; total: number; totalPages: number } }> => {
+  }): Promise<{
+    data: AuditLog[];
+    pagination: { page: number; limit: number; total: number; totalPages: number };
+  }> => {
     const response = await api.get("/admin/audit-logs", { params });
     return {
       data: validateResponse(auditLogSchema.array(), response.data.data),
@@ -100,7 +113,11 @@ export const adminService = {
     return validateResponse(userAnalyticsSchema, response.data);
   },
 
-  getUserGrowth: async (params: { startDate: string; endDate: string; granularity?: "day" | "month" }): Promise<UserGrowthItem[]> => {
+  getUserGrowth: async (params: {
+    startDate: string;
+    endDate: string;
+    granularity?: "day" | "month";
+  }): Promise<UserGrowthItem[]> => {
     const response = await api.get("/admin/analytics/user-growth", { params });
     return validateResponse(userGrowthItemSchema.array(), response.data);
   },
@@ -115,8 +132,15 @@ export const adminService = {
     return response.data;
   },
 
-  exportTransactionsCsv: async (params?: { userId?: string; startDate?: string; endDate?: string }): Promise<Blob> => {
-    const response = await api.get("/admin/export/transactions/csv", { params, responseType: "blob" });
+  exportTransactionsCsv: async (params?: {
+    userId?: string;
+    startDate?: string;
+    endDate?: string;
+  }): Promise<Blob> => {
+    const response = await api.get("/admin/export/transactions/csv", {
+      params,
+      responseType: "blob",
+    });
     return response.data;
   },
 

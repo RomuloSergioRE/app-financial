@@ -1,11 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  HiOutlinePlus,
-  HiOutlinePencil,
-  HiOutlineTrash,
-} from "react-icons/hi2";
+import { HiOutlinePlus, HiOutlinePencil, HiOutlineTrash } from "react-icons/hi2";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { Button } from "@/components/atoms/Button";
@@ -35,14 +31,23 @@ export default function AdminCategoriasGlobaisPage() {
 
   const categories = categoriesState.status === "success" ? categoriesState.data : [];
 
-  const resetForm = () => { setName(""); setColor(""); };
+  const resetForm = () => {
+    setName("");
+    setColor("");
+  };
 
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
-    createMutation.mutate({ name: name.trim(), color: color || undefined }, {
-      onSuccess: () => { resetForm(); setShowCreate(false); },
-    });
+    createMutation.mutate(
+      { name: name.trim(), color: color || undefined },
+      {
+        onSuccess: () => {
+          resetForm();
+          setShowCreate(false);
+        },
+      },
+    );
   };
 
   const handleEdit = (cat: GlobalCategory) => {
@@ -54,9 +59,15 @@ export default function AdminCategoriasGlobaisPage() {
   const handleUpdate = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingCategory || !name.trim()) return;
-    updateMutation.mutate({ id: editingCategory.id, data: { name: name.trim(), color: color || undefined } }, {
-      onSuccess: () => { resetForm(); setEditingCategory(null); },
-    });
+    updateMutation.mutate(
+      { id: editingCategory.id, data: { name: name.trim(), color: color || undefined } },
+      {
+        onSuccess: () => {
+          resetForm();
+          setEditingCategory(null);
+        },
+      },
+    );
   };
 
   const handleDeleteConfirm = () => {
@@ -77,7 +88,12 @@ export default function AdminCategoriasGlobaisPage() {
           <Text as="h2" size="lg" weight="semibold" fontFamily="display">
             Todas as Categorias
           </Text>
-          <Button onClick={() => { resetForm(); setShowCreate(true); }}>
+          <Button
+            onClick={() => {
+              resetForm();
+              setShowCreate(true);
+            }}
+          >
             <HiOutlinePlus size={16} /> Nova
           </Button>
         </S.Row>
@@ -101,12 +117,19 @@ export default function AdminCategoriasGlobaisPage() {
               <S.Row>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   {cat.color && (
-                    <div style={{
-                      width: 12, height: 12, borderRadius: "50%",
-                      background: cat.color, flexShrink: 0,
-                    }} />
+                    <div
+                      style={{
+                        width: 12,
+                        height: 12,
+                        borderRadius: "50%",
+                        background: cat.color,
+                        flexShrink: 0,
+                      }}
+                    />
                   )}
-                  <Text size="md" weight="medium">{cat.name}</Text>
+                  <Text size="md" weight="medium">
+                    {cat.name}
+                  </Text>
                 </div>
                 <div style={{ display: "flex", gap: 4 }}>
                   <S.IconButton onClick={() => handleEdit(cat)} title="Editar">
@@ -130,13 +153,23 @@ export default function AdminCategoriasGlobaisPage() {
           </S.Field>
           <S.Field>
             <S.Label>Cor (hex)</S.Label>
-            <S.Input value={color} onChange={(e) => setColor(e.target.value)} placeholder="#3B82F6" />
+            <S.Input
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              placeholder="#3B82F6"
+            />
           </S.Field>
-          <Button type="submit" loading={createMutation.isPending}>Criar</Button>
+          <Button type="submit" loading={createMutation.isPending}>
+            Criar
+          </Button>
         </S.Form>
       </Modal>
 
-      <Modal open={!!editingCategory} onClose={() => setEditingCategory(null)} title="Editar Categoria Global">
+      <Modal
+        open={!!editingCategory}
+        onClose={() => setEditingCategory(null)}
+        title="Editar Categoria Global"
+      >
         <S.Form onSubmit={handleUpdate}>
           <S.Field>
             <S.Label>Nome</S.Label>
@@ -144,9 +177,15 @@ export default function AdminCategoriasGlobaisPage() {
           </S.Field>
           <S.Field>
             <S.Label>Cor (hex)</S.Label>
-            <S.Input value={color} onChange={(e) => setColor(e.target.value)} placeholder="#3B82F6" />
+            <S.Input
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              placeholder="#3B82F6"
+            />
           </S.Field>
-          <Button type="submit" loading={updateMutation.isPending}>Salvar</Button>
+          <Button type="submit" loading={updateMutation.isPending}>
+            Salvar
+          </Button>
         </S.Form>
       </Modal>
 

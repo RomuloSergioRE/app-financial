@@ -11,7 +11,8 @@ export const Wrapper = styled.button`
   background: transparent;
   color: ${({ theme }) => theme.colors.textMuted};
   cursor: pointer;
-  transition: color ${({ theme }) => theme.transition.base},
+  transition:
+    color ${({ theme }) => theme.transition.base},
     border-color ${({ theme }) => theme.transition.base};
 
   &:hover {

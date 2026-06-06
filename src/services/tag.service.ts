@@ -6,7 +6,7 @@ import type { Tag, CreateTagRequest, UpdateTagRequest } from "@/types";
 export const tagService = {
   list: async (): Promise<Tag[]> => {
     const response = await api.get("/tags");
-    return response.data.map((item: unknown) => validateResponse(tagSchema, item));
+    return validateResponse(tagSchema.array(), response.data);
   },
 
   getById: async (id: string): Promise<Tag> => {

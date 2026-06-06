@@ -3,12 +3,9 @@ import { toast } from "@/components/molecules/Toast";
 import { transactionService } from "@/services/transaction.service";
 import { mapAsyncState } from "@/lib/map-async-state";
 import type { AsyncState } from "@/types/async";
-import type {
-  CreateTransactionRequest,
-  UpdateTransactionRequest,
-} from "@/types";
+import type { CreateTransactionRequest, UpdateTransactionRequest } from "@/types";
 import type { PaginatedResponseDTO } from "@/schemas/api.schema";
-import type { TransactionDTO } from "@/schemas/transaction.schema";
+import type { Transaction } from "@/types";
 
 interface UseTransactionsParams {
   page?: number;
@@ -19,7 +16,9 @@ interface UseTransactionsParams {
   search?: string;
 }
 
-export function useTransactions(params: UseTransactionsParams = {}): AsyncState<PaginatedResponseDTO<TransactionDTO>> {
+export function useTransactions(
+  params: UseTransactionsParams = {},
+): AsyncState<PaginatedResponseDTO<Transaction>> {
   const { page = 1, limit = 10, categoryId, startDate, endDate, search } = params;
   const query = useQuery({
     queryKey: ["transactions", page, limit, categoryId, startDate, endDate, search],
@@ -31,8 +30,7 @@ export function useTransactions(params: UseTransactionsParams = {}): AsyncState<
 export function useCreateTransaction() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: CreateTransactionRequest) =>
-      transactionService.create(data),
+    mutationFn: (data: CreateTransactionRequest) => transactionService.create(data),
     onSuccess: () => {
       toast.success("Transação criada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
@@ -47,8 +45,7 @@ export function useCreateTransaction() {
 export function useUpdateTransaction(id: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: UpdateTransactionRequest) =>
-      transactionService.update(id, data),
+    mutationFn: (data: UpdateTransactionRequest) => transactionService.update(id, data),
     onSuccess: () => {
       toast.success("Transação atualizada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
@@ -105,19 +102,16 @@ export function useUnlinkTag() {
   });
 }
 
-function downloadBlob(blob: Blob, filename: string) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
-}
+import { downloadBlob } from "@/lib/download";
 
 export function useExportTransactionsCsv() {
   return useMutation({
-    mutationFn: (params?: { categoryId?: string; startDate?: string; endDate?: string; search?: string }) =>
-      transactionService.exportCsv(params),
+    mutationFn: (params?: {
+      categoryId?: string;
+      startDate?: string;
+      endDate?: string;
+      search?: string;
+    }) => transactionService.exportCsv(params),
     onSuccess: (blob) => {
       downloadBlob(blob, `transacoes-${new Date().toISOString().split("T")[0]}.csv`);
       toast.success("CSV exportado com sucesso!");
@@ -128,8 +122,12 @@ export function useExportTransactionsCsv() {
 
 export function useExportTransactionsPdf() {
   return useMutation({
-    mutationFn: (params?: { categoryId?: string; startDate?: string; endDate?: string; search?: string }) =>
-      transactionService.exportPdf(params),
+    mutationFn: (params?: {
+      categoryId?: string;
+      startDate?: string;
+      endDate?: string;
+      search?: string;
+    }) => transactionService.exportPdf(params),
     onSuccess: (blob) => {
       downloadBlob(blob, `transacoes-${new Date().toISOString().split("T")[0]}.pdf`);
       toast.success("PDF exportado com sucesso!");

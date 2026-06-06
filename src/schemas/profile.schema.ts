@@ -5,11 +5,7 @@ export const updateProfileSchema = z.object({
     .string({ message: "Nome é obrigatório" })
     .min(3, "Nome deve ter no mínimo 3 caracteres")
     .trim(),
-  email: z
-    .string({ message: "Email é obrigatório" })
-    .email("Email inválido")
-    .trim()
-    .toLowerCase(),
+  email: z.string({ message: "Email é obrigatório" }).email("Email inválido").trim().toLowerCase(),
 });
 
 export type UpdateProfileFormData = z.infer<typeof updateProfileSchema>;

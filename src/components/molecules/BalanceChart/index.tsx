@@ -2,18 +2,11 @@
 
 import { memo } from "react";
 import { useTheme } from "styled-components";
-import {
-  PieChart as RechartsPieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import type { BalanceChartProps } from "./types";
 import * as S from "./style";
 
-const currencyFormatter = (v: number) =>
-  "R$ " + v.toLocaleString("pt-BR");
+const currencyFormatter = (v: number) => "R$ " + v.toLocaleString("pt-BR");
 
 const CustomTooltip = (props: Record<string, unknown>) => {
   const theme = useTheme();
@@ -39,7 +32,11 @@ const CustomTooltip = (props: Record<string, unknown>) => {
   );
 };
 
-export const BalanceChart = memo(function BalanceChart({ income, expense, netBalance }: BalanceChartProps) {
+export const BalanceChart = memo(function BalanceChart({
+  income,
+  expense,
+  netBalance,
+}: BalanceChartProps) {
   const theme = useTheme();
 
   const data = [
@@ -73,9 +70,7 @@ export const BalanceChart = memo(function BalanceChart({ income, expense, netBal
       </S.ChartContainer>
       <S.BalanceInfo>
         <S.BalanceLabel>Saldo</S.BalanceLabel>
-        <S.BalanceValue $positive={netBalance >= 0}>
-          {currencyFormatter(netBalance)}
-        </S.BalanceValue>
+        <S.BalanceValue $positive={netBalance >= 0}>{currencyFormatter(netBalance)}</S.BalanceValue>
       </S.BalanceInfo>
     </S.Wrapper>
   );

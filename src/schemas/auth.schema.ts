@@ -21,14 +21,8 @@ export const authResponseSchema = z.object({
 export type AuthResponseDTO = z.infer<typeof authResponseSchema>;
 
 export const loginSchema = z.object({
-  email: z
-    .string({ message: "Email é obrigatório" })
-    .email("Email inválido")
-    .trim()
-    .toLowerCase(),
-  password: z
-    .string({ message: "Senha é obrigatória" })
-    .min(1, "Senha é obrigatória"),
+  email: z.string({ message: "Email é obrigatório" }).email("Email inválido").trim().toLowerCase(),
+  password: z.string({ message: "Senha é obrigatória" }).min(1, "Senha é obrigatória"),
 });
 
 export type LoginDTO = z.infer<typeof loginSchema>;

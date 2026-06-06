@@ -18,9 +18,11 @@ export const GoalCard = styled.div<{ $achieved?: boolean }>`
   gap: ${({ theme }) => theme.spacing.md};
   padding: ${({ theme }) => theme.spacing.lg};
   background: ${({ theme }) => theme.colors.surface};
-  border: 1px solid ${({ theme, $achieved }) => ($achieved ? theme.colors.tradingUp : theme.colors.border)};
+  border: 1px solid
+    ${({ theme, $achieved }) => ($achieved ? theme.colors.tradingUp : theme.colors.border)};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  border-left: 4px solid ${({ theme, $achieved }) => ($achieved ? theme.colors.tradingUp : theme.colors.primary)};
+  border-left: 4px solid
+    ${({ theme, $achieved }) => ($achieved ? theme.colors.tradingUp : theme.colors.primary)};
 `;
 
 export const GoalHeader = styled.div`
@@ -94,15 +96,18 @@ export const ProgressBarFill = styled.div<{ $percentage: number; $achieved?: boo
   width: ${({ $percentage }) => $percentage}%;
   height: 100%;
   border-radius: 999px;
-  background: ${({ theme, $achieved }) => ($achieved ? theme.colors.tradingUp : theme.colors.primary)};
+  background: ${({ theme, $achieved }) =>
+    $achieved ? theme.colors.tradingUp : theme.colors.primary};
   transition: width 0.4s ease;
 `;
 
 export const ProgressLabel = styled.span<{ $achieved?: boolean }>`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.xs};
-  color: ${({ theme, $achieved }) => ($achieved ? theme.colors.tradingUp : theme.colors.textSecondary)};
-  font-weight: ${({ theme, $achieved }) => ($achieved ? theme.fontWeight.semibold : theme.fontWeight.normal)};
+  color: ${({ theme, $achieved }) =>
+    $achieved ? theme.colors.tradingUp : theme.colors.textSecondary};
+  font-weight: ${({ theme, $achieved }) =>
+    $achieved ? theme.fontWeight.semibold : theme.fontWeight.normal};
 `;
 
 export const GoalValues = styled.div`

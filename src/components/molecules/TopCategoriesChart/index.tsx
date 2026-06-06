@@ -15,8 +15,7 @@ import {
 import type { TopCategoriesChartProps } from "./types";
 import * as S from "./style";
 
-const currencyFormatter = (v: number) =>
-  "R$ " + v.toLocaleString("pt-BR");
+const currencyFormatter = (v: number) => "R$ " + v.toLocaleString("pt-BR");
 
 const CustomTooltip = (props: Record<string, unknown>) => {
   const theme = useTheme();
@@ -53,7 +52,9 @@ const COLORS = [
   "#F59E0B",
 ];
 
-export const TopCategoriesChart = memo(function TopCategoriesChart({ data }: TopCategoriesChartProps) {
+export const TopCategoriesChart = memo(function TopCategoriesChart({
+  data,
+}: TopCategoriesChartProps) {
   const theme = useTheme();
 
   const chartData = data.map((d, i) => ({
@@ -91,12 +92,7 @@ export const TopCategoriesChart = memo(function TopCategoriesChart({ data }: Top
               width={90}
             />
             <Tooltip content={CustomTooltip} />
-            <Bar
-              dataKey="value"
-              name="Valor"
-              radius={[0, 4, 4, 0]}
-              maxBarSize={24}
-            >
+            <Bar dataKey="value" name="Valor" radius={[0, 4, 4, 0]} maxBarSize={24}>
               {chartData.map((entry, i) => (
                 <Cell key={`cell-${i}`} fill={entry.fill} />
               ))}

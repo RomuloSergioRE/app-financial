@@ -3,11 +3,7 @@
 import { useMemo } from "react";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
-import {
-  useAdminOverview,
-  useUserGrowth,
-  useAdminPerformance,
-} from "@/hooks/useAdmin";
+import { useAdminOverview, useUserGrowth, useAdminPerformance } from "@/hooks/useAdmin";
 import * as S from "./style";
 
 function OverviewCards() {
@@ -46,15 +42,11 @@ function OverviewCards() {
       </S.StatCard>
       <S.StatCard>
         <S.StatLabel>Receitas</S.StatLabel>
-        <S.StatValue $positive>
-          R$ {(data.totalIncome / 100).toLocaleString("pt-BR")}
-        </S.StatValue>
+        <S.StatValue $positive>R$ {(data.totalIncome / 100).toLocaleString("pt-BR")}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
         <S.StatLabel>Despesas</S.StatLabel>
-        <S.StatValue>
-          R$ {(data.totalOutcome / 100).toLocaleString("pt-BR")}
-        </S.StatValue>
+        <S.StatValue>R$ {(data.totalOutcome / 100).toLocaleString("pt-BR")}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
         <S.StatLabel>Saldo Líquido</S.StatLabel>
@@ -67,8 +59,11 @@ function OverviewCards() {
 }
 
 function GrowthChart() {
-  const endDate = new Date().toISOString().split("T")[0];
-  const startDate = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+  const today = useMemo(() => new Date(), []);
+  const endDate = today.toISOString().split("T")[0];
+  const startDate = new Date(today.getTime() - 365 * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .split("T")[0];
   const growthQuery = useUserGrowth({ startDate, endDate, granularity: "month" });
 
   const data = growthQuery.data ?? [];
@@ -90,17 +85,24 @@ function GrowthChart() {
           <span style={{ width: 60, fontSize: 12, color: "var(--text-secondary, #888)" }}>
             {d.period}
           </span>
-          <div style={{
-            flex: 1, height: 20, background: "var(--bg-tertiary, #1e1e2e)",
-            borderRadius: 4, overflow: "hidden",
-          }}>
-            <div style={{
-              width: `${(d.newUsers / maxNewUsers) * 100}%`,
-              height: "100%",
-              background: "var(--color-primary, #3B82F6)",
+          <div
+            style={{
+              flex: 1,
+              height: 20,
+              background: "var(--bg-tertiary, #1e1e2e)",
               borderRadius: 4,
-              transition: "width 0.3s",
-            }} />
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                width: `${(d.newUsers / maxNewUsers) * 100}%`,
+                height: "100%",
+                background: "var(--color-primary, #3B82F6)",
+                borderRadius: 4,
+                transition: "width 0.3s",
+              }}
+            />
           </div>
           <span style={{ width: 30, fontSize: 12, textAlign: "right", color: "var(--text, #fff)" }}>
             {d.newUsers}

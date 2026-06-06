@@ -2,18 +2,11 @@
 
 import { memo } from "react";
 import { useTheme } from "styled-components";
-import {
-  PieChart as RechartsPieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import type { PieChartProps } from "./types";
 import * as S from "./style";
 
-const currencyFormatter = (v: number) =>
-  "R$ " + v.toLocaleString("pt-BR");
+const currencyFormatter = (v: number) => "R$ " + v.toLocaleString("pt-BR");
 
 const CustomTooltip = (props: Record<string, unknown>) => {
   const theme = useTheme();
@@ -77,10 +70,7 @@ export const PieChart = memo(function PieChart({ categories }: PieChartProps) {
               strokeWidth={0}
             >
               {data.map((entry, i) => (
-                <Cell
-                  key={`${entry.name}-${i}`}
-                  fill={entry.color}
-                />
+                <Cell key={`${entry.name}-${i}`} fill={entry.color} />
               ))}
             </Pie>
             <Tooltip content={CustomTooltip} />

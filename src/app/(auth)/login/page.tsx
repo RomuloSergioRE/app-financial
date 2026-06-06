@@ -38,9 +38,7 @@ export default function LoginPage() {
       toast.success("Login realizado com sucesso!");
       router.push("/dashboard");
     } catch (err: unknown) {
-      setApiError(
-        extractErrorMessage(err, "Erro ao fazer login. Verifique suas credenciais.")
-      );
+      setApiError(extractErrorMessage(err, "Erro ao fazer login. Verifique suas credenciais."));
     }
   };
 
@@ -75,11 +73,7 @@ export default function LoginPage() {
             Entrar
           </Button>
 
-          <FormLink
-            text="Não tem conta?"
-            linkText="Cadastre-se"
-            href="/register"
-          />
+          <FormLink text="Não tem conta?" linkText="Cadastre-se" href="/register" />
         </S.FormBody>
       </form>
     </AuthCard>

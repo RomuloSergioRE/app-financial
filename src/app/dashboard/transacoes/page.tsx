@@ -2,9 +2,13 @@
 
 import { useState, useRef } from "react";
 import {
-  HiOutlinePencil, HiOutlineTrash, HiOutlinePlusCircle,
-  HiOutlineMagnifyingGlass, HiOutlineTag,
-  HiOutlineDocumentArrowDown, HiOutlineDocumentArrowUp,
+  HiOutlinePencil,
+  HiOutlineTrash,
+  HiOutlinePlusCircle,
+  HiOutlineMagnifyingGlass,
+  HiOutlineTag,
+  HiOutlineDocumentArrowDown,
+  HiOutlineDocumentArrowUp,
   HiOutlineDocumentText,
 } from "react-icons/hi2";
 import { Select } from "@/components/molecules/Select";
@@ -72,7 +76,13 @@ export default function TransacoesPage() {
   const importCsvMutation = useImportTransactionsCsv();
   const importFileRef = useRef<HTMLInputElement>(null);
 
-  const handleCreate = (data: { description: string; amount: number; type: "income" | "outcome"; date: string; categoryId: string }) => {
+  const handleCreate = (data: {
+    description: string;
+    amount: number;
+    type: "income" | "outcome";
+    date: string;
+    categoryId: string;
+  }) => {
     createMutation.mutate(
       {
         description: data.description,
@@ -81,7 +91,7 @@ export default function TransacoesPage() {
         date: new Date(data.date).toISOString(),
         categoryId: data.categoryId,
       },
-      {}
+      {},
     );
   };
 
@@ -89,7 +99,13 @@ export default function TransacoesPage() {
     setEditingTx(tx);
   };
 
-  const handleUpdate = (data: { description: string; amount: number; type: "income" | "outcome"; date: string; categoryId: string }) => {
+  const handleUpdate = (data: {
+    description: string;
+    amount: number;
+    type: "income" | "outcome";
+    date: string;
+    categoryId: string;
+  }) => {
     if (!editingTx) return;
     updateMutation.mutate(
       {
@@ -99,7 +115,7 @@ export default function TransacoesPage() {
         date: new Date(data.date).toISOString(),
         categoryId: data.categoryId,
       },
-      { onSuccess: () => setEditingTx(null) }
+      { onSuccess: () => setEditingTx(null) },
     );
   };
 
@@ -117,7 +133,7 @@ export default function TransacoesPage() {
 
   const handleTagToggle = (tagId: string) => {
     setSelectedTagIds((prev) =>
-      prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]
+      prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId],
     );
   };
 
@@ -128,10 +144,7 @@ export default function TransacoesPage() {
     const toRemove = currentTagIds.filter((id) => !selectedTagIds.includes(id));
 
     if (toAdd.length > 0) {
-      linkTagsMutation.mutate(
-        { id: taggingTx.id, tagIds: toAdd },
-        { onSuccess: () => {} }
-      );
+      linkTagsMutation.mutate({ id: taggingTx.id, tagIds: toAdd }, { onSuccess: () => {} });
     }
 
     toRemove.forEach((tagId) => {
@@ -159,26 +172,66 @@ export default function TransacoesPage() {
   }
 
   const transactions = transactionsState.status === "success" ? transactionsState.data.data : [];
-  const totalPages = transactionsState.status === "success" ? transactionsState.data.pagination.totalPages : 1;
+  const totalPages =
+    transactionsState.status === "success" ? transactionsState.data.pagination.totalPages : 1;
   const categories = categoriesState.status === "success" ? categoriesState.data.data : [];
 
   return (
     <S.Wrapper>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: 8,
+        }}
+      >
         <Text as="h1" size="3xl" weight="bold" fontFamily="display">
           Transações
         </Text>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-          <Button variant="outline" size="sm" onClick={() => exportCsvMutation.mutate({ startDate: startDate || undefined, endDate: endDate || undefined, search: debouncedSearch || undefined })} loading={exportCsvMutation.isPending}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              exportCsvMutation.mutate({
+                startDate: startDate || undefined,
+                endDate: endDate || undefined,
+                search: debouncedSearch || undefined,
+              })
+            }
+            loading={exportCsvMutation.isPending}
+          >
             <HiOutlineDocumentArrowDown size={14} /> CSV
           </Button>
-          <Button variant="outline" size="sm" onClick={() => exportPdfMutation.mutate({ startDate: startDate || undefined, endDate: endDate || undefined })} loading={exportPdfMutation.isPending}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              exportPdfMutation.mutate({
+                startDate: startDate || undefined,
+                endDate: endDate || undefined,
+              })
+            }
+            loading={exportPdfMutation.isPending}
+          >
             <HiOutlineDocumentArrowDown size={14} /> PDF
           </Button>
-          <Button variant="outline" size="sm" onClick={() => exportTemplateMutation.mutate()} loading={exportTemplateMutation.isPending}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => exportTemplateMutation.mutate()}
+            loading={exportTemplateMutation.isPending}
+          >
             <HiOutlineDocumentText size={14} /> Template
           </Button>
-          <Button variant="outline" size="sm" onClick={() => importFileRef.current?.click()} loading={importCsvMutation.isPending}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => importFileRef.current?.click()}
+            loading={importCsvMutation.isPending}
+          >
             <HiOutlineDocumentArrowUp size={14} /> Importar
           </Button>
           <input
@@ -188,7 +241,12 @@ export default function TransacoesPage() {
             style={{ display: "none" }}
             onChange={(e) => {
               const file = e.target.files?.[0];
-              if (file) importCsvMutation.mutate(file, { onSettled: () => { if (importFileRef.current) importFileRef.current.value = ""; } });
+              if (file)
+                importCsvMutation.mutate(file, {
+                  onSettled: () => {
+                    if (importFileRef.current) importFileRef.current.value = "";
+                  },
+                });
             }}
           />
         </div>
@@ -205,11 +263,16 @@ export default function TransacoesPage() {
         <S.FormGroup>
           <S.Label>Pesquisar</S.Label>
           <S.SearchWrapper>
-            <S.SearchIcon><HiOutlineMagnifyingGlass size={16} /></S.SearchIcon>
+            <S.SearchIcon>
+              <HiOutlineMagnifyingGlass size={16} />
+            </S.SearchIcon>
             <Input
               placeholder="Buscar por descrição..."
               value={search}
-              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
               style={{ paddingLeft: "36px" }}
             />
           </S.SearchWrapper>
@@ -233,7 +296,10 @@ export default function TransacoesPage() {
           <Input
             type="date"
             value={startDate}
-            onChange={(e) => { setStartDate(e.target.value); setPage(1); }}
+            onChange={(e) => {
+              setStartDate(e.target.value);
+              setPage(1);
+            }}
           />
         </S.FormGroup>
         <S.FormGroup>
@@ -241,7 +307,10 @@ export default function TransacoesPage() {
           <Input
             type="date"
             value={endDate}
-            onChange={(e) => { setEndDate(e.target.value); setPage(1); }}
+            onChange={(e) => {
+              setEndDate(e.target.value);
+              setPage(1);
+            }}
           />
         </S.FormGroup>
       </S.FilterRow>
@@ -295,12 +364,13 @@ export default function TransacoesPage() {
                         {tx.type === "income" ? "Entrada" : "Saída"}
                       </S.TypeBadge>
                     </S.Td>
-                    <S.TdMono>
-                      {formatCurrency(fromCents(tx.amount))}
-                    </S.TdMono>
+                    <S.TdMono>{formatCurrency(fromCents(tx.amount))}</S.TdMono>
                     <S.Td>
                       <S.Actions>
-                        <S.IconButton onClick={() => handleManageTags(tx)} aria-label="Gerenciar tags">
+                        <S.IconButton
+                          onClick={() => handleManageTags(tx)}
+                          aria-label="Gerenciar tags"
+                        >
                           <HiOutlineTag size={16} />
                         </S.IconButton>
                         <S.IconButton onClick={() => handleEdit(tx)} aria-label="Editar">
@@ -321,23 +391,23 @@ export default function TransacoesPage() {
         </>
       )}
 
-      <Modal
-        open={!!editingTx}
-        onClose={() => setEditingTx(null)}
-        title="Editar Transação"
-      >
+      <Modal open={!!editingTx} onClose={() => setEditingTx(null)} title="Editar Transação">
         <TransactionForm
           categories={categories}
           onSubmit={handleUpdate}
           isLoading={updateMutation.isPending}
           submitLabel="Salvar"
-          initialData={editingTx ? {
-            description: editingTx.description,
-            amount: fromCents(editingTx.amount),
-            type: editingTx.type,
-            date: editingTx.date.split("T")[0],
-            categoryId: editingTx.categoryId.toString(),
-          } : undefined}
+          initialData={
+            editingTx
+              ? {
+                  description: editingTx.description,
+                  amount: fromCents(editingTx.amount),
+                  type: editingTx.type,
+                  date: editingTx.date.split("T")[0],
+                  categoryId: editingTx.categoryId.toString(),
+                }
+              : undefined
+          }
           onCancel={() => setEditingTx(null)}
         />
       </Modal>
@@ -391,7 +461,11 @@ export default function TransacoesPage() {
             <Button variant="outline" onClick={() => setTaggingTx(null)} type="button">
               Cancelar
             </Button>
-            <Button type="button" onClick={handleSaveTags} loading={linkTagsMutation.isPending || unlinkTagMutation.isPending}>
+            <Button
+              type="button"
+              onClick={handleSaveTags}
+              loading={linkTagsMutation.isPending || unlinkTagMutation.isPending}
+            >
               Salvar
             </Button>
           </S.ModalActions>

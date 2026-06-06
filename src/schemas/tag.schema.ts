@@ -4,7 +4,7 @@ export const tagSchema = z.object({
   id: z.union([z.string(), z.number()]).transform(String),
   name: z.string(),
   color: z.string().nullable().optional(),
-  userId: z.union([z.string(), z.number()]).nullable().optional().transform((v) => v !== null && v !== undefined ? String(v) : v),
+  userId: z.union([z.string(), z.number()]).nullable().optional().transform(String),
   createdAt: z.string(),
   updatedAt: z.string(),
 });

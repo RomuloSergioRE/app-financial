@@ -36,3 +36,10 @@ export const updateRecurringSchema = createRecurringSchema.partial().extend({
 });
 
 export type UpdateRecurringDTO = z.infer<typeof updateRecurringSchema>;
+
+export const executeRecurringResponseSchema = z.object({
+  transactionId: z.string(),
+  nextDate: z.string(),
+});
+
+export type ExecuteRecurringResponseDTO = z.infer<typeof executeRecurringResponseSchema>;

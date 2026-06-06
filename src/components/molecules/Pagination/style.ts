@@ -17,14 +17,13 @@ export const PageButton = styled.button<{ $active: boolean }>`
   border: 1px solid
     ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.border)};
   border-radius: ${({ theme }) => theme.borderRadius.md};
-  background: ${({ theme, $active }) =>
-    $active ? theme.colors.primary : "transparent"};
-  color: ${({ theme, $active }) =>
-    $active ? theme.colors.onPrimary : theme.colors.text};
+  background: ${({ theme, $active }) => ($active ? theme.colors.primary : "transparent")};
+  color: ${({ theme, $active }) => ($active ? theme.colors.onPrimary : theme.colors.text)};
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.sm};
   cursor: pointer;
-  transition: border-color ${({ theme }) => theme.transition.base},
+  transition:
+    border-color ${({ theme }) => theme.transition.base},
     background ${({ theme }) => theme.transition.base};
 
   &:hover {

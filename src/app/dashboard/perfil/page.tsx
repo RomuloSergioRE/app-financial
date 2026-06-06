@@ -40,7 +40,9 @@ export default function PerfilPage() {
   if (profileState.status === "loading") {
     return (
       <S.Wrapper>
-        <Text as="h1" size="3xl" weight="bold" fontFamily="display">Perfil</Text>
+        <Text as="h1" size="3xl" weight="bold" fontFamily="display">
+          Perfil
+        </Text>
         <Skeleton variant="rect" height="240px" />
         <Skeleton variant="rect" height="200px" />
       </S.Wrapper>
@@ -50,7 +52,9 @@ export default function PerfilPage() {
   if (profileState.status === "error") {
     return (
       <S.Wrapper>
-        <Text as="h1" size="3xl" weight="bold" fontFamily="display">Perfil</Text>
+        <Text as="h1" size="3xl" weight="bold" fontFamily="display">
+          Perfil
+        </Text>
         <Text color="danger">{profileState.error}</Text>
       </S.Wrapper>
     );
@@ -65,7 +69,7 @@ export default function PerfilPage() {
       {
         onSuccess: () => toast.success("Perfil atualizado com sucesso!"),
         onError: () => toast.error("Erro ao atualizar perfil."),
-      }
+      },
     );
   };
 
@@ -78,13 +82,15 @@ export default function PerfilPage() {
           passwordForm.reset();
         },
         onError: () => toast.error("Erro ao alterar senha."),
-      }
+      },
     );
   };
 
   return (
     <S.Wrapper>
-      <Text as="h1" size="3xl" weight="bold" fontFamily="display">Perfil</Text>
+      <Text as="h1" size="3xl" weight="bold" fontFamily="display">
+        Perfil
+      </Text>
 
       <S.Grid>
         <S.Section>
@@ -92,16 +98,28 @@ export default function PerfilPage() {
           <S.Form onSubmit={profileForm.handleSubmit(handleSaveProfile)}>
             <S.Field>
               <S.Label>Nome</S.Label>
-              <Input error={profileForm.formState.errors.name?.message} {...profileForm.register("name")} />
+              <Input
+                error={profileForm.formState.errors.name?.message}
+                {...profileForm.register("name")}
+              />
             </S.Field>
             <S.Field>
               <S.Label>Email</S.Label>
-              <Input error={profileForm.formState.errors.email?.message} {...profileForm.register("email")} />
+              <Input
+                error={profileForm.formState.errors.email?.message}
+                {...profileForm.register("email")}
+              />
             </S.Field>
             <S.FieldRow>
               <S.Field>
                 <S.Label>Função</S.Label>
-                <S.StaticValue>{profileUser.role === "admin" ? "Administrador" : profileUser.role === "company" ? "Empresa" : "Usuário"}</S.StaticValue>
+                <S.StaticValue>
+                  {profileUser.role === "admin"
+                    ? "Administrador"
+                    : profileUser.role === "company"
+                      ? "Empresa"
+                      : "Usuário"}
+                </S.StaticValue>
               </S.Field>
               <S.Field>
                 <S.Label>Membro desde</S.Label>

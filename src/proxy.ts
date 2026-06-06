@@ -19,8 +19,8 @@ export function proxy(request: NextRequest) {
   const token = request.cookies.get("jwt_token")?.value;
   const { pathname } = request.nextUrl;
 
-  const isProtected = protectedRoutes.some((route) =>
-    pathname === route || pathname.startsWith(route + "/")
+  const isProtected = protectedRoutes.some(
+    (route) => pathname === route || pathname.startsWith(route + "/"),
   );
 
   const isAuthRoute = authRoutes.includes(pathname);
@@ -33,8 +33,8 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  const isAdminRoute = adminRoutes.some((route) =>
-    pathname === route || pathname.startsWith(route + "/")
+  const isAdminRoute = adminRoutes.some(
+    (route) => pathname === route || pathname.startsWith(route + "/"),
   );
 
   if (isAdminRoute && token) {

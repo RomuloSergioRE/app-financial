@@ -47,7 +47,8 @@ export const CloseButton = styled.button`
   color: ${({ theme }) => theme.colors.textMuted};
   cursor: pointer;
   border-radius: ${({ theme }) => theme.borderRadius.sm};
-  transition: color ${({ theme }) => theme.transition.fast},
+  transition:
+    color ${({ theme }) => theme.transition.fast},
     background ${({ theme }) => theme.transition.fast};
 
   &:hover {

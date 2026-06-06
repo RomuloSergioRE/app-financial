@@ -11,7 +11,7 @@ export const budgetService = {
         ...(year && { year }),
       },
     });
-    return response.data.map((item: unknown) => validateResponse(budgetSchema, item));
+    return validateResponse(budgetSchema.array(), response.data);
   },
 
   getById: async (id: string): Promise<Budget> => {

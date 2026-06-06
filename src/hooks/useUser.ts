@@ -4,9 +4,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/components/molecules/Toast";
 import { mapAsyncState } from "@/lib/map-async-state";
 import type { AsyncState } from "@/types/async";
-import type { UserDTO } from "@/schemas/auth.schema";
+import type { User } from "@/types";
 
-export function useProfile(): AsyncState<UserDTO> {
+export function useProfile(): AsyncState<User> {
   const query = useQuery({
     queryKey: ["user", "profile"],
     queryFn: () => userService.getProfile(),
@@ -19,8 +19,7 @@ export function useUpdateProfile() {
   const { refreshUser } = useAuth();
 
   return useMutation({
-    mutationFn: (data: { name?: string; email?: string }) =>
-      userService.updateProfile(data),
+    mutationFn: (data: { name?: string; email?: string }) => userService.updateProfile(data),
     onSuccess: () => {
       toast.success("Perfil atualizado com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["user", "profile"] });

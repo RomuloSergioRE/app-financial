@@ -4,6 +4,11 @@ import {
   organizationSchema,
   orgMemberSchema,
   fiscalReportItemSchema,
+  selectOrgResponseSchema,
+  selectNoneResponseSchema,
+  invitedMemberSchema,
+  acceptInviteResponseSchema,
+  updateMemberRoleResponseSchema,
 } from "@/schemas/organization.schema";
 import type {
   Organization,
@@ -11,6 +16,11 @@ import type {
   UpdateOrganizationRequest,
   OrgMember,
   FiscalReportItem,
+  SelectOrgResponse,
+  SelectNoneResponse,
+  InvitedMember,
+  AcceptInviteResponse,
+  UpdateMemberRoleResponse,
 } from "@/types";
 
 export const organizationService = {
@@ -24,9 +34,9 @@ export const organizationService = {
     return validateResponse(organizationSchema, response.data);
   },
 
-  create: async (data: CreateOrganizationRequest): Promise<{ organization: Organization; token: string }> => {
+  create: async (data: CreateOrganizationRequest): Promise<SelectOrgResponse> => {
     const response = await api.post("/organizations", data);
-    return response.data;
+    return validateResponse(selectOrgResponseSchema, response.data);
   },
 
   update: async (id: string, data: UpdateOrganizationRequest): Promise<Organization> => {
@@ -38,14 +48,14 @@ export const organizationService = {
     await api.delete(`/organizations/${id}`);
   },
 
-  select: async (id: string): Promise<{ organization: Organization; token: string }> => {
+  select: async (id: string): Promise<SelectOrgResponse> => {
     const response = await api.patch(`/organizations/${id}/select`);
-    return response.data;
+    return validateResponse(selectOrgResponseSchema, response.data);
   },
 
-  selectNone: async (): Promise<{ token: string }> => {
+  selectNone: async (): Promise<SelectNoneResponse> => {
     const response = await api.patch("/organizations/select-none");
-    return response.data;
+    return validateResponse(selectNoneResponseSchema, response.data);
   },
 
   listMembers: async (orgId: string): Promise<OrgMember[]> => {
@@ -53,19 +63,25 @@ export const organizationService = {
     return validateResponse(orgMemberSchema.array(), response.data);
   },
 
-  inviteMember: async (orgId: string, email: string, role?: string): Promise<{ id: string; userId: string; role: string; status: string }> => {
+  inviteMember: async (orgId: string, email: string, role?: string): Promise<InvitedMember> => {
     const response = await api.post(`/organizations/${orgId}/members`, { email, role });
-    return response.data;
+    return validateResponse(invitedMemberSchema, response.data);
   },
 
-  acceptInvite: async (orgId: string): Promise<{ role: string; status: string }> => {
-    const response = await api.patch(`/organizations/${orgId}/accept`, { status: "active" as const });
-    return response.data;
+  acceptInvite: async (orgId: string): Promise<AcceptInviteResponse> => {
+    const response = await api.patch(`/organizations/${orgId}/accept`, {
+      status: "active" as const,
+    });
+    return validateResponse(acceptInviteResponseSchema, response.data);
   },
 
-  updateMemberRole: async (orgId: string, memberId: string, role: string): Promise<{ role: string }> => {
+  updateMemberRole: async (
+    orgId: string,
+    memberId: string,
+    role: string,
+  ): Promise<UpdateMemberRoleResponse> => {
     const response = await api.put(`/organizations/${orgId}/members/${memberId}/role`, { role });
-    return response.data;
+    return validateResponse(updateMemberRoleResponseSchema, response.data);
   },
 
   removeMember: async (orgId: string, memberId: string): Promise<void> => {

@@ -9,12 +9,7 @@ import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
 import { GoalForm } from "@/components/molecules/GoalForm";
 import { useCategories } from "@/hooks/useCategories";
-import {
-  useGoals,
-  useCreateGoal,
-  useUpdateGoal,
-  useDeleteGoal,
-} from "@/hooks/useGoals";
+import { useGoals, useCreateGoal, useUpdateGoal, useDeleteGoal } from "@/hooks/useGoals";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { fromCents, toCents } from "@/lib/currency";
 import type { Goal } from "@/types";
@@ -32,7 +27,12 @@ export default function MetasPage() {
 
   const categories = categoriesState.status === "success" ? categoriesState.data.data : [];
 
-  const handleCreate = (data: { name: string; targetAmount: number; categoryId?: string; deadline?: string }) => {
+  const handleCreate = (data: {
+    name: string;
+    targetAmount: number;
+    categoryId?: string;
+    deadline?: string;
+  }) => {
     createMutation.mutate(
       {
         name: data.name,
@@ -40,7 +40,7 @@ export default function MetasPage() {
         categoryId: data.categoryId || undefined,
         deadline: data.deadline || undefined,
       },
-      {}
+      {},
     );
   };
 
@@ -48,7 +48,12 @@ export default function MetasPage() {
     setEditingGoal(goal);
   };
 
-  const handleUpdate = (data: { name: string; targetAmount: number; categoryId?: string; deadline?: string }) => {
+  const handleUpdate = (data: {
+    name: string;
+    targetAmount: number;
+    categoryId?: string;
+    deadline?: string;
+  }) => {
     if (!editingGoal) return;
     updateMutation.mutate(
       {
@@ -57,7 +62,7 @@ export default function MetasPage() {
         categoryId: data.categoryId || undefined,
         deadline: data.deadline || undefined,
       },
-      { onSuccess: () => setEditingGoal(null) }
+      { onSuccess: () => setEditingGoal(null) },
     );
   };
 
@@ -138,24 +143,18 @@ export default function MetasPage() {
                   />
                 </S.ProgressBarWrapper>
                 <S.ProgressLabel $achieved={goal.achieved}>
-                  {goal.achieved
-                    ? "Meta alcançada! 🎉"
-                    : `${goal.progress}% concluído`}
+                  {goal.achieved ? "Meta alcançada! 🎉" : `${goal.progress}% concluído`}
                 </S.ProgressLabel>
               </S.ProgressSection>
 
               <S.GoalValues>
                 <S.ValueItem>
                   <S.ValueLabel>Atual</S.ValueLabel>
-                  <S.ValueAmount>
-                    {formatCurrency(fromCents(goal.currentAmount))}
-                  </S.ValueAmount>
+                  <S.ValueAmount>{formatCurrency(fromCents(goal.currentAmount))}</S.ValueAmount>
                 </S.ValueItem>
                 <S.ValueItem>
                   <S.ValueLabel>Alvo</S.ValueLabel>
-                  <S.ValueAmount>
-                    {formatCurrency(fromCents(goal.targetAmount))}
-                  </S.ValueAmount>
+                  <S.ValueAmount>{formatCurrency(fromCents(goal.targetAmount))}</S.ValueAmount>
                 </S.ValueItem>
                 {!goal.achieved && goal.targetAmount > goal.currentAmount && (
                   <S.ValueItem>
@@ -171,22 +170,22 @@ export default function MetasPage() {
         </S.List>
       )}
 
-      <Modal
-        open={!!editingGoal}
-        onClose={() => setEditingGoal(null)}
-        title="Editar Meta"
-      >
+      <Modal open={!!editingGoal} onClose={() => setEditingGoal(null)} title="Editar Meta">
         <GoalForm
           categories={categories}
           onSubmit={handleUpdate}
           isLoading={updateMutation.isPending}
           submitLabel="Salvar"
-          initialData={editingGoal ? {
-            name: editingGoal.name,
-            targetAmount: fromCents(editingGoal.targetAmount),
-            categoryId: editingGoal.categoryId ?? undefined,
-            deadline: editingGoal.deadline ? editingGoal.deadline.split("T")[0] : undefined,
-          } : undefined}
+          initialData={
+            editingGoal
+              ? {
+                  name: editingGoal.name,
+                  targetAmount: fromCents(editingGoal.targetAmount),
+                  categoryId: editingGoal.categoryId ?? undefined,
+                  deadline: editingGoal.deadline ? editingGoal.deadline.split("T")[0] : undefined,
+                }
+              : undefined
+          }
           onCancel={() => setEditingGoal(null)}
         />
       </Modal>
