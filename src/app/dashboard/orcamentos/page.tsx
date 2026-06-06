@@ -4,6 +4,7 @@ import { useState } from "react";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineCurrencyDollar } from "react-icons/hi2";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
+import { IconButton } from "@/components/atoms/IconButton";
 import { Select } from "@/components/molecules/Select";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
@@ -169,12 +170,12 @@ export default function OrcamentosPage() {
                   </S.MonthYear>
                 </S.BudgetInfo>
                 <S.Actions>
-                  <S.IconButton onClick={() => handleEdit(budget)} aria-label="Editar">
+                  <IconButton onClick={() => handleEdit(budget)} aria-label="Editar">
                     <HiOutlinePencil size={16} />
-                  </S.IconButton>
-                  <S.IconButton onClick={() => setDeletingBudget(budget)} aria-label="Excluir">
+                  </IconButton>
+                  <IconButton onClick={() => setDeletingBudget(budget)} aria-label="Excluir">
                     <HiOutlineTrash size={16} />
-                  </S.IconButton>
+                  </IconButton>
                 </S.Actions>
               </S.BudgetHeader>
 

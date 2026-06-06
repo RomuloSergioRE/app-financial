@@ -9,6 +9,7 @@ import {
 } from "react-icons/hi2";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
+import { IconButton } from "@/components/atoms/IconButton";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
@@ -164,20 +165,20 @@ export default function RegrasRecorrentesPage() {
                   </S.RuleMeta>
                 </S.RuleInfo>
                 <S.Actions>
-                  <S.IconButton
+                  <IconButton
                     onClick={() => handleExecute(rule.id)}
                     aria-label="Executar"
                     title="Executar manualmente"
                     disabled={!rule.active || executeMutation.isPending}
                   >
                     <HiOutlinePlay size={16} />
-                  </S.IconButton>
-                  <S.IconButton onClick={() => handleEdit(rule)} aria-label="Editar">
+                  </IconButton>
+                  <IconButton onClick={() => handleEdit(rule)} aria-label="Editar">
                     <HiOutlinePencil size={16} />
-                  </S.IconButton>
-                  <S.IconButton onClick={() => setDeletingRule(rule)} aria-label="Excluir">
+                  </IconButton>
+                  <IconButton onClick={() => setDeletingRule(rule)} aria-label="Excluir">
                     <HiOutlineTrash size={16} />
-                  </S.IconButton>
+                  </IconButton>
                 </S.Actions>
               </S.RuleHeader>
 

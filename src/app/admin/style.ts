@@ -122,29 +122,6 @@ export const RoleBadge = styled.span<{ $role: string }>`
         : theme.colors.textSecondary};
 `;
 
-export const IconButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  background: transparent;
-  color: ${({ theme }) => theme.colors.text};
-  cursor: pointer;
-  transition: border-color 0.15s;
-
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.primary};
-  }
-
-  &:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-`;
-
 export const List = styled.div`
   display: flex;
   flex-direction: column;

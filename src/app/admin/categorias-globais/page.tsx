@@ -5,6 +5,7 @@ import { HiOutlinePlus, HiOutlinePencil, HiOutlineTrash } from "react-icons/hi2"
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { Button } from "@/components/atoms/Button";
+import { IconButton } from "@/components/atoms/IconButton";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
@@ -132,12 +133,12 @@ export default function AdminCategoriasGlobaisPage() {
                   </Text>
                 </div>
                 <div style={{ display: "flex", gap: 4 }}>
-                  <S.IconButton onClick={() => handleEdit(cat)} title="Editar">
+                  <IconButton onClick={() => handleEdit(cat)} title="Editar" variant="ghost">
                     <HiOutlinePencil size={16} />
-                  </S.IconButton>
-                  <S.IconButton onClick={() => setDeletingCategory(cat)} title="Excluir">
+                  </IconButton>
+                  <IconButton onClick={() => setDeletingCategory(cat)} title="Excluir" variant="ghost">
                     <HiOutlineTrash size={16} />
-                  </S.IconButton>
+                  </IconButton>
                 </div>
               </S.Row>
             </S.Section>

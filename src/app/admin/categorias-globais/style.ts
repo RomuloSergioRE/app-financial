@@ -1,4 +1,4 @@
-export { Wrapper, Section, Row, IconButton, List, Input } from "../style";
+export { Wrapper, Section, Row, List, Input } from "../style";
 import styled from "styled-components";
 
 export const Form = styled.form`

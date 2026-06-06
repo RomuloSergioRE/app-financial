@@ -4,6 +4,7 @@ import { useState } from "react";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineTrophy } from "react-icons/hi2";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
+import { IconButton } from "@/components/atoms/IconButton";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
@@ -126,12 +127,12 @@ export default function MetasPage() {
                   </S.GoalMeta>
                 </S.GoalInfo>
                 <S.Actions>
-                  <S.IconButton onClick={() => handleEdit(goal)} aria-label="Editar">
+                  <IconButton onClick={() => handleEdit(goal)} aria-label="Editar">
                     <HiOutlinePencil size={16} />
-                  </S.IconButton>
-                  <S.IconButton onClick={() => setDeletingGoal(goal)} aria-label="Excluir">
+                  </IconButton>
+                  <IconButton onClick={() => setDeletingGoal(goal)} aria-label="Excluir">
                     <HiOutlineTrash size={16} />
-                  </S.IconButton>
+                  </IconButton>
                 </S.Actions>
               </S.GoalHeader>
 

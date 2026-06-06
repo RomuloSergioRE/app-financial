@@ -83,24 +83,4 @@ export const StatusBadge = styled.span<{ $status: string }>`
     $status === "active" ? theme.colors.tradingUp : theme.colors.tradingDown};
 `;
 
-export const IconButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  background: ${({ theme }) => theme.colors.surface};
-  color: ${({ theme }) => theme.colors.text};
-  cursor: pointer;
-  margin-left: 4px;
-  transition:
-    border-color 0.15s,
-    background 0.15s;
 
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) => theme.colors.background};
-  }
-`;

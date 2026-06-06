@@ -71,28 +71,6 @@ export const Actions = styled.div`
   align-items: center;
 `;
 
-export const IconButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 32px;
-  min-height: 32px;
-  padding: 4px;
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  background: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.onPrimary};
-  border: none;
-  cursor: pointer;
-  transition: background ${({ theme }) => theme.transition.fast};
-  &:hover {
-    background: ${({ theme }) => theme.colors.primaryDark};
-  }
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.info};
-    outline-offset: 2px;
-  }
-`;
-
 export const BudgetValues = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing.xl};

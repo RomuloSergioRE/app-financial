@@ -10,6 +10,7 @@ import {
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { Button } from "@/components/atoms/Button";
+import { IconButton } from "@/components/atoms/IconButton";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { Pagination } from "@/components/molecules/Pagination";
@@ -172,12 +173,12 @@ export default function AdminUsuariosPage() {
                   </S.Td>
                   <S.Td>{new Date(u.createdAt).toLocaleDateString("pt-BR")}</S.Td>
                   <S.Td>
-                    <S.IconButton onClick={() => setSelectedUserId(u.id)} title="Detalhes">
+                    <IconButton onClick={() => setSelectedUserId(u.id)} title="Detalhes" variant="ghost">
                       <HiOutlineEye size={16} />
-                    </S.IconButton>
-                    <S.IconButton onClick={() => setDeletingUserId(u.id)} title="Excluir">
+                    </IconButton>
+                    <IconButton onClick={() => setDeletingUserId(u.id)} title="Excluir" variant="ghost">
                       <HiOutlineTrash size={16} />
-                    </S.IconButton>
+                    </IconButton>
                   </S.Td>
                 </tr>
               ))}
