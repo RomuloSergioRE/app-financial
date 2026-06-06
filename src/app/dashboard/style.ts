@@ -3,12 +3,12 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.section};
+  gap: ${({ theme }) => theme.spacing.xl};
   max-width: 1280px;
   margin: 0 auto;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    gap: ${({ theme }) => theme.spacing.xl};
+  @media (min-width: 769px) {
+    gap: ${({ theme }) => theme.spacing.section};
   }
 `;
 
@@ -17,10 +17,10 @@ export const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.sm};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    gap: ${({ theme }) => theme.spacing.sm};
+  @media (min-width: 769px) {
+    gap: ${({ theme }) => theme.spacing.md};
   }
 `;
 

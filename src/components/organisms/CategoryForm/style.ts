@@ -12,11 +12,7 @@ export const FormField = styled.div`
   max-width: 280px;
 `;
 
-export const ModalForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
+export { ModalForm, ModalActions } from "@/components/molecules/Modal";
 
 export const FormGroup = styled.div`
   display: flex;
@@ -32,9 +28,4 @@ export const Label = styled.label`
   letter-spacing: 0.05em;
 `;
 
-export const ModalActions = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
-  justify-content: flex-end;
-  margin-top: ${({ theme }) => theme.spacing.sm};
-`;
+

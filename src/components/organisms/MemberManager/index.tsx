@@ -99,21 +99,21 @@ export function MemberManager({
             <tbody>
               {members.map((m) => (
                 <tr key={m.id}>
-                  <S.Td>{m.name}</S.Td>
-                  <S.Td>{m.email}</S.Td>
-                  <S.Td>
+                  <S.Td data-label="Nome">{m.name}</S.Td>
+                  <S.Td data-label="Email">{m.email}</S.Td>
+                  <S.Td data-label="Função">
                     <Select
                       value={m.role}
                       onChange={(v) => onUpdateRole(m.id, v)}
                       options={ROLE_OPTIONS}
                     />
                   </S.Td>
-                  <S.Td>
+                  <S.Td data-label="Status">
                     <S.StatusBadge $status={m.status}>
                       {m.status === "active" ? "Ativo" : "Pendente"}
                     </S.StatusBadge>
                   </S.Td>
-                  <S.Td>
+                  <S.Td data-label="Ações">
                     {m.status === "pending" && (
                       <Button
                         size="sm"

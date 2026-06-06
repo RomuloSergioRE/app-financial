@@ -137,9 +137,9 @@ export default function AdminUsuariosPage() {
             <tbody>
               {users.map((u) => (
                 <tr key={u.id}>
-                  <S.Td>{u.name}</S.Td>
-                  <S.Td>{u.email}</S.Td>
-                  <S.Td>
+                  <S.Td data-label="Nome">{u.name}</S.Td>
+                  <S.Td data-label="Email">{u.email}</S.Td>
+                  <S.Td data-label="Função">
                     <Select
                       value={u.role}
                       onChange={(v) =>
@@ -155,7 +155,7 @@ export default function AdminUsuariosPage() {
                       ]}
                     />
                   </S.Td>
-                  <S.Td>
+                  <S.Td data-label="Status">
                     <Select
                       value={u.status}
                       onChange={(v) =>
@@ -171,8 +171,8 @@ export default function AdminUsuariosPage() {
                       ]}
                     />
                   </S.Td>
-                  <S.Td>{new Date(u.createdAt).toLocaleDateString("pt-BR")}</S.Td>
-                  <S.Td>
+                  <S.Td data-label="Criado em">{new Date(u.createdAt).toLocaleDateString("pt-BR")}</S.Td>
+                  <S.Td data-label="Ações">
                     <IconButton onClick={() => setSelectedUserId(u.id)} title="Detalhes" variant="ghost">
                       <HiOutlineEye size={16} />
                     </IconButton>

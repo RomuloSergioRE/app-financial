@@ -14,7 +14,7 @@ export const Form = styled.div`
     display: flex;
     align-items: flex-end;
     gap: ${({ theme }) => theme.spacing.sm};
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
 
     & > * {
       flex: 1;
@@ -67,15 +67,4 @@ export const Label = styled.label`
   letter-spacing: 0.05em;
 `;
 
-export const ModalForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
-
-export const ModalActions = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
-  justify-content: flex-end;
-  margin-top: ${({ theme }) => theme.spacing.sm};
-`;
+export { ModalForm, ModalActions } from "@/components/molecules/Modal";

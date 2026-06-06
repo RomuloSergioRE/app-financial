@@ -1,10 +1,5 @@
 import styled from "styled-components";
-
-export const ModalForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
+export { ModalForm, ModalActions } from "@/components/molecules/Modal";
 
 export const TagGrid = styled.div`
   display: flex;
@@ -47,9 +42,4 @@ export const Divider = styled.hr`
   margin: ${({ theme }) => theme.spacing.md} 0;
 `;
 
-export const ModalActions = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
-  justify-content: flex-end;
-  margin-top: ${({ theme }) => theme.spacing.sm};
-`;
+

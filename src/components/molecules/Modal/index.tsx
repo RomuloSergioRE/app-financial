@@ -2,6 +2,8 @@ import { Button } from "@/components/atoms/Button";
 import type { ModalProps } from "./types";
 import * as S from "./style";
 
+export { ModalForm, ModalActions } from "./style";
+
 export function Modal({ open, onClose, title, children }: ModalProps) {
   if (!open) return null;
 
