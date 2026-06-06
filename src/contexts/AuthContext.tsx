@@ -7,6 +7,7 @@ import type { User, LoginRequest, RegisterRequest } from "@/types";
 interface AuthContextData {
   user: User | null;
   isAuthenticated: boolean;
+  initializing: boolean;
   login: (data: LoginRequest) => Promise<void>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => void;
@@ -62,6 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         isAuthenticated: !!user,
+        initializing,
         login,
         register,
         logout,

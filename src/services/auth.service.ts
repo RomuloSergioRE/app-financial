@@ -16,7 +16,7 @@ export const authService = {
 
   getProfile: async (): Promise<User> => {
     const response = await api.get("/auth/me");
-    return validateResponse(userSchema, response.data);
+    return validateResponse(userSchema, response.data.user ?? response.data);
   },
 
   logout: async (): Promise<void> => {
