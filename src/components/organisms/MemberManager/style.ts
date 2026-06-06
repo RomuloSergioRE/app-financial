@@ -1,4 +1,9 @@
 import styled from "styled-components";
+import { Table as BaseTable, Th, Td } from "@/components/atoms/Table";
+
+export const MemberTable = styled(BaseTable)``;
+
+export { Th, Td };
 
 export const Container = styled.div`
   display: flex;
@@ -10,6 +15,7 @@ export const List = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.sm};
+  overflow-x: auto;
 `;
 
 export const Form = styled.form`
@@ -43,33 +49,6 @@ export const Input = styled.input`
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
   }
-`;
-
-export const MemberTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-`;
-
-export const Th = styled.th`
-  text-align: left;
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
-  font-family: ${({ theme }) => theme.fonts.body};
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  white-space: nowrap;
-`;
-
-export const Td = styled.td`
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
-  font-family: ${({ theme }) => theme.fonts.body};
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme }) => theme.colors.text};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  vertical-align: middle;
 `;
 
 export const StatusBadge = styled.span<{ $status: string }>`

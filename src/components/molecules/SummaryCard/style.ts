@@ -30,7 +30,7 @@ export const Label = styled.span`
 
 export const Value = styled.span<{ $color: string }>`
   font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: ${({ theme }) => theme.fontSize["3xl"]};
+  font-size: clamp(1.25rem, 4vw, 2rem);
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ $color }) => $color};
   line-height: 1.2;

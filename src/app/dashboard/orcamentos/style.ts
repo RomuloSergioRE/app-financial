@@ -17,7 +17,6 @@ export const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
-  min-width: 160px;
 `;
 
 export const Label = styled.label`
@@ -129,15 +128,4 @@ export const PercentageLabel = styled.span<{ $overBudget?: boolean }>`
     $overBudget ? theme.fontWeight.medium : theme.fontWeight.normal};
 `;
 
-export const ModalForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
-
-export const ModalActions = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
-  justify-content: flex-end;
-  margin-top: ${({ theme }) => theme.spacing.sm};
-`;
+export { ModalForm, ModalActions } from "@/components/molecules/Modal";

@@ -30,4 +30,6 @@ export const Wrapper = styled.p<{
   line-height: ${({ $fontFamily }) => ($fontFamily === "display" ? 1.2 : 1.5)};
 
   text-align: ${({ $align }) => $align};
+  overflow-wrap: break-word;
+  word-break: break-word;
 `;

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+export { Table, Th, Td, TdMono } from "@/components/atoms/Table";
 
 /* Page styles */
 export const Wrapper = styled.div`
@@ -12,6 +13,7 @@ export const Section = styled.div`
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
+  overflow-x: auto;
 `;
 
 export const SectionTitle = styled.h2`
@@ -45,44 +47,11 @@ export const FiltersRow = styled.div`
   flex-wrap: wrap;
 `;
 
-export const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-`;
 
-export const Th = styled.th`
-  text-align: left;
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
-  font-family: ${({ theme }) => theme.fonts.body};
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  white-space: nowrap;
-`;
 
-export const Td = styled.td`
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
-  font-family: ${({ theme }) => theme.fonts.body};
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme }) => theme.colors.text};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  vertical-align: middle;
-`;
 
-export const TdMono = styled.td`
-  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
-  font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme }) => theme.colors.text};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  font-variant-numeric: tabular-nums;
-  vertical-align: middle;
-  white-space: nowrap;
-  text-align: left;
-`;
+
+
 
 export const StatusBadge = styled.span<{ $status: string }>`
   font-size: ${({ theme }) => theme.fontSize.xs};
@@ -136,8 +105,6 @@ export const Input = styled.input`
   color: ${({ theme }) => theme.colors.text};
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.sm};
-  min-width: 200px;
-
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};

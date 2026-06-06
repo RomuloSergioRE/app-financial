@@ -46,15 +46,15 @@ export function RecentTransactions({ transactions }: RecentTransactionsProps) {
           <tbody>
             {transactions.map((tx) => (
               <tr key={tx.id}>
-                <S.Td>{formatDate(tx.date)}</S.Td>
-                <S.Td>{tx.description}</S.Td>
-                <S.Td>{tx.category?.name ?? "-"}</S.Td>
-                <S.Td>
+                <S.Td data-label="Data">{formatDate(tx.date)}</S.Td>
+                <S.Td data-label="Descrição">{tx.description}</S.Td>
+                <S.Td data-label="Categoria">{tx.category?.name ?? "-"}</S.Td>
+                <S.Td data-label="Tipo">
                   <S.TypeBadge $type={tx.type}>
                     {tx.type === "income" ? "Entrada" : "Saída"}
                   </S.TypeBadge>
                 </S.Td>
-                <S.TdMono>{formatCurrency(fromCents(tx.amount))}</S.TdMono>
+                <S.TdMono data-label="Valor">{formatCurrency(fromCents(tx.amount))}</S.TdMono>
               </tr>
             ))}
           </tbody>

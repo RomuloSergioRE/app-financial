@@ -7,40 +7,40 @@ export const LayoutWrapper = styled.div`
 `;
 
 export const TopBar = styled.div`
-  display: none;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.md};
+  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+  background: ${({ theme }) => theme.colors.surface};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   position: sticky;
   top: 0;
   z-index: 15;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: flex;
-    align-items: center;
-    gap: ${({ theme }) => theme.spacing.md};
-    padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
-    background: ${({ theme }) => theme.colors.surface};
-    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  @media (min-width: 769px) {
+    display: none;
   }
 `;
 
 export const TopBarTitle = styled.span`
-  display: none;
+  display: block;
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: ${({ theme }) => theme.fontSize.lg};
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+  letter-spacing: -0.02em;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: block;
-    font-family: ${({ theme }) => theme.fonts.body};
-    font-size: ${({ theme }) => theme.fontSize.lg};
-    font-weight: 600;
-    color: ${({ theme }) => theme.colors.text};
-    letter-spacing: -0.02em;
+  @media (min-width: 769px) {
+    display: none;
   }
 `;
 
 export const HamburgerWrapper = styled.div`
-  display: none;
+  display: block;
+  pointer-events: none;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: block;
-    pointer-events: none;
+  @media (min-width: 769px) {
+    display: none;
   }
 `;
 
@@ -66,10 +66,10 @@ export const HamburgerButton = styled.button<{ $isOpen: boolean }>`
 
 export const Main = styled.main`
   flex: 1;
+  max-width: 1440px;
+  margin: 0 auto;
   padding: ${({ theme }) => theme.spacing.lg};
   padding-bottom: ${({ theme }) => theme.spacing.section};
-  overflow-x: hidden;
-
   @media (min-width: 769px) {
     padding: ${({ theme }) => theme.spacing.xl};
     padding-top: ${({ theme }) => theme.spacing.xl};

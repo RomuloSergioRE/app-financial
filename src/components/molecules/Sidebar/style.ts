@@ -2,35 +2,41 @@ import styled from "styled-components";
 import Link from "next/link";
 
 export const Overlay = styled.div<{ $isOpen: boolean }>`
-  display: none;
+  display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
+  position: fixed;
+  inset: 0;
+  background: ${({ theme }) => theme.colors.overlay};
+  z-index: 10;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
-    position: fixed;
-    inset: 0;
-    background: ${({ theme }) => theme.colors.overlay};
-    z-index: 10;
+  @media (min-width: 769px) {
+    display: none;
   }
 `;
 
 export const Wrapper = styled.aside<{ $isOpen: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 20;
   width: 100%;
   max-width: 220px;
-  min-height: 100vh;
   background: ${({ theme }) => theme.colors.surface};
   border-right: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  transition: transform ${({ theme }) => theme.transition.slow};
+  transform: ${({ $isOpen }) => ($isOpen ? "translateX(0)" : "translateX(-100%)")};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 20;
-    transition: transform ${({ theme }) => theme.transition.slow};
-    transform: ${({ $isOpen }) => ($isOpen ? "translateX(0)" : "translateX(-100%)")};
+  @media (min-width: 769px) {
+    position: static;
+    transform: none;
+    min-height: 100vh;
+
+    @media (max-width: 1024px) {
+      max-width: 180px;
+    }
   }
 `;
 
@@ -132,20 +138,20 @@ export const Header = styled.div`
 `;
 
 export const CloseButton = styled.button`
-  display: none;
+  display: flex;
+  min-width: 44px;
+  min-height: 44px;
+  margin-right: ${({ theme }) => theme.spacing.md};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  background: transparent;
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 1.125rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: flex;
-    min-width: 44px;
-    min-height: 44px;
-    margin-right: ${({ theme }) => theme.spacing.md};
-    border: 1px solid ${({ theme }) => theme.colors.border};
-    border-radius: ${({ theme }) => theme.borderRadius.md};
-    background: transparent;
-    color: ${({ theme }) => theme.colors.text};
-    font-size: 1.125rem;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
+  @media (min-width: 769px) {
+    display: none;
   }
 `;

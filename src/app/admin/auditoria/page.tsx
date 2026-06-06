@@ -102,11 +102,11 @@ export default function AdminAuditoriaPage() {
             <tbody>
               {logs.map((log) => (
                 <tr key={log.id}>
-                  <S.Td>{new Date(log.createdAt).toLocaleString("pt-BR")}</S.Td>
-                  <S.Td style={{ fontFamily: "monospace", fontSize: 12 }}>
+                  <S.Td data-label="Data">{new Date(log.createdAt).toLocaleString("pt-BR")}</S.Td>
+                  <S.Td data-label="Admin" style={{ fontFamily: "monospace", fontSize: 12 }}>
                     {log.adminId.slice(0, 8)}...
                   </S.Td>
-                  <S.Td>
+                  <S.Td data-label="Ação">
                     <S.RoleBadge
                       $role={
                         log.action === "delete"
@@ -119,11 +119,11 @@ export default function AdminAuditoriaPage() {
                       {log.action}
                     </S.RoleBadge>
                   </S.Td>
-                  <S.Td style={{ fontFamily: "monospace", fontSize: 12 }}>
+                  <S.Td data-label="Alvo" style={{ fontFamily: "monospace", fontSize: 12 }}>
                     {log.targetId.slice(0, 8)}...
                   </S.Td>
-                  <S.Td>{log.targetType}</S.Td>
-                  <S.Td>{log.details ?? "-"}</S.Td>
+                  <S.Td data-label="Tipo">{log.targetType}</S.Td>
+                  <S.Td data-label="Detalhes">{log.details ?? "-"}</S.Td>
                 </tr>
               ))}
             </tbody>

@@ -78,10 +78,10 @@ export function TransactionTable({
           <tbody>
             {transactions.map((tx) => (
               <tr key={tx.id}>
-                <S.Td>{formatDate(tx.date)}</S.Td>
-                <S.Td>{tx.description}</S.Td>
-                <S.Td>{tx.category?.name ?? "-"}</S.Td>
-                <S.Td>
+                <S.Td data-label="Data">{formatDate(tx.date)}</S.Td>
+                <S.Td data-label="Descrição">{tx.description}</S.Td>
+                <S.Td data-label="Categoria">{tx.category?.name ?? "-"}</S.Td>
+                <S.Td data-label="Tags">
                   {tx.tags && tx.tags.length > 0 ? (
                     <S.TagList>
                       {tx.tags.map((tag) => (
@@ -94,13 +94,13 @@ export function TransactionTable({
                     <S.TextMuted>—</S.TextMuted>
                   )}
                 </S.Td>
-                <S.Td>
+                <S.Td data-label="Tipo">
                   <S.TypeBadge $type={tx.type}>
                     {tx.type === "income" ? "Entrada" : "Saída"}
                   </S.TypeBadge>
                 </S.Td>
-                <S.TdMono>{formatCurrency(fromCents(tx.amount))}</S.TdMono>
-                <S.Td>
+                <S.TdMono data-label="Valor">{formatCurrency(fromCents(tx.amount))}</S.TdMono>
+                <S.Td data-label="Ações">
                   <S.Actions>
                     <IconButton onClick={() => onManageTags(tx)} aria-label="Gerenciar tags">
                       <HiOutlineTag size={16} />
