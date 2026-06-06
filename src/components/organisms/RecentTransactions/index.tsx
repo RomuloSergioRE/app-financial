@@ -28,7 +28,7 @@ export function RecentTransactions({ transactions }: RecentTransactionsProps) {
         <Text as="h2" size="lg" weight="semibold" fontFamily="display">
           Últimas Transações
         </Text>
-        <Link href="/dashboard/transacoes">
+        <Link href="/transacoes">
           <S.Link>Ver todas</S.Link>
         </Link>
       </S.Header>

@@ -71,7 +71,7 @@ export const MonthlySeriesChart = memo(function MonthlySeriesChart({
     <S.Wrapper>
       <S.Title>Evolução Mensal</S.Title>
       <S.ChartContainer>
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height={300}>
           <RechartsBarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke={theme.colors.border} />
             <XAxis
