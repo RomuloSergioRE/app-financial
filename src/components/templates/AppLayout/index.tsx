@@ -14,15 +14,15 @@ interface AppLayoutProps {
 }
 
 export function AppLayout({ children, navItems }: AppLayoutProps) {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, initializing, logout } = useAuth();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!initializing && !isAuthenticated) {
       router.replace("/login");
     }
-  }, [isAuthenticated, router]);
+  }, [initializing, isAuthenticated, router]);
 
   const handleLogout = useCallback(() => {
     logout();
