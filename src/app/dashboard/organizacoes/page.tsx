@@ -1,30 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import {
-  HiOutlinePlus,
-  HiOutlinePencil,
-  HiOutlineTrash,
-  HiOutlineCheck,
-  HiOutlineXMark,
-  HiOutlineBuildingOffice2,
-  HiOutlineUserGroup,
-  HiOutlineDocumentText,
-} from "react-icons/hi2";
+import { HiOutlinePlus } from "react-icons/hi2";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { Button } from "@/components/atoms/Button";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
-import { EmptyState } from "@/components/molecules/EmptyState";
 import { Select } from "@/components/molecules/Select";
+import { OrganizationList } from "@/components/organisms/OrganizationList";
+import { MemberManager } from "@/components/organisms/MemberManager";
 import {
   useOrganizations,
   useCreateOrganization,
   useUpdateOrganization,
   useDeleteOrganization,
   useSelectOrganization,
-  useSelectNoneOrganization,
   useOrgMembers,
   useInviteMember,
   useAcceptInvite,
@@ -43,9 +34,6 @@ export default function OrganizacoesPage() {
   const [editName, setEditName] = useState("");
 
   const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null);
-  const [inviteEmail, setInviteEmail] = useState("");
-  const [inviteRole, setInviteRole] = useState("viewer");
-
   const [showFiscal, setShowFiscal] = useState(false);
   const [fiscalYear, setFiscalYear] = useState(new Date().getFullYear());
 
@@ -54,7 +42,6 @@ export default function OrganizacoesPage() {
   const updateMutation = useUpdateOrganization(editingOrg?.id ?? "");
   const deleteMutation = useDeleteOrganization();
   const selectMutation = useSelectOrganization();
-  const selectNoneMutation = useSelectNoneOrganization();
 
   const membersState = useOrgMembers(selectedOrgId ?? "");
   const inviteMutation = useInviteMember(selectedOrgId ?? "");
@@ -80,11 +67,6 @@ export default function OrganizacoesPage() {
     );
   };
 
-  const handleEdit = (org: Organization) => {
-    setEditingOrg(org);
-    setEditName(org.name);
-  };
-
   const handleUpdate = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingOrg || !editName.trim()) return;
@@ -103,6 +85,12 @@ export default function OrganizacoesPage() {
     });
   };
 
+  const handleInvite = (email: string, role: string) => {
+    inviteMutation.mutate({ email, role });
+  };
+
+  const members = membersState.status === "success" ? membersState.data : [];
+
   return (
     <S.Wrapper>
       <Text as="h1" size="3xl" weight="bold" fontFamily="display">
@@ -120,62 +108,21 @@ export default function OrganizacoesPage() {
         </S.Row>
       </S.Section>
 
-      {orgsState.status === "loading" ? (
-        <S.List>
-          <Skeleton variant="rect" height="64px" />
-          <Skeleton variant="rect" height="64px" />
-        </S.List>
-      ) : orgs.length === 0 ? (
-        <EmptyState
-          icon={<HiOutlineBuildingOffice2 />}
-          title="Nenhuma organização"
-          description="Crie ou participe de uma organização para gerenciar finanças em equipe."
-        />
-      ) : (
-        <S.List>
-          {orgs.map((org) => (
-            <S.OrgCard key={org.id}>
-              <S.OrgInfo>
-                <S.OrgName>{org.name}</S.OrgName>
-                <S.OrgMeta>
-                  {org.memberCount} membro(s) · {org.role}
-                </S.OrgMeta>
-              </S.OrgInfo>
-              <S.Actions>
-                <S.IconButton
-                  onClick={() => selectMutation.mutate(org.id)}
-                  title="Selecionar organização"
-                >
-                  <HiOutlineCheck size={16} />
-                </S.IconButton>
-                <S.IconButton
-                  onClick={() => {
-                    setSelectedOrgId(org.id);
-                  }}
-                  title="Membros"
-                >
-                  <HiOutlineUserGroup size={16} />
-                </S.IconButton>
-                <S.IconButton
-                  onClick={() => {
-                    setSelectedOrgId(org.id);
-                    setShowFiscal(true);
-                  }}
-                  title="Relatório fiscal"
-                >
-                  <HiOutlineDocumentText size={16} />
-                </S.IconButton>
-                <S.IconButton onClick={() => handleEdit(org)} title="Editar">
-                  <HiOutlinePencil size={16} />
-                </S.IconButton>
-                <S.IconButton onClick={() => setDeletingOrg(org)} title="Excluir">
-                  <HiOutlineTrash size={16} />
-                </S.IconButton>
-              </S.Actions>
-            </S.OrgCard>
-          ))}
-        </S.List>
-      )}
+      <OrganizationList
+        organizations={orgs}
+        status={orgsState.status}
+        onSelect={(id) => selectMutation.mutate(id)}
+        onManageMembers={(id) => setSelectedOrgId(id)}
+        onFiscalReport={(id) => {
+          setSelectedOrgId(id);
+          setShowFiscal(true);
+        }}
+        onEdit={(org) => {
+          setEditingOrg(org);
+          setEditName(org.name);
+        }}
+        onDelete={setDeletingOrg}
+      />
 
       <Modal open={showCreate} onClose={() => setShowCreate(false)} title="Criar Organização">
         <S.Form onSubmit={handleCreate}>
@@ -218,109 +165,20 @@ export default function OrganizacoesPage() {
 
       <Modal
         open={!!selectedOrgId && !showFiscal}
-        onClose={() => {
-          setSelectedOrgId(null);
-          setInviteEmail("");
-        }}
+        onClose={() => setSelectedOrgId(null)}
         title="Membros"
       >
-        <S.Form
-          onSubmit={(e) => {
-            e.preventDefault();
-            inviteMutation.mutate(
-              { email: inviteEmail, role: inviteRole },
-              { onSuccess: () => setInviteEmail("") },
-            );
-          }}
-        >
-          <Text as="h3" size="sm" weight="semibold">
-            Convidar Membro
-          </Text>
-          <S.Field>
-            <S.Label>Email</S.Label>
-            <S.Input
-              type="email"
-              value={inviteEmail}
-              onChange={(e) => setInviteEmail(e.target.value)}
-              placeholder="email@exemplo.com"
-            />
-          </S.Field>
-          <S.Field>
-            <S.Label>Função</S.Label>
-            <Select
-              value={inviteRole}
-              onChange={(v) => setInviteRole(v)}
-              options={[
-                { value: "viewer", label: "Visualizador" },
-                { value: "finance", label: "Financeiro" },
-                { value: "admin", label: "Admin" },
-              ]}
-            />
-          </S.Field>
-          <Button type="submit" loading={inviteMutation.isPending}>
-            Convidar
-          </Button>
-        </S.Form>
-
-        {membersState.status === "loading" ? (
-          <Skeleton variant="rect" height="100px" />
-        ) : membersState.status === "success" ? (
-          <S.List style={{ marginTop: 16 }}>
-            <S.MemberTable>
-              <thead>
-                <tr>
-                  <S.Th>Nome</S.Th>
-                  <S.Th>Email</S.Th>
-                  <S.Th>Função</S.Th>
-                  <S.Th>Status</S.Th>
-                  <S.Th>Ações</S.Th>
-                </tr>
-              </thead>
-              <tbody>
-                {membersState.data.map((m) => (
-                  <tr key={m.id}>
-                    <S.Td>{m.name}</S.Td>
-                    <S.Td>{m.email}</S.Td>
-                    <S.Td>
-                      <Select
-                        value={m.role}
-                        onChange={(v) => updateRoleMutation.mutate({ memberId: m.id, role: v })}
-                        options={[
-                          { value: "viewer", label: "Visualizador" },
-                          { value: "finance", label: "Financeiro" },
-                          { value: "admin", label: "Admin" },
-                        ]}
-                      />
-                    </S.Td>
-                    <S.Td>
-                      <S.StatusBadge $status={m.status}>
-                        {m.status === "active" ? "Ativo" : "Pendente"}
-                      </S.StatusBadge>
-                    </S.Td>
-                    <S.Td>
-                      {m.status === "pending" && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => acceptMutation.mutate()}
-                          loading={acceptMutation.isPending}
-                        >
-                          Aceitar
-                        </Button>
-                      )}
-                      <S.IconButton
-                        onClick={() => removeMemberMutation.mutate(m.userId)}
-                        title="Remover"
-                      >
-                        <HiOutlineXMark size={16} />
-                      </S.IconButton>
-                    </S.Td>
-                  </tr>
-                ))}
-              </tbody>
-            </S.MemberTable>
-          </S.List>
-        ) : null}
+        <MemberManager
+          open
+          members={members}
+          status={membersState.status}
+          inviteIsLoading={inviteMutation.isPending}
+          acceptIsLoading={acceptMutation.isPending}
+          onInvite={handleInvite}
+          onAccept={() => acceptMutation.mutate()}
+          onUpdateRole={(memberId, role) => updateRoleMutation.mutate({ memberId, role })}
+          onRemove={(userId) => removeMemberMutation.mutate(userId)}
+        />
       </Modal>
 
       <Modal

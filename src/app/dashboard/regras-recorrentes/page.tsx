@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/atoms/Skeleton";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
-import { RecurringForm } from "@/components/molecules/RecurringForm";
+import { RecurringForm } from "@/components/organisms/RecurringForm";
 import { useCategories } from "@/hooks/useCategories";
 import {
   useRecurring,

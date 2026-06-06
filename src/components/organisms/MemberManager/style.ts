@@ -1,24 +1,15 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
+export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.lg};
-`;
-
-export const Section = styled.div`
-  padding: ${({ theme }) => theme.spacing.xl};
-  background: ${({ theme }) => theme.colors.surface};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-`;
-
-export const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   gap: ${({ theme }) => theme.spacing.md};
-  flex-wrap: wrap;
+`;
+
+export const List = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 export const Form = styled.form`
@@ -54,12 +45,6 @@ export const Input = styled.input`
   }
 `;
 
-export const List = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.sm};
-`;
-
 export const MemberTable = styled.table`
   width: 100%;
   border-collapse: collapse;
@@ -85,4 +70,37 @@ export const Td = styled.td`
   color: ${({ theme }) => theme.colors.text};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   vertical-align: middle;
+`;
+
+export const StatusBadge = styled.span<{ $status: string }>`
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  padding: 2px 6px;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  background: ${({ theme, $status }) =>
+    $status === "active" ? `${theme.colors.tradingUp}1A` : `${theme.colors.tradingDown}1A`};
+  color: ${({ theme, $status }) =>
+    $status === "active" ? theme.colors.tradingUp : theme.colors.tradingDown};
+`;
+
+export const IconButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  background: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text};
+  cursor: pointer;
+  margin-left: 4px;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.background};
+  }
 `;

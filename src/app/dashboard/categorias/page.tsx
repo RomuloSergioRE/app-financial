@@ -14,7 +14,7 @@ import { Button } from "@/components/atoms/Button";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
-import { CategoryForm } from "@/components/molecules/CategoryForm";
+import { CategoryForm } from "@/components/organisms/CategoryForm";
 import {
   useCategories,
   useCreateCategory,

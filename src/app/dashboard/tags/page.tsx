@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/atoms/Skeleton";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
-import { TagForm } from "@/components/molecules/TagForm";
+import { TagForm } from "@/components/organisms/TagForm";
 import { useTags, useCreateTag, useUpdateTag, useDeleteTag } from "@/hooks/useTags";
 import type { Tag } from "@/types";
 import * as S from "./style";
