@@ -136,8 +136,8 @@ export const CloseButton = styled.button`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: flex;
-    min-width: 36px;
-    min-height: 36px;
+    min-width: 44px;
+    min-height: 44px;
     margin-right: ${({ theme }) => theme.spacing.md};
     border: 1px solid ${({ theme }) => theme.colors.border};
     border-radius: ${({ theme }) => theme.borderRadius.md};

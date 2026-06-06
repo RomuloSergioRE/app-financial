@@ -4,6 +4,7 @@ import { useState } from "react";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineTag } from "react-icons/hi2";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
+import { IconButton } from "@/components/atoms/IconButton";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
@@ -83,12 +84,12 @@ export default function TagsPage() {
             <S.Item key={tag.id}>
               <S.TagBadge $color={tag.color ?? undefined}>{tag.name}</S.TagBadge>
               <S.Actions>
-                <S.IconButton onClick={() => handleEdit(tag)} aria-label="Editar">
+                <IconButton onClick={() => handleEdit(tag)} aria-label="Editar">
                   <HiOutlinePencil size={16} />
-                </S.IconButton>
-                <S.IconButton onClick={() => setDeletingTag(tag)} aria-label="Excluir">
+                </IconButton>
+                <IconButton onClick={() => setDeletingTag(tag)} aria-label="Excluir">
                   <HiOutlineTrash size={16} />
-                </S.IconButton>
+                </IconButton>
               </S.Actions>
             </S.Item>
           ))}

@@ -9,6 +9,7 @@ import {
   HiOutlineTrash,
 } from "react-icons/hi2";
 import { Skeleton } from "@/components/atoms/Skeleton";
+import { IconButton } from "@/components/atoms/IconButton";
 import { EmptyState } from "@/components/molecules/EmptyState";
 import type { Organization } from "@/types";
 import * as S from "./style";
@@ -62,21 +63,21 @@ export function OrganizationList({
             </S.OrgMeta>
           </S.OrgInfo>
           <S.Actions>
-            <S.IconButton onClick={() => onSelect(org.id)} title="Selecionar organização">
+            <IconButton onClick={() => onSelect(org.id)} title="Selecionar organização" variant="outline">
               <HiOutlineCheck size={16} />
-            </S.IconButton>
-            <S.IconButton onClick={() => onManageMembers(org.id)} title="Membros">
+            </IconButton>
+            <IconButton onClick={() => onManageMembers(org.id)} title="Membros" variant="outline">
               <HiOutlineUserGroup size={16} />
-            </S.IconButton>
-            <S.IconButton onClick={() => onFiscalReport(org.id)} title="Relatório fiscal">
+            </IconButton>
+            <IconButton onClick={() => onFiscalReport(org.id)} title="Relatório fiscal" variant="outline">
               <HiOutlineDocumentText size={16} />
-            </S.IconButton>
-            <S.IconButton onClick={() => onEdit(org)} title="Editar">
+            </IconButton>
+            <IconButton onClick={() => onEdit(org)} title="Editar" variant="outline">
               <HiOutlinePencil size={16} />
-            </S.IconButton>
-            <S.IconButton onClick={() => onDelete(org)} title="Excluir">
+            </IconButton>
+            <IconButton onClick={() => onDelete(org)} title="Excluir" variant="outline">
               <HiOutlineTrash size={16} />
-            </S.IconButton>
+            </IconButton>
           </S.Actions>
         </S.OrgCard>
       ))}

@@ -7,6 +7,7 @@ import {
   HiOutlinePlusCircle,
 } from "react-icons/hi2";
 import { Skeleton } from "@/components/atoms/Skeleton";
+import { IconButton } from "@/components/atoms/IconButton";
 import { EmptyState } from "@/components/molecules/EmptyState";
 import { Pagination } from "@/components/molecules/Pagination";
 import { formatCurrency, formatDate } from "@/lib/format";
@@ -101,15 +102,15 @@ export function TransactionTable({
                 <S.TdMono>{formatCurrency(fromCents(tx.amount))}</S.TdMono>
                 <S.Td>
                   <S.Actions>
-                    <S.IconButton onClick={() => onManageTags(tx)} aria-label="Gerenciar tags">
+                    <IconButton onClick={() => onManageTags(tx)} aria-label="Gerenciar tags">
                       <HiOutlineTag size={16} />
-                    </S.IconButton>
-                    <S.IconButton onClick={() => onEdit(tx)} aria-label="Editar">
+                    </IconButton>
+                    <IconButton onClick={() => onEdit(tx)} aria-label="Editar">
                       <HiOutlinePencil size={16} />
-                    </S.IconButton>
-                    <S.IconButton onClick={() => onDelete(tx)} aria-label="Excluir">
+                    </IconButton>
+                    <IconButton onClick={() => onDelete(tx)} aria-label="Excluir">
                       <HiOutlineTrash size={16} />
-                    </S.IconButton>
+                    </IconButton>
                   </S.Actions>
                 </S.Td>
               </tr>

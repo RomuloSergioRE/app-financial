@@ -11,6 +11,7 @@ import {
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { Button } from "@/components/atoms/Button";
+import { IconButton } from "@/components/atoms/IconButton";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
@@ -157,12 +158,12 @@ export default function CategoriasPage() {
             <S.Item key={cat.id}>
               <S.CategoryBadge $color={cat.color ?? undefined}>{cat.name}</S.CategoryBadge>
               <S.Actions>
-                <S.IconButton onClick={() => handleEdit(cat)} aria-label="Editar">
+                <IconButton onClick={() => handleEdit(cat)} aria-label="Editar">
                   <HiOutlinePencil size={16} />
-                </S.IconButton>
-                <S.IconButton onClick={() => setDeletingCategory(cat)} aria-label="Excluir">
+                </IconButton>
+                <IconButton onClick={() => setDeletingCategory(cat)} aria-label="Excluir">
                   <HiOutlineTrash size={16} />
-                </S.IconButton>
+                </IconButton>
               </S.Actions>
             </S.Item>
           ))}

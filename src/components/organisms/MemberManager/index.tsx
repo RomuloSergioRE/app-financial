@@ -4,6 +4,7 @@ import { HiOutlineXMark } from "react-icons/hi2";
 import { useState } from "react";
 import { Text } from "@/components/atoms/Text";
 import { Button } from "@/components/atoms/Button";
+import { IconButton } from "@/components/atoms/IconButton";
 import { Select } from "@/components/molecules/Select";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import * as S from "./style";
@@ -123,9 +124,9 @@ export function MemberManager({
                         Aceitar
                       </Button>
                     )}
-                    <S.IconButton onClick={() => onRemove(m.userId)} title="Remover">
+                    <IconButton onClick={() => onRemove(m.userId)} title="Remover" variant="outline">
                       <HiOutlineXMark size={16} />
-                    </S.IconButton>
+                    </IconButton>
                   </S.Td>
                 </tr>
               ))}

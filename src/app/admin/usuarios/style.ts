@@ -9,7 +9,6 @@ export {
   TdMono,
   StatusBadge,
   RoleBadge,
-  IconButton,
   List,
   Input,
   StatCard,
