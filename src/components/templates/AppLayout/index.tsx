@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, type ReactNode } from "react";
+import { useState, useCallback, useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/molecules/Sidebar";
 import { useAuth } from "@/contexts/AuthContext";
@@ -14,9 +14,15 @@ interface AppLayoutProps {
 }
 
 export function AppLayout({ children, navItems }: AppLayoutProps) {
-  const { logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.replace("/login");
+    }
+  }, [isAuthenticated, router]);
 
   const handleLogout = useCallback(() => {
     logout();
