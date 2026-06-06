@@ -16,6 +16,7 @@ interface TransactionFormProps {
   isLoading?: boolean;
   submitLabel?: string;
   initialData?: Partial<CreateTransactionDTO>;
+  variant: "inline" | "modal";
   onCancel?: () => void;
 }
 
@@ -25,6 +26,7 @@ export function TransactionForm({
   isLoading = false,
   submitLabel = "Salvar",
   initialData,
+  variant,
   onCancel,
 }: TransactionFormProps) {
   const {
@@ -45,7 +47,7 @@ export function TransactionForm({
     },
   });
 
-  const isModal = !!onCancel;
+  const isModal = variant === "modal";
 
   const fields = (
     <>

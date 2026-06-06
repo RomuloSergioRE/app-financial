@@ -2,25 +2,18 @@
 
 import { useState, useRef } from "react";
 import {
-  HiOutlinePencil,
-  HiOutlineTrash,
-  HiOutlinePlusCircle,
-  HiOutlineMagnifyingGlass,
-  HiOutlineTag,
   HiOutlineDocumentArrowDown,
   HiOutlineDocumentArrowUp,
   HiOutlineDocumentText,
 } from "react-icons/hi2";
-import { Select } from "@/components/molecules/Select";
-import { Input } from "@/components/atoms/Input";
 import { Button } from "@/components/atoms/Button";
 import { Text } from "@/components/atoms/Text";
-import { Skeleton } from "@/components/atoms/Skeleton";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
-import { EmptyState } from "@/components/molecules/EmptyState";
-import { Pagination } from "@/components/molecules/Pagination";
-import { TransactionForm } from "@/components/molecules/TransactionForm";
+import { TransactionForm } from "@/components/organisms/TransactionForm";
+import { TransactionFilters } from "@/components/organisms/TransactionFilters";
+import { TransactionTable } from "@/components/organisms/TransactionTable";
+import { TagManager } from "@/components/organisms/TagManager";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useCategories } from "@/hooks/useCategories";
 import { useTags, useCreateTag } from "@/hooks/useTags";
@@ -36,8 +29,6 @@ import {
   useExportTransactionsTemplate,
   useImportTransactionsCsv,
 } from "@/hooks/useTransactions";
-import { TagForm } from "@/components/molecules/TagForm";
-import { formatCurrency, formatDate } from "@/lib/format";
 import { fromCents, toCents } from "@/lib/currency";
 import type { Transaction } from "@/types";
 import type { CreateTagDTO } from "@/schemas/tag.schema";
@@ -95,10 +86,6 @@ export default function TransacoesPage() {
     );
   };
 
-  const handleEdit = (tx: Transaction) => {
-    setEditingTx(tx);
-  };
-
   const handleUpdate = (data: {
     description: string;
     amount: number;
@@ -144,7 +131,7 @@ export default function TransacoesPage() {
     const toRemove = currentTagIds.filter((id) => !selectedTagIds.includes(id));
 
     if (toAdd.length > 0) {
-      linkTagsMutation.mutate({ id: taggingTx.id, tagIds: toAdd }, { onSuccess: () => {} });
+      linkTagsMutation.mutate({ id: taggingTx.id, tagIds: toAdd });
     }
 
     toRemove.forEach((tagId) => {
@@ -155,26 +142,15 @@ export default function TransacoesPage() {
   };
 
   const handleCreateTagInline = (data: CreateTagDTO) => {
-    createTagMutation.mutate(data, {
-      onSuccess: () => {},
-    });
+    createTagMutation.mutate(data);
   };
-
-  if (transactionsState.status === "error") {
-    return (
-      <S.Wrapper>
-        <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-          Transações
-        </Text>
-        <Text color="danger">Erro ao carregar transações: {transactionsState.error}</Text>
-      </S.Wrapper>
-    );
-  }
 
   const transactions = transactionsState.status === "success" ? transactionsState.data.data : [];
   const totalPages =
     transactionsState.status === "success" ? transactionsState.data.pagination.totalPages : 1;
   const categories = categoriesState.status === "success" ? categoriesState.data.data : [];
+
+  const tags = tagsState.status === "success" ? tagsState.data : [];
 
   return (
     <S.Wrapper>
@@ -257,139 +233,44 @@ export default function TransacoesPage() {
         onSubmit={handleCreate}
         isLoading={createMutation.isPending}
         submitLabel="Adicionar"
+        variant="inline"
       />
 
-      <S.FilterRow>
-        <S.FormGroup>
-          <S.Label>Pesquisar</S.Label>
-          <S.SearchWrapper>
-            <S.SearchIcon>
-              <HiOutlineMagnifyingGlass size={16} />
-            </S.SearchIcon>
-            <Input
-              placeholder="Buscar por descrição..."
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                setPage(1);
-              }}
-              style={{ paddingLeft: "36px" }}
-            />
-          </S.SearchWrapper>
-        </S.FormGroup>
-        <S.FormGroup>
-          <S.Label>Filtrar por Categoria</S.Label>
-          <Select
-            value={categoryFilter}
-            onChange={(v) => {
-              setCategoryFilter(v);
-              setPage(1);
-            }}
-            options={[
-              { value: "", label: "Todas" },
-              ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
-            ]}
-          />
-        </S.FormGroup>
-        <S.FormGroup>
-          <S.Label>Data Início</S.Label>
-          <Input
-            type="date"
-            value={startDate}
-            onChange={(e) => {
-              setStartDate(e.target.value);
-              setPage(1);
-            }}
-          />
-        </S.FormGroup>
-        <S.FormGroup>
-          <S.Label>Data Fim</S.Label>
-          <Input
-            type="date"
-            value={endDate}
-            onChange={(e) => {
-              setEndDate(e.target.value);
-              setPage(1);
-            }}
-          />
-        </S.FormGroup>
-      </S.FilterRow>
+      <TransactionFilters
+        search={search}
+        categoryFilter={categoryFilter}
+        startDate={startDate}
+        endDate={endDate}
+        categories={categories}
+        onSearchChange={(v) => {
+          setSearch(v);
+          setPage(1);
+        }}
+        onCategoryChange={(v) => {
+          setCategoryFilter(v);
+          setPage(1);
+        }}
+        onStartDateChange={(v) => {
+          setStartDate(v);
+          setPage(1);
+        }}
+        onEndDateChange={(v) => {
+          setEndDate(v);
+          setPage(1);
+        }}
+      />
 
-      {transactionsState.status === "loading" ? (
-        <S.TableWrapper>
-          <Skeleton variant="rect" height="240px" />
-        </S.TableWrapper>
-      ) : transactions.length === 0 ? (
-        <EmptyState
-          icon={<HiOutlinePlusCircle />}
-          title="Nenhuma transação"
-          description="Crie sua primeira transação usando o formulário acima."
-        />
-      ) : (
-        <>
-          <S.TableWrapper>
-            <S.Table>
-              <thead>
-                <tr>
-                  <S.Th>Data</S.Th>
-                  <S.Th>Descrição</S.Th>
-                  <S.Th>Categoria</S.Th>
-                  <S.Th>Tags</S.Th>
-                  <S.Th>Tipo</S.Th>
-                  <S.Th>Valor</S.Th>
-                  <S.Th></S.Th>
-                </tr>
-              </thead>
-              <tbody>
-                {transactions.map((tx) => (
-                  <tr key={tx.id}>
-                    <S.Td>{formatDate(tx.date)}</S.Td>
-                    <S.Td>{tx.description}</S.Td>
-                    <S.Td>{tx.category?.name ?? "-"}</S.Td>
-                    <S.Td>
-                      {tx.tags && tx.tags.length > 0 ? (
-                        <S.TagList>
-                          {tx.tags.map((tag) => (
-                            <S.TagPill key={tag.id} $color={tag.color ?? undefined}>
-                              {tag.name}
-                            </S.TagPill>
-                          ))}
-                        </S.TagList>
-                      ) : (
-                        <S.TextMuted>—</S.TextMuted>
-                      )}
-                    </S.Td>
-                    <S.Td>
-                      <S.TypeBadge $type={tx.type}>
-                        {tx.type === "income" ? "Entrada" : "Saída"}
-                      </S.TypeBadge>
-                    </S.Td>
-                    <S.TdMono>{formatCurrency(fromCents(tx.amount))}</S.TdMono>
-                    <S.Td>
-                      <S.Actions>
-                        <S.IconButton
-                          onClick={() => handleManageTags(tx)}
-                          aria-label="Gerenciar tags"
-                        >
-                          <HiOutlineTag size={16} />
-                        </S.IconButton>
-                        <S.IconButton onClick={() => handleEdit(tx)} aria-label="Editar">
-                          <HiOutlinePencil size={16} />
-                        </S.IconButton>
-                        <S.IconButton onClick={() => setDeletingTx(tx)} aria-label="Excluir">
-                          <HiOutlineTrash size={16} />
-                        </S.IconButton>
-                      </S.Actions>
-                    </S.Td>
-                  </tr>
-                ))}
-              </tbody>
-            </S.Table>
-          </S.TableWrapper>
-
-          <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
-        </>
-      )}
+      <TransactionTable
+        status={transactionsState.status}
+        transactions={transactions}
+        totalPages={totalPages}
+        page={page}
+        error={transactionsState.status === "error" ? transactionsState.error : undefined}
+        onPageChange={setPage}
+        onEdit={setEditingTx}
+        onDelete={setDeletingTx}
+        onManageTags={handleManageTags}
+      />
 
       <Modal open={!!editingTx} onClose={() => setEditingTx(null)} title="Editar Transação">
         <TransactionForm
@@ -397,6 +278,7 @@ export default function TransacoesPage() {
           onSubmit={handleUpdate}
           isLoading={updateMutation.isPending}
           submitLabel="Salvar"
+          variant="modal"
           initialData={
             editingTx
               ? {
@@ -417,60 +299,23 @@ export default function TransacoesPage() {
         onClose={() => setDeletingTx(null)}
         onConfirm={handleDeleteConfirm}
         title="Excluir Transação"
-        message={`Tem certeza que deseja excluir a transação "${deletingTx?.description}"? Esta ação não pode ser desfeita.`}
+        message={`Tem certeza que deseja excluir a transação "${deletingTx?.description}"? Esta ação não pode ser feita.`}
         confirmLabel="Excluir"
         loading={deleteMutation.isPending}
       />
 
-      <Modal
+      <TagManager
         open={!!taggingTx}
+        transactionDescription={taggingTx?.description ?? ""}
+        tags={tags}
+        selectedTagIds={selectedTagIds}
+        isLoading={linkTagsMutation.isPending || unlinkTagMutation.isPending}
+        createTagIsLoading={createTagMutation.isPending}
+        onToggle={handleTagToggle}
+        onSave={handleSaveTags}
         onClose={() => setTaggingTx(null)}
-        title={`Gerenciar Tags — ${taggingTx?.description ?? ""}`}
-      >
-        <S.ModalForm>
-          {tagsState.status === "success" && (
-            <S.TagGrid>
-              {tagsState.data.map((tag) => {
-                const isSelected = selectedTagIds.includes(tag.id);
-                return (
-                  <S.TagCheckbox
-                    key={tag.id}
-                    $selected={isSelected}
-                    $color={tag.color ?? undefined}
-                    onClick={() => handleTagToggle(tag.id)}
-                  >
-                    {tag.name}
-                  </S.TagCheckbox>
-                );
-              })}
-            </S.TagGrid>
-          )}
-
-          <S.Divider />
-
-          <Text as="span" size="xs" color="textSecondary">
-            Criar nova tag
-          </Text>
-          <TagForm
-            onSubmit={handleCreateTagInline}
-            isLoading={createTagMutation.isPending}
-            submitLabel="Criar"
-          />
-
-          <S.ModalActions>
-            <Button variant="outline" onClick={() => setTaggingTx(null)} type="button">
-              Cancelar
-            </Button>
-            <Button
-              type="button"
-              onClick={handleSaveTags}
-              loading={linkTagsMutation.isPending || unlinkTagMutation.isPending}
-            >
-              Salvar
-            </Button>
-          </S.ModalActions>
-        </S.ModalForm>
-      </Modal>
+        onCreateTag={handleCreateTagInline}
+      />
     </S.Wrapper>
   );
 }

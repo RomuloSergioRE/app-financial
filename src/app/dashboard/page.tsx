@@ -2,11 +2,9 @@
 
 import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import { SummaryCard } from "@/components/molecules/SummaryCard";
 import { PeriodFilter } from "@/components/molecules/PeriodFilter";
 import { Skeleton } from "@/components/atoms/Skeleton";
-import { Text } from "@/components/atoms/Text";
 import {
   HiOutlineArrowTrendingUp,
   HiOutlineArrowTrendingDown,
@@ -25,8 +23,8 @@ import {
 import { getDateRange } from "@/lib/date";
 import { calcChange } from "@/lib/analytics";
 import { useTransactions } from "@/hooks/useTransactions";
-import { formatCurrency, formatDate } from "@/lib/format";
 import { fromCents } from "@/lib/currency";
+import { RecentTransactions } from "@/components/organisms/RecentTransactions";
 import type { Period } from "@/components/molecules/PeriodFilter/types";
 import * as S from "./style";
 
@@ -246,46 +244,7 @@ export default function DashboardPage() {
         <Skeleton variant="rect" height="120px" />
       ) : null}
 
-      {recentTransactions.length > 0 && (
-        <S.RecentSection>
-          <S.RecentHeader>
-            <Text as="h2" size="lg" weight="semibold" fontFamily="display">
-              Últimas Transações
-            </Text>
-            <Link href="/dashboard/transacoes">
-              <S.RecentLink>Ver todas</S.RecentLink>
-            </Link>
-          </S.RecentHeader>
-          <S.RecentList>
-            <S.RecentTable>
-              <thead>
-                <tr>
-                  <S.RecentTh>Data</S.RecentTh>
-                  <S.RecentTh>Descrição</S.RecentTh>
-                  <S.RecentTh>Categoria</S.RecentTh>
-                  <S.RecentTh>Tipo</S.RecentTh>
-                  <S.RecentTh>Valor</S.RecentTh>
-                </tr>
-              </thead>
-              <tbody>
-                {recentTransactions.map((tx) => (
-                  <tr key={tx.id}>
-                    <S.RecentTd>{formatDate(tx.date)}</S.RecentTd>
-                    <S.RecentTd>{tx.description}</S.RecentTd>
-                    <S.RecentTd>{tx.category?.name ?? "-"}</S.RecentTd>
-                    <S.RecentTd>
-                      <S.RecentTypeBadge $type={tx.type}>
-                        {tx.type === "income" ? "Entrada" : "Saída"}
-                      </S.RecentTypeBadge>
-                    </S.RecentTd>
-                    <S.RecentTdMono>{formatCurrency(fromCents(tx.amount))}</S.RecentTdMono>
-                  </tr>
-                ))}
-              </tbody>
-            </S.RecentTable>
-          </S.RecentList>
-        </S.RecentSection>
-      )}
+      <RecentTransactions transactions={recentTransactions} />
     </S.Wrapper>
   );
 }

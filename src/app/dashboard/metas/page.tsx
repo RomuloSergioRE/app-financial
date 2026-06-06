@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/atoms/Skeleton";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
-import { GoalForm } from "@/components/molecules/GoalForm";
+import { GoalForm } from "@/components/organisms/GoalForm";
 import { useCategories } from "@/hooks/useCategories";
 import { useGoals, useCreateGoal, useUpdateGoal, useDeleteGoal } from "@/hooks/useGoals";
 import { formatCurrency, formatDate } from "@/lib/format";
