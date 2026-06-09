@@ -17,7 +17,7 @@ export const SummaryCard = memo(function SummaryCard({
   const accentColors: Record<SummaryType, string> = {
     income: theme.colors.primary,
     outcome: theme.colors.danger,
-    balance: value >= 0 ? theme.colors.tradingUp : theme.colors.tradingDown,
+    balance: value >= 0 ? theme.colors.tradingUp : theme.colors.danger,
   };
 
   const formatted = new Intl.NumberFormat("pt-BR", {

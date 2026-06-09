@@ -39,20 +39,7 @@ export const Label = styled.label`
   color: ${({ theme }) => theme.colors.textSecondary};
 `;
 
-export const Input = styled.input`
-  padding: ${({ theme }) => theme.spacing.sm};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  background: ${({ theme }) => theme.colors.background};
-  color: ${({ theme }) => theme.colors.text};
-  font-family: ${({ theme }) => theme.fonts.body};
-  font-size: ${({ theme }) => theme.fontSize.md};
-
-  &:focus {
-    outline: none;
-    border-color: ${({ theme }) => theme.colors.primary};
-  }
-`;
+export { Input } from "@/components/atoms/Input";
 
 export const List = styled.div`
   display: flex;

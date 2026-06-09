@@ -29,19 +29,19 @@ export const Actions = styled.div`
 export const TagList = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const TagPill = styled.span<{ $color?: string }>`
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   padding: 2px 8px;
   border-radius: 999px;
-  background: ${({ $color }) => ($color ? `${$color}20` : "#D4A85320")};
-  color: ${({ $color }) => $color || "#D4A853"};
+  background: ${({ $color, theme }) => ($color ? `${$color}20` : `${theme.colors.warning}20`)};
+  color: ${({ $color, theme }) => $color || theme.colors.warning};
   white-space: nowrap;
 
   &::before {
@@ -49,7 +49,7 @@ export const TagPill = styled.span<{ $color?: string }>`
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: ${({ $color }) => $color || "#D4A853"};
+    background: ${({ $color, theme }) => $color || theme.colors.warning};
   }
 `;
 

@@ -46,8 +46,8 @@ export const HamburgerWrapper = styled.div`
 
 export const HamburgerButton = styled.button<{ $isOpen: boolean }>`
   pointer-events: auto;
-  min-width: 40px;
-  min-height: 40px;
+  min-width: 44px;
+  min-height: 44px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.md};
   background: ${({ theme }) => theme.colors.surface};

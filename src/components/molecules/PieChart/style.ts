@@ -33,7 +33,7 @@ export const Legend = styled.div`
 export const LegendItem = styled.div`
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 export const LegendDot = styled.span<{ $color: string }>`

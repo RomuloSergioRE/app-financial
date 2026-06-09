@@ -52,7 +52,7 @@ export const Value = styled.span<{ $positive?: boolean }>`
 export const Pill = styled.span<{ $positive?: boolean }>`
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: ${({ theme }) => theme.spacing.xs};
   font-family: ${({ theme }) => theme.fonts.mono};
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
