@@ -40,10 +40,10 @@ export const PieChart = memo(function PieChart({ categories }: PieChartProps) {
     "#0ECB81",
     "#F6465D",
     "#60A5FA",
-    "#D4A853",
-    "#A78BFA",
+    "#2563EB",
     "#34D399",
-    "#F59E0B",
+    "#A78BFA",
+    "#FF6B81",
   ];
 
   const data = categories.map((c, i) => ({

@@ -23,6 +23,7 @@ const themeLight = {
     overlay: "rgba(0, 0, 0, 0.3)",
     onPrimary: "#FFFFFF",
     onSurface: "#181A20",
+    warning: "#D4A853",
     disabled: "rgba(0, 0, 0, 0.3)",
   },
   fonts: {

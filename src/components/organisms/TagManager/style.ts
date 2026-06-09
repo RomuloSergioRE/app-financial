@@ -10,20 +10,24 @@ export const TagGrid = styled.div`
 export const TagCheckbox = styled.button<{ $selected: boolean; $color?: string }>`
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
+  gap: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
   border-radius: 999px;
-  border: 2px solid ${({ $selected, $color }) => ($selected ? $color || "#D4A853" : "transparent")};
-  background: ${({ $selected, $color }) =>
-    $selected ? `${$color || "#D4A853"}20` : "transparent"};
-  color: ${({ $selected, $color }) => ($selected ? $color || "#D4A853" : "inherit")};
+  border: 2px solid
+    ${({ $selected, $color, theme }) =>
+      $selected ? $color || theme.colors.warning : "transparent"};
+  background: ${({ $selected, $color, theme }) =>
+    $selected ? `${$color || theme.colors.warning}20` : "transparent"};
+  color: ${({ $selected, $color, theme }) =>
+    $selected ? $color || theme.colors.warning : "inherit"};
   cursor: pointer;
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-family: ${({ theme }) => theme.fonts.body};
   transition: all ${({ theme }) => theme.transition.fast};
 
   &:hover {
-    background: ${({ $color }) => ($color ? `${$color}15` : "#D4A85315")};
+    background: ${({ $color, theme }) =>
+      $color ? `${$color}15` : `${theme.colors.warning}15`};
   }
 
   &::before {
@@ -31,7 +35,7 @@ export const TagCheckbox = styled.button<{ $selected: boolean; $color?: string }
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: ${({ $color }) => $color || "#D4A853"};
+    background: ${({ $color, theme }) => $color || theme.colors.warning};
     opacity: ${({ $selected }) => ($selected ? 1 : 0.4)};
   }
 `;

@@ -59,7 +59,7 @@ export const Dropdown = styled.ul`
   right: 0;
   z-index: 50;
   margin: 0;
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
   list-style: none;
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};

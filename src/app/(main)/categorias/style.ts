@@ -51,7 +51,7 @@ export const CategoryBadge = styled.div<{ $color?: string }>`
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: ${({ $color }) => $color || "#D4A853"};
+    background: ${({ $color, theme }) => $color || theme.colors.warning};
   }
 `;
 

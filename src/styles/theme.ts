@@ -23,6 +23,7 @@ const theme = {
     overlay: "rgba(0, 0, 0, 0.6)",
     onPrimary: "#FFFFFF",
     onSurface: "#EAECEF",
+    warning: "#D4A853",
     disabled: "rgba(255, 255, 255, 0.3)",
   },
   fonts: {
