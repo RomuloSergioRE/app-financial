@@ -6,11 +6,11 @@ export const FilterRow = styled.div`
   gap: ${({ theme }) => theme.spacing.sm};
   align-items: end;
 
-  @media (min-width: 640px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
     grid-template-columns: 1fr 1fr;
   }
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: flex;
     flex-wrap: wrap;
   }
@@ -33,7 +33,7 @@ export const SearchIcon = styled.span`
 export const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const Label = styled.label`

@@ -64,7 +64,7 @@ export const Dropdown = styled.ul`
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.md};
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: ${({ theme }) => theme.shadow.md};
   max-height: 200px;
   overflow-y: auto;
 `;

@@ -17,7 +17,7 @@ export const TopBar = styled.div`
   top: 0;
   z-index: 15;
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: none;
   }
 `;
@@ -30,7 +30,7 @@ export const TopBarTitle = styled.span`
   color: ${({ theme }) => theme.colors.text};
   letter-spacing: -0.02em;
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: none;
   }
 `;
@@ -39,7 +39,7 @@ export const HamburgerWrapper = styled.div`
   display: block;
   pointer-events: none;
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: none;
   }
 `;
@@ -59,7 +59,7 @@ export const HamburgerButton = styled.button<{ $isOpen: boolean }>`
   cursor: pointer;
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.secondary};
+    outline: 2px solid ${({ theme }) => theme.colors.info};
     outline-offset: 2px;
   }
 `;
@@ -70,7 +70,7 @@ export const Main = styled.main`
   margin: 0 auto;
   padding: ${({ theme }) => theme.spacing.lg};
   padding-bottom: ${({ theme }) => theme.spacing.section};
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding: ${({ theme }) => theme.spacing.xl};
     padding-top: ${({ theme }) => theme.spacing.xl};
     padding-bottom: ${({ theme }) => theme.spacing.section};

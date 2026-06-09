@@ -8,7 +8,7 @@ export const Overlay = styled.div<{ $isOpen: boolean }>`
   background: ${({ theme }) => theme.colors.overlay};
   z-index: 10;
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: none;
   }
 `;
@@ -29,12 +29,12 @@ export const Wrapper = styled.aside<{ $isOpen: boolean }>`
   transition: transform ${({ theme }) => theme.transition.slow};
   transform: ${({ $isOpen }) => ($isOpen ? "translateX(0)" : "translateX(-100%)")};
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     position: static;
     transform: none;
     min-height: 100vh;
 
-    @media (max-width: 1024px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
       max-width: 180px;
     }
   }
@@ -151,7 +151,7 @@ export const CloseButton = styled.button`
   align-items: center;
   justify-content: center;
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: none;
   }
 `;

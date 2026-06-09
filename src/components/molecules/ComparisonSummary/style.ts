@@ -20,7 +20,7 @@ export const Grid = styled.div`
   grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing.md};
 
-  @media (min-width: 481px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.mobile}) {
     grid-template-columns: repeat(3, 1fr);
   }
 `;
@@ -40,7 +40,7 @@ export const Label = styled.span`
 export const Value = styled.span<{ $positive?: boolean }>`
   font-family: ${({ theme }) => theme.fonts.mono};
   font-size: ${({ theme }) => theme.fontSize.md};
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme, $positive }) =>
     $positive === undefined
       ? theme.colors.text
@@ -55,7 +55,7 @@ export const Pill = styled.span<{ $positive?: boolean }>`
   gap: 2px;
   font-family: ${({ theme }) => theme.fonts.mono};
   font-size: ${({ theme }) => theme.fontSize.xs};
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   padding: 2px 6px;
   border-radius: ${({ theme }) => theme.borderRadius.sm};
   background: ${({ theme, $positive }) =>

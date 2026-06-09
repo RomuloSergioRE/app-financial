@@ -17,7 +17,7 @@ export { ModalForm, ModalActions } from "@/components/molecules/Modal";
 export const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const Label = styled.label`

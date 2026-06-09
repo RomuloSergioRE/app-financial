@@ -45,7 +45,7 @@ const theme = {
     lg: "24px",
     xl: "32px",
     xxl: "48px",
-    section: "80px",
+    section: "64px",
   },
   borderRadius: {
     sm: "6px",

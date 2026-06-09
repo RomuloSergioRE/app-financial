@@ -11,7 +11,7 @@ export const Grid = styled.div`
   grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing.lg};
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: 1fr 1fr;
   }
 `;
@@ -37,7 +37,7 @@ export const SectionTitle = styled.h2`
 export const Field = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const FieldRow = styled.div`

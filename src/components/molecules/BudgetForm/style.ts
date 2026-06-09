@@ -10,7 +10,7 @@ export const Form = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: flex;
     flex-wrap: wrap;
   }
@@ -22,7 +22,7 @@ export const Row = styled.div`
   gap: ${({ theme }) => theme.spacing.sm};
   width: 100%;
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: flex;
     width: auto;
     gap: ${({ theme }) => theme.spacing.sm};

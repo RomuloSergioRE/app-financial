@@ -20,7 +20,7 @@ export const Actions = styled.div`
   gap: ${({ theme }) => theme.spacing.xs};
   align-items: center;
 
-  @media (max-width: 639px) {
+  @media (max-width: calc(${({ theme }) => theme.breakpoints.sm} - 1px)) {
     justify-content: flex-start;
     margin-top: ${({ theme }) => theme.spacing.xs};
   }

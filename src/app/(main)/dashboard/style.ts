@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   max-width: 1280px;
   margin: 0 auto;
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     gap: ${({ theme }) => theme.spacing.section};
   }
 `;
@@ -19,7 +19,7 @@ export const Header = styled.div`
   flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing.sm};
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     gap: ${({ theme }) => theme.spacing.md};
   }
 `;
@@ -45,11 +45,11 @@ export const Cards = styled.div`
   grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing.md};
 
-  @media (min-width: 481px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.mobile}) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: repeat(3, 1fr);
   }
 `;
@@ -59,7 +59,7 @@ export const Charts = styled.div`
   grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing.lg};
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: 7fr 5fr;
   }
 `;
@@ -98,7 +98,7 @@ export const Charts2Col = styled.div`
   grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing.lg};
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: 1fr 1fr;
   }
 `;

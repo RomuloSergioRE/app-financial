@@ -7,16 +7,20 @@ export const Wrapper = styled.div`
 `;
 
 export const List = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing.md};
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 export const GoalCard = styled.div<{ $achieved?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.md};
-  padding: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.xl};
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid
     ${({ theme, $achieved }) => ($achieved ? theme.colors.tradingUp : theme.colors.border)};
@@ -34,7 +38,7 @@ export const GoalHeader = styled.div`
 export const GoalInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const GoalName = styled.span`
@@ -96,7 +100,7 @@ export const GoalValues = styled.div`
 export const ValueItem = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const ValueLabel = styled.span`
