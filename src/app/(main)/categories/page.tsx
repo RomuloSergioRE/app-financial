@@ -28,7 +28,7 @@ import {
 import type { Category } from "@/types";
 import * as S from "./style";
 
-export default function CategoriasPage() {
+export default function CategoriesPage() {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [deletingCategory, setDeletingCategory] = useState<Category | null>(null);
 

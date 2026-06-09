@@ -34,7 +34,7 @@ const FREQUENCY_LABELS: Record<string, string> = {
   yearly: "Anual",
 };
 
-export default function RegrasRecorrentesPage() {
+export default function RecurringRulesPage() {
   const [editingRule, setEditingRule] = useState<Recurring | null>(null);
   const [deletingRule, setDeletingRule] = useState<Recurring | null>(null);
 

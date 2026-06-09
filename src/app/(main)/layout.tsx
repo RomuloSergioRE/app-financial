@@ -17,29 +17,29 @@ import type { NavItem } from "@/components/molecules/Sidebar/types";
 
 const userNavItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: <HiOutlineViewColumns size={20} /> },
-  { label: "Perfil", href: "/perfil", icon: <HiOutlineUser size={20} /> },
-  { label: "Categorias", href: "/categorias", icon: <HiOutlineFolderOpen size={20} /> },
+  { label: "Profile", href: "/profile", icon: <HiOutlineUser size={20} /> },
+  { label: "Categories", href: "/categories", icon: <HiOutlineFolderOpen size={20} /> },
   { label: "Tags", href: "/tags", icon: <HiOutlineTag size={20} /> },
   {
-    label: "Orçamentos",
-    href: "/orcamentos",
+    label: "Budgets",
+    href: "/budgets",
     icon: <HiOutlineCurrencyDollar size={20} />,
   },
-  { label: "Metas", href: "/metas", icon: <HiOutlineTrophy size={20} /> },
+  { label: "Goals", href: "/goals", icon: <HiOutlineTrophy size={20} /> },
   {
-    label: "Recorrentes",
-    href: "/regras-recorrentes",
+    label: "Recurring",
+    href: "/recurring-rules",
     icon: <HiOutlineArrowPath size={20} />,
   },
   {
-    label: "Organizações",
-    href: "/organizacoes",
+    label: "Organizations",
+    href: "/organizations",
     icon: <HiOutlineBuildingOffice2 size={20} />,
   },
-  { label: "Transações", href: "/transacoes", icon: <HiOutlineCreditCard size={20} /> },
+  { label: "Transactions", href: "/transactions", icon: <HiOutlineCreditCard size={20} /> },
   {
-    label: "Configurações",
-    href: "/configuracoes",
+    label: "Settings",
+    href: "/settings",
     icon: <HiOutlineCog6Tooth size={20} />,
   },
 ];

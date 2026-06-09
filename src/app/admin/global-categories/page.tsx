@@ -18,7 +18,7 @@ import {
 import type { GlobalCategory } from "@/types";
 import * as S from "./style";
 
-export default function AdminCategoriasGlobaisPage() {
+export default function AdminGlobalCategoriesPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [editingCategory, setEditingCategory] = useState<GlobalCategory | null>(null);
   const [deletingCategory, setDeletingCategory] = useState<GlobalCategory | null>(null);

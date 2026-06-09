@@ -33,7 +33,7 @@ const MONTHS = [
   { value: "12", label: "Dezembro" },
 ];
 
-export default function OrcamentosPage() {
+export default function BudgetsPage() {
   const currentYear = new Date().getFullYear();
   const [monthFilter, setMonthFilter] = useState("");
   const [yearFilter, setYearFilter] = useState(String(currentYear));

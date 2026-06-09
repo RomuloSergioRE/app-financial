@@ -16,7 +16,7 @@ import { fromCents, toCents } from "@/lib/currency";
 import type { Goal } from "@/types";
 import * as S from "./style";
 
-export default function MetasPage() {
+export default function GoalsPage() {
   const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
   const [deletingGoal, setDeletingGoal] = useState<Goal | null>(null);
 

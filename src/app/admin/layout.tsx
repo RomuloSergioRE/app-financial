@@ -12,15 +12,15 @@ import type { NavItem } from "@/components/molecules/Sidebar/types";
 
 const adminNavItems: NavItem[] = [
   { label: "Dashboard", href: "/admin", icon: <HiOutlineViewColumns size={20} /> },
-  { label: "Usuários", href: "/admin/usuarios", icon: <HiOutlineUsers size={20} /> },
+  { label: "Users", href: "/admin/users", icon: <HiOutlineUsers size={20} /> },
   {
-    label: "Categorias Globais",
-    href: "/admin/categorias-globais",
+    label: "Global Categories",
+    href: "/admin/global-categories",
     icon: <HiOutlineFolderOpen size={20} />,
   },
   {
-    label: "Auditoria",
-    href: "/admin/auditoria",
+    label: "Audit",
+    href: "/admin/audit",
     icon: <HiOutlineClipboardDocumentList size={20} />,
   },
   { label: "Analytics", href: "/admin/analytics", icon: <HiOutlineChartBar size={20} /> },

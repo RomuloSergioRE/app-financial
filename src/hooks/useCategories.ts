@@ -71,7 +71,7 @@ export function useExportCategoriesCsv() {
   return useMutation({
     mutationFn: () => categoryService.exportCsv(),
     onSuccess: (blob) => {
-      downloadBlob(blob, `categorias-${new Date().toISOString().split("T")[0]}.csv`);
+      downloadBlob(blob, `categories-${new Date().toISOString().split("T")[0]}.csv`);
       toast.success("CSV exportado com sucesso!");
     },
     onError: () => toast.error("Erro ao exportar CSV"),
@@ -82,7 +82,7 @@ export function useExportCategoriesPdf() {
   return useMutation({
     mutationFn: () => categoryService.exportPdf(),
     onSuccess: (blob) => {
-      downloadBlob(blob, `categorias-${new Date().toISOString().split("T")[0]}.pdf`);
+      downloadBlob(blob, `categories-${new Date().toISOString().split("T")[0]}.pdf`);
       toast.success("PDF exportado com sucesso!");
     },
     onError: () => toast.error("Erro ao exportar PDF"),

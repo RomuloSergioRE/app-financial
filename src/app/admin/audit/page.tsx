@@ -10,7 +10,7 @@ import { Select } from "@/components/molecules/Select";
 import { useAuditLogs, useAdminExportAuditLogsCsv } from "@/hooks/useAdmin";
 import * as S from "./style";
 
-export default function AdminAuditoriaPage() {
+export default function AdminAuditPage() {
   const [page, setPage] = useState(1);
   const [actionFilter, setActionFilter] = useState("");
   const [targetFilter, setTargetFilter] = useState("");
