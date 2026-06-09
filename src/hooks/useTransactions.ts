@@ -113,7 +113,7 @@ export function useExportTransactionsCsv() {
       search?: string;
     }) => transactionService.exportCsv(params),
     onSuccess: (blob) => {
-      downloadBlob(blob, `transacoes-${new Date().toISOString().split("T")[0]}.csv`);
+      downloadBlob(blob, `transactions-${new Date().toISOString().split("T")[0]}.csv`);
       toast.success("CSV exportado com sucesso!");
     },
     onError: () => toast.error("Erro ao exportar CSV"),
@@ -129,7 +129,7 @@ export function useExportTransactionsPdf() {
       search?: string;
     }) => transactionService.exportPdf(params),
     onSuccess: (blob) => {
-      downloadBlob(blob, `transacoes-${new Date().toISOString().split("T")[0]}.pdf`);
+      downloadBlob(blob, `transactions-${new Date().toISOString().split("T")[0]}.pdf`);
       toast.success("PDF exportado com sucesso!");
     },
     onError: () => toast.error("Erro ao exportar PDF"),
@@ -140,7 +140,7 @@ export function useExportTransactionsTemplate() {
   return useMutation({
     mutationFn: () => transactionService.exportTemplate(),
     onSuccess: (blob) => {
-      downloadBlob(blob, `template-importacao-transacoes.csv`);
+      downloadBlob(blob, `template-import-transactions.csv`);
       toast.success("Template baixado com sucesso!");
     },
     onError: () => toast.error("Erro ao baixar template"),

@@ -99,7 +99,7 @@ export function useExportPdf() {
     mutationFn: ({ startDate, endDate }: { startDate: string; endDate: string }) =>
       analyticsService.exportPdf({ startDate, endDate }),
     onSuccess: (blob) => {
-      downloadBlob(blob, `relatorio-${new Date().toISOString().split("T")[0]}.pdf`);
+      downloadBlob(blob, `report-${new Date().toISOString().split("T")[0]}.pdf`);
     },
   });
 }

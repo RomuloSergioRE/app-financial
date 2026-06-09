@@ -178,7 +178,7 @@ export function useAdminExportUsersCsv() {
   return useMutation({
     mutationFn: () => adminService.exportUsersCsv(),
     onSuccess: (blob) => {
-      downloadBlob(blob, `usuarios-${new Date().toISOString().split("T")[0]}.csv`);
+      downloadBlob(blob, `users-${new Date().toISOString().split("T")[0]}.csv`);
     },
   });
 }
@@ -188,7 +188,7 @@ export function useAdminExportTransactionsCsv() {
     mutationFn: (params?: { userId?: string; startDate?: string; endDate?: string }) =>
       adminService.exportTransactionsCsv(params),
     onSuccess: (blob) => {
-      downloadBlob(blob, `transacoes-${new Date().toISOString().split("T")[0]}.csv`);
+      downloadBlob(blob, `transactions-${new Date().toISOString().split("T")[0]}.csv`);
     },
   });
 }
@@ -197,7 +197,7 @@ export function useAdminExportAuditLogsCsv() {
   return useMutation({
     mutationFn: () => adminService.exportAuditLogsCsv(),
     onSuccess: (blob) => {
-      downloadBlob(blob, `auditoria-${new Date().toISOString().split("T")[0]}.csv`);
+      downloadBlob(blob, `audit-${new Date().toISOString().split("T")[0]}.csv`);
     },
   });
 }

@@ -26,7 +26,7 @@ import {
 import type { Organization } from "@/types";
 import * as S from "./style";
 
-export default function OrganizacoesPage() {
+export default function OrganizationsPage() {
   const [editingOrg, setEditingOrg] = useState<Organization | null>(null);
   const [deletingOrg, setDeletingOrg] = useState<Organization | null>(null);
   const [showCreate, setShowCreate] = useState(false);

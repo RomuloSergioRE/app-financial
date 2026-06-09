@@ -95,6 +95,7 @@ export const ProgressLabel = styled.span<{ $achieved?: boolean }>`
 export const GoalValues = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing.xl};
+  flex-wrap: wrap;
 `;
 
 export const ValueItem = styled.div`

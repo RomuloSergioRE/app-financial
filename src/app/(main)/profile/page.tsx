@@ -14,7 +14,7 @@ import { updateProfileSchema, updatePasswordSchema } from "@/schemas/profile.sch
 import type { UpdateProfileFormData, UpdatePasswordFormData } from "@/schemas/profile.schema";
 import * as S from "./style";
 
-export default function PerfilPage() {
+export default function ProfilePage() {
   const profileState = useProfile();
   const updateProfile = useUpdateProfile();
   const updatePassword = useUpdatePassword();

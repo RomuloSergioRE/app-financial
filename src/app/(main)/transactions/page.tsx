@@ -34,7 +34,7 @@ import type { Transaction } from "@/types";
 import type { CreateTagDTO } from "@/schemas/tag.schema";
 import * as S from "./style";
 
-export default function TransacoesPage() {
+export default function TransactionsPage() {
   const [page, setPage] = useState(1);
   const [categoryFilter, setCategoryFilter] = useState("");
   const [startDate, setStartDate] = useState("");

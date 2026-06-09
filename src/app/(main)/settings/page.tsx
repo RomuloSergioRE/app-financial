@@ -5,7 +5,7 @@ import { Select } from "@/components/molecules/Select";
 import { useTheme } from "@/contexts/ThemeContext";
 import * as S from "./style";
 
-export default function ConfiguracoesPage() {
+export default function SettingsPage() {
   const { mode, setTheme } = useTheme();
 
   return (
