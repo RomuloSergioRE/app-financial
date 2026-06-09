@@ -16,7 +16,7 @@ export const FilterRow = styled.div`
 export const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const Label = styled.label`
@@ -28,16 +28,20 @@ export const Label = styled.label`
 `;
 
 export const List = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing.md};
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 export const BudgetCard = styled.div<{ $overBudget?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.sm};
-  padding: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.xl};
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid
     ${({ theme, $overBudget }) => ($overBudget ? theme.colors.danger : theme.colors.border)};
@@ -55,7 +59,7 @@ export const BudgetHeader = styled.div`
 export const BudgetInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const MonthYear = styled.span`
@@ -78,7 +82,7 @@ export const BudgetValues = styled.div`
 export const ValueItem = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const ValueLabel = styled.span`

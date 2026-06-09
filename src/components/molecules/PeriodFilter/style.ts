@@ -2,11 +2,11 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   display: flex;
-  gap: 2px;
+  gap: ${({ theme }) => theme.spacing.xs};
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.md};
-  padding: 3px;
+  padding: ${({ theme }) => theme.spacing.xs};
   width: fit-content;
 `;
 

@@ -5,7 +5,7 @@ export const Wrapper = styled.div<{ $accent: string }>`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-left: 3px solid ${({ $accent }) => $accent};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  padding: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.xl};
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.xs};

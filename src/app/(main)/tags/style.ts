@@ -19,9 +19,13 @@ export const FormField = styled.div`
 `;
 
 export const List = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing.sm};
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 export const Item = styled.div`
@@ -62,7 +66,7 @@ export { ModalForm, ModalActions } from "@/components/molecules/Modal";
 export const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const Label = styled.label`

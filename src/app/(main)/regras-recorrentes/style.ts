@@ -7,16 +7,20 @@ export const Wrapper = styled.div`
 `;
 
 export const List = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing.md};
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 export const RuleCard = styled.div<{ $active?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.md};
-  padding: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.xl};
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
@@ -34,7 +38,7 @@ export const RuleHeader = styled.div`
 export const RuleInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const RuleName = styled.span`
@@ -65,7 +69,7 @@ export const RuleDetails = styled.div`
 export const DetailItem = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const DetailLabel = styled.span`

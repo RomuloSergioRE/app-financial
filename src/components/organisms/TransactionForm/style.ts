@@ -10,7 +10,7 @@ export const Form = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: flex;
     align-items: flex-end;
     gap: ${({ theme }) => theme.spacing.sm};
@@ -38,11 +38,11 @@ export const FormRow = styled.div`
   gap: ${({ theme }) => theme.spacing.sm};
   width: 100%;
 
-  @media (min-width: 640px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
     grid-template-columns: 1fr 1fr 1fr;
   }
 
-  @media (min-width: 769px) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: flex;
     width: auto;
     gap: ${({ theme }) => theme.spacing.sm};
@@ -56,7 +56,7 @@ export const FormRow = styled.div`
 export const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const Label = styled.label`

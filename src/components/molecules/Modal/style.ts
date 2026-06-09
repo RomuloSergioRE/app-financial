@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  padding: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.xl};
   width: min(400px, calc(100vw - 32px));
   max-width: 90vw;
   max-height: 85vh;

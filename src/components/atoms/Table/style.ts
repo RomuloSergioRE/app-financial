@@ -4,7 +4,7 @@ export const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
 
-  @media (max-width: 639px) {
+  @media (max-width: calc(${({ theme }) => theme.breakpoints.sm} - 1px)) {
     thead {
       position: absolute;
       width: 1px;
@@ -42,7 +42,7 @@ export const Th = styled.th`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   white-space: nowrap;
 
-  @media (max-width: 639px) {
+  @media (max-width: calc(${({ theme }) => theme.breakpoints.sm} - 1px)) {
     display: none;
   }
 `;
@@ -57,7 +57,7 @@ export const Td = styled.td`
   overflow-wrap: break-word;
   word-break: break-word;
 
-  @media (max-width: 639px) {
+  @media (max-width: calc(${({ theme }) => theme.breakpoints.sm} - 1px)) {
     display: flex;
     align-items: center;
     gap: ${({ theme }) => theme.spacing.sm};
@@ -89,7 +89,7 @@ export const TdMono = styled.td`
   overflow-wrap: break-word;
   word-break: break-word;
 
-  @media (max-width: 639px) {
+  @media (max-width: calc(${({ theme }) => theme.breakpoints.sm} - 1px)) {
     display: flex;
     align-items: center;
     gap: ${({ theme }) => theme.spacing.sm};
