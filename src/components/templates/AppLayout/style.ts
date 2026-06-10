@@ -1,4 +1,9 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+`;
 
 export const LayoutWrapper = styled.div`
   display: flex;
@@ -70,6 +75,8 @@ export const Main = styled.main`
   margin: 0 auto;
   padding: ${({ theme }) => theme.spacing.lg};
   padding-bottom: ${({ theme }) => theme.spacing.section};
+  animation: ${fadeIn} 0.2s ease;
+
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding: ${({ theme }) => theme.spacing.xl};
     padding-top: ${({ theme }) => theme.spacing.xl};

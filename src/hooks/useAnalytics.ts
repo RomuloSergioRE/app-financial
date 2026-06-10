@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { analyticsService } from "@/services/analytics.service";
 import { mapAsyncState } from "@/lib/map-async-state";
 import type { AsyncState } from "@/types/async";
@@ -75,31 +75,4 @@ export function useCashFlow(months?: number): AsyncState<CashFlow[]> {
   return mapAsyncState(query);
 }
 
-import { downloadBlob } from "@/lib/download";
 
-export function useExportCsv() {
-  return useMutation({
-    mutationFn: ({
-      startDate,
-      endDate,
-      type,
-    }: {
-      startDate: string;
-      endDate: string;
-      type?: "transactions" | "categories" | "all";
-    }) => analyticsService.exportCsv({ startDate, endDate, type }),
-    onSuccess: (blob) => {
-      downloadBlob(blob, `export-${new Date().toISOString().split("T")[0]}.csv`);
-    },
-  });
-}
-
-export function useExportPdf() {
-  return useMutation({
-    mutationFn: ({ startDate, endDate }: { startDate: string; endDate: string }) =>
-      analyticsService.exportPdf({ startDate, endDate }),
-    onSuccess: (blob) => {
-      downloadBlob(blob, `report-${new Date().toISOString().split("T")[0]}.pdf`);
-    },
-  });
-}

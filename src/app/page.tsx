@@ -1,38 +1,47 @@
 "use client";
 
-import Link from "next/link";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { Button } from "@/components/atoms/Button";
-import { Text } from "@/components/atoms/Text";
-import * as S from "./style";
+import { Navbar } from "@/components/organisms/Navbar";
+import { Hero } from "@/components/organisms/Hero";
+import { About } from "@/components/organisms/About";
+import { Stats } from "@/components/organisms/Stats";
+import { Differentiators } from "@/components/organisms/Differentiators";
+import { Testimonials } from "@/components/organisms/Testimonials";
+import { Pricing } from "@/components/organisms/Pricing";
+import { CtaSection } from "@/components/organisms/CtaSection";
+import { Faq } from "@/components/organisms/Faq";
+import { Footer } from "@/components/organisms/Footer";
 
-export default function Home() {
-  const { user } = useAuth();
+export default function MarketingPage() {
+  const { initializing, isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!initializing && isAuthenticated) {
+      router.replace("/dashboard");
+    }
+  }, [isAuthenticated, initializing, router]);
+
+  if (initializing || isAuthenticated) {
+    return null;
+  }
 
   return (
-    <S.Wrapper>
-      <Text as="h1" size="display" weight="bold" align="center">
-        Financial
-      </Text>
-      <Text as="p" size="lg" color="textSecondary" align="center">
-        {user?.name ? `Bem-vindo, ${user.name}.` : "Gerencie suas finanças com clareza."}
-      </Text>
-      <S.Actions>
-        {user ? (
-          <Button as={Link} href="/dashboard">
-            Ir para o Dashboard
-          </Button>
-        ) : (
-          <>
-            <Button as={Link} href="/login">
-              Entrar
-            </Button>
-            <Button as={Link} href="/register" variant="outline">
-              Criar Conta
-            </Button>
-          </>
-        )}
-      </S.Actions>
-    </S.Wrapper>
+    <>
+      <Navbar />
+      <main>
+        <Hero />
+        <About />
+        <Stats />
+        <Differentiators />
+        <Testimonials />
+        <Pricing />
+        <CtaSection />
+        <Faq />
+      </main>
+      <Footer />
+    </>
   );
 }

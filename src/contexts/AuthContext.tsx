@@ -8,7 +8,8 @@ interface AuthContextData {
   user: User | null;
   isAuthenticated: boolean;
   initializing: boolean;
-  login: (data: LoginRequest) => Promise<void>;
+  role: User["role"] | null;
+  login: (data: LoginRequest) => Promise<User>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => void;
   refreshUser: () => Promise<void>;
@@ -31,6 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = useCallback(async (data: LoginRequest) => {
     const userData = await authService.login(data);
     setUser(userData);
+    return userData;
   }, []);
 
   const register = useCallback(async (data: RegisterRequest) => {
@@ -48,10 +50,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(() => {
-    authService.logout().finally(() => {
-      setUser(null);
-      window.location.href = "/login";
-    });
+    authService.logout().catch(() => {});
+    setUser(null);
+    window.location.href = "/login";
   }, []);
 
   if (initializing) {
@@ -62,6 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
+        role: user?.role ?? null,
         isAuthenticated: !!user,
         initializing,
         login,

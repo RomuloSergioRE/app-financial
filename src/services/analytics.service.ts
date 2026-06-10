@@ -69,24 +69,4 @@ export const analyticsService = {
     const response = await api.get("/analytics/cash-flow", { params });
     return validateResponse(cashFlowSchema.array(), response.data);
   },
-
-  exportCsv: async (params: {
-    startDate: string;
-    endDate: string;
-    type?: "transactions" | "categories" | "all";
-  }): Promise<Blob> => {
-    const response = await api.get("/analytics/export/csv", {
-      params,
-      responseType: "blob",
-    });
-    return response.data;
-  },
-
-  exportPdf: async (params: { startDate: string; endDate: string }): Promise<Blob> => {
-    const response = await api.get("/analytics/export/pdf", {
-      params,
-      responseType: "blob",
-    });
-    return response.data;
-  },
 };

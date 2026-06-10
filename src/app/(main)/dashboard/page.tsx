@@ -3,13 +3,12 @@
 import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { SummaryCard } from "@/components/molecules/SummaryCard";
-import { PeriodFilter } from "@/components/molecules/PeriodFilter";
+import { Select } from "@/components/molecules/Select";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import {
   HiOutlineArrowTrendingUp,
   HiOutlineArrowTrendingDown,
   HiOutlineWallet,
-  HiOutlineDocumentArrowDown,
 } from "react-icons/hi2";
 import {
   useBalance,
@@ -17,8 +16,6 @@ import {
   useMonthlySeries,
   useTopCategories,
   useComparison,
-  useExportCsv,
-  useExportPdf,
 } from "@/hooks/useAnalytics";
 import { getDateRange } from "@/lib/date";
 import { calcChange } from "@/lib/analytics";
@@ -53,6 +50,12 @@ const ComparisonSummary = dynamic(
   { ssr: false, loading: () => <Skeleton variant="rect" height="120px" /> },
 );
 
+const periodOptions = [
+  { value: "week", label: "Week" },
+  { value: "month", label: "Month" },
+  { value: "year", label: "Year" },
+];
+
 export default function DashboardPage() {
   const [period, setPeriod] = useState<Period>("month");
   const { startDate, endDate } = getDateRange(period);
@@ -79,9 +82,6 @@ export default function DashboardPage() {
   const monthlySeriesState = useMonthlySeries(yearStart, today);
   const topCategoriesState = useTopCategories(startDate, endDate, 8);
   const comparisonState = useComparison(currentMonth, currentYear);
-
-  const csvExport = useExportCsv();
-  const pdfExport = useExportPdf();
 
   const balanceLoading = balanceState.status === "loading";
   const categoriesLoading = categoriesState.status === "loading";
@@ -140,28 +140,12 @@ export default function DashboardPage() {
 
   const recentTransactions = recentState.status === "success" ? recentState.data.data : [];
 
-  const handleExportCsv = () => {
-    csvExport.mutate({ startDate, endDate, type: "all" });
-  };
-
-  const handleExportPdf = () => {
-    pdfExport.mutate({ startDate, endDate });
-  };
-
   return (
     <S.Wrapper>
       <S.Header>
         <S.Title>Dashboard</S.Title>
         <S.HeaderActions>
-          <S.ExportButton onClick={handleExportCsv} disabled={csvExport.isPending}>
-            <HiOutlineDocumentArrowDown size={16} />
-            CSV
-          </S.ExportButton>
-          <S.ExportButton onClick={handleExportPdf} disabled={pdfExport.isPending}>
-            <HiOutlineDocumentArrowDown size={16} />
-            PDF
-          </S.ExportButton>
-          <PeriodFilter value={period} onChange={setPeriod} />
+          <Select value={period} onChange={(v) => setPeriod(v as Period)} options={periodOptions} />
         </S.HeaderActions>
       </S.Header>
 
