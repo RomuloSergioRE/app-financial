@@ -56,6 +56,20 @@ const variantStyles = {
       color: ${({ theme }) => theme.colors.text};
     }
   `,
+  white: css`
+    background: #ffffff;
+    color: ${({ theme }) => theme.colors.primary};
+    border: none;
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: ${({ theme }) => theme.shadow.md};
+    }
+
+    &:active:not(:disabled) {
+      background: rgba(255, 255, 255, 0.8);
+    }
+  `,
 };
 
 const sizeStyles = {

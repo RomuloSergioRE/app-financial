@@ -7,6 +7,10 @@ export const Wrapper = styled.section`
   background: ${({ theme }) =>
     theme.colors.background};
 
+  @media (max-width: 479px) {
+    padding: 60px ${({ theme }) => theme.spacing.md} 48px;
+  }
+
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding: 120px ${({ theme }) => theme.spacing.lg} 80px;
     min-height: 90vh;
@@ -22,6 +26,10 @@ export const Container = styled.div`
   margin: 0 auto;
   width: 100%;
 
+  @media (max-width: 479px) {
+    gap: 24px;
+  }
+
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: 1fr 1fr;
     align-items: center;
@@ -33,6 +41,13 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.lg};
+  text-align: center;
+  align-items: stretch;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    text-align: left;
+    align-items: flex-start;
+  }
 `;
 
 export const Badge = styled.span`
@@ -47,15 +62,24 @@ export const Badge = styled.span`
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   width: fit-content;
+  align-self: center;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    align-self: auto;
+  }
 `;
 
 export const Title = styled.h1`
   font-family: ${({ theme }) => theme.fonts.display};
-  font-size: ${({ theme }) => theme.fontSize.hero};
+  font-size: ${({ theme }) => theme.fontSize.xxl};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.colors.text};
-  line-height: 1.15;
+  line-height: 1.2;
   margin: 0;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: ${({ theme }) => theme.fontSize["3xl"]};
+  }
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     font-size: ${({ theme }) => theme.fontSize.display};
@@ -69,12 +93,25 @@ export const Subtitle = styled.p`
   line-height: 1.6;
   margin: 0;
   max-width: 540px;
+
+  @media (max-width: 767px) {
+    text-align: center;
+  }
+
+  @media (max-width: 479px) {
+    font-size: ${({ theme }) => theme.fontSize.sm};
+  }
 `;
 
 export const Actions = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing.sm};
+  justify-content: center;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    justify-content: flex-start;
+  }
 `;
 
 export const TrustRow = styled.div`
@@ -85,6 +122,11 @@ export const TrustRow = styled.div`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ theme }) => theme.colors.textMuted};
+  justify-content: center;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    justify-content: flex-start;
+  }
 `;
 
 export const Dot = styled.span`

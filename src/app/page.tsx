@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import styled from "styled-components";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navbar } from "@/components/organisms/Navbar";
 import { Hero } from "@/components/organisms/Hero";
@@ -13,6 +14,11 @@ import { Pricing } from "@/components/organisms/Pricing";
 import { CtaSection } from "@/components/organisms/CtaSection";
 import { Faq } from "@/components/organisms/Faq";
 import { Footer } from "@/components/organisms/Footer";
+
+const PageWrapper = styled.div`
+  width: 100%;
+  overflow-x: hidden;
+`;
 
 export default function MarketingPage() {
   const { initializing, isAuthenticated } = useAuth();
@@ -29,7 +35,7 @@ export default function MarketingPage() {
   }
 
   return (
-    <>
+    <PageWrapper>
       <Navbar />
       <main>
         <Hero />
@@ -42,6 +48,6 @@ export default function MarketingPage() {
         <Faq />
       </main>
       <Footer />
-    </>
+    </PageWrapper>
   );
 }

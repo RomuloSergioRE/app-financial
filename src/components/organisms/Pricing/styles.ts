@@ -37,7 +37,6 @@ export const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: 32px;
-  align-items: start;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
     grid-template-columns: repeat(2, 1fr);

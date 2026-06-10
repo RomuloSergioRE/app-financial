@@ -70,13 +70,12 @@ export function Differentiators() {
           segura e inteligente.
         </S.Subtitle>
         <S.Grid>
-          {FEATURES.map((feature, index) => (
+          {FEATURES.map((feature) => (
             <FeatureCard
               key={feature.title}
               icon={feature.icon}
               title={feature.title}
               description={feature.description}
-              delay={index * 100}
             />
           ))}
         </S.Grid>

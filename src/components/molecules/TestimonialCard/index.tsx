@@ -1,6 +1,5 @@
 "use client";
 
-import { useScrollReveal } from "@/hooks/useScrollReveal";
 import * as S from "./styles";
 
 interface TestimonialCardProps {
@@ -16,7 +15,6 @@ export function TestimonialCard({
   quote,
   rating,
 }: TestimonialCardProps) {
-  const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
   const initials = name
     .split(" ")
     .map((n) => n[0])
@@ -24,7 +22,7 @@ export function TestimonialCard({
     .toUpperCase();
 
   return (
-    <S.Wrapper ref={ref} $visible={isVisible}>
+    <S.Wrapper>
       <S.Stars>
         {Array.from({ length: 5 }, (_, i) => (
           <svg

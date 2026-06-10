@@ -72,11 +72,10 @@ export function Pricing() {
           ideal para seu momento.
         </S.Subtitle>
         <S.Grid>
-          {PLANS.map((plan, index) => (
+          {PLANS.map((plan) => (
             <PricingCard
               key={plan.name}
               {...plan}
-              delay={index * 150}
             />
           ))}
         </S.Grid>
