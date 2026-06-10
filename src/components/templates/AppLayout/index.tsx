@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useCallback, useEffect, type ReactNode } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Sidebar } from "@/components/molecules/Sidebar";
 import { useAuth } from "@/contexts/AuthContext";
+import { canAccess } from "@/lib/permissions";
 import type { NavItem } from "@/components/molecules/Sidebar/types";
 import { HiOutlineBars3, HiOutlineXMark } from "react-icons/hi2";
 import * as S from "./style";
@@ -14,15 +15,23 @@ interface AppLayoutProps {
 }
 
 export function AppLayout({ children, navItems }: AppLayoutProps) {
-  const { isAuthenticated, initializing, logout } = useAuth();
+  const { isAuthenticated, initializing, role, logout } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    if (!initializing && !isAuthenticated) {
+    if (initializing) return;
+
+    if (!isAuthenticated) {
       router.replace("/login");
+      return;
     }
-  }, [initializing, isAuthenticated, router]);
+
+    if (role && !canAccess(role, pathname)) {
+      router.replace("/dashboard");
+    }
+  }, [initializing, isAuthenticated, role, pathname, router]);
 
   const handleLogout = useCallback(() => {
     logout();

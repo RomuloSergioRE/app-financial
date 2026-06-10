@@ -1,6 +1,7 @@
 "use client";
 
 import { AppLayout } from "@/components/templates/AppLayout";
+import { RouteGuard } from "@/components/molecules/RouteGuard";
 import {
   HiOutlineViewColumns,
   HiOutlineUsers,
@@ -27,5 +28,9 @@ const adminNavItems: NavItem[] = [
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return <AppLayout navItems={adminNavItems}>{children}</AppLayout>;
+  return (
+    <RouteGuard allowedRoles={["admin"]}>
+      <AppLayout navItems={adminNavItems}>{children}</AppLayout>
+    </RouteGuard>
+  );
 }

@@ -32,9 +32,10 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       setApiError(null);
-      await login(data);
+      const user = await login(data);
       toast.success("Login realizado com sucesso!");
-      window.location.href = "/dashboard";
+      const redirectTo = user.role === "admin" ? "/admin" : "/dashboard";
+      window.location.href = redirectTo;
     } catch (err: unknown) {
       setApiError(extractErrorMessage(err, "Erro ao fazer login. Verifique suas credenciais."));
     }
