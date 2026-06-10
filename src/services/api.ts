@@ -52,6 +52,7 @@ api.interceptors.response.use(
         processQueue(refreshError);
         if (
           typeof window !== "undefined" &&
+          window.location.pathname !== "/" &&
           !window.location.pathname.startsWith("/login") &&
           !window.location.pathname.startsWith("/register")
         ) {
