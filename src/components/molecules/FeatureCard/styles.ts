@@ -1,29 +1,19 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
-export const Wrapper = styled.div<{ $visible: boolean; $delay?: number }>`
+export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: ${({ theme }) => theme.spacing.md};
   padding: ${({ theme }) => `${theme.spacing.xl} ${theme.spacing.lg}`};
-  background: ${({ theme }) => theme.colors.surface};
+  background: ${({ theme }) => theme.colors.background};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  transition: all ${({ theme }) => theme.transition.base};
   cursor: default;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease,
-    border-color ${({ theme }) => theme.transition.base},
+  opacity: 1;
+  transform: none;
+  transition: border-color ${({ theme }) => theme.transition.base},
     box-shadow ${({ theme }) => theme.transition.base};
-
-  ${({ $visible, $delay }) =>
-    $visible &&
-    css`
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: ${$delay ?? 0}ms;
-    `}
 
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};

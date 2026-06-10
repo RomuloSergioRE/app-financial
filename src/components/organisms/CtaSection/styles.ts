@@ -35,10 +35,11 @@ export const Container = styled.div<{ $visible: boolean }>`
 
 export const Title = styled.h2`
   font-family: ${({ theme }) => theme.fonts.display};
-  font-size: ${({ theme }) => theme.fontSize["3xl"]};
+  font-size: ${({ theme }) => theme.fontSize.display};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: #ffffff;
   margin: 0;
+  line-height: 1.2;
 `;
 
 export const Subtitle = styled.p`

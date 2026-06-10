@@ -56,9 +56,18 @@ export const IconBox = styled.div`
 
 export const Value = styled.span`
   font-family: ${({ theme }) => theme.fonts.display};
-  font-size: ${({ theme }) => theme.fontSize["3xl"]};
+  font-size: ${({ theme }) => theme.fontSize.xl};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.colors.text};
+  word-break: break-word;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: ${({ theme }) => theme.fontSize.xxl};
+  }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    font-size: ${({ theme }) => theme.fontSize["3xl"]};
+  }
 `;
 
 export const Label = styled.span`

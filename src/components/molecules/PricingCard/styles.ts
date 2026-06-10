@@ -2,36 +2,27 @@ import styled, { css } from "styled-components";
 
 export const Wrapper = styled.div<{
   $highlighted?: boolean;
-  $visible: boolean;
-  $delay?: number;
 }>`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.lg};
   padding: ${({ theme }) => theme.spacing.xl};
-  background: ${({ theme, $highlighted }) =>
-    $highlighted ? theme.colors.primary : theme.colors.surface};
-  border: 2px solid
-    ${({ theme, $highlighted }) =>
-      $highlighted ? theme.colors.primary : theme.colors.border};
+  background: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-top: ${({ $highlighted, theme }) =>
+    $highlighted ? `4px solid ${theme.colors.primary}` : `1px solid ${theme.colors.border}`};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   position: relative;
   cursor: default;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease,
-    box-shadow ${({ theme }) => theme.transition.base};
-
-  ${({ $visible, $delay }) =>
-    $visible &&
-    css`
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: ${$delay ?? 0}ms;
-    `}
+  opacity: 1;
+  transform: none;
+  transition: box-shadow ${({ theme }) => theme.transition.base},
+    border-color ${({ theme }) => theme.transition.base};
 
   &:hover {
     box-shadow: ${({ theme }) => theme.shadow.lg};
+    border-color: ${({ theme }) => theme.colors.primary};
+    transform: translateY(-4px);
   }
 `;
 
@@ -50,45 +41,37 @@ export const Badge = styled.span`
   white-space: nowrap;
 `;
 
-export const PlanName = styled.h3<{ $highlighted?: boolean }>`
+export const PlanName = styled.h3`
   font-family: ${({ theme }) => theme.fonts.display};
   font-size: ${({ theme }) => theme.fontSize.xxl};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  color: ${({ theme, $highlighted }) =>
-    $highlighted ? theme.colors.onPrimary : theme.colors.text};
+  color: ${({ theme }) => theme.colors.text};
   margin: 0;
 `;
 
-export const PriceRow = styled.div<{ $highlighted?: boolean }>`
+export const PriceRow = styled.div`
   display: flex;
   align-items: baseline;
   gap: ${({ theme }) => theme.spacing.xs};
 `;
 
-export const Value = styled.span<{ $highlighted?: boolean }>`
+export const Value = styled.span`
   font-family: ${({ theme }) => theme.fonts.display};
   font-size: ${({ theme }) => theme.fontSize.display};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  color: ${({ theme, $highlighted }) =>
-    $highlighted ? theme.colors.onPrimary : theme.colors.text};
+  color: ${({ theme }) => theme.colors.text};
 `;
 
-export const Period = styled.span<{ $highlighted?: boolean }>`
+export const Period = styled.span`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.md};
-  color: ${({ theme, $highlighted }) =>
-    $highlighted
-      ? `${theme.colors.onPrimary}aa`
-      : theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.textSecondary};
 `;
 
-export const Description = styled.p<{ $highlighted?: boolean }>`
+export const Description = styled.p`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme, $highlighted }) =>
-    $highlighted
-      ? `${theme.colors.onPrimary}cc`
-      : theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.textSecondary};
   margin: 0;
 `;
 
@@ -99,25 +82,22 @@ export const Features = styled.ul`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.sm};
+  flex: 1;
 `;
 
-export const FeatureItem = styled.li<{ $highlighted?: boolean }>`
+export const FeatureItem = styled.li`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.sm};
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme, $highlighted }) =>
-    $highlighted
-      ? `${theme.colors.onPrimary}dd`
-      : theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.textSecondary};
   line-height: 1.5;
 
   svg {
     flex-shrink: 0;
     width: 18px;
     height: 18px;
-    color: ${({ theme, $highlighted }) =>
-      $highlighted ? theme.colors.onPrimary : theme.colors.tradingUp};
+    color: ${({ theme }) => theme.colors.tradingUp};
   }
 `;

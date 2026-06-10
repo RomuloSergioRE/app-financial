@@ -17,10 +17,10 @@ export function Hero() {
             Dashboard em tempo real, relatórios inteligentes e muito mais.
           </S.Subtitle>
           <S.Actions>
-            <Button as={Link} href="/register" size="lg">
+            <Button as={Link} href="/register" size="md">
               Começar Grátis
             </Button>
-            <Button as={Link} href="#sobre" variant="outline" size="lg">
+            <Button as={Link} href="#sobre" variant="outline" size="md">
               Saiba Mais
             </Button>
           </S.Actions>

@@ -1,6 +1,6 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
-export const Wrapper = styled.div<{ $visible: boolean }>`
+export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.md};
@@ -8,16 +8,8 @@ export const Wrapper = styled.div<{ $visible: boolean }>`
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-
-  ${({ $visible }) =>
-    $visible &&
-    css`
-      opacity: 1;
-      transform: translateY(0);
-    `}
+  opacity: 1;
+  transform: none;
 `;
 
 export const Stars = styled.div`

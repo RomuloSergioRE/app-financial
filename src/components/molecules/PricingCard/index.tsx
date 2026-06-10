@@ -3,7 +3,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { Button } from "@/components/atoms/Button";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
 import * as S from "./styles";
 
 interface PricingCardProps {
@@ -17,7 +16,6 @@ interface PricingCardProps {
   cta: string;
   ctaHref: string;
   icon: ReactNode;
-  delay?: number;
 }
 
 export function PricingCard({
@@ -31,31 +29,23 @@ export function PricingCard({
   cta,
   ctaHref,
   icon,
-  delay = 0,
 }: PricingCardProps) {
-  const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
-
   return (
-    <S.Wrapper
-      ref={ref}
-      $highlighted={highlighted}
-      $visible={isVisible}
-      $delay={delay}
-    >
+    <S.Wrapper $highlighted={highlighted}>
       {badge && <S.Badge>{badge}</S.Badge>}
 
-      <S.PlanName $highlighted={highlighted}>{name}</S.PlanName>
+      <S.PlanName>{name}</S.PlanName>
 
       <S.PriceRow>
-        <S.Value $highlighted={highlighted}>{price}</S.Value>
-        <S.Period $highlighted={highlighted}>{period}</S.Period>
+        <S.Value>{price}</S.Value>
+        <S.Period>{period}</S.Period>
       </S.PriceRow>
 
-      <S.Description $highlighted={highlighted}>{description}</S.Description>
+      <S.Description>{description}</S.Description>
 
       <S.Features>
         {features.map((f) => (
-          <S.FeatureItem key={f} $highlighted={highlighted}>
+          <S.FeatureItem key={f}>
             <CheckIcon />
             {f}
           </S.FeatureItem>
@@ -65,7 +55,7 @@ export function PricingCard({
       <Button
         as={Link}
         href={ctaHref}
-        variant={highlighted ? "primary" : "outline"}
+        variant="primary"
         style={{ width: "100%" }}
       >
         {cta}

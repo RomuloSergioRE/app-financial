@@ -34,36 +34,145 @@ export const FrameHeader = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
-export const Dot = styled.div`
+export const Dot = styled.div<{ $color: string }>`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: ${({ color }) => color};
+  background: ${({ $color }) => $color};
 `;
 
 export const FrameContent = styled.div`
-  padding: ${({ theme }) => theme.spacing.lg};
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
+  gap: 20px;
+
+  @media (max-width: 479px) {
+    padding: 12px;
+    gap: 14px;
+  }
 `;
 
-export const ChartBar = styled.div<{ $height: number; $color?: string }>`
-  height: ${({ $height }) => $height}px;
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  background: ${({ $color, theme }) => $color ?? theme.colors.primary};
-  opacity: 0.7;
-  transition: height 0.3s ease;
+export const BalanceRow = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+
+  @media (max-width: 479px) {
+    gap: 4px;
+  }
+`;
+
+export const BalanceCard = styled.div<{ $accent?: string }>`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  background: ${({ theme }) => theme.colors.background};
+  border-left: 3px solid ${({ $accent, theme }) => $accent ?? theme.colors.primary};
+
+  @media (max-width: 479px) {
+    padding: 6px;
+  }
+`;
+
+export const BalanceLabel = styled.span`
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: 11px;
+  color: ${({ theme }) => theme.colors.textMuted};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
+
+export const BalanceValue = styled.span<{ $color?: string }>`
+  font-family: ${({ theme }) => theme.fonts.mono};
+  font-size: 15px;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  color: ${({ $color }) => $color ?? "inherit"};
+`;
+
+export const ChartSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  @media (max-width: 479px) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+`;
+
+export const ChartLabel = styled.span`
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: 11px;
+  color: ${({ theme }) => theme.colors.textMuted};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 `;
 
 export const ChartRow = styled.div`
   display: flex;
   align-items: flex-end;
-  gap: 8px;
+  gap: 6px;
   height: 80px;
+
+  @media (max-width: 479px) {
+    height: 50px;
+    min-width: 260px;
+    gap: 3px;
+  }
 `;
 
-export const StatRow = styled.div`
+export const ChartBar = styled.div<{ $height: number; $color: string }>`
+  flex: 1;
+  height: ${({ $height }) => $height}%;
+  border-radius: 3px 3px 0 0;
+  background: ${({ $color }) => $color};
+  opacity: 0.8;
+  transition: height 0.3s ease;
+  min-width: 8px;
+`;
+
+export const DayLabel = styled.span`
+  font-family: ${({ theme }) => theme.fonts.mono};
+  font-size: 9px;
+  color: ${({ theme }) => theme.colors.textMuted};
+  text-align: center;
+`;
+
+export const TransactionsSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
+
+export const TxHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const TxTitle = styled.span`
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: 11px;
+  color: ${({ theme }) => theme.colors.textMuted};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
+
+export const TxViewAll = styled.span`
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: 10px;
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+export const TxList = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const TxItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -75,15 +184,36 @@ export const StatRow = styled.div`
   }
 `;
 
-export const StatLabel = styled.span`
-  font-family: ${({ theme }) => theme.fonts.body};
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme }) => theme.colors.textSecondary};
+export const TxInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 `;
 
-export const StatValue = styled.span`
+export const TxDescription = styled.span`
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: 12px;
+  color: ${({ theme }) => theme.colors.text};
+
+  @media (max-width: 479px) {
+    font-size: 11px;
+  }
+`;
+
+export const TxCategory = styled.span`
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: 10px;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+export const TxAmount = styled.span<{ $positive?: boolean }>`
   font-family: ${({ theme }) => theme.fonts.mono};
-  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-size: 12px;
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
-  color: ${({ theme }) => theme.colors.tradingUp};
+  color: ${({ $positive, theme }) =>
+    $positive ? theme.colors.tradingUp : theme.colors.tradingDown};
+
+  @media (max-width: 479px) {
+    font-size: 11px;
+  }
 `;

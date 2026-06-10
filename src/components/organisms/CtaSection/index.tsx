@@ -15,7 +15,7 @@ export function CtaSection() {
         <S.Subtitle>
           Comece grátis hoje. Sem cartão de crédito, sem compromisso.
         </S.Subtitle>
-        <Button as={Link} href="/register" size="lg">
+        <Button as={Link} href="/register" size="lg" variant="white">
           Criar Conta Gratuita
         </Button>
         <S.Disclaimer>
