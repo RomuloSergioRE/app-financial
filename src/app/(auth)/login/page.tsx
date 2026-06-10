@@ -73,6 +73,7 @@ export default function LoginPage() {
           </Button>
 
           <FormLink text="Não tem conta?" linkText="Cadastre-se" href="/register" />
+          <FormLink text="← Voltar para página inicial" linkText="Home" href="/" />
         </S.FormBody>
       </form>
     </AuthCard>
