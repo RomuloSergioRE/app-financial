@@ -49,6 +49,50 @@ export const Logo = styled.div`
   letter-spacing: -0.02em;
 `;
 
+export const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => `0 ${theme.spacing.lg} ${theme.spacing.lg}`};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  margin-bottom: ${({ theme }) => theme.spacing.sm};
+`;
+
+export const Avatar = styled.div`
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${({ theme }) => theme.colors.surfaceHover};
+`;
+
+export const AvatarImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+export const AvatarFallback = styled.div`
+  color: ${({ theme }) => theme.colors.textMuted};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const UserName = styled.span`
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  color: ${({ theme }) => theme.colors.text};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
 export const Nav = styled.nav`
   flex: 1;
   padding: ${({ theme }) => theme.spacing.sm};

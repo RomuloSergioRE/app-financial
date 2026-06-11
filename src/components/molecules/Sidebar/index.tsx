@@ -2,12 +2,13 @@
 
 import { memo } from "react";
 import { usePathname } from "next/navigation";
-import { HiOutlineXMark, HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
+import { HiOutlineXMark, HiOutlineArrowRightOnRectangle, HiOutlineUserCircle } from "react-icons/hi2";
 import type { NavItem, SidebarProps } from "./types";
 import * as S from "./style";
 
-export const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout }: SidebarProps) {
+export const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout, user }: SidebarProps) {
   const pathname = usePathname();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
@@ -26,6 +27,21 @@ export const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout
             <HiOutlineXMark size={24} />
           </S.CloseButton>
         </S.Header>
+
+        {user && (
+          <S.UserInfo>
+            <S.Avatar>
+              {user.avatarUrl ? (
+                <S.AvatarImage src={`${apiUrl}${user.avatarUrl}`} alt={user.name} />
+              ) : (
+                <S.AvatarFallback>
+                  <HiOutlineUserCircle size={28} />
+                </S.AvatarFallback>
+              )}
+            </S.Avatar>
+            <S.UserName>{user.name}</S.UserName>
+          </S.UserInfo>
+        )}
 
         <S.Nav>
           {items.map((item: NavItem) => (

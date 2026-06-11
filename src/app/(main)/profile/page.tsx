@@ -2,14 +2,15 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Text } from "@/components/atoms/Text";
 import { Input } from "@/components/atoms/Input";
 import { PasswordInput } from "@/components/molecules/PasswordInput";
 import { Button } from "@/components/atoms/Button";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { toast } from "@/components/molecules/Toast";
-import { useProfile, useUpdateProfile, useUpdatePassword } from "@/hooks/useUser";
+import { HiOutlineUserCircle } from "react-icons/hi2";
+import { useProfile, useUpdateProfile, useUpdatePassword, useUploadAvatar, useRemoveAvatar } from "@/hooks/useUser";
 import { updateProfileSchema, updatePasswordSchema } from "@/schemas/profile.schema";
 import type { UpdateProfileFormData, UpdatePasswordFormData } from "@/schemas/profile.schema";
 import * as S from "./style";
@@ -18,6 +19,12 @@ export default function ProfilePage() {
   const profileState = useProfile();
   const updateProfile = useUpdateProfile();
   const updatePassword = useUpdatePassword();
+  const uploadAvatar = useUploadAvatar();
+
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const removeAvatar = useRemoveAvatar();
 
   const profileForm = useForm<UpdateProfileFormData>({
     resolver: zodResolver(updateProfileSchema),
@@ -36,6 +43,21 @@ export default function ProfilePage() {
       profileForm.reset({ name: user.name, email: user.email });
     }
   }, [user, profileForm]);
+
+  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setPreviewUrl(URL.createObjectURL(file));
+    uploadAvatar.mutate(file, {
+      onSuccess: () => setPreviewUrl(null),
+      onError: () => setPreviewUrl(null),
+    });
+    e.target.value = "";
+  }, [uploadAvatar]);
+
+  const handleRemoveAvatar = useCallback(() => {
+    removeAvatar.mutate();
+  }, [removeAvatar]);
 
   if (profileState.status === "loading") {
     return (
@@ -86,6 +108,8 @@ export default function ProfilePage() {
     );
   };
 
+  const currentAvatar = previewUrl || (profileUser.avatarUrl ? `${apiUrl}${profileUser.avatarUrl}` : null);
+
   return (
     <S.Wrapper>
       <Text as="h1" size="3xl" weight="bold" fontFamily="display">
@@ -95,6 +119,45 @@ export default function ProfilePage() {
       <S.Grid>
         <S.Section>
           <S.SectionTitle>Dados pessoais</S.SectionTitle>
+
+          <S.AvatarSection>
+            <S.AvatarPreview>
+              {currentAvatar ? (
+                <S.AvatarImage src={currentAvatar} alt="Foto do perfil" />
+              ) : (
+                <S.AvatarFallback>
+                  <HiOutlineUserCircle size={48} />
+                </S.AvatarFallback>
+              )}
+            </S.AvatarPreview>
+            <S.AvatarActions>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={handleFileSelect}
+              />
+              <S.AvatarButton
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploadAvatar.isPending}
+              >
+                {uploadAvatar.isPending ? "Enviando..." : "Alterar foto"}
+              </S.AvatarButton>
+              {profileUser.avatarUrl && (
+                <S.AvatarButton
+                  type="button"
+                  variant="ghost"
+                  onClick={handleRemoveAvatar}
+                  disabled={uploadAvatar.isPending}
+                >
+                  Remover
+                </S.AvatarButton>
+              )}
+            </S.AvatarActions>
+          </S.AvatarSection>
+
           <S.Form onSubmit={profileForm.handleSubmit(handleSaveProfile)}>
             <S.Field>
               <S.Label>Nome</S.Label>

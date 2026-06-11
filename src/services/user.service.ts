@@ -17,4 +17,16 @@ export const userService = {
   updatePassword: async (data: { currentPassword: string; newPassword: string }): Promise<void> => {
     await api.put("/auth/password", data);
   },
+
+  uploadAvatar: async (file: File): Promise<User> => {
+    const formData = new FormData();
+    formData.append("avatar", file);
+    const response = await api.post("/auth/avatar", formData);
+    return validateResponse(userSchema, response.data);
+  },
+
+  removeAvatar: async (): Promise<User> => {
+    const response = await api.delete("/auth/avatar");
+    return validateResponse(userSchema, response.data);
+  },
 };
