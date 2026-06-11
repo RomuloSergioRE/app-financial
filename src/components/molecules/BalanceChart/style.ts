@@ -5,6 +5,10 @@ export const Wrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   padding: ${({ theme }) => theme.spacing.xl};
+
+  @media (max-width: 479px) {
+    padding: ${({ theme }) => theme.spacing.md};
+  }
 `;
 
 export const Title = styled.h3`
@@ -20,6 +24,7 @@ export const ChartContainer = styled.div`
   height: clamp(220px, 35vw, 300px);
   min-width: 0;
   min-height: 0;
+  overflow: hidden;
 `;
 
 export const BalanceInfo = styled.div`

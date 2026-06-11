@@ -23,7 +23,7 @@ export const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout
         <S.Header>
           <S.Logo>Financial</S.Logo>
           <S.CloseButton onClick={onToggle} aria-label="Fechar menu">
-            <HiOutlineXMark size={20} />
+            <HiOutlineXMark size={24} />
           </S.CloseButton>
         </S.Header>
 

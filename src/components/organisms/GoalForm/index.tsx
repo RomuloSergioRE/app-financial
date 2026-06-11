@@ -30,6 +30,7 @@ export function GoalForm({
   const {
     register,
     handleSubmit,
+    control,
     setValue,
     formState: { errors, isValid },
   } = useForm<CreateGoalDTO>({
@@ -44,7 +45,7 @@ export function GoalForm({
   });
 
   const isModal = !!onCancel;
-  const categoryIdValue = useWatch({ name: "categoryId" });
+  const categoryIdValue = useWatch({ control, name: "categoryId" });
 
   const fields = (
     <>

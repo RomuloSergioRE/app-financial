@@ -56,7 +56,7 @@ export const PieChart = memo(function PieChart({ categories }: PieChartProps) {
     <S.Wrapper>
       <S.Title>Gastos por Categoria</S.Title>
       <S.ChartContainer>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height="100%">
           <RechartsPieChart>
             <Pie
               data={data}
@@ -64,8 +64,8 @@ export const PieChart = memo(function PieChart({ categories }: PieChartProps) {
               nameKey="name"
               cx="50%"
               cy="50%"
-              innerRadius={60}
-              outerRadius={100}
+              innerRadius="50%"
+              outerRadius="80%"
               paddingAngle={2}
               strokeWidth={0}
             >

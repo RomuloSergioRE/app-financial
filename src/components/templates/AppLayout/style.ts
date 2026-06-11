@@ -51,11 +51,10 @@ export const HamburgerWrapper = styled.div`
 
 export const HamburgerButton = styled.button<{ $isOpen: boolean }>`
   pointer-events: auto;
-  min-width: 44px;
-  min-height: 44px;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  background: ${({ theme }) => theme.colors.surface};
+  width: 44px;
+  height: 44px;
+  background: none;
+  border: none;
   color: ${({ theme }) => theme.colors.text};
   font-size: 1.125rem;
   display: flex;

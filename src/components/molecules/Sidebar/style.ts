@@ -139,14 +139,12 @@ export const Header = styled.div`
 
 export const CloseButton = styled.button`
   display: flex;
-  min-width: 44px;
-  min-height: 44px;
+  width: 44px;
+  height: 44px;
   margin-right: ${({ theme }) => theme.spacing.md};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  background: transparent;
+  border: none;
+  background: none;
   color: ${({ theme }) => theme.colors.text};
-  font-size: 1.125rem;
   cursor: pointer;
   align-items: center;
   justify-content: center;

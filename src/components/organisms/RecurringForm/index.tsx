@@ -42,6 +42,7 @@ export function RecurringForm({
   const {
     register,
     handleSubmit,
+    control,
     setValue,
     formState: { errors, isValid },
   } = useForm<CreateRecurringDTO>({
@@ -60,9 +61,9 @@ export function RecurringForm({
   });
 
   const isModal = !!onCancel;
-  const typeValue = useWatch({ name: "type" });
-  const categoryIdValue = useWatch({ name: "categoryId" });
-  const frequencyValue = useWatch({ name: "frequency" });
+  const typeValue = useWatch({ control, name: "type" });
+  const categoryIdValue = useWatch({ control, name: "categoryId" });
+  const frequencyValue = useWatch({ control, name: "frequency" });
 
   const fields = (
     <>

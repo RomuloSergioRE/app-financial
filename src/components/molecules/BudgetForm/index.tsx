@@ -54,6 +54,7 @@ export function BudgetForm({
   const {
     register,
     handleSubmit,
+    control,
     setValue,
     formState: { errors, isValid },
   } = useForm<CreateBudgetDTO>({
@@ -68,9 +69,9 @@ export function BudgetForm({
   });
 
   const isModal = !!onCancel;
-  const categoryIdValue = useWatch({ name: "categoryId" });
-  const monthValue = useWatch({ name: "month" });
-  const yearValue = useWatch({ name: "year" });
+  const categoryIdValue = useWatch({ control, name: "categoryId" });
+  const monthValue = useWatch({ control, name: "month" });
+  const yearValue = useWatch({ control, name: "year" });
 
   const fields = (
     <>

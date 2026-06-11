@@ -67,7 +67,7 @@ export const TopCategoriesChart = memo(function TopCategoriesChart({
     <S.Wrapper>
       <S.Title>Top Categorias</S.Title>
       <S.ChartContainer>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height="100%">
           <RechartsBarChart
             data={chartData}
             layout="vertical"
