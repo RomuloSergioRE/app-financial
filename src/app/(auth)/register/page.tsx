@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, useController } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ import { PasswordInput } from "@/components/molecules/PasswordInput";
 import { Button } from "@/components/atoms/Button";
 import { FormLink } from "@/components/molecules/FormLink";
 import { Text } from "@/components/atoms/Text";
+import { Select } from "@/components/molecules/Select";
 import { registerSchema } from "@/schemas/auth.schema";
 import type { RegisterDTO as RegisterFormData } from "@/schemas/auth.schema";
 import { toast } from "@/components/molecules/Toast";
@@ -26,9 +27,19 @@ export default function RegisterPage() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
+    defaultValues: {
+      role: "user",
+    },
+  });
+
+  const { field: roleField } = useController({
+    name: "role",
+    control,
+    defaultValue: "user",
   });
 
   const onSubmit = async (data: RegisterFormData) => {
@@ -38,6 +49,7 @@ export default function RegisterPage() {
         name: data.name,
         email: data.email,
         password: data.password,
+        role: data.role,
       });
       toast.success("Conta criada com sucesso!");
       router.push("/dashboard");
@@ -81,6 +93,17 @@ export default function RegisterPage() {
               placeholder="Repita a senha"
               error={errors.confirmPassword?.message}
               {...register("confirmPassword")}
+            />
+          </FormField>
+
+          <FormField label="Tipo de conta" error={errors.role?.message}>
+            <Select
+              value={roleField.value}
+              onChange={roleField.onChange}
+              options={[
+                { value: "user", label: "Usuário" },
+                { value: "company", label: "Empresa" },
+              ]}
             />
           </FormField>
 

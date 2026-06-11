@@ -9,7 +9,7 @@ export const authService = {
     return validateResponse(userSchema, response.data.user);
   },
 
-  register: async (data: { name: string; email: string; password: string }): Promise<User> => {
+  register: async (data: { name: string; email: string; password: string; role: "user" | "company" }): Promise<User> => {
     const response = await api.post("/auth/register", data);
     return validateResponse(userSchema, response.data.user);
   },
