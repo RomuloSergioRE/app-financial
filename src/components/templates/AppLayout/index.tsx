@@ -15,7 +15,7 @@ interface AppLayoutProps {
 }
 
 export function AppLayout({ children, navItems }: AppLayoutProps) {
-  const { isAuthenticated, initializing, role, logout } = useAuth();
+  const { isAuthenticated, initializing, role, logout, user } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -62,6 +62,7 @@ export function AppLayout({ children, navItems }: AppLayoutProps) {
           isOpen={sidebarOpen}
           onToggle={handleToggle}
           onLogout={handleLogout}
+          user={user}
         />
         <S.Main>{children}</S.Main>
       </S.LayoutWrapper>

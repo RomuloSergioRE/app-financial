@@ -43,3 +43,37 @@ export function useUpdatePassword() {
     },
   });
 }
+
+export function useUploadAvatar() {
+  const queryClient = useQueryClient();
+  const { refreshUser } = useAuth();
+
+  return useMutation({
+    mutationFn: (file: File) => userService.uploadAvatar(file),
+    onSuccess: () => {
+      toast.success("Foto atualizada com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ["user", "profile"] });
+      refreshUser();
+    },
+    onError: () => {
+      toast.error("Erro ao atualizar foto");
+    },
+  });
+}
+
+export function useRemoveAvatar() {
+  const queryClient = useQueryClient();
+  const { refreshUser } = useAuth();
+
+  return useMutation({
+    mutationFn: () => userService.removeAvatar(),
+    onSuccess: () => {
+      toast.success("Foto removida com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ["user", "profile"] });
+      refreshUser();
+    },
+    onError: () => {
+      toast.error("Erro ao remover foto");
+    },
+  });
+}
