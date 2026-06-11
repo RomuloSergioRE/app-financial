@@ -43,7 +43,7 @@ const variantStyles = {
 
     &:hover:not(:disabled) {
       background: ${({ theme }) => theme.colors.surface};
-      border-color: ${({ theme }) => theme.colors.textSecondary};
+      border-color: ${({ theme }) => theme.colors.primary};
     }
   `,
   ghost: css`

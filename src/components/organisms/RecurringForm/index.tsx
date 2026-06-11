@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
@@ -42,7 +42,6 @@ export function RecurringForm({
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
     formState: { errors, isValid },
   } = useForm<CreateRecurringDTO>({
@@ -61,6 +60,9 @@ export function RecurringForm({
   });
 
   const isModal = !!onCancel;
+  const typeValue = useWatch({ name: "type" });
+  const categoryIdValue = useWatch({ name: "categoryId" });
+  const frequencyValue = useWatch({ name: "frequency" });
 
   const fields = (
     <>
@@ -86,7 +88,7 @@ export function RecurringForm({
       <S.Row>
         <FormField label="Tipo" error={errors.type?.message}>
           <Select
-            value={watch("type")}
+            value={typeValue}
             onChange={(v) => setValue("type", v as "income" | "outcome")}
             options={TYPE_OPTIONS}
           />
@@ -94,7 +96,7 @@ export function RecurringForm({
 
         <FormField label="Categoria" error={errors.categoryId?.message}>
           <Select
-            value={watch("categoryId")}
+            value={categoryIdValue}
             onChange={(v) => setValue("categoryId", v)}
             options={[
               { value: "", label: "Selecione..." },
@@ -107,7 +109,7 @@ export function RecurringForm({
       <S.Row>
         <FormField label="Frequência" error={errors.frequency?.message}>
           <Select
-            value={watch("frequency")}
+            value={frequencyValue}
             onChange={(v) => setValue("frequency", v as "daily" | "weekly" | "monthly" | "yearly")}
             options={FREQUENCY_OPTIONS}
           />

@@ -6,6 +6,7 @@ const FOOTER_LINKS = {
   Produto: [
     { label: "Recursos", href: "#diferenciais" },
     { label: "Preços", href: "#planos" },
+    { label: "Depoimentos", href: "#depoimentos" },
     { label: "FAQ", href: "#faq" },
   ],
   Empresa: [

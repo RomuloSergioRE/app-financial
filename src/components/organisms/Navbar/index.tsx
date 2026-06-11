@@ -3,24 +3,18 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/atoms/Button";
-import { ThemeToggle } from "@/components/atoms/ThemeToggle";
 import * as S from "./styles";
 
 const NAV_LINKS = [
+  { label: "Sobre", href: "#sobre" },
   { label: "Recursos", href: "#diferenciais" },
   { label: "Preços", href: "#planos" },
+  { label: "Depoimentos", href: "#depoimentos" },
   { label: "FAQ", href: "#faq" },
 ];
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -30,30 +24,9 @@ export function Navbar() {
   }, [menuOpen]);
 
   return (
-    <S.Wrapper $scrolled={scrolled}>
+    <S.Wrapper>
       <S.Container>
-        <S.Logo href="/">App Financial</S.Logo>
-
-        <S.DesktopLinks>
-          {NAV_LINKS.map((link) => (
-            <S.NavLink key={link.href} href={link.href}>
-              {link.label}
-            </S.NavLink>
-          ))}
-        </S.DesktopLinks>
-
-        <S.DesktopActions>
-          <ThemeToggle />
-          <Button as={Link} href="/login" variant="ghost" size="sm">
-            Entrar
-          </Button>
-          <Button as={Link} href="/register" size="sm">
-            Criar Conta
-          </Button>
-        </S.DesktopActions>
-
-        <S.MobileActions>
-          <ThemeToggle />
+        <S.LeftGroup>
           <S.MenuButton
             onClick={() => setMenuOpen(true)}
             aria-label="Abrir menu"
@@ -74,7 +47,25 @@ export function Navbar() {
               />
             </svg>
           </S.MenuButton>
-        </S.MobileActions>
+          <S.Logo href="/">App Financial</S.Logo>
+        </S.LeftGroup>
+
+        <S.DesktopLinks>
+          {NAV_LINKS.map((link) => (
+            <S.NavLink key={link.href} href={link.href}>
+              {link.label}
+            </S.NavLink>
+          ))}
+        </S.DesktopLinks>
+
+        <S.DesktopActions>
+          <Button as={Link} href="/login" variant="outline" size="sm">
+            Entrar
+          </Button>
+          <Button as={Link} href="/register" size="sm">
+            Criar Conta
+          </Button>
+        </S.DesktopActions>
       </S.Container>
 
       <S.Overlay $open={menuOpen} onClick={() => setMenuOpen(false)} />

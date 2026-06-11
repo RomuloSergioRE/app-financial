@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
@@ -32,7 +32,6 @@ export function TransactionForm({
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
     formState: { errors, isValid },
   } = useForm<CreateTransactionDTO>({
@@ -48,6 +47,8 @@ export function TransactionForm({
   });
 
   const isModal = variant === "modal";
+  const typeValue = useWatch({ name: "type" });
+  const categoryIdValue = useWatch({ name: "categoryId" });
 
   const fields = (
     <>
@@ -74,7 +75,7 @@ export function TransactionForm({
         <>
           <FormField label="Tipo" error={errors.type?.message}>
             <Select
-              value={watch("type")}
+              value={typeValue}
               onChange={(v) => setValue("type", v as "income" | "outcome")}
               options={[
                 { value: "outcome", label: "Saída" },
@@ -84,7 +85,7 @@ export function TransactionForm({
           </FormField>
           <FormField label="Categoria" error={errors.categoryId?.message}>
             <Select
-              value={watch("categoryId")}
+              value={categoryIdValue}
               onChange={(v) => setValue("categoryId", v)}
               options={[
                 { value: "", label: "Selecione" },
@@ -100,7 +101,7 @@ export function TransactionForm({
         <S.FormRow>
           <FormField label="Tipo" error={errors.type?.message}>
             <Select
-              value={watch("type")}
+              value={typeValue}
               onChange={(v) => setValue("type", v as "income" | "outcome")}
               options={[
                 { value: "outcome", label: "Saída" },
@@ -110,7 +111,7 @@ export function TransactionForm({
           </FormField>
           <FormField label="Categoria" error={errors.categoryId?.message}>
             <Select
-              value={watch("categoryId")}
+              value={categoryIdValue}
               onChange={(v) => setValue("categoryId", v)}
               options={[
                 { value: "", label: "Selecione" },

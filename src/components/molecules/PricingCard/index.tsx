@@ -1,6 +1,5 @@
 "use client";
 
-import type { ReactNode } from "react";
 import Link from "next/link";
 import { Button } from "@/components/atoms/Button";
 import * as S from "./styles";
@@ -15,7 +14,6 @@ interface PricingCardProps {
   badge?: string;
   cta: string;
   ctaHref: string;
-  icon: ReactNode;
 }
 
 export function PricingCard({
@@ -28,7 +26,6 @@ export function PricingCard({
   badge,
   cta,
   ctaHref,
-  icon,
 }: PricingCardProps) {
   return (
     <S.Wrapper $highlighted={highlighted}>

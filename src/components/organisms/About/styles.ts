@@ -4,6 +4,10 @@ export const Wrapper = styled.section`
   padding: 80px ${({ theme }) => theme.spacing.lg};
   background: ${({ theme }) => theme.colors.surface};
 
+  @media (max-width: 479px) {
+    padding: 60px ${({ theme }) => theme.spacing.md};
+  }
+
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding: 100px ${({ theme }) => theme.spacing.lg};
   }
@@ -35,7 +39,7 @@ export const Title = styled.h2`
 
 export const Grid = styled.div`
   display: grid;
-  gap: 40px;
+  gap: ${({ theme }) => theme.spacing.lg};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: 1fr 1fr;
@@ -55,6 +59,11 @@ export const TextContent = styled.div`
   gap: ${({ theme }) => theme.spacing.md};
   border-left: 3px solid ${({ theme }) => theme.colors.primary};
   padding-left: ${({ theme }) => theme.spacing.lg};
+
+  @media (max-width: 479px) {
+    border-left: none;
+    padding-left: 0;
+  }
 `;
 
 export const Paragraph = styled.p`
@@ -100,6 +109,7 @@ export const ValueCard = styled.div`
 export const TitleRow = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: ${({ theme }) => theme.spacing.md};
   width: 100%;
 `;
@@ -121,11 +131,11 @@ export const ValueNumber = styled.span`
   font-size: ${({ theme }) => theme.fontSize.xxl};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.colors.primary};
-  margin-left: auto;
   opacity: 0.5;
 `;
 
 export const ValueTitle = styled.h4`
+  flex: 1;
   font-family: ${({ theme }) => theme.fonts.display};
   font-size: ${({ theme }) => theme.fontSize.xl};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};

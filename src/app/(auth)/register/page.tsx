@@ -95,7 +95,7 @@ export default function RegisterPage() {
           </Button>
 
           <FormLink text="Já tem conta?" linkText="Entrar" href="/login" />
-          <FormLink text="← Voltar para página inicial" linkText="Home" href="/" />
+          <FormLink text="← Voltar para página inicial" linkText="Voltar" href="/" />
         </S.FormBody>
       </form>
     </AuthCard>

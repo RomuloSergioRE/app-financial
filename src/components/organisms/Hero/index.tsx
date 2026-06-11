@@ -25,10 +25,11 @@ export function Hero() {
             </Button>
           </S.Actions>
           <S.TrustRow>
+            <S.Bullet />
             <span>Gratuito para começar</span>
-            <S.Dot />
+            <S.Bullet />
             <span>Sem cartão de crédito</span>
-            <S.Dot />
+            <S.Bullet />
             <span>Cancele quando quiser</span>
           </S.TrustRow>
         </S.Content>

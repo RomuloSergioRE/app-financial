@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, type ReactNode } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { canAccess } from "@/lib/permissions";
 import type { Role } from "@/lib/permissions";
 
 interface RouteGuardProps {
@@ -19,7 +18,6 @@ export function RouteGuard({
 }: RouteGuardProps) {
   const { role, initializing } = useAuth();
   const router = useRouter();
-  const pathname = usePathname();
 
   useEffect(() => {
     if (initializing) return;

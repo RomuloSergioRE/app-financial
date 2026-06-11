@@ -49,7 +49,7 @@ export function MockupPreview() {
           <S.ChartSection>
             <S.ChartLabel>Receitas × Despesas — Esta Semana</S.ChartLabel>
             <S.ChartRow>
-              {CHART_DATA.map((day, i) => (
+              {CHART_DATA.map((day) => (
                 <div key={day.day} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
                   <div style={{ display: "flex", gap: 3, width: "100%", height: 80, alignItems: "flex-end" }}>
                     <S.ChartBar $height={day.income} $color="#0ECB81" />

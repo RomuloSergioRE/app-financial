@@ -35,7 +35,7 @@ export default function LoginPage() {
       const user = await login(data);
       toast.success("Login realizado com sucesso!");
       const redirectTo = user.role === "admin" ? "/admin" : "/dashboard";
-      window.location.href = redirectTo;
+      window.location.replace(redirectTo);
     } catch (err: unknown) {
       setApiError(extractErrorMessage(err, "Erro ao fazer login. Verifique suas credenciais."));
     }
@@ -73,7 +73,7 @@ export default function LoginPage() {
           </Button>
 
           <FormLink text="Não tem conta?" linkText="Cadastre-se" href="/register" />
-          <FormLink text="← Voltar para página inicial" linkText="Home" href="/" />
+          <FormLink text="← Voltar para página inicial" linkText="Voltar" href="/" />
         </S.FormBody>
       </form>
     </AuthCard>
