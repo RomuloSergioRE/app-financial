@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
@@ -30,7 +30,6 @@ export function GoalForm({
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
     formState: { errors, isValid },
   } = useForm<CreateGoalDTO>({
@@ -45,6 +44,7 @@ export function GoalForm({
   });
 
   const isModal = !!onCancel;
+  const categoryIdValue = useWatch({ name: "categoryId" });
 
   const fields = (
     <>
@@ -69,7 +69,7 @@ export function GoalForm({
 
       <FormField label="Categoria (opcional)" error={errors.categoryId?.message}>
         <Select
-          value={watch("categoryId") ?? ""}
+          value={categoryIdValue ?? ""}
           onChange={(v) => setValue("categoryId", v || "")}
           options={[
             { value: "", label: "Todas as categorias" },

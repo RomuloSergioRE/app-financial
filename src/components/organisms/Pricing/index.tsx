@@ -19,7 +19,6 @@ const PLANS = [
     highlighted: false,
     cta: "Começar Grátis",
     ctaHref: "/register",
-    icon: null,
   },
   {
     name: "Pro",
@@ -39,7 +38,6 @@ const PLANS = [
     badge: "Mais popular",
     cta: "Assinar Pro",
     ctaHref: "/register",
-    icon: null,
   },
   {
     name: "Enterprise",
@@ -58,7 +56,6 @@ const PLANS = [
     highlighted: false,
     cta: "Falar com Vendas",
     ctaHref: "/register",
-    icon: null,
   },
 ];
 

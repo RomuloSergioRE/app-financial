@@ -1,14 +1,12 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 export const Wrapper = styled.section`
   position: relative;
   overflow: hidden;
   padding: 80px ${({ theme }) => theme.spacing.lg} 64px;
-  background: ${({ theme }) =>
-    theme.colors.background};
 
   @media (max-width: 479px) {
-    padding: 60px ${({ theme }) => theme.spacing.md} 48px;
+    padding: 80px ${({ theme }) => theme.spacing.md} 48px;
   }
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -115,25 +113,37 @@ export const Actions = styled.div`
 `;
 
 export const TrustRow = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: center;
-  flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.sm};
+  line-height: 1.5;
+  gap: ${({ theme }) => theme.spacing.xs};
+  width: fit-content;
+  margin: 0 auto;
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ theme }) => theme.colors.textMuted};
-  justify-content: center;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: flex;
+    flex-direction: row;
+    gap: ${({ theme }) => theme.spacing.sm};
     justify-content: flex-start;
+    width: auto;
+    margin: 0;
   }
 `;
 
-export const Dot = styled.span`
+export const Bullet = styled.span`
+  display: block;
   width: 4px;
   height: 4px;
   border-radius: 50%;
   background: ${({ theme }) => theme.colors.textMuted};
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: none;
+  }
 `;
 
 export const MockupColumn = styled.div`

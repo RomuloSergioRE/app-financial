@@ -1,18 +1,13 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.nav<{ $scrolled: boolean }>`
+export const Wrapper = styled.nav`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  background: ${({ theme, $scrolled }) =>
-    $scrolled ? `${theme.colors.surface}ee` : "transparent"};
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid
-    ${({ theme, $scrolled }) =>
-      $scrolled ? theme.colors.border : "transparent"};
+  background: ${({ theme }) => `${theme.colors.surface}dd`};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   transition: background 0.3s ease, border-color 0.3s ease;
 `;
 
@@ -23,7 +18,13 @@ export const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: ${({ theme }) => `0 ${theme.spacing.lg}`};
-  height: 64px;
+  height: 56px;
+`;
+
+export const LeftGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 export const Logo = styled.a`
@@ -41,7 +42,7 @@ export const Logo = styled.a`
 export const DesktopLinks = styled.div`
   display: none;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.lg};
+  gap: ${({ theme }) => theme.spacing.md};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: flex;
@@ -49,6 +50,7 @@ export const DesktopLinks = styled.div`
 `;
 
 export const NavLink = styled.a`
+  position: relative;
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
@@ -57,8 +59,24 @@ export const NavLink = styled.a`
   transition: color ${({ theme }) => theme.transition.fast};
   cursor: pointer;
 
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: ${({ theme }) => theme.colors.primary};
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+  }
+
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
+  }
+
+  &:hover::after {
+    transform: scaleX(1);
   }
 `;
 
@@ -86,11 +104,16 @@ export const MenuButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 44px;
+  height: 44px;
   background: none;
   border: none;
   color: ${({ theme }) => theme.colors.text};
   cursor: pointer;
-  padding: 8px;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: none;
+  }
 
   &:focus-visible {
     outline: 2px solid ${({ theme }) => theme.colors.primary};
@@ -106,7 +129,7 @@ export const Overlay = styled.div<{ $open: boolean }>`
   right: 0;
   bottom: 0;
   background: ${({ theme }) => theme.colors.overlay};
-  z-index: 98;
+  z-index: 99;
   opacity: ${({ $open }) => ($open ? 1 : 0)};
   pointer-events: ${({ $open }) => ($open ? "auto" : "none")};
   transition: opacity 0.3s ease;
@@ -115,15 +138,14 @@ export const Overlay = styled.div<{ $open: boolean }>`
 export const MobileMenu = styled.div<{ $open: boolean }>`
   position: fixed;
   top: 0;
-  right: 0;
+  left: 0;
   bottom: 0;
-  width: 300px;
-  max-width: 85vw;
+  width: 100%;
   background: ${({ theme }) => theme.colors.surface};
-  z-index: 99;
+  z-index: 101;
   display: flex;
   flex-direction: column;
-  transform: translateX(${({ $open }) => ($open ? "0" : "100%")});
+  transform: translateX(${({ $open }) => ($open ? "0" : "-100%")});
   transition: transform 0.3s ease;
 `;
 
@@ -144,16 +166,33 @@ export const MobileLinks = styled.div`
 `;
 
 export const MobileNavLink = styled.a`
+  position: relative;
   font-family: ${({ theme }) => theme.fonts.display};
   font-size: ${({ theme }) => theme.fontSize.lg};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.colors.text};
   text-decoration: none;
-  padding: ${({ theme }) => `${theme.spacing.sm} 0`};
+  padding: ${({ theme }) => `${theme.spacing.md} 0`};
   cursor: pointer;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: ${({ theme }) => theme.colors.primary};
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+  }
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
+  }
+
+  &:hover::after {
+    transform: scaleX(1);
   }
 `;
 

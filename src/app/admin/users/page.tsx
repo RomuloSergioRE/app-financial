@@ -3,7 +3,6 @@
 import { useState, useMemo } from "react";
 import {
   HiOutlineTrash,
-  HiOutlineMagnifyingGlass,
   HiOutlineDocumentArrowDown,
   HiOutlineEye,
 } from "react-icons/hi2";

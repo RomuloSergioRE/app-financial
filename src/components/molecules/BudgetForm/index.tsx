@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
@@ -54,7 +54,6 @@ export function BudgetForm({
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
     formState: { errors, isValid },
   } = useForm<CreateBudgetDTO>({
@@ -69,12 +68,15 @@ export function BudgetForm({
   });
 
   const isModal = !!onCancel;
+  const categoryIdValue = useWatch({ name: "categoryId" });
+  const monthValue = useWatch({ name: "month" });
+  const yearValue = useWatch({ name: "year" });
 
   const fields = (
     <>
       <FormField label="Categoria" error={errors.categoryId?.message}>
         <Select
-          value={String(watch("categoryId"))}
+          value={String(categoryIdValue)}
           onChange={(v) => setValue("categoryId", v)}
           options={[
             { value: "", label: "Selecione..." },
@@ -86,7 +88,7 @@ export function BudgetForm({
       <S.Row>
         <FormField label="Mês" error={errors.month?.message}>
           <Select
-            value={String(watch("month"))}
+            value={String(monthValue)}
             onChange={(v) => setValue("month", Number(v))}
             options={MONTHS}
           />
@@ -94,7 +96,7 @@ export function BudgetForm({
 
         <FormField label="Ano" error={errors.year?.message}>
           <Select
-            value={String(watch("year"))}
+            value={String(yearValue)}
             onChange={(v) => setValue("year", Number(v))}
             options={generateYearOptions()}
           />
