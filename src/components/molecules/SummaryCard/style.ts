@@ -11,6 +11,10 @@ export const Wrapper = styled.div<{ $accent: string }>`
   gap: ${({ theme }) => theme.spacing.xs};
   overflow-wrap: break-word;
   word-break: break-word;
+
+  @media (max-width: 479px) {
+    padding: ${({ theme }) => theme.spacing.md};
+  }
 `;
 
 export const HeaderRow = styled.div`

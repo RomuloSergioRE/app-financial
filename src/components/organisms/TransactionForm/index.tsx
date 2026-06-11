@@ -32,6 +32,7 @@ export function TransactionForm({
   const {
     register,
     handleSubmit,
+    control,
     setValue,
     formState: { errors, isValid },
   } = useForm<CreateTransactionDTO>({
@@ -47,8 +48,8 @@ export function TransactionForm({
   });
 
   const isModal = variant === "modal";
-  const typeValue = useWatch({ name: "type" });
-  const categoryIdValue = useWatch({ name: "categoryId" });
+  const typeValue = useWatch({ control, name: "type" });
+  const categoryIdValue = useWatch({ control, name: "categoryId" });
 
   const fields = (
     <>

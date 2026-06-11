@@ -48,7 +48,7 @@ export const BalanceChart = memo(function BalanceChart({
     <S.Wrapper>
       <S.Title>Receitas e Despesas</S.Title>
       <S.ChartContainer>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height="100%">
           <RechartsPieChart>
             <Pie
               data={data}
@@ -56,8 +56,8 @@ export const BalanceChart = memo(function BalanceChart({
               nameKey="name"
               cx="50%"
               cy="50%"
-              innerRadius={60}
-              outerRadius={100}
+              innerRadius="50%"
+              outerRadius="80%"
               paddingAngle={3}
               strokeWidth={0}
             >

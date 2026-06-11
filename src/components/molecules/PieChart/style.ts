@@ -5,6 +5,10 @@ export const Wrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   padding: ${({ theme }) => theme.spacing.xl};
+
+  @media (max-width: 479px) {
+    padding: ${({ theme }) => theme.spacing.md};
+  }
 `;
 
 export const Title = styled.h3`
@@ -20,6 +24,7 @@ export const ChartContainer = styled.div`
   height: clamp(220px, 35vw, 300px);
   min-width: 0;
   min-height: 0;
+  overflow: hidden;
 `;
 
 export const Legend = styled.div`
@@ -28,6 +33,10 @@ export const Legend = styled.div`
   gap: ${({ theme }) => theme.spacing.sm};
   margin-top: ${({ theme }) => theme.spacing.sm};
   justify-content: center;
+
+  @media (max-width: 479px) {
+    gap: 4px;
+  }
 `;
 
 export const LegendItem = styled.div`
@@ -48,4 +57,8 @@ export const LegendLabel = styled.span`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme }) => theme.colors.textSecondary};
+
+  @media (max-width: 479px) {
+    font-size: 0.625rem;
+  }
 `;
