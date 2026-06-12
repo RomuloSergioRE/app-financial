@@ -133,18 +133,20 @@ export default function ProfilePage() {
           <S.SectionTitle>Dados pessoais</S.SectionTitle>
 
           <S.AvatarSection onClick={() => setModalOpen(true)}>
-            <S.AvatarPreview>
-              {currentAvatar ? (
-                <S.AvatarImage src={currentAvatar} alt="Foto do perfil" />
-              ) : (
-                <S.AvatarFallback>
-                  <HiOutlineUserCircle size={48} />
-                </S.AvatarFallback>
-              )}
+            <S.AvatarWrapper>
+              <S.AvatarPreview>
+                {currentAvatar ? (
+                  <S.AvatarImage src={currentAvatar} alt="Foto do perfil" />
+                ) : (
+                  <S.AvatarFallback>
+                    <HiOutlineUserCircle size={48} />
+                  </S.AvatarFallback>
+                )}
+              </S.AvatarPreview>
               <S.AvatarBadge>
                 <HiOutlineCamera size={16} />
               </S.AvatarBadge>
-            </S.AvatarPreview>
+            </S.AvatarWrapper>
           </S.AvatarSection>
 
           <input
@@ -165,7 +167,7 @@ export default function ProfilePage() {
                 )}
               </S.ModalPreview>
 
-              <Text as="p" size="xs" color="textMuted" style={{ textAlign: "center" }}>
+              <Text as="p" size="xs" color="textMuted" align="center">
                 Máximo 2MB · PNG, JPG, WEBP
               </Text>
 
