@@ -30,7 +30,7 @@ export type TransactionDTO = z.infer<typeof transactionSchema>;
 
 export const createTransactionSchema = z.object({
   description: z.string().min(1, "Descrição é obrigatória").trim(),
-  amount: z.number().positive("Valor deve ser positivo"),
+  amount: z.number().positive("Valor deve ser positivo").int(),
   type: z.enum(["income", "outcome"]),
   date: z.string(),
   categoryId: z.string({ message: "Categoria é obrigatória" }),

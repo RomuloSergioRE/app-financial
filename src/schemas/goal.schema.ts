@@ -22,7 +22,7 @@ export type GoalDTO = z.infer<typeof goalSchema>;
 
 export const createGoalSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório").trim(),
-  targetAmount: z.number().positive("Valor alvo deve ser positivo"),
+  targetAmount: z.number().positive("Valor alvo deve ser positivo").int(),
   categoryId: z.string().optional(),
   deadline: z.string().optional(),
 });

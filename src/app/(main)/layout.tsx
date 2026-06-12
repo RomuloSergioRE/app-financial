@@ -1,7 +1,5 @@
 "use client";
 
-"use client";
-
 import { useAuth } from "@/contexts/AuthContext";
 import { filterNavItems } from "@/lib/permissions";
 import { AppLayout } from "@/components/templates/AppLayout";
