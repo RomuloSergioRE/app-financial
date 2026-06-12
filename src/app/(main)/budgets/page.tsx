@@ -239,7 +239,7 @@ export default function BudgetsPage() {
         onClose={() => setDeletingBudget(null)}
         onConfirm={handleDeleteConfirm}
         title="Excluir Orçamento"
-        message={`Tem certeza que deseja excluir o orçamento de "${editingBudget?.categoryName ?? deletingBudget?.categoryName ?? ""}"?`}
+        message={`Tem certeza que deseja excluir o orçamento de "${deletingBudget?.categoryName ?? ""}"?`}
         confirmLabel="Excluir"
         loading={deleteMutation.isPending}
       />

@@ -20,7 +20,8 @@ export const updatePasswordSchema = z
       .min(8, "Nova senha deve ter no mínimo 8 caracteres")
       .regex(/[A-Z]/, "Nova senha deve conter pelo menos uma letra maiúscula")
       .regex(/[a-z]/, "Nova senha deve conter pelo menos uma letra minúscula")
-      .regex(/[0-9]/, "Nova senha deve conter pelo menos um número"),
+      .regex(/[0-9]/, "Nova senha deve conter pelo menos um número")
+      .regex(/[!@#$%^&*(),.?":{}|<>_\-+=\[\]]/, "Nova senha deve conter pelo menos um caractere especial"),
     confirmPassword: z
       .string({ message: "Confirmação de senha é obrigatória" })
       .min(1, "Confirmação de senha é obrigatória"),

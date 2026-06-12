@@ -6,6 +6,7 @@ import {
   HiOutlineDocumentArrowDown,
   HiOutlineEye,
 } from "react-icons/hi2";
+import { fromCents } from "@/lib/currency";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { Button } from "@/components/atoms/Button";
@@ -216,19 +217,19 @@ export default function AdminUsersPage() {
               <S.StatCard>
                 <S.StatLabel>Receitas</S.StatLabel>
                 <S.StatValue $positive>
-                  R$ {(userDetailsState.data.totalIncome / 100).toLocaleString("pt-BR")}
+                  R$ {fromCents(userDetailsState.data.totalIncome).toLocaleString("pt-BR")}
                 </S.StatValue>
               </S.StatCard>
               <S.StatCard>
                 <S.StatLabel>Despesas</S.StatLabel>
                 <S.StatValue>
-                  R$ {(userDetailsState.data.totalOutcome / 100).toLocaleString("pt-BR")}
+                  R$ {fromCents(userDetailsState.data.totalOutcome).toLocaleString("pt-BR")}
                 </S.StatValue>
               </S.StatCard>
               <S.StatCard>
                 <S.StatLabel>Saldo</S.StatLabel>
                 <S.StatValue $positive={userDetailsState.data.netBalance >= 0}>
-                  R$ {(userDetailsState.data.netBalance / 100).toLocaleString("pt-BR")}
+                  R$ {fromCents(userDetailsState.data.netBalance).toLocaleString("pt-BR")}
                 </S.StatValue>
               </S.StatCard>
             </S.Row>

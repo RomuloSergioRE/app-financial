@@ -7,7 +7,7 @@ import {
   HiOutlineUsers,
   HiOutlineFolderOpen,
   HiOutlineClipboardDocumentList,
-  HiOutlineChartBar,
+  HiOutlineChartBarSquare,
 } from "react-icons/hi2";
 import type { NavItem } from "@/components/molecules/Sidebar/types";
 
@@ -24,7 +24,7 @@ const adminNavItems: NavItem[] = [
     href: "/admin/audit",
     icon: <HiOutlineClipboardDocumentList size={20} />,
   },
-  { label: "Analytics", href: "/admin/analytics", icon: <HiOutlineChartBar size={20} /> },
+  { label: "Analytics", href: "/admin/analytics", icon: <HiOutlineChartBarSquare size={20} /> },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

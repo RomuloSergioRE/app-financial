@@ -20,7 +20,7 @@ export const createBudgetSchema = z.object({
   categoryId: z.string({ message: "Categoria é obrigatória" }),
   month: z.number().int().min(1, "Mês inválido").max(12, "Mês inválido"),
   year: z.number().int().min(2000, "Ano inválido").max(2100, "Ano inválido"),
-  limit: z.number().positive("Limite deve ser positivo"),
+  limit: z.number().positive("Limite deve ser positivo").int(),
 });
 
 export type CreateBudgetDTO = z.infer<typeof createBudgetSchema>;

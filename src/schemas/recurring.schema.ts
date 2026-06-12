@@ -21,7 +21,7 @@ export type RecurringDTO = z.infer<typeof recurringSchema>;
 export const createRecurringSchema = z.object({
   categoryId: z.string({ message: "Categoria é obrigatória" }),
   description: z.string().min(1, "Descrição é obrigatória").trim(),
-  amount: z.number().positive("Valor deve ser positivo"),
+  amount: z.number().positive("Valor deve ser positivo").int(),
   type: z.enum(["income", "outcome"]),
   frequency: z.enum(["daily", "weekly", "monthly", "yearly"]),
   interval: z.number().int().positive(),
