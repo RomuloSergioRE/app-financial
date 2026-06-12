@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -72,15 +72,17 @@ export const Actions = styled.div`
 export const AvatarSection = styled.div`
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.lg};
+  justify-content: center;
   padding-bottom: ${({ theme }) => theme.spacing.lg};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   margin-bottom: ${({ theme }) => theme.spacing.lg};
+  cursor: pointer;
 `;
 
 export const AvatarPreview = styled.div`
-  width: 80px;
-  height: 80px;
+  position: relative;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
@@ -89,6 +91,11 @@ export const AvatarPreview = styled.div`
   justify-content: center;
   background: ${({ theme }) => theme.colors.surfaceHover};
   border: 2px solid ${({ theme }) => theme.colors.border};
+  transition: opacity ${({ theme }) => theme.transition.base};
+
+  &:hover {
+    opacity: 0.9;
+  }
 `;
 
 export const AvatarImage = styled.img`
@@ -104,40 +111,39 @@ export const AvatarFallback = styled.div`
   justify-content: center;
 `;
 
-export const AvatarActions = styled.div`
+export const AvatarBadge = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xs};
+  align-items: center;
+  justify-content: center;
+  background: ${({ theme }) => theme.colors.primary};
+  color: #fff;
+  border: 2px solid ${({ theme }) => theme.colors.surface};
 `;
 
-export const AvatarButton = styled.button<{ variant?: "ghost" }>`
-  padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  font-family: ${({ theme }) => theme.fonts.body};
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-  cursor: pointer;
-  transition: opacity ${({ theme }) => theme.transition.base};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  background: ${({ theme }) => theme.colors.surface};
-  color: ${({ theme }) => theme.colors.text};
+export const ModalPreview = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+  background: ${({ theme }) => theme.colors.surfaceHover};
+  border: 2px solid ${({ theme }) => theme.colors.border};
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
 
-  ${({ variant }) =>
-    variant === "ghost" &&
-    css`
-      border: none;
-      background: none;
-      color: ${({ theme }) => theme.colors.textMuted};
-    `}
-
-  &:hover:not(:disabled) {
-    opacity: 0.8;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+export const ModalImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 export const Form = styled.form`

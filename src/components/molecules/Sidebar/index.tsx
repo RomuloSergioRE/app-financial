@@ -32,7 +32,13 @@ export const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout
           <S.UserInfo>
             <S.Avatar>
               {user.avatarUrl ? (
-                <S.AvatarImage src={`${apiUrl}${user.avatarUrl}`} alt={user.name} />
+                <S.AvatarImage
+                  src={`${apiUrl}${user.avatarUrl}`}
+                  alt={user.name}
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.display = "none";
+                  }}
+                />
               ) : (
                 <S.AvatarFallback>
                   <HiOutlineUserCircle size={28} />
