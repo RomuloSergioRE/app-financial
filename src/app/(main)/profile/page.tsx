@@ -8,8 +8,9 @@ import { Input } from "@/components/atoms/Input";
 import { PasswordInput } from "@/components/molecules/PasswordInput";
 import { Button } from "@/components/atoms/Button";
 import { Skeleton } from "@/components/atoms/Skeleton";
+import { Modal, ModalForm, ModalActions } from "@/components/molecules/Modal";
 import { toast } from "@/components/molecules/Toast";
-import { HiOutlineUserCircle } from "react-icons/hi2";
+import { HiOutlineUserCircle, HiOutlineCamera } from "react-icons/hi2";
 import { useProfile, useUpdateProfile, useUpdatePassword, useUploadAvatar, useRemoveAvatar } from "@/hooks/useUser";
 import { updateProfileSchema, updatePasswordSchema } from "@/schemas/profile.schema";
 import type { UpdateProfileFormData, UpdatePasswordFormData } from "@/schemas/profile.schema";
@@ -22,6 +23,7 @@ export default function ProfilePage() {
   const uploadAvatar = useUploadAvatar();
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   const removeAvatar = useRemoveAvatar();
@@ -47,10 +49,20 @@ export default function ProfilePage() {
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("Arquivo muito grande. O tamanho máximo é 2MB.");
+      e.target.value = "";
+      return;
+    }
+
     setPreviewUrl(URL.createObjectURL(file));
     uploadAvatar.mutate(file, {
       onSuccess: () => setPreviewUrl(null),
-      onError: () => setPreviewUrl(null),
+      onError: () => {
+        setPreviewUrl(null);
+        toast.error("Erro ao enviar foto. Verifique o tamanho do arquivo.");
+      },
     });
     e.target.value = "";
   }, [uploadAvatar]);
@@ -120,7 +132,7 @@ export default function ProfilePage() {
         <S.Section>
           <S.SectionTitle>Dados pessoais</S.SectionTitle>
 
-          <S.AvatarSection>
+          <S.AvatarSection onClick={() => setModalOpen(true)}>
             <S.AvatarPreview>
               {currentAvatar ? (
                 <S.AvatarImage src={currentAvatar} alt="Foto do perfil" />
@@ -129,34 +141,62 @@ export default function ProfilePage() {
                   <HiOutlineUserCircle size={48} />
                 </S.AvatarFallback>
               )}
+              <S.AvatarBadge>
+                <HiOutlineCamera size={16} />
+              </S.AvatarBadge>
             </S.AvatarPreview>
-            <S.AvatarActions>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={handleFileSelect}
-              />
-              <S.AvatarButton
+          </S.AvatarSection>
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={handleFileSelect}
+          />
+
+          <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Alterar foto">
+            <ModalForm>
+              <S.ModalPreview>
+                {currentAvatar ? (
+                  <S.ModalImage src={currentAvatar} alt="Preview" />
+                ) : (
+                  <HiOutlineUserCircle size={80} />
+                )}
+              </S.ModalPreview>
+
+              <Text as="p" size="xs" color="textMuted" style={{ textAlign: "center" }}>
+                Máximo 2MB · PNG, JPG, WEBP
+              </Text>
+
+              <Button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                disabled={uploadAvatar.isPending}
+                loading={uploadAvatar.isPending}
+                fullWidth
               >
-                {uploadAvatar.isPending ? "Enviando..." : "Alterar foto"}
-              </S.AvatarButton>
+                {uploadAvatar.isPending ? "Enviando..." : "Escolher arquivo"}
+              </Button>
+
               {profileUser.avatarUrl && (
-                <S.AvatarButton
+                <Button
                   type="button"
-                  variant="ghost"
+                  variant="outline"
                   onClick={handleRemoveAvatar}
                   disabled={uploadAvatar.isPending}
+                  fullWidth
                 >
-                  Remover
-                </S.AvatarButton>
+                  Remover foto
+                </Button>
               )}
-            </S.AvatarActions>
-          </S.AvatarSection>
+
+              <ModalActions>
+                <Button type="button" variant="outline" onClick={() => setModalOpen(false)}>
+                  Cancelar
+                </Button>
+              </ModalActions>
+            </ModalForm>
+          </Modal>
 
           <S.Form onSubmit={profileForm.handleSubmit(handleSaveProfile)}>
             <S.Field>
