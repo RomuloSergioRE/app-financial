@@ -75,8 +75,14 @@ export const AvatarSection = styled.div`
   justify-content: center;
   padding-bottom: ${({ theme }) => theme.spacing.lg};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
+  margin-bottom: ${({ theme }) => theme.spacing.sm};
   cursor: pointer;
+`;
+
+export const AvatarWrapper = styled.div`
+  position: relative;
+  width: 100px;
+  height: 100px;
 `;
 
 export const AvatarPreview = styled.div`
@@ -113,8 +119,8 @@ export const AvatarFallback = styled.div`
 
 export const AvatarBadge = styled.div`
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 0px;
+  right: 0px;
   width: 32px;
   height: 32px;
   border-radius: 50%;
