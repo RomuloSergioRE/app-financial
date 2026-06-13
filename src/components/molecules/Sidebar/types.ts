@@ -12,5 +12,6 @@ export interface SidebarProps {
   user?: {
     name: string;
     avatarUrl?: string | null;
+    plan?: string | null;
   } | null;
 }

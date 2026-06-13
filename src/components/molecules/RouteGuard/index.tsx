@@ -3,20 +3,23 @@
 import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import type { Role } from "@/lib/permissions";
+import type { Role, Plan } from "@/lib/permissions";
+import { PLAN_TIER } from "@/lib/permissions";
 
 interface RouteGuardProps {
-  allowedRoles: Role[];
+  allowedRoles?: Role[];
+  minPlan?: Plan;
   children: ReactNode;
   redirectTo?: string;
 }
 
 export function RouteGuard({
   allowedRoles,
+  minPlan,
   children,
   redirectTo,
 }: RouteGuardProps) {
-  const { role, initializing } = useAuth();
+  const { role, plan, initializing } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -27,17 +30,25 @@ export function RouteGuard({
       return;
     }
 
-    const hasAccess = allowedRoles.includes(role);
-    if (!hasAccess) {
+    if (allowedRoles && !allowedRoles.includes(role)) {
+      router.replace(redirectTo ?? "/dashboard");
+      return;
+    }
+
+    if (minPlan && plan && PLAN_TIER[plan] < PLAN_TIER[minPlan]) {
       router.replace(redirectTo ?? "/dashboard");
     }
-  }, [role, initializing, allowedRoles, redirectTo, router]);
+  }, [role, plan, initializing, allowedRoles, minPlan, redirectTo, router]);
 
   if (initializing || !role) {
     return null;
   }
 
-  if (!allowedRoles.includes(role)) {
+  if (allowedRoles && !allowedRoles.includes(role)) {
+    return null;
+  }
+
+  if (minPlan && plan && PLAN_TIER[plan] < PLAN_TIER[minPlan]) {
     return null;
   }
 

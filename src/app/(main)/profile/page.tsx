@@ -227,11 +227,13 @@ export default function ProfilePage() {
                 </S.StaticValue>
               </S.Field>
               <S.Field>
-                <S.Label>Membro desde</S.Label>
+                <S.Label>Plano</S.Label>
                 <S.StaticValue>
-                  {profileUser.createdAt
-                    ? new Date(profileUser.createdAt).toLocaleDateString("pt-BR")
-                    : "-"}
+                  {profileUser.plan === "enterprise"
+                    ? "Enterprise"
+                    : profileUser.plan === "pro"
+                      ? "Pro"
+                      : "Free"}
                 </S.StaticValue>
               </S.Field>
             </S.FieldRow>

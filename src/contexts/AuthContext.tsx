@@ -9,6 +9,7 @@ interface AuthContextData {
   isAuthenticated: boolean;
   initializing: boolean;
   role: User["role"] | null;
+  plan: User["plan"] | null;
   login: (data: LoginRequest) => Promise<User>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => void;
@@ -64,6 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         role: user?.role ?? null,
+        plan: user?.plan ?? null,
         isAuthenticated: !!user,
         initializing,
         login,
