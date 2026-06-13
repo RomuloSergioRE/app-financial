@@ -46,6 +46,7 @@ export const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout
               )}
             </S.Avatar>
             <S.UserName>{user.name}</S.UserName>
+            {user.plan && <S.PlanBadge>{user.plan}</S.PlanBadge>}
           </S.UserInfo>
         )}
 

@@ -93,6 +93,15 @@ export const UserName = styled.span`
   white-space: nowrap;
 `;
 
+export const PlanBadge = styled.span`
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  color: ${({ theme }) => theme.colors.primary};
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+`;
+
 export const Nav = styled.nav`
   flex: 1;
   padding: ${({ theme }) => theme.spacing.sm};
