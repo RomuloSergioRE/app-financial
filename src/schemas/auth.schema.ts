@@ -50,7 +50,7 @@ export const registerSchema = z
     confirmPassword: z
       .string({ message: "Confirmação de senha é obrigatória" })
       .min(8, "Confirmação de senha deve ter no mínimo 8 caracteres"),
-    role: z.enum(["user", "company"]).default("user"),
+    role: z.enum(["user", "company"]),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Senhas não conferem",

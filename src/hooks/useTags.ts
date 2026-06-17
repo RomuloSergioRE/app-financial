@@ -1,5 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/components/molecules/Toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { useUpgradeModal } from "@/contexts/UpgradeModalContext";
+import { canAccessFeature } from "@/lib/permissions";
 import { tagService } from "@/services/tag.service";
 import { mapAsyncState } from "@/lib/map-async-state";
 import type { AsyncState } from "@/types/async";
@@ -23,13 +26,23 @@ export function useTag(id: string) {
 
 export function useCreateTag() {
   const queryClient = useQueryClient();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: (data: CreateTagRequest) => tagService.create(data),
+    mutationFn: (data: CreateTagRequest) => {
+      if (!canAccessFeature(plan, "tags")) {
+        requirePlan("pro");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return tagService.create(data);
+    },
     onSuccess: () => {
       toast.success("Tag criada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["tags"] });
     },
-    onError: () => {
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao criar tag");
     },
   });
@@ -37,13 +50,23 @@ export function useCreateTag() {
 
 export function useUpdateTag(id: string) {
   const queryClient = useQueryClient();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: (data: UpdateTagRequest) => tagService.update(id, data),
+    mutationFn: (data: UpdateTagRequest) => {
+      if (!canAccessFeature(plan, "tags")) {
+        requirePlan("pro");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return tagService.update(id, data);
+    },
     onSuccess: () => {
       toast.success("Tag atualizada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["tags"] });
     },
-    onError: () => {
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao atualizar tag");
     },
   });
@@ -51,13 +74,23 @@ export function useUpdateTag(id: string) {
 
 export function useDeleteTag() {
   const queryClient = useQueryClient();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: (id: string) => tagService.delete(id),
+    mutationFn: (id: string) => {
+      if (!canAccessFeature(plan, "tags")) {
+        requirePlan("pro");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return tagService.delete(id);
+    },
     onSuccess: () => {
       toast.success("Tag excluída com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["tags"] });
     },
-    onError: () => {
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao excluir tag");
     },
   });

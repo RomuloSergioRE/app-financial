@@ -58,6 +58,13 @@ export const UserInfo = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.sm};
 `;
 
+export const UserMeta = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+`;
+
 export const Avatar = styled.div`
   width: 36px;
   height: 36px;
@@ -152,6 +159,16 @@ export const NavItem = styled(Link)<{ $active: boolean }>`
     outline: 2px solid ${({ theme }) => theme.colors.info};
     outline-offset: 2px;
   }
+`;
+
+export const ProTag = styled.span`
+  font-size: 10px;
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  color: ${({ theme }) => theme.colors.primary};
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-left: auto;
+  line-height: 1;
 `;
 
 export const LogoutButton = styled.button`
