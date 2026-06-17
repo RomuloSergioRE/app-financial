@@ -1,4 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
+import { useUpgradeModal } from "@/contexts/UpgradeModalContext";
+import { canAccessFeature } from "@/lib/permissions";
 import { organizationService } from "@/services/organization.service";
 import { mapAsyncState } from "@/lib/map-async-state";
 import type { AsyncState } from "@/types/async";
@@ -29,51 +32,111 @@ export function useOrganization(id: string): AsyncState<Organization> {
 
 export function useCreateOrganization() {
   const queryClient = useQueryClient();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: (data: CreateOrganizationRequest) => organizationService.create(data),
+    mutationFn: (data: CreateOrganizationRequest) => {
+      if (!canAccessFeature(plan, "organizations")) {
+        requirePlan("enterprise");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return organizationService.create(data);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
+    },
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
 
 export function useUpdateOrganization(id: string) {
   const queryClient = useQueryClient();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: (data: UpdateOrganizationRequest) => organizationService.update(id, data),
+    mutationFn: (data: UpdateOrganizationRequest) => {
+      if (!canAccessFeature(plan, "organizations")) {
+        requirePlan("enterprise");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return organizationService.update(id, data);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
       queryClient.invalidateQueries({ queryKey: ["organizations", id] });
+    },
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
 
 export function useDeleteOrganization() {
   const queryClient = useQueryClient();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: (id: string) => organizationService.delete(id),
+    mutationFn: (id: string) => {
+      if (!canAccessFeature(plan, "organizations")) {
+        requirePlan("enterprise");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return organizationService.delete(id);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
+    },
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
 
 export function useSelectOrganization() {
   const queryClient = useQueryClient();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: (id: string) => organizationService.select(id),
+    mutationFn: (id: string) => {
+      if (!canAccessFeature(plan, "organizations")) {
+        requirePlan("enterprise");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return organizationService.select(id);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
+    },
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
 
 export function useSelectNoneOrganization() {
   const queryClient = useQueryClient();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: () => organizationService.selectNone(),
+    mutationFn: () => {
+      if (!canAccessFeature(plan, "organizations")) {
+        requirePlan("enterprise");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return organizationService.selectNone();
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
+    },
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
@@ -89,11 +152,22 @@ export function useOrgMembers(orgId: string): AsyncState<OrgMember[]> {
 
 export function useInviteMember(orgId: string) {
   const queryClient = useQueryClient();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: ({ email, role }: { email: string; role?: string }) =>
-      organizationService.inviteMember(orgId, email, role),
+    mutationFn: ({ email, role }: { email: string; role?: string }) => {
+      if (!canAccessFeature(plan, "organizations")) {
+        requirePlan("enterprise");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return organizationService.inviteMember(orgId, email, role);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations", orgId, "members"] });
+    },
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
@@ -101,32 +175,67 @@ export function useInviteMember(orgId: string) {
 export function useAcceptInvite(orgId: string) {
   const queryClient = useQueryClient();
   const selectMutation = useSelectOrganization();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: () => organizationService.acceptInvite(orgId),
+    mutationFn: () => {
+      if (!canAccessFeature(plan, "organizations")) {
+        requirePlan("enterprise");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return organizationService.acceptInvite(orgId);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations", orgId, "members"] });
       selectMutation.mutate(orgId);
+    },
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
 
 export function useUpdateMemberRole(orgId: string) {
   const queryClient = useQueryClient();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: ({ memberId, role }: { memberId: string; role: string }) =>
-      organizationService.updateMemberRole(orgId, memberId, role),
+    mutationFn: ({ memberId, role }: { memberId: string; role: string }) => {
+      if (!canAccessFeature(plan, "organizations")) {
+        requirePlan("enterprise");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return organizationService.updateMemberRole(orgId, memberId, role);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations", orgId, "members"] });
+    },
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
 
 export function useRemoveMember(orgId: string) {
   const queryClient = useQueryClient();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: (memberId: string) => organizationService.removeMember(orgId, memberId),
+    mutationFn: (memberId: string) => {
+      if (!canAccessFeature(plan, "organizations")) {
+        requirePlan("enterprise");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return organizationService.removeMember(orgId, memberId);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations", orgId, "members"] });
+    },
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }

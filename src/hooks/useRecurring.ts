@@ -1,5 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/components/molecules/Toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { useUpgradeModal } from "@/contexts/UpgradeModalContext";
+import { canAccessFeature } from "@/lib/permissions";
 import { recurringService } from "@/services/recurring.service";
 import { mapAsyncState } from "@/lib/map-async-state";
 import type { AsyncState } from "@/types/async";
@@ -28,13 +31,23 @@ export function useRecurringRule(id: string) {
 
 export function useCreateRecurring() {
   const queryClient = useQueryClient();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: (data: CreateRecurringRequest) => recurringService.create(data),
+    mutationFn: (data: CreateRecurringRequest) => {
+      if (!canAccessFeature(plan, "recurring-rules")) {
+        requirePlan("pro");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return recurringService.create(data);
+    },
     onSuccess: () => {
       toast.success("Regra recorrente criada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["recurring"] });
     },
-    onError: () => {
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao criar regra recorrente");
     },
   });
@@ -42,13 +55,23 @@ export function useCreateRecurring() {
 
 export function useUpdateRecurring(id: string) {
   const queryClient = useQueryClient();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: (data: UpdateRecurringRequest) => recurringService.update(id, data),
+    mutationFn: (data: UpdateRecurringRequest) => {
+      if (!canAccessFeature(plan, "recurring-rules")) {
+        requirePlan("pro");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return recurringService.update(id, data);
+    },
     onSuccess: () => {
       toast.success("Regra recorrente atualizada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["recurring"] });
     },
-    onError: () => {
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao atualizar regra recorrente");
     },
   });
@@ -56,13 +79,23 @@ export function useUpdateRecurring(id: string) {
 
 export function useDeleteRecurring() {
   const queryClient = useQueryClient();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: (id: string) => recurringService.delete(id),
+    mutationFn: (id: string) => {
+      if (!canAccessFeature(plan, "recurring-rules")) {
+        requirePlan("pro");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return recurringService.delete(id);
+    },
     onSuccess: () => {
       toast.success("Regra recorrente excluída com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["recurring"] });
     },
-    onError: () => {
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao excluir regra recorrente");
     },
   });
@@ -70,15 +103,25 @@ export function useDeleteRecurring() {
 
 export function useExecuteRecurring() {
   const queryClient = useQueryClient();
+  const { plan } = useAuth();
+  const { requirePlan } = useUpgradeModal();
+
   return useMutation({
-    mutationFn: (id: string) => recurringService.execute(id),
+    mutationFn: (id: string) => {
+      if (!canAccessFeature(plan, "recurring-rules")) {
+        requirePlan("pro");
+        return Promise.reject("PLAN_UPGRADE_REQUIRED");
+      }
+      return recurringService.execute(id);
+    },
     onSuccess: () => {
       toast.success("Regra executada! Transação gerada com sucesso.");
       queryClient.invalidateQueries({ queryKey: ["recurring"] });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["analytics"] });
     },
-    onError: () => {
+    onError: (error) => {
+      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao executar regra recorrente");
     },
   });

@@ -3,6 +3,7 @@
 import { memo } from "react";
 import { usePathname } from "next/navigation";
 import { HiOutlineXMark, HiOutlineArrowRightOnRectangle, HiOutlineUserCircle } from "react-icons/hi2";
+import { PLAN_TIER } from "@/lib/permissions";
 import type { NavItem, SidebarProps } from "./types";
 import * as S from "./style";
 
@@ -15,6 +16,10 @@ export const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout
     if (href === "/admin") return pathname === "/admin";
     return pathname.startsWith(href);
   };
+
+  const planLabel = user?.plan
+    ? user.plan === "free" ? "Free" : user.plan === "pro" ? "Pro" : "Enterprise"
+    : null;
 
   return (
     <>
@@ -45,23 +50,30 @@ export const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout
                 </S.AvatarFallback>
               )}
             </S.Avatar>
-            <S.UserName>{user.name}</S.UserName>
-            {user.plan && <S.PlanBadge>{user.plan}</S.PlanBadge>}
+            <S.UserMeta>
+              <S.UserName>{user.name}</S.UserName>
+              {planLabel && <S.PlanBadge>{planLabel}</S.PlanBadge>}
+            </S.UserMeta>
           </S.UserInfo>
         )}
 
         <S.Nav>
-          {items.map((item: NavItem) => (
-            <S.NavItem
-              key={item.href}
-              href={item.href}
-              $active={isActive(item.href)}
-              onClick={onToggle}
-            >
-              <span>{item.icon}</span>
-              {item.label}
-            </S.NavItem>
-          ))}
+          {items.map((item: NavItem) => {
+            const isProItem = !!(item.planRequired && user?.plan && PLAN_TIER[user.plan as keyof typeof PLAN_TIER] < PLAN_TIER[item.planRequired]);
+
+            return (
+              <S.NavItem
+                key={item.href}
+                href={item.href}
+                $active={isActive(item.href)}
+                onClick={onToggle}
+              >
+                <span>{item.icon}</span>
+                {item.label}
+                {isProItem && <S.ProTag>Pro</S.ProTag>}
+              </S.NavItem>
+            );
+          })}
           <S.Divider />
           <S.LogoutButton onClick={onLogout}>
             <HiOutlineArrowRightOnRectangle size={20} />
