@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Button } from "@/components/atoms/Button";
 import { Modal } from "@/components/molecules/Modal";
@@ -32,6 +33,8 @@ export function TagManager({
   onClose,
   onCreateTag,
 }: TagManagerProps) {
+  const t = useTranslations("common");
+
   return (
     <Modal open={open} onClose={onClose} title={`Gerenciar Tags — ${transactionDescription}`}>
       <S.ModalForm>
@@ -56,14 +59,14 @@ export function TagManager({
         <Text as="span" size="xs" color="textSecondary">
           Criar nova tag
         </Text>
-        <TagForm onSubmit={onCreateTag} isLoading={createTagIsLoading} submitLabel="Criar" />
+        <TagForm onSubmit={onCreateTag} isLoading={createTagIsLoading} submitLabel={t("criar")} />
 
         <S.ModalActions>
           <Button variant="outline" onClick={onClose} type="button">
-            Cancelar
+            {t("cancelar")}
           </Button>
           <Button type="button" onClick={onSave} loading={isLoading}>
-            Salvar
+            {t("salvar")}
           </Button>
         </S.ModalActions>
       </S.ModalForm>

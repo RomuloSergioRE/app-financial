@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineCurrencyDollar } from "react-icons/hi2";
+import { useTranslations } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { IconButton } from "@/components/atoms/IconButton";
@@ -17,28 +18,20 @@ import { fromCents, toCents } from "@/lib/currency";
 import type { Budget } from "@/types";
 import * as S from "./style";
 
-const MONTHS = [
-  { value: "", label: "Todos" },
-  { value: "1", label: "Janeiro" },
-  { value: "2", label: "Fevereiro" },
-  { value: "3", label: "Março" },
-  { value: "4", label: "Abril" },
-  { value: "5", label: "Maio" },
-  { value: "6", label: "Junho" },
-  { value: "7", label: "Julho" },
-  { value: "8", label: "Agosto" },
-  { value: "9", label: "Setembro" },
-  { value: "10", label: "Outubro" },
-  { value: "11", label: "Novembro" },
-  { value: "12", label: "Dezembro" },
-];
-
 export default function BudgetsPage() {
+  const t = useTranslations("budgets");
   const currentYear = new Date().getFullYear();
   const [monthFilter, setMonthFilter] = useState("");
   const [yearFilter, setYearFilter] = useState(String(currentYear));
   const [editingBudget, setEditingBudget] = useState<Budget | null>(null);
   const [deletingBudget, setDeletingBudget] = useState<Budget | null>(null);
+
+  const months = t.raw("meses") as string[];
+
+  const MONTHS = [
+    { value: "", label: t("todos") },
+    ...months.map((name, i) => ({ value: String(i + 1), label: name })),
+  ];
 
   const budgetsState = useBudgets({
     month: monthFilter ? Number(monthFilter) : undefined,
@@ -58,12 +51,7 @@ export default function BudgetsPage() {
     limit: number;
   }) => {
     createMutation.mutate(
-      {
-        categoryId: data.categoryId,
-        month: data.month,
-        year: data.year,
-        limit: toCents(data.limit),
-      },
+      { categoryId: data.categoryId, month: data.month, year: data.year, limit: toCents(data.limit) },
       {},
     );
   };
@@ -80,12 +68,7 @@ export default function BudgetsPage() {
   }) => {
     if (!editingBudget) return;
     updateMutation.mutate(
-      {
-        categoryId: data.categoryId,
-        month: data.month,
-        year: data.year,
-        limit: toCents(data.limit),
-      },
+      { categoryId: data.categoryId, month: data.month, year: data.year, limit: toCents(data.limit) },
       { onSuccess: () => setEditingBudget(null) },
     );
   };
@@ -101,9 +84,9 @@ export default function BudgetsPage() {
     return (
       <S.Wrapper>
         <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-          Orçamentos
+          {t("titulo")}
         </Text>
-        <Text color="danger">Erro ao carregar orçamentos: {budgetsState.error}</Text>
+        <Text color="danger">{t("erroCarregar")} {budgetsState.error}</Text>
       </S.Wrapper>
     );
   }
@@ -113,28 +96,28 @@ export default function BudgetsPage() {
   return (
     <S.Wrapper>
       <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-        Orçamentos
+        {t("titulo")}
       </Text>
 
       <BudgetForm
         categories={categories}
         onSubmit={handleCreate}
         isLoading={createMutation.isPending}
-        submitLabel="Criar"
+        submitLabel={t("criar")}
       />
 
       <S.FilterRow>
         <S.FormGroup>
-          <S.Label>Filtrar por Mês</S.Label>
+          <S.Label>{t("filtrarMes")}</S.Label>
           <Select value={monthFilter} onChange={(v) => setMonthFilter(v)} options={MONTHS} />
         </S.FormGroup>
         <S.FormGroup>
-          <S.Label>Filtrar por Ano</S.Label>
+          <S.Label>{t("filtrarAno")}</S.Label>
           <Select
             value={yearFilter}
             onChange={(v) => setYearFilter(v)}
             options={[
-              { value: "", label: "Todos" },
+              { value: "", label: t("todos") },
               ...Array.from({ length: 5 }, (_, i) => ({
                 value: String(currentYear - 1 + i),
                 label: String(currentYear - 1 + i),
@@ -153,8 +136,8 @@ export default function BudgetsPage() {
       ) : budgets.length === 0 ? (
         <EmptyState
           icon={<HiOutlineCurrencyDollar />}
-          title="Nenhum orçamento"
-          description="Crie seu primeiro orçamento para controlar seus gastos por categoria."
+          title={t("nenhum")}
+          description={t("criePrimeiro")}
         />
       ) : (
         <S.List>
@@ -163,17 +146,17 @@ export default function BudgetsPage() {
               <S.BudgetHeader>
                 <S.BudgetInfo>
                   <Text as="span" size="sm" weight="bold">
-                    {budget.categoryName ?? "Sem categoria"}
+                    {budget.categoryName ?? t("semCategoria")}
                   </Text>
                   <S.MonthYear>
-                    {MONTHS[budget.month]?.label ?? budget.month} / {budget.year}
+                    {months[budget.month - 1] ?? budget.month} / {budget.year}
                   </S.MonthYear>
                 </S.BudgetInfo>
                 <S.Actions>
-                  <IconButton onClick={() => handleEdit(budget)} aria-label="Editar">
+                  <IconButton onClick={() => handleEdit(budget)} aria-label={t("editar")}>
                     <HiOutlinePencil size={16} />
                   </IconButton>
-                  <IconButton onClick={() => setDeletingBudget(budget)} aria-label="Excluir">
+                  <IconButton onClick={() => setDeletingBudget(budget)} aria-label={t("excluir")}>
                     <HiOutlineTrash size={16} />
                   </IconButton>
                 </S.Actions>
@@ -181,18 +164,18 @@ export default function BudgetsPage() {
 
               <S.BudgetValues>
                 <S.ValueItem>
-                  <S.ValueLabel>Gasto</S.ValueLabel>
+                  <S.ValueLabel>{t("gasto")}</S.ValueLabel>
                   <S.ValueAmount $type="spent">
                     {formatCurrency(fromCents(budget.spent))}
                   </S.ValueAmount>
                 </S.ValueItem>
                 <S.ValueItem>
-                  <S.ValueLabel>Limite</S.ValueLabel>
+                  <S.ValueLabel>{t("limite")}</S.ValueLabel>
                   <S.ValueAmount>{formatCurrency(fromCents(budget.limit))}</S.ValueAmount>
                 </S.ValueItem>
                 {budget.overBudget && (
                   <S.ValueItem>
-                    <S.ValueLabel>Excedente</S.ValueLabel>
+                    <S.ValueLabel>{t("excedente")}</S.ValueLabel>
                     <S.ValueAmount $type="over">
                       +{formatCurrency(fromCents(budget.spent - budget.limit))}
                     </S.ValueAmount>
@@ -207,19 +190,19 @@ export default function BudgetsPage() {
                 />
               </S.ProgressBarWrapper>
               <S.PercentageLabel $overBudget={budget.overBudget}>
-                {budget.percentage}% utilizado
+                {budget.percentage}{t("porcentagemUtilizada")}
               </S.PercentageLabel>
             </S.BudgetCard>
           ))}
         </S.List>
       )}
 
-      <Modal open={!!editingBudget} onClose={() => setEditingBudget(null)} title="Editar Orçamento">
+      <Modal open={!!editingBudget} onClose={() => setEditingBudget(null)} title={t("editar")}>
         <BudgetForm
           categories={categories}
           onSubmit={handleUpdate}
           isLoading={updateMutation.isPending}
-          submitLabel="Salvar"
+          submitLabel={t("salvar")}
           initialData={
             editingBudget
               ? {
@@ -238,9 +221,9 @@ export default function BudgetsPage() {
         open={!!deletingBudget}
         onClose={() => setDeletingBudget(null)}
         onConfirm={handleDeleteConfirm}
-        title="Excluir Orçamento"
-        message={`Tem certeza que deseja excluir o orçamento de "${deletingBudget?.categoryName ?? ""}"?`}
-        confirmLabel="Excluir"
+        title={t("excluir")}
+        message={t("confirmarExclusao")}
+        confirmLabel={t("confirmar")}
         loading={deleteMutation.isPending}
       />
     </S.Wrapper>

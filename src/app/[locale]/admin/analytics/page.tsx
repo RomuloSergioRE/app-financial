@@ -1,12 +1,14 @@
 "use client";
 
 import { useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { useAdminOverview, useUserGrowth, useAdminPerformance } from "@/hooks/useAdmin";
 import * as S from "./style";
 
 function OverviewCards() {
+  const t = useTranslations("admin.analytics");
   const overviewState = useAdminOverview();
 
   if (overviewState.status === "loading") {
@@ -29,27 +31,27 @@ function OverviewCards() {
   return (
     <S.StatsGrid>
       <S.StatCard>
-        <S.StatLabel>Total de Usuários</S.StatLabel>
+        <S.StatLabel>{t("totalUsuarios")}</S.StatLabel>
         <S.StatValue>{data.totalUsers}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
-        <S.StatLabel>Usuários Ativos</S.StatLabel>
+        <S.StatLabel>{t("usuariosAtivos")}</S.StatLabel>
         <S.StatValue $positive>{data.activeUsers}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
-        <S.StatLabel>Transações</S.StatLabel>
+        <S.StatLabel>{t("transacoes")}</S.StatLabel>
         <S.StatValue>{data.totalTransactions}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
-        <S.StatLabel>Receitas</S.StatLabel>
+        <S.StatLabel>{t("receitas")}</S.StatLabel>
         <S.StatValue $positive>R$ {(data.totalIncome / 100).toLocaleString("pt-BR")}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
-        <S.StatLabel>Despesas</S.StatLabel>
+        <S.StatLabel>{t("despesas")}</S.StatLabel>
         <S.StatValue>R$ {(data.totalOutcome / 100).toLocaleString("pt-BR")}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
-        <S.StatLabel>Saldo Líquido</S.StatLabel>
+        <S.StatLabel>{t("saldoLiquido")}</S.StatLabel>
         <S.StatValue $positive={data.netPlatformBalance >= 0}>
           R$ {(data.netPlatformBalance / 100).toLocaleString("pt-BR")}
         </S.StatValue>
@@ -59,6 +61,7 @@ function OverviewCards() {
 }
 
 function GrowthChart() {
+  const t = useTranslations("admin.analytics");
   const today = useMemo(() => new Date(), []);
   const endDate = today.toISOString().split("T")[0];
   const startDate = new Date(today.getTime() - 365 * 24 * 60 * 60 * 1000)
@@ -73,7 +76,7 @@ function GrowthChart() {
   }
 
   if (data.length === 0) {
-    return <Text color="textSecondary">Nenhum dado de crescimento disponível.</Text>;
+    return <Text color="textSecondary">{t("semDados")}</Text>;
   }
 
   const maxNewUsers = Math.max(...data.map((d) => d.newUsers), 1);
@@ -114,6 +117,7 @@ function GrowthChart() {
 }
 
 function PerformanceCards() {
+  const t = useTranslations("admin.analytics");
   const perfState = useAdminPerformance();
 
   if (perfState.status === "loading") {
@@ -129,39 +133,39 @@ function PerformanceCards() {
   return (
     <S.StatsGrid>
       <S.StatCard>
-        <S.StatLabel>Total Usuários</S.StatLabel>
+        <S.StatLabel>{t("totalUsuarios")}</S.StatLabel>
         <S.StatValue>{p.totalUsers}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
-        <S.StatLabel>Usuários Ativos</S.StatLabel>
+        <S.StatLabel>{t("usuariosAtivos")}</S.StatLabel>
         <S.StatValue $positive>{p.activeUsers}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
-        <S.StatLabel>Transações</S.StatLabel>
+        <S.StatLabel>{t("transacoes")}</S.StatLabel>
         <S.StatValue>{p.totalTransactions}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
-        <S.StatLabel>Logs de Auditoria</S.StatLabel>
+        <S.StatLabel>{t("logsAuditoria")}</S.StatLabel>
         <S.StatValue>{p.totalAuditLogs}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
-        <S.StatLabel>Categorias</S.StatLabel>
+        <S.StatLabel>{t("categorias")}</S.StatLabel>
         <S.StatValue>{p.totalCategories}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
-        <S.StatLabel>Requisições</S.StatLabel>
+        <S.StatLabel>{t("requisicoes")}</S.StatLabel>
         <S.StatValue>{p.totalRequests}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
-        <S.StatLabel>Erros</S.StatLabel>
+        <S.StatLabel>{t("erros")}</S.StatLabel>
         <S.StatValue $danger>{p.totalErrors}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
-        <S.StatLabel>Taxa de Erro</S.StatLabel>
+        <S.StatLabel>{t("taxaErro")}</S.StatLabel>
         <S.StatValue $danger={p.errorRate > 5}>{p.errorRate.toFixed(2)}%</S.StatValue>
       </S.StatCard>
       <S.StatCard>
-        <S.StatLabel>Status do BD</S.StatLabel>
+        <S.StatLabel>{t("statusBD")}</S.StatLabel>
         <S.StatValue $positive={p.dbStatus === "healthy"}>{p.dbStatus}</S.StatValue>
       </S.StatCard>
     </S.StatsGrid>
@@ -169,24 +173,26 @@ function PerformanceCards() {
 }
 
 export default function AdminAnalyticsPage() {
+  const t = useTranslations("admin.analytics");
+
   return (
     <S.Wrapper>
       <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-        Analytics
+        {t("titulo")}
       </Text>
 
       <S.Section>
-        <S.SectionTitle>Visão Geral da Plataforma</S.SectionTitle>
+        <S.SectionTitle>{t("visaoGeral")}</S.SectionTitle>
         <OverviewCards />
       </S.Section>
 
       <S.Section>
-        <S.SectionTitle>Crescimento de Usuários (12 meses)</S.SectionTitle>
+        <S.SectionTitle>{t("crescimentoUsuarios")}</S.SectionTitle>
         <GrowthChart />
       </S.Section>
 
       <S.Section>
-        <S.SectionTitle>Performance do Sistema</S.SectionTitle>
+        <S.SectionTitle>{t("performance")}</S.SectionTitle>
         <PerformanceCards />
       </S.Section>
     </S.Wrapper>

@@ -3,6 +3,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/routing";
 import { AuthCard } from "@/components/molecules/AuthCard";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
@@ -18,7 +20,9 @@ import { extractErrorMessage } from "@/utils/errors";
 import * as S from "./style";
 
 export default function LoginPage() {
+  const t = useTranslations("auth.login");
   const { login } = useAuth();
+  const router = useRouter();
   const [apiError, setApiError] = useState<string | null>(null);
 
   const {
@@ -33,30 +37,30 @@ export default function LoginPage() {
     try {
       setApiError(null);
       const user = await login(data);
-      toast.success("Login realizado com sucesso!");
+      toast.success(t("sucesso"));
       const redirectTo = user.role === "admin" ? "/admin" : "/dashboard";
-      window.location.replace(redirectTo);
+      router.replace(redirectTo);
     } catch (err: unknown) {
-      setApiError(extractErrorMessage(err, "Erro ao fazer login. Verifique suas credenciais."));
+      setApiError(extractErrorMessage(err, t("erro")));
     }
   };
 
   return (
-    <AuthCard title="Entrar">
+    <AuthCard title={t("titulo")}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <S.FormBody>
-          <FormField label="Email" error={errors.email?.message}>
+          <FormField label={t("email")} error={errors.email?.message}>
             <Input
               type="email"
-              placeholder="seu@email.com"
+              placeholder={t("emailPlaceholder")}
               error={errors.email?.message}
               {...register("email")}
             />
           </FormField>
 
-          <FormField label="Senha" error={errors.password?.message}>
+          <FormField label={t("senha")} error={errors.password?.message}>
             <PasswordInput
-              placeholder="Sua senha"
+              placeholder={t("senhaPlaceholder")}
               error={errors.password?.message}
               {...register("password")}
             />
@@ -69,11 +73,11 @@ export default function LoginPage() {
           )}
 
           <Button type="submit" fullWidth loading={isSubmitting}>
-            Entrar
+            {t("botao")}
           </Button>
 
-          <FormLink text="Não tem conta?" linkText="Cadastre-se" href="/register" />
-          <FormLink text="← Voltar para página inicial" linkText="Voltar" href="/" />
+          <FormLink text={t("semConta")} linkText={t("cadastrar")} href="/register" />
+          <FormLink text="←" linkText={t("voltar")} href="/" />
         </S.FormBody>
       </form>
     </AuthCard>

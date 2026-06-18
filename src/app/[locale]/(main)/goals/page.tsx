@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineTrophy } from "react-icons/hi2";
+import { useTranslations } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { IconButton } from "@/components/atoms/IconButton";
@@ -17,6 +18,7 @@ import type { Goal } from "@/types";
 import * as S from "./style";
 
 export default function GoalsPage() {
+  const t = useTranslations("goals");
   const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
   const [deletingGoal, setDeletingGoal] = useState<Goal | null>(null);
 
@@ -78,9 +80,9 @@ export default function GoalsPage() {
     return (
       <S.Wrapper>
         <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-          Metas
+          {t("titulo")}
         </Text>
-        <Text color="danger">Erro ao carregar metas: {goalsState.error}</Text>
+        <Text color="danger">{t("erroCarregar")} {goalsState.error}</Text>
       </S.Wrapper>
     );
   }
@@ -90,14 +92,14 @@ export default function GoalsPage() {
   return (
     <S.Wrapper>
       <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-        Metas
+        {t("titulo")}
       </Text>
 
       <GoalForm
         categories={categories}
         onSubmit={handleCreate}
         isLoading={createMutation.isPending}
-        submitLabel="Criar"
+        submitLabel={t("criar")}
       />
 
       {goalsState.status === "loading" ? (
@@ -109,8 +111,8 @@ export default function GoalsPage() {
       ) : goals.length === 0 ? (
         <EmptyState
           icon={<HiOutlineTrophy />}
-          title="Nenhuma meta"
-          description="Crie sua primeira meta para acompanhar seus objetivos financeiros."
+          title={t("nenhuma")}
+          description={t("criePrimeira")}
         />
       ) : (
         <S.List>
@@ -121,16 +123,16 @@ export default function GoalsPage() {
                   <S.GoalName>{goal.name}</S.GoalName>
                   <S.GoalMeta>
                     {goal.categoryName && goal.categoryName !== "Unknown"
-                      ? `${goal.categoryName}`
-                      : "Todas as categorias"}
-                    {goal.deadline && ` · até ${formatDate(goal.deadline)}`}
+                      ? goal.categoryName
+                      : t("todasCategorias")}
+                    {goal.deadline && ` · ${t("ate")} ${formatDate(goal.deadline)}`}
                   </S.GoalMeta>
                 </S.GoalInfo>
                 <S.Actions>
-                  <IconButton onClick={() => handleEdit(goal)} aria-label="Editar">
+                  <IconButton onClick={() => handleEdit(goal)} aria-label={t("editar")}>
                     <HiOutlinePencil size={16} />
                   </IconButton>
-                  <IconButton onClick={() => setDeletingGoal(goal)} aria-label="Excluir">
+                  <IconButton onClick={() => setDeletingGoal(goal)} aria-label={t("excluir")}>
                     <HiOutlineTrash size={16} />
                   </IconButton>
                 </S.Actions>
@@ -144,22 +146,22 @@ export default function GoalsPage() {
                   />
                 </S.ProgressBarWrapper>
                 <S.ProgressLabel $achieved={goal.achieved}>
-                  {goal.achieved ? "Meta alcançada! 🎉" : `${goal.progress}% concluído`}
+                  {goal.achieved ? t("metaAtingida") : `${goal.progress}${t("porcentagemConcluido")}`}
                 </S.ProgressLabel>
               </S.ProgressSection>
 
               <S.GoalValues>
                 <S.ValueItem>
-                  <S.ValueLabel>Atual</S.ValueLabel>
+                  <S.ValueLabel>{t("atual")}</S.ValueLabel>
                   <S.ValueAmount>{formatCurrency(fromCents(goal.currentAmount))}</S.ValueAmount>
                 </S.ValueItem>
                 <S.ValueItem>
-                  <S.ValueLabel>Alvo</S.ValueLabel>
+                  <S.ValueLabel>{t("alvo")}</S.ValueLabel>
                   <S.ValueAmount>{formatCurrency(fromCents(goal.targetAmount))}</S.ValueAmount>
                 </S.ValueItem>
                 {!goal.achieved && goal.targetAmount > goal.currentAmount && (
                   <S.ValueItem>
-                    <S.ValueLabel>Faltam</S.ValueLabel>
+                    <S.ValueLabel>{t("faltam")}</S.ValueLabel>
                     <S.ValueAmount>
                       {formatCurrency(fromCents(goal.targetAmount - goal.currentAmount))}
                     </S.ValueAmount>
@@ -171,12 +173,12 @@ export default function GoalsPage() {
         </S.List>
       )}
 
-      <Modal open={!!editingGoal} onClose={() => setEditingGoal(null)} title="Editar Meta">
+      <Modal open={!!editingGoal} onClose={() => setEditingGoal(null)} title={t("editar")}>
         <GoalForm
           categories={categories}
           onSubmit={handleUpdate}
           isLoading={updateMutation.isPending}
-          submitLabel="Salvar"
+          submitLabel={t("salvar")}
           initialData={
             editingGoal
               ? {
@@ -195,9 +197,9 @@ export default function GoalsPage() {
         open={!!deletingGoal}
         onClose={() => setDeletingGoal(null)}
         onConfirm={handleDeleteConfirm}
-        title="Excluir Meta"
-        message={`Tem certeza que deseja excluir a meta "${deletingGoal?.name}"?`}
-        confirmLabel="Excluir"
+        title={t("excluir")}
+        message={t("confirmarExclusao")}
+        confirmLabel={t("confirmar")}
         loading={deleteMutation.isPending}
       />
     </S.Wrapper>

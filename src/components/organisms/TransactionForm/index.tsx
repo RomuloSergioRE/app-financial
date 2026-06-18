@@ -2,6 +2,7 @@
 
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
 import { Select } from "@/components/molecules/Select";
@@ -24,11 +25,14 @@ export function TransactionForm({
   categories,
   onSubmit,
   isLoading = false,
-  submitLabel = "Salvar",
+  submitLabel,
   initialData,
   variant,
   onCancel,
 }: TransactionFormProps) {
+  const t = useTranslations("transactions");
+  const ct = useTranslations("common");
+
   const {
     register,
     handleSubmit,
@@ -53,20 +57,20 @@ export function TransactionForm({
 
   const fields = (
     <>
-      <FormField label="Descrição" error={errors.description?.message}>
+      <FormField label={t("descricao")} error={errors.description?.message}>
         <Input
-          placeholder="Ex: Supermercado"
+          placeholder={t("descricaoPlaceholder")}
           error={errors.description?.message}
           {...register("description")}
         />
       </FormField>
 
-      <FormField label="Valor (R$)" error={errors.amount?.message}>
+      <FormField label={t("valor")} error={errors.amount?.message}>
         <Input
           type="number"
           step="0.01"
           min={0}
-          placeholder="0,00"
+          placeholder={t("valorPlaceholder")}
           error={errors.amount?.message}
           {...register("amount", { valueAsNumber: true })}
         />
@@ -74,53 +78,53 @@ export function TransactionForm({
 
       {isModal ? (
         <>
-          <FormField label="Tipo" error={errors.type?.message}>
+          <FormField label={t("tipo")} error={errors.type?.message}>
             <Select
               value={typeValue}
               onChange={(v) => setValue("type", v as "income" | "outcome")}
               options={[
-                { value: "outcome", label: "Saída" },
-                { value: "income", label: "Entrada" },
+                { value: "outcome", label: t("saida") },
+                { value: "income", label: t("entrada") },
               ]}
             />
           </FormField>
-          <FormField label="Categoria" error={errors.categoryId?.message}>
+          <FormField label={t("categoria")} error={errors.categoryId?.message}>
             <Select
               value={categoryIdValue}
               onChange={(v) => setValue("categoryId", v)}
               options={[
-                { value: "", label: "Selecione" },
+                { value: "", label: t("selecione") },
                 ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
               ]}
             />
           </FormField>
-          <FormField label="Data" error={errors.date?.message}>
+          <FormField label={t("data")} error={errors.date?.message}>
             <Input type="date" error={errors.date?.message} {...register("date")} />
           </FormField>
         </>
       ) : (
         <S.FormRow>
-          <FormField label="Tipo" error={errors.type?.message}>
+          <FormField label={t("tipo")} error={errors.type?.message}>
             <Select
               value={typeValue}
               onChange={(v) => setValue("type", v as "income" | "outcome")}
               options={[
-                { value: "outcome", label: "Saída" },
-                { value: "income", label: "Entrada" },
+                { value: "outcome", label: t("saida") },
+                { value: "income", label: t("entrada") },
               ]}
             />
           </FormField>
-          <FormField label="Categoria" error={errors.categoryId?.message}>
+          <FormField label={t("categoria")} error={errors.categoryId?.message}>
             <Select
               value={categoryIdValue}
               onChange={(v) => setValue("categoryId", v)}
               options={[
-                { value: "", label: "Selecione" },
+                { value: "", label: t("selecione") },
                 ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
               ]}
             />
           </FormField>
-          <FormField label="Data" error={errors.date?.message}>
+          <FormField label={t("data")} error={errors.date?.message}>
             <Input type="date" error={errors.date?.message} {...register("date")} />
           </FormField>
         </S.FormRow>
@@ -135,10 +139,10 @@ export function TransactionForm({
           {fields}
           <S.ModalActions>
             <Button variant="outline" onClick={onCancel} type="button">
-              Cancelar
+              {ct("cancelar")}
             </Button>
             <Button type="submit" loading={isLoading}>
-              {submitLabel}
+              {submitLabel ?? ct("salvar")}
             </Button>
           </S.ModalActions>
         </S.ModalForm>
@@ -151,7 +155,7 @@ export function TransactionForm({
       <S.Form>
         {fields}
         <Button type="submit" loading={isLoading} disabled={!isValid}>
-          {submitLabel}
+          {submitLabel ?? ct("salvar")}
         </Button>
       </S.Form>
     </form>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineTag } from "react-icons/hi2";
+import { useTranslations } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { IconButton } from "@/components/atoms/IconButton";
@@ -14,6 +15,7 @@ import type { Tag } from "@/types";
 import * as S from "./style";
 
 export default function TagsPage() {
+  const t = useTranslations("tags");
   const [editingTag, setEditingTag] = useState<Tag | null>(null);
   const [deletingTag, setDeletingTag] = useState<Tag | null>(null);
 
@@ -49,9 +51,9 @@ export default function TagsPage() {
     return (
       <S.Wrapper>
         <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-          Tags
+          {t("titulo")}
         </Text>
-        <Text color="danger">Erro ao carregar tags: {tagsState.error}</Text>
+        <Text color="danger">{t("erroCarregar")} {tagsState.error}</Text>
       </S.Wrapper>
     );
   }
@@ -61,10 +63,10 @@ export default function TagsPage() {
   return (
     <S.Wrapper>
       <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-        Tags
+        {t("titulo")}
       </Text>
 
-      <TagForm onSubmit={handleCreate} isLoading={createMutation.isPending} submitLabel="Criar" />
+      <TagForm onSubmit={handleCreate} isLoading={createMutation.isPending} submitLabel={t("criar")} />
 
       {tagsState.status === "loading" ? (
         <S.List>
@@ -75,8 +77,8 @@ export default function TagsPage() {
       ) : tags.length === 0 ? (
         <EmptyState
           icon={<HiOutlineTag />}
-          title="Nenhuma tag"
-          description="Crie sua primeira tag para organizar suas transações."
+          title={t("nenhuma")}
+          description={t("criePrimeira")}
         />
       ) : (
         <S.List>
@@ -84,10 +86,10 @@ export default function TagsPage() {
             <S.Item key={tag.id}>
               <S.TagBadge $color={tag.color ?? undefined}>{tag.name}</S.TagBadge>
               <S.Actions>
-                <IconButton onClick={() => handleEdit(tag)} aria-label="Editar">
+                <IconButton onClick={() => handleEdit(tag)} aria-label={t("editar")}>
                   <HiOutlinePencil size={16} />
                 </IconButton>
-                <IconButton onClick={() => setDeletingTag(tag)} aria-label="Excluir">
+                <IconButton onClick={() => setDeletingTag(tag)} aria-label={t("excluir")}>
                   <HiOutlineTrash size={16} />
                 </IconButton>
               </S.Actions>
@@ -96,11 +98,11 @@ export default function TagsPage() {
         </S.List>
       )}
 
-      <Modal open={!!editingTag} onClose={() => setEditingTag(null)} title="Editar Tag">
+      <Modal open={!!editingTag} onClose={() => setEditingTag(null)} title={t("editar")}>
         <TagForm
           onSubmit={handleUpdate}
           isLoading={updateMutation.isPending}
-          submitLabel="Salvar"
+          submitLabel={t("salvar")}
           initialData={
             editingTag ? { name: editingTag.name, color: editingTag.color ?? undefined } : undefined
           }
@@ -112,9 +114,9 @@ export default function TagsPage() {
         open={!!deletingTag}
         onClose={() => setDeletingTag(null)}
         onConfirm={handleDeleteConfirm}
-        title="Excluir Tag"
-        message={`Tem certeza que deseja excluir a tag "${deletingTag?.name}"?`}
-        confirmLabel="Excluir"
+        title={t("excluir")}
+        message={t("confirmarExclusao")}
+        confirmLabel={t("confirmar")}
         loading={deleteMutation.isPending}
       />
     </S.Wrapper>

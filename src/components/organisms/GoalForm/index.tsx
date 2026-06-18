@@ -2,6 +2,7 @@
 
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
 import { Select } from "@/components/molecules/Select";
@@ -23,10 +24,13 @@ export function GoalForm({
   categories,
   onSubmit,
   isLoading = false,
-  submitLabel = "Salvar",
+  submitLabel,
   initialData,
   onCancel,
 }: GoalFormProps) {
+  const t = useTranslations("goals");
+  const ct = useTranslations("common");
+
   const {
     register,
     handleSubmit,
@@ -49,7 +53,7 @@ export function GoalForm({
 
   const fields = (
     <>
-      <FormField label="Nome" error={errors.name?.message}>
+      <FormField label={t("nome")} error={errors.name?.message}>
         <Input
           placeholder="Ex: Reserva de emergência"
           error={errors.name?.message}
@@ -57,7 +61,7 @@ export function GoalForm({
         />
       </FormField>
 
-      <FormField label="Valor Alvo (R$)" error={errors.targetAmount?.message}>
+      <FormField label={t("valorAlvo")} error={errors.targetAmount?.message}>
         <Input
           type="number"
           step="0.01"
@@ -68,18 +72,18 @@ export function GoalForm({
         />
       </FormField>
 
-      <FormField label="Categoria (opcional)" error={errors.categoryId?.message}>
+      <FormField label={t("categoriaOpcional")} error={errors.categoryId?.message}>
         <Select
           value={categoryIdValue ?? ""}
           onChange={(v) => setValue("categoryId", v || "")}
           options={[
-            { value: "", label: "Todas as categorias" },
+            { value: "", label: t("todasCategorias") },
             ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
           ]}
         />
       </FormField>
 
-      <FormField label="Prazo (opcional)" error={errors.deadline?.message}>
+      <FormField label={t("prazoOpcional")} error={errors.deadline?.message}>
         <Input type="date" error={errors.deadline?.message} {...register("deadline")} />
       </FormField>
     </>
@@ -92,10 +96,10 @@ export function GoalForm({
           {fields}
           <S.ModalActions>
             <Button variant="outline" onClick={onCancel} type="button">
-              Cancelar
+              {ct("cancelar")}
             </Button>
             <Button type="submit" loading={isLoading}>
-              {submitLabel}
+              {submitLabel ?? ct("salvar")}
             </Button>
           </S.ModalActions>
         </S.ModalForm>
@@ -108,7 +112,7 @@ export function GoalForm({
       <S.Form>
         {fields}
         <Button type="submit" loading={isLoading} disabled={!isValid}>
-          {submitLabel}
+          {submitLabel ?? ct("salvar")}
         </Button>
       </S.Form>
     </form>

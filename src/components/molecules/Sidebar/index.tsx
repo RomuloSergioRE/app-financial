@@ -1,13 +1,15 @@
 "use client";
 
 import { memo } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 import { HiOutlineXMark, HiOutlineArrowRightOnRectangle, HiOutlineUserCircle } from "react-icons/hi2";
 import { PLAN_TIER } from "@/lib/permissions";
 import type { NavItem, SidebarProps } from "./types";
 import * as S from "./style";
 
 export const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout, user }: SidebarProps) {
+  const t = useTranslations("sidebar");
   const pathname = usePathname();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -34,7 +36,7 @@ export const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout
             </svg>
             ZenyFin
           </S.Logo>
-          <S.CloseButton onClick={onToggle} aria-label="Fechar menu">
+          <S.CloseButton onClick={onToggle} aria-label={t("fecharMenu")}>
             <HiOutlineXMark size={24} />
           </S.CloseButton>
         </S.Header>
@@ -83,7 +85,7 @@ export const Sidebar = memo(function Sidebar({ items, isOpen, onToggle, onLogout
           <S.Divider />
           <S.LogoutButton onClick={onLogout}>
             <HiOutlineArrowRightOnRectangle size={20} />
-            Sair
+            {t("sair")}
           </S.LogoutButton>
         </S.Nav>
       </S.Wrapper>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 
 export const Wrapper = styled.p`
   text-align: center;

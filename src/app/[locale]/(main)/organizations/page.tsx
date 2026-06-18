@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { HiOutlinePlus } from "react-icons/hi2";
+import { useTranslations } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { Button } from "@/components/atoms/Button";
@@ -27,6 +28,8 @@ import type { Organization } from "@/types";
 import * as S from "./style";
 
 export default function OrganizationsPage() {
+  const t = useTranslations("organizations");
+  const ct = useTranslations("common");
   const [editingOrg, setEditingOrg] = useState<Organization | null>(null);
   const [deletingOrg, setDeletingOrg] = useState<Organization | null>(null);
   const [showCreate, setShowCreate] = useState(false);
@@ -94,16 +97,16 @@ export default function OrganizationsPage() {
   return (
     <S.Wrapper>
       <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-        Organizações
+        {t("titulo")}
       </Text>
 
       <S.Section>
         <S.Row>
           <Text as="h2" size="lg" weight="semibold" fontFamily="display">
-            Minhas Organizações
+            {t("minhas")}
           </Text>
           <Button onClick={() => setShowCreate(true)}>
-            <HiOutlinePlus size={16} /> Nova
+            <HiOutlinePlus size={16} /> {t("nova")}
           </Button>
         </S.Row>
       </S.Section>
@@ -124,31 +127,31 @@ export default function OrganizationsPage() {
         onDelete={setDeletingOrg}
       />
 
-      <Modal open={showCreate} onClose={() => setShowCreate(false)} title="Criar Organização">
+      <Modal open={showCreate} onClose={() => setShowCreate(false)} title={t("criar")}>
         <S.Form onSubmit={handleCreate}>
           <S.Field>
-            <S.Label>Nome</S.Label>
+            <S.Label>{t("nome")}</S.Label>
             <S.Input
               value={createName}
               onChange={(e) => setCreateName(e.target.value)}
-              placeholder="Nome da organização"
+              placeholder={t("nomePlaceholder")}
               autoFocus
             />
           </S.Field>
           <Button type="submit" loading={createMutation.isPending}>
-            Criar
+            {ct("criar")}
           </Button>
         </S.Form>
       </Modal>
 
-      <Modal open={!!editingOrg} onClose={() => setEditingOrg(null)} title="Editar Organização">
+      <Modal open={!!editingOrg} onClose={() => setEditingOrg(null)} title={t("editar")}>
         <S.Form onSubmit={handleUpdate}>
           <S.Field>
-            <S.Label>Nome</S.Label>
+            <S.Label>{t("nome")}</S.Label>
             <S.Input value={editName} onChange={(e) => setEditName(e.target.value)} autoFocus />
           </S.Field>
           <Button type="submit" loading={updateMutation.isPending}>
-            Salvar
+            {ct("salvar")}
           </Button>
         </S.Form>
       </Modal>
@@ -157,16 +160,16 @@ export default function OrganizationsPage() {
         open={!!deletingOrg}
         onClose={() => setDeletingOrg(null)}
         onConfirm={handleDeleteConfirm}
-        title="Excluir Organização"
-        message={`Tem certeza que deseja excluir "${deletingOrg?.name}"?`}
-        confirmLabel="Excluir"
+        title={t("excluir")}
+        message={t("confirmarExclusao")}
+        confirmLabel={t("confirmar")}
         loading={deleteMutation.isPending}
       />
 
       <Modal
         open={!!selectedOrgId && !showFiscal}
         onClose={() => setSelectedOrgId(null)}
-        title="Membros"
+        title={t("membros")}
       >
         <MemberManager
           open
@@ -184,10 +187,10 @@ export default function OrganizationsPage() {
       <Modal
         open={showFiscal && !!selectedOrgId}
         onClose={() => setShowFiscal(false)}
-        title="Relatório Fiscal"
+        title={t("relatorioFiscal")}
       >
         <S.Field>
-          <S.Label>Ano</S.Label>
+          <S.Label>{t("ano")}</S.Label>
           <Select
             value={String(fiscalYear)}
             onChange={(v) => setFiscalYear(Number(v))}
@@ -208,9 +211,9 @@ export default function OrganizationsPage() {
             <S.MemberTable>
               <thead>
                 <tr>
-                  <S.Th>Mês</S.Th>
-                  <S.Th>Categoria</S.Th>
-                  <S.Th>Total</S.Th>
+                  <S.Th>{t("mes")}</S.Th>
+                  <S.Th>{t("categoria")}</S.Th>
+                  <S.Th>{t("total")}</S.Th>
                 </tr>
               </thead>
               <tbody>
@@ -226,7 +229,7 @@ export default function OrganizationsPage() {
           </S.List>
         ) : fiscalState.status === "success" ? (
           <Text color="textSecondary" size="sm">
-            Nenhum dado para o ano selecionado.
+            {t("nenhumDado")}
           </Text>
         ) : null}
       </Modal>

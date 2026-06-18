@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 import { Text } from "@/components/atoms/Text";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { fromCents } from "@/lib/currency";
@@ -20,41 +21,44 @@ interface RecentTransactionsProps {
 }
 
 export function RecentTransactions({ transactions }: RecentTransactionsProps) {
+  const dt = useTranslations("dashboard");
+  const tt = useTranslations("transactions");
+
   if (transactions.length === 0) return null;
 
   return (
     <S.Section>
       <S.Header>
         <Text as="h2" size="lg" weight="semibold" fontFamily="display">
-          Últimas Transações
+          {dt("ultimasTransacoes")}
         </Text>
         <Link href="/transactions">
-          <S.Link>Ver todas</S.Link>
+          <S.Link>{dt("verTodas")}</S.Link>
         </Link>
       </S.Header>
       <S.List>
         <S.Table>
           <thead>
             <tr>
-              <S.Th>Data</S.Th>
-              <S.Th>Descrição</S.Th>
-              <S.Th>Categoria</S.Th>
-              <S.Th>Tipo</S.Th>
-              <S.Th>Valor</S.Th>
+              <S.Th>{tt("data")}</S.Th>
+              <S.Th>{tt("descricao")}</S.Th>
+              <S.Th>{tt("categoria")}</S.Th>
+              <S.Th>{tt("tipo")}</S.Th>
+              <S.Th>{tt("valor")}</S.Th>
             </tr>
           </thead>
           <tbody>
             {transactions.map((tx) => (
               <tr key={tx.id}>
-                <S.Td data-label="Data">{formatDate(tx.date)}</S.Td>
-                <S.Td data-label="Descrição">{tx.description}</S.Td>
-                <S.Td data-label="Categoria">{tx.category?.name ?? "-"}</S.Td>
-                <S.Td data-label="Tipo">
+                <S.Td data-label={tt("data")}>{formatDate(tx.date)}</S.Td>
+                <S.Td data-label={tt("descricao")}>{tx.description}</S.Td>
+                <S.Td data-label={tt("categoria")}>{tx.category?.name ?? "-"}</S.Td>
+                <S.Td data-label={tt("tipo")}>
                   <S.TypeBadge $type={tx.type}>
-                    {tx.type === "income" ? "Entrada" : "Saída"}
+                    {tx.type === "income" ? dt("receitas") : dt("despesas")}
                   </S.TypeBadge>
                 </S.Td>
-                <S.TdMono data-label="Valor">{formatCurrency(fromCents(tx.amount))}</S.TdMono>
+                <S.TdMono data-label={tt("valor")}>{formatCurrency(fromCents(tx.amount))}</S.TdMono>
               </tr>
             ))}
           </tbody>

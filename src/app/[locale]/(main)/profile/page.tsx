@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Input } from "@/components/atoms/Input";
 import { PasswordInput } from "@/components/molecules/PasswordInput";
@@ -17,6 +18,7 @@ import type { UpdateProfileFormData, UpdatePasswordFormData } from "@/schemas/pr
 import * as S from "./style";
 
 export default function ProfilePage() {
+  const t = useTranslations("profile");
   const profileState = useProfile();
   const updateProfile = useUpdateProfile();
   const updatePassword = useUpdatePassword();
@@ -51,7 +53,7 @@ export default function ProfilePage() {
     if (!file) return;
 
     if (file.size > 2 * 1024 * 1024) {
-      toast.error("Arquivo muito grande. O tamanho máximo é 2MB.");
+      toast.error(t("arquivoGrande"));
       e.target.value = "";
       return;
     }
@@ -61,11 +63,11 @@ export default function ProfilePage() {
       onSuccess: () => setPreviewUrl(null),
       onError: () => {
         setPreviewUrl(null);
-        toast.error("Erro ao enviar foto. Verifique o tamanho do arquivo.");
+        toast.error(t("erroFoto"));
       },
     });
     e.target.value = "";
-  }, [uploadAvatar]);
+  }, [uploadAvatar, t]);
 
   const handleRemoveAvatar = useCallback(() => {
     removeAvatar.mutate();
@@ -75,7 +77,7 @@ export default function ProfilePage() {
     return (
       <S.Wrapper>
         <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-          Perfil
+          {t("titulo")}
         </Text>
         <Skeleton variant="rect" height="240px" />
         <Skeleton variant="rect" height="200px" />
@@ -87,7 +89,7 @@ export default function ProfilePage() {
     return (
       <S.Wrapper>
         <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-          Perfil
+          {t("titulo")}
         </Text>
         <Text color="danger">{profileState.error}</Text>
       </S.Wrapper>
@@ -101,8 +103,8 @@ export default function ProfilePage() {
     updateProfile.mutate(
       { name: data.name, email: data.email },
       {
-        onSuccess: () => toast.success("Perfil atualizado com sucesso!"),
-        onError: () => toast.error("Erro ao atualizar perfil."),
+        onSuccess: () => toast.success(t("atualizadoSucesso")),
+        onError: () => toast.error(t("erroAtualizar")),
       },
     );
   };
@@ -112,10 +114,10 @@ export default function ProfilePage() {
       { currentPassword: data.currentPassword, newPassword: data.newPassword },
       {
         onSuccess: () => {
-          toast.success("Senha alterada com sucesso!");
+          toast.success(t("senhaAlterada"));
           passwordForm.reset();
         },
-        onError: () => toast.error("Erro ao alterar senha."),
+        onError: () => toast.error(t("erroSenha")),
       },
     );
   };
@@ -125,18 +127,18 @@ export default function ProfilePage() {
   return (
     <S.Wrapper>
       <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-        Perfil
+        {t("titulo")}
       </Text>
 
       <S.Grid>
         <S.Section>
-          <S.SectionTitle>Dados pessoais</S.SectionTitle>
+          <S.SectionTitle>{t("dadosPessoais")}</S.SectionTitle>
 
           <S.AvatarSection onClick={() => setModalOpen(true)}>
             <S.AvatarWrapper>
               <S.AvatarPreview>
                 {currentAvatar ? (
-                  <S.AvatarImage src={currentAvatar} alt="Foto do perfil" />
+                  <S.AvatarImage src={currentAvatar} alt={t("fotoPerfil")} />
                 ) : (
                   <S.AvatarFallback>
                     <HiOutlineUserCircle size={48} />
@@ -157,7 +159,7 @@ export default function ProfilePage() {
             onChange={handleFileSelect}
           />
 
-          <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Alterar foto">
+          <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={t("alterarFoto")}>
             <ModalForm>
               <S.ModalPreview>
                 {currentAvatar ? (
@@ -168,7 +170,7 @@ export default function ProfilePage() {
               </S.ModalPreview>
 
               <Text as="p" size="xs" color="textMuted" align="center">
-                Máximo 2MB · PNG, JPG, WEBP
+                {t("maxTam")}
               </Text>
 
               <Button
@@ -177,7 +179,7 @@ export default function ProfilePage() {
                 loading={uploadAvatar.isPending}
                 fullWidth
               >
-                {uploadAvatar.isPending ? "Enviando..." : "Escolher arquivo"}
+                {uploadAvatar.isPending ? t("enviando") : t("escolherArquivo")}
               </Button>
 
               {profileUser.avatarUrl && (
@@ -188,13 +190,13 @@ export default function ProfilePage() {
                   disabled={uploadAvatar.isPending}
                   fullWidth
                 >
-                  Remover foto
+                  {t("removerFoto")}
                 </Button>
               )}
 
               <ModalActions>
                 <Button type="button" variant="outline" onClick={() => setModalOpen(false)}>
-                  Cancelar
+                  {t("cancelar")}
                 </Button>
               </ModalActions>
             </ModalForm>
@@ -202,14 +204,14 @@ export default function ProfilePage() {
 
           <S.Form onSubmit={profileForm.handleSubmit(handleSaveProfile)}>
             <S.Field>
-              <S.Label>Nome</S.Label>
+              <S.Label>{t("nome")}</S.Label>
               <Input
                 error={profileForm.formState.errors.name?.message}
                 {...profileForm.register("name")}
               />
             </S.Field>
             <S.Field>
-              <S.Label>Email</S.Label>
+              <S.Label>{t("email")}</S.Label>
               <Input
                 error={profileForm.formState.errors.email?.message}
                 {...profileForm.register("email")}
@@ -217,17 +219,17 @@ export default function ProfilePage() {
             </S.Field>
             <S.FieldRow>
               <S.Field>
-                <S.Label>Função</S.Label>
+                <S.Label>{t("funcao")}</S.Label>
                 <S.StaticValue>
                   {profileUser.role === "admin"
-                    ? "Administrador"
+                    ? t("administrador")
                     : profileUser.role === "company"
-                      ? "Empresa"
-                      : "Usuário"}
+                      ? t("empresa")
+                      : t("usuario")}
                 </S.StaticValue>
               </S.Field>
               <S.Field>
-                <S.Label>Plano</S.Label>
+                <S.Label>{t("plano")}</S.Label>
                 <S.StaticValue>
                   {profileUser.plan === "enterprise"
                     ? "Enterprise"
@@ -239,31 +241,31 @@ export default function ProfilePage() {
             </S.FieldRow>
             <S.Actions>
               <Button type="submit" disabled={!isProfileDirty} loading={updateProfile.isPending}>
-                Salvar
+                {t("salvar")}
               </Button>
             </S.Actions>
           </S.Form>
         </S.Section>
 
         <S.Section>
-          <S.SectionTitle>Alterar senha</S.SectionTitle>
+          <S.SectionTitle>{t("alterarSenha")}</S.SectionTitle>
           <S.Form onSubmit={passwordForm.handleSubmit(handleChangePassword)}>
             <S.Field>
-              <S.Label>Senha atual</S.Label>
+              <S.Label>{t("senhaAtual")}</S.Label>
               <PasswordInput
                 error={passwordForm.formState.errors.currentPassword?.message}
                 {...passwordForm.register("currentPassword")}
               />
             </S.Field>
             <S.Field>
-              <S.Label>Nova senha</S.Label>
+              <S.Label>{t("novaSenha")}</S.Label>
               <PasswordInput
                 error={passwordForm.formState.errors.newPassword?.message}
                 {...passwordForm.register("newPassword")}
               />
             </S.Field>
             <S.Field>
-              <S.Label>Confirmar nova senha</S.Label>
+              <S.Label>{t("confirmarNovaSenha")}</S.Label>
               <PasswordInput
                 error={passwordForm.formState.errors.confirmPassword?.message}
                 {...passwordForm.register("confirmPassword")}
@@ -278,7 +280,7 @@ export default function ProfilePage() {
                 disabled={!passwordForm.formState.isDirty}
                 loading={updatePassword.isPending}
               >
-                Alterar senha
+                {t("alterarSenhaBotao")}
               </Button>
             </S.Actions>
           </S.Form>

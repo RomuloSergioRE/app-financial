@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
 import { SummaryCard } from "@/components/molecules/SummaryCard";
 import { Select } from "@/components/molecules/Select";
 import { Skeleton } from "@/components/atoms/Skeleton";
@@ -50,13 +51,8 @@ const ComparisonSummary = dynamic(
   { ssr: false, loading: () => <Skeleton variant="rect" height="120px" /> },
 );
 
-const periodOptions = [
-  { value: "week", label: "Semana" },
-  { value: "month", label: "Mês" },
-  { value: "year", label: "Ano" },
-];
-
 export default function DashboardPage() {
+  const t = useTranslations("dashboard");
   const [period, setPeriod] = useState<Period>("month");
   const { startDate, endDate } = getDateRange(period);
 
@@ -140,10 +136,16 @@ export default function DashboardPage() {
 
   const recentTransactions = recentState.status === "success" ? recentState.data.data : [];
 
+  const periodOptions = [
+    { value: "week", label: t("semana") },
+    { value: "month", label: t("mes") },
+    { value: "year", label: t("ano") },
+  ];
+
   return (
     <S.Wrapper>
       <S.Header>
-        <S.Title>Dashboard</S.Title>
+        <S.Title>{t("titulo")}</S.Title>
         <S.HeaderActions>
           <Select value={period} onChange={(v) => setPeriod(v as Period)} options={periodOptions} />
         </S.HeaderActions>
@@ -159,21 +161,21 @@ export default function DashboardPage() {
         ) : (
           <>
             <SummaryCard
-              label="Receitas"
+              label={t("receitas")}
               value={balance?.totalIncome ?? 0}
               icon={incomeIcon}
               type="income"
               change={incomeChange}
             />
             <SummaryCard
-              label="Despesas"
+              label={t("despesas")}
               value={balance?.totalOutcome ?? 0}
               icon={outcomeIcon}
               type="outcome"
               change={outcomeChange}
             />
             <SummaryCard
-              label="Saldo"
+              label={t("saldo")}
               value={balance?.netBalance ?? 0}
               icon={walletIcon}
               type="balance"
@@ -215,8 +217,8 @@ export default function DashboardPage() {
 
       {comparisonState.status === "success" && comparison ? (
         <ComparisonSummary
-          currentPeriod="Atual"
-          previousPeriod="Anterior"
+          currentPeriod={t("atual")}
+          previousPeriod={t("anterior")}
           currentIncome={fromCents(comparison.current.totalIncome)}
           currentOutcome={fromCents(comparison.current.totalOutcome)}
           currentNet={fromCents(comparison.current.netBalance)}

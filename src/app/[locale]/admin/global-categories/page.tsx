@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { HiOutlinePlus, HiOutlinePencil, HiOutlineTrash } from "react-icons/hi2";
+import { useTranslations } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { Button } from "@/components/atoms/Button";
@@ -19,6 +20,7 @@ import type { GlobalCategory } from "@/types";
 import * as S from "./style";
 
 export default function AdminGlobalCategoriesPage() {
+  const t = useTranslations("admin.globalCategories");
   const [showCreate, setShowCreate] = useState(false);
   const [editingCategory, setEditingCategory] = useState<GlobalCategory | null>(null);
   const [deletingCategory, setDeletingCategory] = useState<GlobalCategory | null>(null);
@@ -81,13 +83,13 @@ export default function AdminGlobalCategoriesPage() {
   return (
     <S.Wrapper>
       <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-        Categorias Globais
+        {t("titulo")}
       </Text>
 
       <S.Section>
         <S.Row>
           <Text as="h2" size="lg" weight="semibold" fontFamily="display">
-            Todas as Categorias
+            {t("todas")}
           </Text>
           <Button
             onClick={() => {
@@ -95,7 +97,7 @@ export default function AdminGlobalCategoriesPage() {
               setShowCreate(true);
             }}
           >
-            <HiOutlinePlus size={16} /> Nova
+            <HiOutlinePlus size={16} /> {t("nova")}
           </Button>
         </S.Row>
       </S.Section>
@@ -108,8 +110,8 @@ export default function AdminGlobalCategoriesPage() {
         </S.List>
       ) : categories.length === 0 ? (
         <EmptyState
-          title="Nenhuma categoria global"
-          description="Crie categorias que estarão disponíveis para todos os usuários."
+          title={t("nenhuma")}
+          description={t("criePrimeira")}
         />
       ) : (
         <S.List>
@@ -133,10 +135,10 @@ export default function AdminGlobalCategoriesPage() {
                   </Text>
                 </div>
                 <div style={{ display: "flex", gap: 4 }}>
-                  <IconButton onClick={() => handleEdit(cat)} title="Editar" variant="ghost">
+                  <IconButton onClick={() => handleEdit(cat)} title={t("editar")} variant="ghost">
                     <HiOutlinePencil size={16} />
                   </IconButton>
-                  <IconButton onClick={() => setDeletingCategory(cat)} title="Excluir" variant="ghost">
+                  <IconButton onClick={() => setDeletingCategory(cat)} title={t("excluir")} variant="ghost">
                     <HiOutlineTrash size={16} />
                   </IconButton>
                 </div>
@@ -146,22 +148,22 @@ export default function AdminGlobalCategoriesPage() {
         </S.List>
       )}
 
-      <Modal open={showCreate} onClose={() => setShowCreate(false)} title="Nova Categoria Global">
+      <Modal open={showCreate} onClose={() => setShowCreate(false)} title={t("novaTitulo")}>
         <S.Form onSubmit={handleCreate}>
           <S.Field>
-            <S.Label>Nome</S.Label>
+            <S.Label>{t("nome")}</S.Label>
             <S.Input value={name} onChange={(e) => setName(e.target.value)} autoFocus />
           </S.Field>
           <S.Field>
-            <S.Label>Cor (hex)</S.Label>
+            <S.Label>{t("corHex")}</S.Label>
             <S.Input
               value={color}
               onChange={(e) => setColor(e.target.value)}
-              placeholder="#3B82F6"
+              placeholder={t("corPlaceholder")}
             />
           </S.Field>
           <Button type="submit" loading={createMutation.isPending}>
-            Criar
+            {t("criar")}
           </Button>
         </S.Form>
       </Modal>
@@ -169,23 +171,23 @@ export default function AdminGlobalCategoriesPage() {
       <Modal
         open={!!editingCategory}
         onClose={() => setEditingCategory(null)}
-        title="Editar Categoria Global"
+        title={t("editarTitulo")}
       >
         <S.Form onSubmit={handleUpdate}>
           <S.Field>
-            <S.Label>Nome</S.Label>
+            <S.Label>{t("nome")}</S.Label>
             <S.Input value={name} onChange={(e) => setName(e.target.value)} autoFocus />
           </S.Field>
           <S.Field>
-            <S.Label>Cor (hex)</S.Label>
+            <S.Label>{t("corHex")}</S.Label>
             <S.Input
               value={color}
               onChange={(e) => setColor(e.target.value)}
-              placeholder="#3B82F6"
+              placeholder={t("corPlaceholder")}
             />
           </S.Field>
           <Button type="submit" loading={updateMutation.isPending}>
-            Salvar
+            {t("salvar")}
           </Button>
         </S.Form>
       </Modal>
@@ -194,9 +196,9 @@ export default function AdminGlobalCategoriesPage() {
         open={!!deletingCategory}
         onClose={() => setDeletingCategory(null)}
         onConfirm={handleDeleteConfirm}
-        title="Excluir Categoria"
-        message={`Tem certeza que deseja excluir "${deletingCategory?.name}"?`}
-        confirmLabel="Excluir"
+        title={t("excluirTitulo")}
+        message={t("confirmarExclusao")}
+        confirmLabel={t("excluir")}
         loading={deleteMutation.isPending}
       />
     </S.Wrapper>

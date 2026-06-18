@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Select } from "@/components/molecules/Select";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -16,6 +17,7 @@ const CURRENCY_OPTIONS = [
 ];
 
 export default function SettingsPage() {
+  const t = useTranslations("settings");
   const { mode, setTheme } = useTheme();
   const { currency } = useAuth();
   const { mutate: updateSettings } = useUpdateSettings();
@@ -23,21 +25,21 @@ export default function SettingsPage() {
   return (
     <S.Wrapper>
       <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-        Configurações
+        {t("titulo")}
       </Text>
       <S.Section>
-        <S.SectionTitle>Tema</S.SectionTitle>
+        <S.SectionTitle>{t("tema")}</S.SectionTitle>
         <Select
           value={mode}
           onChange={(v) => setTheme(v as "dark" | "light")}
           options={[
-            { value: "dark", label: "Escuro" },
-            { value: "light", label: "Claro" },
+            { value: "dark", label: t("escuro") },
+            { value: "light", label: t("claro") },
           ]}
         />
       </S.Section>
       <S.Section>
-        <S.SectionTitle>Moeda Padrão</S.SectionTitle>
+        <S.SectionTitle>{t("moedaPadrao")}</S.SectionTitle>
         <Select
           value={currency}
           onChange={(v) => updateSettings({ currency: v })}
