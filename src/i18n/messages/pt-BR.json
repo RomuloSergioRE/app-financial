@@ -191,7 +191,7 @@
       "botao": "Entrar",
       "semConta": "Não tem conta?",
       "cadastrar": "Cadastre-se",
-      "voltar": "← Voltar para página inicial",
+      "voltar": "Voltar para página inicial",
       "sucesso": "Login realizado com sucesso!",
       "erro": "Erro ao fazer login. Verifique suas credenciais."
     },
@@ -211,7 +211,7 @@
       "botao": "Cadastrar",
       "temConta": "Já tem conta?",
       "entrar": "Entrar",
-      "voltar": "← Voltar para página inicial",
+      "voltar": "Voltar para página inicial",
       "sucesso": "Conta criada com sucesso!",
       "erro": "Erro ao cadastrar. Tente novamente."
     }
@@ -307,6 +307,10 @@
   },
   "goals": {
     "titulo": "Metas",
+    "nome": "Nome",
+    "valorAlvo": "Valor Alvo (R$)",
+    "categoriaOpcional": "Categoria (opcional)",
+    "prazoOpcional": "Prazo (opcional)",
     "criar": "Criar",
     "editar": "Editar Meta",
     "salvar": "Salvar",

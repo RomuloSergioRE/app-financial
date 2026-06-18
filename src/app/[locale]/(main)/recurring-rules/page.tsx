@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   HiOutlinePencil,
   HiOutlineTrash,
@@ -27,14 +28,8 @@ import { fromCents, toCents } from "@/lib/currency";
 import type { Recurring } from "@/types";
 import * as S from "./style";
 
-const FREQUENCY_LABELS: Record<string, string> = {
-  daily: "Diário",
-  weekly: "Semanal",
-  monthly: "Mensal",
-  yearly: "Anual",
-};
-
 export default function RecurringRulesPage() {
+  const t = useTranslations("recurring");
   const [editingRule, setEditingRule] = useState<Recurring | null>(null);
   const [deletingRule, setDeletingRule] = useState<Recurring | null>(null);
 
@@ -46,6 +41,13 @@ export default function RecurringRulesPage() {
   const executeMutation = useExecuteRecurring();
 
   const categories = categoriesState.status === "success" ? categoriesState.data.data : [];
+
+  const FREQUENCY_LABELS: Record<string, string> = {
+    daily: t("diario"),
+    weekly: t("semanal"),
+    monthly: t("mensal"),
+    yearly: t("anual"),
+  };
 
   const handleCreate = (data: {
     categoryId: string;
@@ -117,9 +119,9 @@ export default function RecurringRulesPage() {
     return (
       <S.Wrapper>
         <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-          Regras Recorrentes
+          {t("titulo")}
         </Text>
-        <Text color="danger">Erro ao carregar regras: {recurringState.error}</Text>
+        <Text color="danger">{t("erroCarregar")} {recurringState.error}</Text>
       </S.Wrapper>
     );
   }
@@ -129,14 +131,14 @@ export default function RecurringRulesPage() {
   return (
     <S.Wrapper>
       <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-        Regras Recorrentes
+        {t("titulo")}
       </Text>
 
       <RecurringForm
         categories={categories}
         onSubmit={handleCreate}
         isLoading={createMutation.isPending}
-        submitLabel="Criar"
+        submitLabel={t("criar")}
       />
 
       {recurringState.status === "loading" ? (
@@ -148,8 +150,8 @@ export default function RecurringRulesPage() {
       ) : rules.length === 0 ? (
         <EmptyState
           icon={<HiOutlineArrowPath />}
-          title="Nenhuma regra recorrente"
-          description="Crie sua primeira regra para automatizar transações recorrentes."
+          title={t("nenhuma")}
+          description={t("criePrimeira")}
         />
       ) : (
         <S.List>
@@ -159,24 +161,24 @@ export default function RecurringRulesPage() {
                 <S.RuleInfo>
                   <S.RuleName>{rule.description}</S.RuleName>
                   <S.RuleMeta>
-                    {rule.categoryName ?? "Sem categoria"} ·{" "}
+                    {rule.categoryName ?? t("semCategoria")} ·{" "}
                     {FREQUENCY_LABELS[rule.frequency] ?? rule.frequency}
-                    {rule.interval > 1 ? ` (a cada ${rule.interval})` : ""}
+                    {rule.interval > 1 ? ` (${t("aCada")} ${rule.interval})` : ""}
                   </S.RuleMeta>
                 </S.RuleInfo>
                 <S.Actions>
                   <IconButton
                     onClick={() => handleExecute(rule.id)}
-                    aria-label="Executar"
-                    title="Executar manualmente"
+                    aria-label={t("executar")}
+                    title={t("executar")}
                     disabled={!rule.active || executeMutation.isPending}
                   >
                     <HiOutlinePlay size={16} />
                   </IconButton>
-                  <IconButton onClick={() => handleEdit(rule)} aria-label="Editar">
+                  <IconButton onClick={() => handleEdit(rule)} aria-label={t("editar")}>
                     <HiOutlinePencil size={16} />
                   </IconButton>
-                  <IconButton onClick={() => setDeletingRule(rule)} aria-label="Excluir">
+                  <IconButton onClick={() => setDeletingRule(rule)} aria-label={t("excluir")}>
                     <HiOutlineTrash size={16} />
                   </IconButton>
                 </S.Actions>
@@ -184,25 +186,25 @@ export default function RecurringRulesPage() {
 
               <S.RuleDetails>
                 <S.DetailItem>
-                  <S.DetailLabel>Valor</S.DetailLabel>
+                  <S.DetailLabel>{t("valor")}</S.DetailLabel>
                   <S.DetailValue>{formatCurrency(fromCents(rule.amount))}</S.DetailValue>
                 </S.DetailItem>
                 <S.DetailItem>
-                  <S.DetailLabel>Tipo</S.DetailLabel>
+                  <S.DetailLabel>{t("tipo")}</S.DetailLabel>
                   <S.DetailValue>
                     <S.TypeBadge $type={rule.type}>
-                      {rule.type === "income" ? "Entrada" : "Saída"}
+                      {rule.type === "income" ? t("entrada") : t("saida")}
                     </S.TypeBadge>
                   </S.DetailValue>
                 </S.DetailItem>
                 <S.DetailItem>
-                  <S.DetailLabel>Próxima</S.DetailLabel>
+                  <S.DetailLabel>{t("proxima")}</S.DetailLabel>
                   <S.DetailValue>{formatDate(rule.nextDate)}</S.DetailValue>
                 </S.DetailItem>
                 <S.DetailItem>
-                  <S.DetailLabel>Status</S.DetailLabel>
+                  <S.DetailLabel>{t("status")}</S.DetailLabel>
                   <S.StatusBadge $active={rule.active}>
-                    {rule.active ? "Ativa" : "Inativa"}
+                    {rule.active ? t("ativa") : t("inativa")}
                   </S.StatusBadge>
                 </S.DetailItem>
               </S.RuleDetails>
@@ -214,13 +216,13 @@ export default function RecurringRulesPage() {
       <Modal
         open={!!editingRule}
         onClose={() => setEditingRule(null)}
-        title="Editar Regra Recorrente"
+        title={t("editar")}
       >
         <RecurringForm
           categories={categories}
           onSubmit={handleUpdate}
           isLoading={updateMutation.isPending}
-          submitLabel="Salvar"
+          submitLabel={t("salvar")}
           initialData={
             editingRule
               ? {
@@ -243,9 +245,9 @@ export default function RecurringRulesPage() {
         open={!!deletingRule}
         onClose={() => setDeletingRule(null)}
         onConfirm={handleDeleteConfirm}
-        title="Excluir Regra Recorrente"
-        message={`Tem certeza que deseja excluir a regra "${deletingRule?.description}"?`}
-        confirmLabel="Excluir"
+        title={t("excluir")}
+        message={t("confirmarExclusao")}
+        confirmLabel={t("confirmar")}
         loading={deleteMutation.isPending}
       />
     </S.Wrapper>

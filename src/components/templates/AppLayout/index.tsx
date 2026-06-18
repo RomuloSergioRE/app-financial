@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useCallback, useEffect, type ReactNode } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 import { Sidebar } from "@/components/molecules/Sidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUpgradeModal } from "@/contexts/UpgradeModalContext";
@@ -16,6 +17,7 @@ interface AppLayoutProps {
 }
 
 export function AppLayout({ children, navItems }: AppLayoutProps) {
+  const t = useTranslations("nav");
   const { isAuthenticated, initializing, role, plan, logout, user } = useAuth();
   const { requirePlan } = useUpgradeModal();
   const router = useRouter();
@@ -57,7 +59,7 @@ export function AppLayout({ children, navItems }: AppLayoutProps) {
           <S.HamburgerButton
             $isOpen={sidebarOpen}
             onClick={handleToggle}
-            aria-label={sidebarOpen ? "Fechar menu" : "Abrir menu"}
+            aria-label={sidebarOpen ? t("fecharMenu") : t("abrirMenu")}
           >
             {sidebarOpen ? <HiOutlineXMark size={24} /> : <HiOutlineBars3 size={24} />}
           </S.HamburgerButton>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { useTranslations } from "next-intl";
 import {
   HiOutlinePencil,
   HiOutlineTrash,
@@ -29,6 +30,7 @@ import type { Category } from "@/types";
 import * as S from "./style";
 
 export default function CategoriesPage() {
+  const t = useTranslations("categories");
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [deletingCategory, setDeletingCategory] = useState<Category | null>(null);
 
@@ -68,9 +70,9 @@ export default function CategoriesPage() {
     return (
       <S.Wrapper>
         <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-          Categorias
+          {t("titulo")}
         </Text>
-        <Text color="danger">Erro ao carregar categorias: {categoriesState.error}</Text>
+        <Text color="danger">{t("erroCarregar")} {categoriesState.error}</Text>
       </S.Wrapper>
     );
   }
@@ -89,7 +91,7 @@ export default function CategoriesPage() {
         }}
       >
         <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-          Categorias
+          {t("titulo")}
         </Text>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
           <Button
@@ -114,7 +116,7 @@ export default function CategoriesPage() {
             onClick={() => importFileRef.current?.click()}
             loading={importCsvMutation.isPending}
           >
-            <HiOutlineDocumentArrowUp size={14} /> Importar
+            <HiOutlineDocumentArrowUp size={14} /> {t("criar")}
           </Button>
           <input
             ref={importFileRef}
@@ -137,7 +139,7 @@ export default function CategoriesPage() {
       <CategoryForm
         onSubmit={handleCreate}
         isLoading={createMutation.isPending}
-        submitLabel="Criar"
+        submitLabel={t("criar")}
       />
 
       {categoriesState.status === "loading" ? (
@@ -149,8 +151,8 @@ export default function CategoriesPage() {
       ) : categories.length === 0 ? (
         <EmptyState
           icon={<HiOutlineTag />}
-          title="Nenhuma categoria"
-          description="Crie sua primeira categoria para organizar suas transações."
+          title={t("nenhuma")}
+          description={t("criePrimeira")}
         />
       ) : (
         <S.List>
@@ -158,10 +160,10 @@ export default function CategoriesPage() {
             <S.Item key={cat.id}>
               <S.CategoryBadge $color={cat.color ?? undefined}>{cat.name}</S.CategoryBadge>
               <S.Actions>
-                <IconButton onClick={() => handleEdit(cat)} aria-label="Editar">
+                <IconButton onClick={() => handleEdit(cat)} aria-label={t("editar")}>
                   <HiOutlinePencil size={16} />
                 </IconButton>
-                <IconButton onClick={() => setDeletingCategory(cat)} aria-label="Excluir">
+                <IconButton onClick={() => setDeletingCategory(cat)} aria-label={t("excluir")}>
                   <HiOutlineTrash size={16} />
                 </IconButton>
               </S.Actions>
@@ -173,12 +175,12 @@ export default function CategoriesPage() {
       <Modal
         open={!!editingCategory}
         onClose={() => setEditingCategory(null)}
-        title="Editar Categoria"
+        title={t("editar")}
       >
         <CategoryForm
           onSubmit={handleUpdate}
           isLoading={updateMutation.isPending}
-          submitLabel="Salvar"
+          submitLabel={t("salvar")}
           initialData={
             editingCategory
               ? { name: editingCategory.name, color: editingCategory.color ?? undefined }
@@ -192,9 +194,9 @@ export default function CategoriesPage() {
         open={!!deletingCategory}
         onClose={() => setDeletingCategory(null)}
         onConfirm={handleDeleteConfirm}
-        title="Excluir Categoria"
-        message={`Tem certeza que deseja excluir a categoria "${deletingCategory?.name}"? Transações associadas perderão a referência de categoria.`}
-        confirmLabel="Excluir"
+        title={t("excluir")}
+        message={t("confirmarExclusao")}
+        confirmLabel={t("confirmar")}
         loading={deleteMutation.isPending}
       />
     </S.Wrapper>

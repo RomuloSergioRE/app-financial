@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { useTranslations } from "next-intl";
 import {
   HiOutlineDocumentArrowDown,
   HiOutlineDocumentArrowUp,
@@ -35,6 +36,7 @@ import type { CreateTagDTO } from "@/schemas/tag.schema";
 import * as S from "./style";
 
 export default function TransactionsPage() {
+  const t = useTranslations("transactions");
   const [page, setPage] = useState(1);
   const [categoryFilter, setCategoryFilter] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -164,7 +166,7 @@ export default function TransactionsPage() {
         }}
       >
         <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-          Transações
+          {t("titulo")}
         </Text>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
           <Button
@@ -179,7 +181,7 @@ export default function TransactionsPage() {
             }
             loading={exportCsvMutation.isPending}
           >
-            <HiOutlineDocumentArrowDown size={14} /> CSV
+            <HiOutlineDocumentArrowDown size={14} /> {t("exportCSV")}
           </Button>
           <Button
             variant="outline"
@@ -192,7 +194,7 @@ export default function TransactionsPage() {
             }
             loading={exportPdfMutation.isPending}
           >
-            <HiOutlineDocumentArrowDown size={14} /> PDF
+            <HiOutlineDocumentArrowDown size={14} /> {t("exportPDF")}
           </Button>
           <Button
             variant="outline"
@@ -200,7 +202,7 @@ export default function TransactionsPage() {
             onClick={() => exportTemplateMutation.mutate()}
             loading={exportTemplateMutation.isPending}
           >
-            <HiOutlineDocumentText size={14} /> Modelo
+            <HiOutlineDocumentText size={14} /> {t("modelo")}
           </Button>
           <Button
             variant="outline"
@@ -208,7 +210,7 @@ export default function TransactionsPage() {
             onClick={() => importFileRef.current?.click()}
             loading={importCsvMutation.isPending}
           >
-            <HiOutlineDocumentArrowUp size={14} /> Importar
+            <HiOutlineDocumentArrowUp size={14} /> {t("importar")}
           </Button>
           <input
             ref={importFileRef}
@@ -232,7 +234,7 @@ export default function TransactionsPage() {
         categories={categories}
         onSubmit={handleCreate}
         isLoading={createMutation.isPending}
-        submitLabel="Adicionar"
+        submitLabel={t("criar")}
         variant="inline"
       />
 
@@ -272,12 +274,12 @@ export default function TransactionsPage() {
         onManageTags={handleManageTags}
       />
 
-      <Modal open={!!editingTx} onClose={() => setEditingTx(null)} title="Editar Transação">
+      <Modal open={!!editingTx} onClose={() => setEditingTx(null)} title={t("editar")}>
         <TransactionForm
           categories={categories}
           onSubmit={handleUpdate}
           isLoading={updateMutation.isPending}
-          submitLabel="Salvar"
+          submitLabel={t("salvar")}
           variant="modal"
           initialData={
             editingTx
@@ -298,9 +300,9 @@ export default function TransactionsPage() {
         open={!!deletingTx}
         onClose={() => setDeletingTx(null)}
         onConfirm={handleDeleteConfirm}
-        title="Excluir Transação"
-        message={`Tem certeza que deseja excluir a transação "${deletingTx?.description}"? Esta ação não pode ser feita.`}
-        confirmLabel="Excluir"
+        title={t("excluir")}
+        message={t("confirmarExclusao")}
+        confirmLabel={t("confirmar")}
         loading={deleteMutation.isPending}
       />
 

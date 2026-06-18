@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import {
   HiOutlinePencil,
   HiOutlineTrash,
@@ -38,6 +39,8 @@ export function TransactionTable({
   onDelete,
   onManageTags,
 }: TransactionTableProps) {
+  const t = useTranslations("transactions");
+
   if (status === "loading") {
     return (
       <S.TableWrapper>
@@ -47,15 +50,15 @@ export function TransactionTable({
   }
 
   if (status === "error") {
-    return <S.ErrorText>Erro ao carregar transações: {error}</S.ErrorText>;
+    return <S.ErrorText>{t("erroCarregar")} {error}</S.ErrorText>;
   }
 
   if (transactions.length === 0) {
     return (
       <EmptyState
         icon={<HiOutlinePlusCircle />}
-        title="Nenhuma transação"
-        description="Crie sua primeira transação usando o formulário acima."
+        title={t("nenhuma")}
+        description={t("criePrimeira")}
       />
     );
   }
@@ -66,22 +69,22 @@ export function TransactionTable({
         <S.Table>
           <thead>
             <tr>
-              <S.Th>Data</S.Th>
-              <S.Th>Descrição</S.Th>
-              <S.Th>Categoria</S.Th>
-              <S.Th>Tags</S.Th>
-              <S.Th>Tipo</S.Th>
-              <S.Th>Valor</S.Th>
+              <S.Th>{t("data")}</S.Th>
+              <S.Th>{t("descricao")}</S.Th>
+              <S.Th>{t("categoria")}</S.Th>
+              <S.Th>{t("tags")}</S.Th>
+              <S.Th>{t("tipo")}</S.Th>
+              <S.Th>{t("valor")}</S.Th>
               <S.Th></S.Th>
             </tr>
           </thead>
           <tbody>
             {transactions.map((tx) => (
               <tr key={tx.id}>
-                <S.Td data-label="Data">{formatDate(tx.date)}</S.Td>
-                <S.Td data-label="Descrição">{tx.description}</S.Td>
-                <S.Td data-label="Categoria">{tx.category?.name ?? "-"}</S.Td>
-                <S.Td data-label="Tags">
+                <S.Td data-label={t("data")}>{formatDate(tx.date)}</S.Td>
+                <S.Td data-label={t("descricao")}>{tx.description}</S.Td>
+                <S.Td data-label={t("categoria")}>{tx.category?.name ?? "-"}</S.Td>
+                <S.Td data-label={t("tags")}>
                   {tx.tags && tx.tags.length > 0 ? (
                     <S.TagList>
                       {tx.tags.map((tag) => (
@@ -94,21 +97,21 @@ export function TransactionTable({
                     <S.TextMuted>—</S.TextMuted>
                   )}
                 </S.Td>
-                <S.Td data-label="Tipo">
+                <S.Td data-label={t("tipo")}>
                   <S.TypeBadge $type={tx.type}>
-                    {tx.type === "income" ? "Entrada" : "Saída"}
+                    {tx.type === "income" ? t("entrada") : t("saida")}
                   </S.TypeBadge>
                 </S.Td>
-                <S.TdMono data-label="Valor">{formatCurrency(fromCents(tx.amount))}</S.TdMono>
-                <S.Td data-label="Ações">
+                <S.TdMono data-label={t("valor")}>{formatCurrency(fromCents(tx.amount))}</S.TdMono>
+                <S.Td data-label="">
                   <S.Actions>
-                    <IconButton onClick={() => onManageTags(tx)} aria-label="Gerenciar tags">
+                    <IconButton onClick={() => onManageTags(tx)} aria-label={t("tags")}>
                       <HiOutlineTag size={16} />
                     </IconButton>
-                    <IconButton onClick={() => onEdit(tx)} aria-label="Editar">
+                    <IconButton onClick={() => onEdit(tx)} aria-label={t("editar")}>
                       <HiOutlinePencil size={16} />
                     </IconButton>
-                    <IconButton onClick={() => onDelete(tx)} aria-label="Excluir">
+                    <IconButton onClick={() => onDelete(tx)} aria-label={t("excluir")}>
                       <HiOutlineTrash size={16} />
                     </IconButton>
                   </S.Actions>

@@ -3,7 +3,8 @@
 import { useForm, useController } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/routing";
 import { AuthCard } from "@/components/molecules/AuthCard";
 import { FormField } from "@/components/molecules/FormField";
 import { Input } from "@/components/atoms/Input";
@@ -20,6 +21,7 @@ import { extractErrorMessage } from "@/utils/errors";
 import * as S from "./style";
 
 export default function RegisterPage() {
+  const t = useTranslations("auth.register");
   const { register: registerUser } = useAuth();
   const router = useRouter();
   const [apiError, setApiError] = useState<string | null>(null);
@@ -51,58 +53,58 @@ export default function RegisterPage() {
         password: data.password,
         role: data.role,
       });
-      toast.success("Conta criada com sucesso!");
+      toast.success(t("sucesso"));
       router.push("/dashboard");
     } catch (err: unknown) {
-      setApiError(extractErrorMessage(err, "Erro ao cadastrar. Tente novamente."));
+      setApiError(extractErrorMessage(err, t("erro")));
     }
   };
 
   return (
-    <AuthCard title="Criar Conta">
+    <AuthCard title={t("titulo")}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <S.FormBody>
-          <FormField label="Nome" error={errors.name?.message}>
+          <FormField label={t("nome")} error={errors.name?.message}>
             <Input
               type="text"
-              placeholder="Seu nome"
+              placeholder={t("nomePlaceholder")}
               error={errors.name?.message}
               {...register("name")}
             />
           </FormField>
 
-          <FormField label="Email" error={errors.email?.message}>
+          <FormField label={t("email")} error={errors.email?.message}>
             <Input
               type="email"
-              placeholder="seu@email.com"
+              placeholder={t("emailPlaceholder")}
               error={errors.email?.message}
               {...register("email")}
             />
           </FormField>
 
-          <FormField label="Senha" error={errors.password?.message}>
+          <FormField label={t("senha")} error={errors.password?.message}>
             <PasswordInput
-              placeholder="Mínimo 8 caracteres"
+              placeholder={t("senhaPlaceholder")}
               error={errors.password?.message}
               {...register("password")}
             />
           </FormField>
 
-          <FormField label="Confirmar Senha" error={errors.confirmPassword?.message}>
+          <FormField label={t("confirmarSenha")} error={errors.confirmPassword?.message}>
             <PasswordInput
-              placeholder="Repita a senha"
+              placeholder={t("confirmarSenhaPlaceholder")}
               error={errors.confirmPassword?.message}
               {...register("confirmPassword")}
             />
           </FormField>
 
-          <FormField label="Tipo de conta" error={errors.role?.message}>
+          <FormField label={t("tipoConta")} error={errors.role?.message}>
             <Select
               value={roleField.value}
               onChange={roleField.onChange}
               options={[
-                { value: "user", label: "Usuário" },
-                { value: "company", label: "Empresa" },
+                { value: "user", label: t("usuario") },
+                { value: "company", label: t("empresa") },
               ]}
             />
           </FormField>
@@ -114,11 +116,11 @@ export default function RegisterPage() {
           )}
 
           <Button type="submit" fullWidth loading={isSubmitting}>
-            Cadastrar
+            {t("botao")}
           </Button>
 
-          <FormLink text="Já tem conta?" linkText="Entrar" href="/login" />
-          <FormLink text="← Voltar para página inicial" linkText="Voltar" href="/" />
+          <FormLink text={t("temConta")} linkText={t("entrar")} href="/login" />
+          <FormLink text="←" linkText={t("voltar")} href="/" />
         </S.FormBody>
       </form>
     </AuthCard>

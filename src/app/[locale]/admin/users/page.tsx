@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import {
   HiOutlineTrash,
   HiOutlineDocumentArrowDown,
@@ -26,6 +27,7 @@ import {
 import * as S from "./style";
 
 export default function AdminUsersPage() {
+  const t = useTranslations("admin.users");
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("");
@@ -65,17 +67,17 @@ export default function AdminUsersPage() {
     <S.Wrapper>
       <S.Row>
         <Text as="h1" size="3xl" weight="bold" fontFamily="display">
-          Usuários
+          {t("titulo")}
         </Text>
         <Button variant="outline" onClick={() => exportCsv.mutate()} loading={exportCsv.isPending}>
-          <HiOutlineDocumentArrowDown size={16} /> Exportar CSV
+          <HiOutlineDocumentArrowDown size={16} /> {t("exportCSV")}
         </Button>
       </S.Row>
 
       <S.Section>
         <S.FiltersRow>
           <S.Input
-            placeholder="Buscar por nome ou email..."
+            placeholder={t("buscar")}
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -89,10 +91,10 @@ export default function AdminUsersPage() {
               setPage(1);
             }}
             options={[
-              { value: "", label: "Todas as funções" },
-              { value: "user", label: "Usuário" },
-              { value: "admin", label: "Admin" },
-              { value: "company", label: "Empresa" },
+              { value: "", label: t("todasFuncoes") },
+              { value: "user", label: t("usuario") },
+              { value: "admin", label: t("admin") },
+              { value: "company", label: t("empresa") },
             ]}
           />
           <Select
@@ -102,10 +104,10 @@ export default function AdminUsersPage() {
               setPage(1);
             }}
             options={[
-              { value: "", label: "Todos os status" },
-              { value: "active", label: "Ativo" },
-              { value: "inactive", label: "Inativo" },
-              { value: "suspended", label: "Suspenso" },
+              { value: "", label: t("todosStatus") },
+              { value: "active", label: t("ativo") },
+              { value: "inactive", label: t("inativo") },
+              { value: "suspended", label: t("suspenso") },
             ]}
           />
         </S.FiltersRow>
@@ -119,27 +121,27 @@ export default function AdminUsersPage() {
         </S.List>
       ) : users.length === 0 ? (
         <S.Section>
-          <Text color="textSecondary">Nenhum usuário encontrado.</Text>
+          <Text color="textSecondary">{t("nenhum")}</Text>
         </S.Section>
       ) : (
         <S.Section>
           <S.Table>
             <thead>
               <tr>
-                <S.Th>Nome</S.Th>
-                <S.Th>Email</S.Th>
-                <S.Th>Função</S.Th>
-                <S.Th>Status</S.Th>
-                <S.Th>Criado em</S.Th>
-                <S.Th>Ações</S.Th>
+                <S.Th>{t("nome")}</S.Th>
+                <S.Th>{t("email")}</S.Th>
+                <S.Th>{t("funcao")}</S.Th>
+                <S.Th>{t("status")}</S.Th>
+                <S.Th>{t("criadoEm")}</S.Th>
+                <S.Th>{t("acoes")}</S.Th>
               </tr>
             </thead>
             <tbody>
               {users.map((u) => (
                 <tr key={u.id}>
-                  <S.Td data-label="Nome">{u.name}</S.Td>
-                  <S.Td data-label="Email">{u.email}</S.Td>
-                  <S.Td data-label="Função">
+                  <S.Td data-label={t("nome")}>{u.name}</S.Td>
+                  <S.Td data-label={t("email")}>{u.email}</S.Td>
+                  <S.Td data-label={t("funcao")}>
                     <Select
                       value={u.role}
                       onChange={(v) =>
@@ -149,13 +151,13 @@ export default function AdminUsersPage() {
                         })
                       }
                       options={[
-                        { value: "user", label: "Usuário" },
-                        { value: "admin", label: "Admin" },
-                        { value: "company", label: "Empresa" },
+                        { value: "user", label: t("usuario") },
+                        { value: "admin", label: t("admin") },
+                        { value: "company", label: t("empresa") },
                       ]}
                     />
                   </S.Td>
-                  <S.Td data-label="Status">
+                  <S.Td data-label={t("status")}>
                     <Select
                       value={u.status}
                       onChange={(v) =>
@@ -165,18 +167,18 @@ export default function AdminUsersPage() {
                         })
                       }
                       options={[
-                        { value: "active", label: "Ativo" },
-                        { value: "inactive", label: "Inativo" },
-                        { value: "suspended", label: "Suspenso" },
+                        { value: "active", label: t("ativo") },
+                        { value: "inactive", label: t("inativo") },
+                        { value: "suspended", label: t("suspenso") },
                       ]}
                     />
                   </S.Td>
-                  <S.Td data-label="Criado em">{new Date(u.createdAt).toLocaleDateString("pt-BR")}</S.Td>
-                  <S.Td data-label="Ações">
-                    <IconButton onClick={() => setSelectedUserId(u.id)} title="Detalhes" variant="ghost">
+                  <S.Td data-label={t("criadoEm")}>{new Date(u.createdAt).toLocaleDateString("pt-BR")}</S.Td>
+                  <S.Td data-label={t("acoes")}>
+                    <IconButton onClick={() => setSelectedUserId(u.id)} title={t("detalhes")} variant="ghost">
                       <HiOutlineEye size={16} />
                     </IconButton>
-                    <IconButton onClick={() => setDeletingUserId(u.id)} title="Excluir" variant="ghost">
+                    <IconButton onClick={() => setDeletingUserId(u.id)} title={t("excluir")} variant="ghost">
                       <HiOutlineTrash size={16} />
                     </IconButton>
                   </S.Td>
@@ -197,7 +199,7 @@ export default function AdminUsersPage() {
       <Modal
         open={!!selectedUserId}
         onClose={() => setSelectedUserId(null)}
-        title="Detalhes do Usuário"
+        title={t("detalhesTitulo")}
       >
         {userDetailsState.status === "loading" ? (
           <Skeleton variant="rect" height="200px" />
@@ -211,23 +213,23 @@ export default function AdminUsersPage() {
             </Text>
             <S.Row>
               <S.StatCard>
-                <S.StatLabel>Transações</S.StatLabel>
+                <S.StatLabel>{t("transacoes")}</S.StatLabel>
                 <S.StatValue>{userDetailsState.data.totalTransactions}</S.StatValue>
               </S.StatCard>
               <S.StatCard>
-                <S.StatLabel>Receitas</S.StatLabel>
+                <S.StatLabel>{t("receitas")}</S.StatLabel>
                 <S.StatValue $positive>
                   R$ {fromCents(userDetailsState.data.totalIncome).toLocaleString("pt-BR")}
                 </S.StatValue>
               </S.StatCard>
               <S.StatCard>
-                <S.StatLabel>Despesas</S.StatLabel>
+                <S.StatLabel>{t("despesas")}</S.StatLabel>
                 <S.StatValue>
                   R$ {fromCents(userDetailsState.data.totalOutcome).toLocaleString("pt-BR")}
                 </S.StatValue>
               </S.StatCard>
               <S.StatCard>
-                <S.StatLabel>Saldo</S.StatLabel>
+                <S.StatLabel>{t("saldo")}</S.StatLabel>
                 <S.StatValue $positive={userDetailsState.data.netBalance >= 0}>
                   R$ {fromCents(userDetailsState.data.netBalance).toLocaleString("pt-BR")}
                 </S.StatValue>
@@ -235,7 +237,7 @@ export default function AdminUsersPage() {
             </S.Row>
           </div>
         ) : (
-          <Text color="danger">Erro ao carregar detalhes.</Text>
+          <Text color="danger">{t("erroDetalhes")}</Text>
         )}
       </Modal>
 
@@ -243,9 +245,9 @@ export default function AdminUsersPage() {
         open={!!deletingUserId}
         onClose={() => setDeletingUserId(null)}
         onConfirm={handleDeleteConfirm}
-        title="Excluir Usuário"
-        message="Tem certeza que deseja excluir este usuário? Esta ação não pode ser desfeita."
-        confirmLabel="Excluir"
+        title={t("excluirTitulo")}
+        message={t("confirmarExclusao")}
+        confirmLabel={t("excluir")}
         loading={deleteMutation.isPending}
       />
     </S.Wrapper>
