@@ -200,7 +200,7 @@ export default function TransactionsPage() {
             onClick={() => exportTemplateMutation.mutate()}
             loading={exportTemplateMutation.isPending}
           >
-            <HiOutlineDocumentText size={14} /> Template
+            <HiOutlineDocumentText size={14} /> Modelo
           </Button>
           <Button
             variant="outline"

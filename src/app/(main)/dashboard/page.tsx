@@ -51,9 +51,9 @@ const ComparisonSummary = dynamic(
 );
 
 const periodOptions = [
-  { value: "week", label: "Week" },
-  { value: "month", label: "Month" },
-  { value: "year", label: "Year" },
+  { value: "week", label: "Semana" },
+  { value: "month", label: "Mês" },
+  { value: "year", label: "Ano" },
 ];
 
 export default function DashboardPage() {
