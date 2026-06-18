@@ -1,36 +1,38 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 import { Button } from "@/components/atoms/Button";
 import { MockupPreview } from "@/components/molecules/MockupPreview";
 import * as S from "./styles";
 
 export function Hero() {
+  const t = useTranslations("hero");
+
   return (
     <S.Wrapper>
       <S.Container>
         <S.Content>
-          <S.Badge>Nova versão disponível</S.Badge>
-          <S.Title>Controle financeiro simples e inteligente</S.Title>
+          <S.Badge>{t("novaVersao")}</S.Badge>
+          <S.Title>{t("titulo")}</S.Title>
           <S.Subtitle>
-            Gerencie suas finanças pessoais e empresariais em um só lugar. 
-            Dashboard em tempo real, relatórios inteligentes e muito mais.
+            {t("subtitulo")}
           </S.Subtitle>
           <S.Actions>
             <Button as={Link} href="/register" size="md">
-              Começar Grátis
+              {t("cta")}
             </Button>
             <Button as={Link} href="#sobre" variant="outline" size="md">
-              Saiba Mais
+              {t("saibaMais")}
             </Button>
           </S.Actions>
           <S.TrustRow>
             <S.Bullet />
-            <span>Gratuito para começar</span>
+            <span>{t("gratuito")}</span>
             <S.Bullet />
-            <span>Sem cartão de crédito</span>
+            <span>{t("semCartao")}</span>
             <S.Bullet />
-            <span>Cancele quando quiser</span>
+            <span>{t("cancele")}</span>
           </S.TrustRow>
         </S.Content>
         <S.MockupColumn>

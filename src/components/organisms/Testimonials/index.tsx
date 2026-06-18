@@ -1,42 +1,26 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { TestimonialCard } from "@/components/molecules/TestimonialCard";
 import * as S from "./styles";
 
-const TESTIMONIALS = [
-  {
-    name: "Ana Silva",
-    role: "CEO — Silva Tech",
-    quote: "O ZenyFin transformou a gestão financeira da minha empresa. Reduzimos o tempo gasto com relatórios em 80% e agora temos visibilidade total do fluxo de caixa.",
-    rating: 5,
-  },
-  {
-    name: "Carlos Mendes",
-    role: "Freelancer",
-    quote: "Finalmente um app que resolve tanto finanças pessoais quanto empresariais. A categorização automática e os relatórios mensais são incríveis.",
-    rating: 5,
-  },
-  {
-    name: "Juliana Costa",
-    role: "CFO — Costa Corp",
-    quote: "A funcionalidade multiusuário com permissões personalizadas foi essencial para nossa equipe financeira. Recomendo para qualquer empresa que queira organizar suas contas.",
-    rating: 5,
-  },
-];
+const TESTIMONIAL_KEYS = ["ana", "carlos", "juliana"] as const;
 
 export function Testimonials() {
+  const t = useTranslations("testimonials");
+
   return (
     <S.Wrapper id="depoimentos">
       <S.Container>
-        <S.Title>O que nossos usuários dizem</S.Title>
+        <S.Title>{t("titulo")}</S.Title>
         <S.Grid>
-          {TESTIMONIALS.map((t) => (
+          {TESTIMONIAL_KEYS.map((key) => (
             <TestimonialCard
-              key={t.name}
-              name={t.name}
-              role={t.role}
-              quote={t.quote}
-              rating={t.rating}
+              key={key}
+              name={t(`${key}.nome`)}
+              role={t(`${key}.cargo`)}
+              quote={t(`${key}.texto`)}
+              rating={5}
             />
           ))}
         </S.Grid>

@@ -1,26 +1,24 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 import { Button } from "@/components/atoms/Button";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import * as S from "./styles";
 
 export function CtaSection() {
+  const t = useTranslations("cta");
   const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
 
   return (
     <S.Wrapper>
       <S.Container ref={ref} $visible={isVisible}>
-        <S.Title>Pronto para transformar suas finanças?</S.Title>
-        <S.Subtitle>
-          Comece grátis hoje. Sem cartão de crédito, sem compromisso.
-        </S.Subtitle>
+        <S.Title>{t("titulo")}</S.Title>
+        <S.Subtitle>{t("subtitulo")}</S.Subtitle>
         <Button as={Link} href="/register" size="lg" variant="white">
-          Criar Conta Gratuita
+          {t("botao")}
         </Button>
-        <S.Disclaimer>
-          Não precisa de cartão de crédito • Cancele quando quiser
-        </S.Disclaimer>
+        <S.Disclaimer>{t("nota")}</S.Disclaimer>
       </S.Container>
     </S.Wrapper>
   );
