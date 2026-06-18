@@ -13,18 +13,18 @@ import type { NavItem } from "@/components/molecules/Sidebar/types";
 
 const adminNavItems: NavItem[] = [
   { label: "Dashboard", href: "/admin", icon: <HiOutlineViewColumns size={20} /> },
-  { label: "Users", href: "/admin/users", icon: <HiOutlineUsers size={20} /> },
+  { label: "Usuários", href: "/admin/users", icon: <HiOutlineUsers size={20} /> },
   {
-    label: "Global Categories",
+    label: "Categorias Globais",
     href: "/admin/global-categories",
     icon: <HiOutlineFolderOpen size={20} />,
   },
   {
-    label: "Audit",
+    label: "Auditoria",
     href: "/admin/audit",
     icon: <HiOutlineClipboardDocumentList size={20} />,
   },
-  { label: "Analytics", href: "/admin/analytics", icon: <HiOutlineChartBarSquare size={20} /> },
+  { label: "Analíticos", href: "/admin/analytics", icon: <HiOutlineChartBarSquare size={20} /> },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
