@@ -25,6 +25,9 @@ export const BrandCol = styled.div`
 `;
 
 export const Logo = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-family: ${({ theme }) => theme.fonts.display};
   font-size: ${({ theme }) => theme.fontSize.xl};
   font-weight: ${({ theme }) => theme.fontWeight.bold};

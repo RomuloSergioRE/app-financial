@@ -16,10 +16,7 @@ export const metadata: Metadata = {
   title: "ZenyFin",
   description: "Gerenciamento financeiro pessoal",
   icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml", sizes: "any" },
-    ],
-    shortcut: { url: "/favicon.svg", type: "image/svg+xml" },
+    icon: { url: "/icon.svg", type: "image/svg+xml" },
   },
 };
 

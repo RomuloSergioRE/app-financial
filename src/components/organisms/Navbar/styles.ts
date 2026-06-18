@@ -28,6 +28,9 @@ export const LeftGroup = styled.div`
 `;
 
 export const Logo = styled.a`
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-family: ${({ theme }) => theme.fonts.display};
   font-size: ${({ theme }) => theme.fontSize.xl};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
@@ -54,7 +57,7 @@ export const NavLink = styled.a`
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.medium};
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.text};
   text-decoration: none;
   transition: color ${({ theme }) => theme.transition.fast};
   cursor: pointer;

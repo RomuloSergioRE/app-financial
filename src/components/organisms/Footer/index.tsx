@@ -22,7 +22,13 @@ export function Footer() {
     <S.Wrapper>
       <S.Container>
         <S.BrandCol>
-          <S.Logo>ZenyFin</S.Logo>
+          <S.Logo>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20">
+              <path d="M16 2L4 8v7c0 7.5 5.5 14.5 12 16 6.5-1.5 12-8.5 12-16V8L16 2z" fill="#3B82F6"/>
+              <path d="M11 11h10v2L13 19h8v2H11v-2l8-6H11V11z" fill="#fff"/>
+            </svg>
+            ZenyFin
+          </S.Logo>
           <S.Description>
             Sua plataforma completa para gestão financeira pessoal e empresarial.
           </S.Description>
