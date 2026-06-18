@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useState, useEffect } from "react";
 import { useTheme } from "styled-components";
 import {
   BarChart as RechartsBarChart,
@@ -66,47 +66,56 @@ export const MonthlySeriesChart = memo(function MonthlySeriesChart({
   data,
 }: MonthlySeriesChartProps) {
   const theme = useTheme();
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
 
   return (
     <S.Wrapper>
       <S.Title>Evolução Mensal</S.Title>
       <S.ChartContainer>
-        <ResponsiveContainer width="100%" height="100%">
-          <RechartsBarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke={theme.colors.border} />
-            <XAxis
-              dataKey="month"
-              tickFormatter={formatMonth}
-              tick={{ fontSize: 12, fill: theme.colors.textSecondary }}
-              axisLine={{ stroke: theme.colors.border }}
-              tickLine={false}
-            />
-            <YAxis
-              tickFormatter={(v: number) =>
-                "R$" + (v >= 1000 ? (v / 1000).toFixed(0) + "k" : v.toFixed(0))
-              }
-              tick={{ fontSize: 12, fill: theme.colors.textSecondary }}
-              axisLine={{ stroke: theme.colors.border }}
-              tickLine={false}
-            />
-            <Tooltip content={CustomTooltip} />
-            <Legend wrapperStyle={{ fontSize: 12, color: theme.colors.textSecondary }} />
-            <Bar
-              dataKey="totalIncome"
-              name="Receitas"
-              fill={theme.colors.tradingUp}
-              radius={[4, 4, 0, 0]}
-              maxBarSize={32}
-            />
-            <Bar
-              dataKey="totalOutcome"
-              name="Despesas"
-              fill={theme.colors.tradingDown}
-              radius={[4, 4, 0, 0]}
-              maxBarSize={32}
-            />
-          </RechartsBarChart>
-        </ResponsiveContainer>
+        {ready ? (
+          <ResponsiveContainer width="100%" height="100%">
+            <RechartsBarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke={theme.colors.border} />
+              <XAxis
+                dataKey="month"
+                tickFormatter={formatMonth}
+                tick={{ fontSize: 12, fill: theme.colors.textSecondary }}
+                axisLine={{ stroke: theme.colors.border }}
+                tickLine={false}
+              />
+              <YAxis
+                tickFormatter={(v: number) =>
+                  "R$" + (v >= 1000 ? (v / 1000).toFixed(0) + "k" : v.toFixed(0))
+                }
+                tick={{ fontSize: 12, fill: theme.colors.textSecondary }}
+                axisLine={{ stroke: theme.colors.border }}
+                tickLine={false}
+              />
+              <Tooltip content={CustomTooltip} />
+              <Legend wrapperStyle={{ fontSize: 12, color: theme.colors.textSecondary }} />
+              <Bar
+                dataKey="totalIncome"
+                name="Receitas"
+                fill={theme.colors.tradingUp}
+                radius={[4, 4, 0, 0]}
+                maxBarSize={32}
+              />
+              <Bar
+                dataKey="totalOutcome"
+                name="Despesas"
+                fill={theme.colors.tradingDown}
+                radius={[4, 4, 0, 0]}
+                maxBarSize={32}
+              />
+            </RechartsBarChart>
+          </ResponsiveContainer>
+        ) : (
+          <div style={{ width: "100%", height: "100%" }} />
+        )}
       </S.ChartContainer>
     </S.Wrapper>
   );

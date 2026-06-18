@@ -18,6 +18,11 @@ export const userService = {
     await api.put("/auth/password", data);
   },
 
+  updateSettings: async (data: { currency?: string }): Promise<User> => {
+    const response = await api.put("/auth/settings", data);
+    return validateResponse(userSchema, response.data);
+  },
+
   uploadAvatar: async (file: File): Promise<User> => {
     const formData = new FormData();
     formData.append("avatar", file);
