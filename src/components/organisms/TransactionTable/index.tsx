@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   HiOutlinePencil,
   HiOutlineTrash,
@@ -40,6 +40,7 @@ export function TransactionTable({
   onManageTags,
 }: TransactionTableProps) {
   const t = useTranslations("transactions");
+  const locale = useLocale();
 
   if (status === "loading") {
     return (
@@ -81,7 +82,7 @@ export function TransactionTable({
           <tbody>
             {transactions.map((tx) => (
               <tr key={tx.id}>
-                <S.Td data-label={t("data")}>{formatDate(tx.date)}</S.Td>
+                <S.Td data-label={t("data")}>{formatDate(tx.date, locale)}</S.Td>
                 <S.Td data-label={t("descricao")}>{tx.description}</S.Td>
                 <S.Td data-label={t("categoria")}>{tx.category?.name ?? "-"}</S.Td>
                 <S.Td data-label={t("tags")}>
@@ -102,7 +103,7 @@ export function TransactionTable({
                     {tx.type === "income" ? t("entrada") : t("saida")}
                   </S.TypeBadge>
                 </S.Td>
-                <S.TdMono data-label={t("valor")}>{formatCurrency(fromCents(tx.amount))}</S.TdMono>
+                <S.TdMono data-label={t("valor")}>{formatCurrency(fromCents(tx.amount), "BRL", locale)}</S.TdMono>
                 <S.Td data-label="">
                   <S.Actions>
                     <IconButton onClick={() => onManageTags(tx)} aria-label={t("tags")}>

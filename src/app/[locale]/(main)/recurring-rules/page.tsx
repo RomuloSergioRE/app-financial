@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   HiOutlinePencil,
   HiOutlineTrash,
@@ -30,6 +30,7 @@ import * as S from "./style";
 
 export default function RecurringRulesPage() {
   const t = useTranslations("recurring");
+  const locale = useLocale();
   const [editingRule, setEditingRule] = useState<Recurring | null>(null);
   const [deletingRule, setDeletingRule] = useState<Recurring | null>(null);
 
@@ -187,7 +188,7 @@ export default function RecurringRulesPage() {
               <S.RuleDetails>
                 <S.DetailItem>
                   <S.DetailLabel>{t("valor")}</S.DetailLabel>
-                  <S.DetailValue>{formatCurrency(fromCents(rule.amount))}</S.DetailValue>
+                  <S.DetailValue>{formatCurrency(fromCents(rule.amount), "BRL", locale)}</S.DetailValue>
                 </S.DetailItem>
                 <S.DetailItem>
                   <S.DetailLabel>{t("tipo")}</S.DetailLabel>
@@ -199,7 +200,7 @@ export default function RecurringRulesPage() {
                 </S.DetailItem>
                 <S.DetailItem>
                   <S.DetailLabel>{t("proxima")}</S.DetailLabel>
-                  <S.DetailValue>{formatDate(rule.nextDate)}</S.DetailValue>
+                  <S.DetailValue>{formatDate(rule.nextDate, locale)}</S.DetailValue>
                 </S.DetailItem>
                 <S.DetailItem>
                   <S.DetailLabel>{t("status")}</S.DetailLabel>

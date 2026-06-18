@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   HiOutlineTrash,
   HiOutlineDocumentArrowDown,
   HiOutlineEye,
 } from "react-icons/hi2";
+import { formatCurrency } from "@/lib/format";
 import { fromCents } from "@/lib/currency";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
@@ -28,6 +29,7 @@ import * as S from "./style";
 
 export default function AdminUsersPage() {
   const t = useTranslations("admin.users");
+  const locale = useLocale();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("");
@@ -219,19 +221,19 @@ export default function AdminUsersPage() {
               <S.StatCard>
                 <S.StatLabel>{t("receitas")}</S.StatLabel>
                 <S.StatValue $positive>
-                  R$ {fromCents(userDetailsState.data.totalIncome).toLocaleString("pt-BR")}
+                  {formatCurrency(fromCents(userDetailsState.data.totalIncome), "BRL", locale)}
                 </S.StatValue>
               </S.StatCard>
               <S.StatCard>
                 <S.StatLabel>{t("despesas")}</S.StatLabel>
                 <S.StatValue>
-                  R$ {fromCents(userDetailsState.data.totalOutcome).toLocaleString("pt-BR")}
+                  {formatCurrency(fromCents(userDetailsState.data.totalOutcome), "BRL", locale)}
                 </S.StatValue>
               </S.StatCard>
               <S.StatCard>
                 <S.StatLabel>{t("saldo")}</S.StatLabel>
                 <S.StatValue $positive={userDetailsState.data.netBalance >= 0}>
-                  R$ {fromCents(userDetailsState.data.netBalance).toLocaleString("pt-BR")}
+                  {formatCurrency(fromCents(userDetailsState.data.netBalance), "BRL", locale)}
                 </S.StatValue>
               </S.StatCard>
             </S.Row>

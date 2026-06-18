@@ -2,6 +2,7 @@
 
 import { memo } from "react";
 import { useTheme } from "styled-components";
+import { useLocale } from "next-intl";
 import { useAuth } from "@/contexts/AuthContext";
 import { formatCurrency } from "@/lib/format";
 import type { SummaryCardProps, SummaryType } from "./types";
@@ -14,6 +15,7 @@ export const SummaryCard = memo(function SummaryCard({
   type,
   change,
 }: SummaryCardProps) {
+  const locale = useLocale();
   const theme = useTheme();
   const { currency } = useAuth();
 
@@ -23,7 +25,7 @@ export const SummaryCard = memo(function SummaryCard({
     balance: value >= 0 ? theme.colors.tradingUp : theme.colors.danger,
   };
 
-  const formatted = formatCurrency(value, currency);
+  const formatted = formatCurrency(value, currency, locale);
 
   return (
     <S.Wrapper $accent={accentColors[type]}>
