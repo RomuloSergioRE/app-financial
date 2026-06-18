@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import styled from "styled-components";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navbar } from "@/components/organisms/Navbar";

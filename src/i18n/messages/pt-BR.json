@@ -156,18 +156,30 @@
     "a5": "Sim! Você pode cancelar sua assinatura a qualquer momento sem taxas. Seu acesso continua até o final do período pago."
   },
   "footer": {
-    "produto": "Produto",
-    "empresa": "Empresa",
-    "sobre": "Sobre",
-    "contato": "Contato",
-    "termos": "Termos de Uso",
-    "privacidade": "Privacidade",
     "descricao": "Sua plataforma completa para gestão financeira pessoal e empresarial.",
-    "email": "contato@zenyfin.com",
-    "direitos": "© 2024 ZenyFin. Todos os direitos reservados.",
-    "github": "GitHub",
-    "linkedin": "LinkedIn",
-    "twitter": "Twitter"
+    "produto": {
+      "categoria": "Produto",
+      "links": [
+        { "label": "Recursos", "href": "#diferenciais" },
+        { "label": "Preços", "href": "#planos" },
+        { "label": "Depoimentos", "href": "#depoimentos" },
+        { "label": "FAQ", "href": "#faq" }
+      ]
+    },
+    "empresa": {
+      "categoria": "Empresa",
+      "links": [
+        { "label": "Sobre", "href": "#sobre" },
+        { "label": "Contato", "href": "mailto:contato@zenyfin.com" },
+        { "label": "Termos de Uso", "href": "#" },
+        { "label": "Privacidade", "href": "#" }
+      ]
+    },
+    "contato": {
+      "categoria": "Contato",
+      "email": "contato@zenyfin.com"
+    },
+    "direitos": "© 2024 ZenyFin. Todos os direitos reservados."
   },
   "auth": {
     "login": {

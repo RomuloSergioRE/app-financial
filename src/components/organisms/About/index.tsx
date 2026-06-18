@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import * as S from "./styles";
 
@@ -22,45 +23,41 @@ const icons = {
   ),
 };
 
-const cards = [
-  { icon: icons.simplicidade, number: "01", title: "Simplicidade", desc: "Interface intuitiva que qualquer pessoa usa sem treinamento." },
-  { icon: icons.transparencia, number: "02", title: "Transparência", desc: "Todos os dados claros, sem letras miúdas ou custos escondidos." },
-  { icon: icons.confiabilidade, number: "03", title: "Confiabilidade", desc: "Criptografia de ponta a ponta e conformidade com LGPD." },
-];
+const CARD_KEYS = ["simplicidade", "transparencia", "confiabilidade"] as const;
 
 export function About() {
+  const t = useTranslations("about");
   const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
 
   return (
     <S.Wrapper id="sobre">
       <S.Container ref={ref} $visible={isVisible}>
-        <S.Title>Por que ZenyFin?</S.Title>
+        <S.Title>{t("titulo")}</S.Title>
         <S.Grid>
           <S.TextCol>
             <S.TextContent>
               <S.Paragraph>
-                O ZenyFin nasceu para <S.Highlight>resolver o caos</S.Highlight> de quem precisa 
-                gerenciar finanças pessoais e empresariais em paralelo. Chega de 
-                <S.Highlight>planilhas perdidas, extratos espalhados e controle manual</S.Highlight>.
+                {t.rich("paragrafo1", { highlight: (chunks) => <S.Highlight>{chunks}</S.Highlight> })}
               </S.Paragraph>
               <S.Paragraph>
-                Com uma interface limpa e <S.Highlight>relatórios em tempo real</S.Highlight>, você tem 
-                visão completa de <S.Highlight>receitas, despesas, orçamentos e metas</S.Highlight> — 
-                tudo sincronizado automaticamente.
+                {t.rich("paragrafo2", { highlight: (chunks) => <S.Highlight>{chunks}</S.Highlight> })}
               </S.Paragraph>
             </S.TextContent>
           </S.TextCol>
           <S.ValuesCol>
-            {cards.map((card) => (
-              <S.ValueCard key={card.number}>
-                <S.TitleRow>
-                  <S.IconBox>{card.icon}</S.IconBox>
-                  <S.ValueTitle>{card.title}</S.ValueTitle>
-                  <S.ValueNumber>{card.number}</S.ValueNumber>
-                </S.TitleRow>
-                <S.ValueDesc>{card.desc}</S.ValueDesc>
-              </S.ValueCard>
-            ))}
+            {CARD_KEYS.map((key, i) => {
+              const number = String(i + 1).padStart(2, "0");
+              return (
+                <S.ValueCard key={key}>
+                  <S.TitleRow>
+                    <S.IconBox>{icons[key]}</S.IconBox>
+                    <S.ValueTitle>{t(`${key}.titulo`)}</S.ValueTitle>
+                    <S.ValueNumber>{number}</S.ValueNumber>
+                  </S.TitleRow>
+                  <S.ValueDesc>{t(`${key}.desc`)}</S.ValueDesc>
+                </S.ValueCard>
+              );
+            })}
           </S.ValuesCol>
         </S.Grid>
       </S.Container>

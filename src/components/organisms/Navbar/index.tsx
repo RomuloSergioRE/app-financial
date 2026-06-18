@@ -1,19 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 import { Button } from "@/components/atoms/Button";
 import * as S from "./styles";
 
-const NAV_LINKS = [
-  { label: "Sobre", href: "#sobre" },
-  { label: "Recursos", href: "#diferenciais" },
-  { label: "Preços", href: "#planos" },
-  { label: "Depoimentos", href: "#depoimentos" },
-  { label: "FAQ", href: "#faq" },
-];
-
 export function Navbar() {
+  const t = useTranslations("nav");
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -23,13 +17,21 @@ export function Navbar() {
     };
   }, [menuOpen]);
 
+  const NAV_KEYS = [
+    { key: "sobre", href: "#sobre" },
+    { key: "recursos", href: "#diferenciais" },
+    { key: "precos", href: "#planos" },
+    { key: "depoimentos", href: "#depoimentos" },
+    { key: "faq", href: "#faq" },
+  ];
+
   return (
     <S.Wrapper>
       <S.Container>
         <S.LeftGroup>
           <S.MenuButton
             onClick={() => setMenuOpen(true)}
-            aria-label="Abrir menu"
+            aria-label={t("abrirMenu")}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -57,19 +59,19 @@ export function Navbar() {
         </S.LeftGroup>
 
         <S.DesktopLinks>
-          {NAV_LINKS.map((link) => (
+          {NAV_KEYS.map((link) => (
             <S.NavLink key={link.href} href={link.href}>
-              {link.label}
+              {t(link.key)}
             </S.NavLink>
           ))}
         </S.DesktopLinks>
 
         <S.DesktopActions>
           <Button as={Link} href="/login" variant="outline" size="sm">
-            Entrar
+            {t("entrar")}
           </Button>
           <Button as={Link} href="/register" size="sm">
-            Criar Conta
+            {t("criarConta")}
           </Button>
         </S.DesktopActions>
       </S.Container>
@@ -86,7 +88,7 @@ export function Navbar() {
           </S.Logo>
           <S.MenuButton
             onClick={() => setMenuOpen(false)}
-            aria-label="Fechar menu"
+            aria-label={t("fecharMenu")}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -106,21 +108,21 @@ export function Navbar() {
           </S.MenuButton>
         </S.MobileHeader>
         <S.MobileLinks>
-          {NAV_LINKS.map((link) => (
+          {NAV_KEYS.map((link) => (
             <S.MobileNavLink
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
             >
-              {link.label}
+              {t(link.key)}
             </S.MobileNavLink>
           ))}
           <S.MobileCtas>
             <Button as={Link} href="/login" variant="outline" style={{ width: "100%" }}>
-              Entrar
+              {t("entrar")}
             </Button>
             <Button as={Link} href="/register" style={{ width: "100%" }}>
-              Criar Conta
+              {t("criarConta")}
             </Button>
           </S.MobileCtas>
         </S.MobileLinks>
