@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineTrophy } from "react-icons/hi2";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { IconButton } from "@/components/atoms/IconButton";
@@ -19,6 +19,7 @@ import * as S from "./style";
 
 export default function GoalsPage() {
   const t = useTranslations("goals");
+  const locale = useLocale();
   const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
   const [deletingGoal, setDeletingGoal] = useState<Goal | null>(null);
 
@@ -125,7 +126,7 @@ export default function GoalsPage() {
                     {goal.categoryName && goal.categoryName !== "Unknown"
                       ? goal.categoryName
                       : t("todasCategorias")}
-                    {goal.deadline && ` · ${t("ate")} ${formatDate(goal.deadline)}`}
+                    {goal.deadline && ` · ${t("ate")} ${formatDate(goal.deadline, locale)}`}
                   </S.GoalMeta>
                 </S.GoalInfo>
                 <S.Actions>
@@ -153,17 +154,17 @@ export default function GoalsPage() {
               <S.GoalValues>
                 <S.ValueItem>
                   <S.ValueLabel>{t("atual")}</S.ValueLabel>
-                  <S.ValueAmount>{formatCurrency(fromCents(goal.currentAmount))}</S.ValueAmount>
+                  <S.ValueAmount>{formatCurrency(fromCents(goal.currentAmount), "BRL", locale)}</S.ValueAmount>
                 </S.ValueItem>
                 <S.ValueItem>
                   <S.ValueLabel>{t("alvo")}</S.ValueLabel>
-                  <S.ValueAmount>{formatCurrency(fromCents(goal.targetAmount))}</S.ValueAmount>
+                  <S.ValueAmount>{formatCurrency(fromCents(goal.targetAmount), "BRL", locale)}</S.ValueAmount>
                 </S.ValueItem>
                 {!goal.achieved && goal.targetAmount > goal.currentAmount && (
                   <S.ValueItem>
                     <S.ValueLabel>{t("faltam")}</S.ValueLabel>
                     <S.ValueAmount>
-                      {formatCurrency(fromCents(goal.targetAmount - goal.currentAmount))}
+                      {formatCurrency(fromCents(goal.targetAmount - goal.currentAmount), "BRL", locale)}
                     </S.ValueAmount>
                   </S.ValueItem>
                 )}

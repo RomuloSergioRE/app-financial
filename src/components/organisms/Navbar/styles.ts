@@ -207,3 +207,24 @@ export const MobileCtas = styled.div`
   margin-top: auto;
   padding-top: ${({ theme }) => theme.spacing.lg};
 `;
+
+export const LocaleSelect = styled.select`
+  background: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  padding: 4px 8px;
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  cursor: pointer;
+  outline: none;
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    width: 100%;
+    padding: 8px 12px;
+  }
+`;

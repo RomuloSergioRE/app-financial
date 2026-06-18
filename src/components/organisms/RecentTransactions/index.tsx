@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { Text } from "@/components/atoms/Text";
 import { formatCurrency, formatDate } from "@/lib/format";
@@ -21,6 +21,7 @@ interface RecentTransactionsProps {
 }
 
 export function RecentTransactions({ transactions }: RecentTransactionsProps) {
+  const locale = useLocale();
   const dt = useTranslations("dashboard");
   const tt = useTranslations("transactions");
 
@@ -50,7 +51,7 @@ export function RecentTransactions({ transactions }: RecentTransactionsProps) {
           <tbody>
             {transactions.map((tx) => (
               <tr key={tx.id}>
-                <S.Td data-label={tt("data")}>{formatDate(tx.date)}</S.Td>
+                <S.Td data-label={tt("data")}>{formatDate(tx.date, locale)}</S.Td>
                 <S.Td data-label={tt("descricao")}>{tx.description}</S.Td>
                 <S.Td data-label={tt("categoria")}>{tx.category?.name ?? "-"}</S.Td>
                 <S.Td data-label={tt("tipo")}>
@@ -58,7 +59,7 @@ export function RecentTransactions({ transactions }: RecentTransactionsProps) {
                     {tx.type === "income" ? dt("receitas") : dt("despesas")}
                   </S.TypeBadge>
                 </S.Td>
-                <S.TdMono data-label={tt("valor")}>{formatCurrency(fromCents(tx.amount))}</S.TdMono>
+                <S.TdMono data-label={tt("valor")}>{formatCurrency(fromCents(tx.amount), "BRL", locale)}</S.TdMono>
               </tr>
             ))}
           </tbody>

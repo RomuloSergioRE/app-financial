@@ -1,14 +1,27 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/routing";
+import { useTranslations, useLocale } from "next-intl";
+import { Link, useRouter, usePathname } from "@/i18n/routing";
 import { Button } from "@/components/atoms/Button";
 import * as S from "./styles";
 
 export function Navbar() {
   const t = useTranslations("nav");
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const LOCALE_OPTIONS = [
+    { value: "pt-BR", label: "Português (BR)" },
+    { value: "en-US", label: "English (US)" },
+    { value: "es-ES", label: "Español (ES)" },
+  ];
+
+  const handleLocaleChange = (newLocale: string) => {
+    router.replace(pathname, { locale: newLocale });
+  };
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -67,6 +80,13 @@ export function Navbar() {
         </S.DesktopLinks>
 
         <S.DesktopActions>
+          <S.LocaleSelect value={locale} onChange={(e) => handleLocaleChange(e.target.value)}>
+            {LOCALE_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </S.LocaleSelect>
           <Button as={Link} href="/login" variant="outline" size="sm">
             {t("entrar")}
           </Button>
@@ -118,6 +138,13 @@ export function Navbar() {
             </S.MobileNavLink>
           ))}
           <S.MobileCtas>
+            <S.LocaleSelect value={locale} onChange={(e) => handleLocaleChange(e.target.value)}>
+              {LOCALE_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </S.LocaleSelect>
             <Button as={Link} href="/login" variant="outline" style={{ width: "100%" }}>
               {t("entrar")}
             </Button>

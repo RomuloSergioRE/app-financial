@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { HiOutlinePencil, HiOutlineTrash, HiOutlineCurrencyDollar } from "react-icons/hi2";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { IconButton } from "@/components/atoms/IconButton";
@@ -20,6 +20,7 @@ import * as S from "./style";
 
 export default function BudgetsPage() {
   const t = useTranslations("budgets");
+  const locale = useLocale();
   const currentYear = new Date().getFullYear();
   const [monthFilter, setMonthFilter] = useState("");
   const [yearFilter, setYearFilter] = useState(String(currentYear));
@@ -166,18 +167,18 @@ export default function BudgetsPage() {
                 <S.ValueItem>
                   <S.ValueLabel>{t("gasto")}</S.ValueLabel>
                   <S.ValueAmount $type="spent">
-                    {formatCurrency(fromCents(budget.spent))}
+                    {formatCurrency(fromCents(budget.spent), "BRL", locale)}
                   </S.ValueAmount>
                 </S.ValueItem>
                 <S.ValueItem>
                   <S.ValueLabel>{t("limite")}</S.ValueLabel>
-                  <S.ValueAmount>{formatCurrency(fromCents(budget.limit))}</S.ValueAmount>
+                  <S.ValueAmount>{formatCurrency(fromCents(budget.limit), "BRL", locale)}</S.ValueAmount>
                 </S.ValueItem>
                 {budget.overBudget && (
                   <S.ValueItem>
                     <S.ValueLabel>{t("excedente")}</S.ValueLabel>
                     <S.ValueAmount $type="over">
-                      +{formatCurrency(fromCents(budget.spent - budget.limit))}
+                      +{formatCurrency(fromCents(budget.spent - budget.limit), "BRL", locale)}
                     </S.ValueAmount>
                   </S.ValueItem>
                 )}

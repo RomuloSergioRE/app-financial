@@ -49,7 +49,7 @@ export function useUpdateSettings() {
   const { refreshUser } = useAuth();
 
   return useMutation({
-    mutationFn: (data: { currency?: string }) => userService.updateSettings(data),
+    mutationFn: (data: { currency?: string; locale?: string }) => userService.updateSettings(data),
     onSuccess: () => {
       toast.success("Configurações atualizadas com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["user", "profile"] });

@@ -18,7 +18,7 @@ export const userService = {
     await api.put("/auth/password", data);
   },
 
-  updateSettings: async (data: { currency?: string }): Promise<User> => {
+  updateSettings: async (data: { currency?: string; locale?: string }): Promise<User> => {
     const response = await api.put("/auth/settings", data);
     return validateResponse(userSchema, response.data);
   },
