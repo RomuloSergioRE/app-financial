@@ -8,6 +8,7 @@ export const userSchema = z.object({
   plan: z.enum(["free", "pro", "enterprise"]).default("free"),
   status: z.enum(["active", "inactive", "suspended"]),
   avatarUrl: z.string().nullable().optional(),
+  currency: z.string().default("BRL"),
   createdAt: z.string(),
   updatedAt: z.string(),
 });

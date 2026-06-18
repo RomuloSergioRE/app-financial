@@ -5,6 +5,8 @@ export const Wrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   padding: ${({ theme }) => theme.spacing.xl};
+  min-width: 0;
+  min-height: 0;
 
   @media (max-width: 479px) {
     padding: ${({ theme }) => theme.spacing.md};

@@ -44,6 +44,23 @@ export function useUpdatePassword() {
   });
 }
 
+export function useUpdateSettings() {
+  const queryClient = useQueryClient();
+  const { refreshUser } = useAuth();
+
+  return useMutation({
+    mutationFn: (data: { currency?: string }) => userService.updateSettings(data),
+    onSuccess: () => {
+      toast.success("Configurações atualizadas com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ["user", "profile"] });
+      refreshUser();
+    },
+    onError: () => {
+      toast.error("Erro ao atualizar configurações");
+    },
+  });
+}
+
 export function useUploadAvatar() {
   const queryClient = useQueryClient();
   const { refreshUser } = useAuth();

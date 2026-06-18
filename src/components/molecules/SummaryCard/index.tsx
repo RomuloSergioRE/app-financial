@@ -2,6 +2,8 @@
 
 import { memo } from "react";
 import { useTheme } from "styled-components";
+import { useAuth } from "@/contexts/AuthContext";
+import { formatCurrency } from "@/lib/format";
 import type { SummaryCardProps, SummaryType } from "./types";
 import * as S from "./style";
 
@@ -13,6 +15,7 @@ export const SummaryCard = memo(function SummaryCard({
   change,
 }: SummaryCardProps) {
   const theme = useTheme();
+  const { currency } = useAuth();
 
   const accentColors: Record<SummaryType, string> = {
     income: theme.colors.primary,
@@ -20,10 +23,7 @@ export const SummaryCard = memo(function SummaryCard({
     balance: value >= 0 ? theme.colors.tradingUp : theme.colors.danger,
   };
 
-  const formatted = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(value);
+  const formatted = formatCurrency(value, currency);
 
   return (
     <S.Wrapper $accent={accentColors[type]}>

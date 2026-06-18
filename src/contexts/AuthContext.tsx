@@ -10,6 +10,7 @@ interface AuthContextData {
   initializing: boolean;
   role: User["role"] | null;
   plan: User["plan"] | null;
+  currency: string;
   login: (data: LoginRequest) => Promise<User>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => void;
@@ -66,6 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user,
         role: user?.role ?? null,
         plan: user?.plan ?? null,
+        currency: user?.currency ?? "BRL",
         isAuthenticated: !!user,
         initializing,
         login,

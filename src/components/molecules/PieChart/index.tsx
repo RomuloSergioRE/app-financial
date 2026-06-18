@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useState, useEffect } from "react";
 import { useTheme } from "styled-components";
 import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import type { PieChartProps } from "./types";
@@ -35,6 +35,12 @@ const CustomTooltip = (props: Record<string, unknown>) => {
 };
 
 export const PieChart = memo(function PieChart({ categories }: PieChartProps) {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
   const COLORS = [
     "#3B82F6",
     "#0ECB81",
@@ -56,26 +62,30 @@ export const PieChart = memo(function PieChart({ categories }: PieChartProps) {
     <S.Wrapper>
       <S.Title>Gastos por Categoria</S.Title>
       <S.ChartContainer>
-        <ResponsiveContainer width="100%" height="100%">
-          <RechartsPieChart>
-            <Pie
-              data={data}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              innerRadius="50%"
-              outerRadius="80%"
-              paddingAngle={2}
-              strokeWidth={0}
-            >
-              {data.map((entry, i) => (
-                <Cell key={`${entry.name}-${i}`} fill={entry.color} />
-              ))}
-            </Pie>
-            <Tooltip content={CustomTooltip} />
-          </RechartsPieChart>
-        </ResponsiveContainer>
+        {ready ? (
+          <ResponsiveContainer width="100%" height="100%">
+            <RechartsPieChart>
+              <Pie
+                data={data}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius="50%"
+                outerRadius="80%"
+                paddingAngle={2}
+                strokeWidth={0}
+              >
+                {data.map((entry, i) => (
+                  <Cell key={`${entry.name}-${i}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip content={CustomTooltip} />
+            </RechartsPieChart>
+          </ResponsiveContainer>
+        ) : (
+          <div style={{ width: "100%", height: "100%" }} />
+        )}
       </S.ChartContainer>
       <S.Legend>
         {data.map((entry) => (
