@@ -15,7 +15,7 @@ function ThemedApp({ children }: { children: React.ReactNode }) {
     <StyledThemeProvider theme={themeObject}>
       <GlobalStyle />
       <Toast />
-      {children}
+      <UpgradeModalProvider>{children}</UpgradeModalProvider>
     </StyledThemeProvider>
   );
 }
@@ -38,9 +38,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <AuthProvider>
-          <UpgradeModalProvider>
-            <ThemedApp>{children}</ThemedApp>
-          </UpgradeModalProvider>
+          <ThemedApp>{children}</ThemedApp>
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>

@@ -41,6 +41,9 @@ export const Wrapper = styled.aside<{ $isOpen: boolean }>`
 `;
 
 export const Logo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.sm};
   padding: ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.lg};
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.xl};

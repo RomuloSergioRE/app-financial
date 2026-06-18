@@ -5,8 +5,8 @@ import * as S from "./styles";
 
 const FAQ_DATA = [
   {
-    question: "O App Financial é gratuito?",
-    answer: "Sim! Oferecemos um plano gratuito com funcionalidades básicas para você começar. Conforme sua necessidade crescer, você pode migrar para o plano Pro ou Enterprise.",
+    question: "O ZenyFin é gratuito?",
+    answer: "Sim! Oferecemos um plano gratuito com funcionalidades básicas para você começar. Conforme sua necessidade crescer, você pode migrar para o plano Pro ou Enterprise do ZenyFin.",
   },
   {
     question: "Posso usar para empresa e pessoa física?",
@@ -18,11 +18,11 @@ const FAQ_DATA = [
   },
   {
     question: "Funciona offline?",
-    answer: "Atualmente o App Financial funciona 100% online para garantir sincronização em tempo real entre todos os dispositivos e usuários.",
+    answer: "Atualmente o ZenyFin funciona 100% online para garantir sincronização em tempo real entre todos os dispositivos e usuários.",
   },
   {
     question: "Como faço para cancelar?",
-    answer: "Você pode cancelar quando quiser diretamente nas configurações da sua conta. Sem multas, sem burocracia. Seu plano continuará ativo até o final do período já pago.",
+    answer: "Você pode cancelar quando quiser diretamente nas configurações da sua conta no ZenyFin. Sem multas, sem burocracia. Seu plano continuará ativo até o final do período já pago.",
   },
 ];
 
