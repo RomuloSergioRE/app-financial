@@ -9,6 +9,7 @@ export const userSchema = z.object({
   status: z.enum(["active", "inactive", "suspended"]),
   avatarUrl: z.string().nullable().optional(),
   currency: z.string().default("BRL"),
+  locale: z.string().default("pt-BR"),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
