@@ -47,7 +47,7 @@ export function Navbar() {
               />
             </svg>
           </S.MenuButton>
-          <S.Logo href="/">App Financial</S.Logo>
+          <S.Logo href="/">ZenyFin</S.Logo>
         </S.LeftGroup>
 
         <S.DesktopLinks>
@@ -72,7 +72,7 @@ export function Navbar() {
       <S.MobileMenu $open={menuOpen}>
         <S.MobileHeader>
           <S.Logo href="/" onClick={() => setMenuOpen(false)}>
-            App Financial
+            ZenyFin
           </S.Logo>
           <S.MenuButton
             onClick={() => setMenuOpen(false)}

@@ -34,12 +34,12 @@ export function About() {
   return (
     <S.Wrapper id="sobre">
       <S.Container ref={ref} $visible={isVisible}>
-        <S.Title>Por que App Financial?</S.Title>
+        <S.Title>Por que ZenyFin?</S.Title>
         <S.Grid>
           <S.TextCol>
             <S.TextContent>
               <S.Paragraph>
-                O App Financial nasceu para <S.Highlight>resolver o caos</S.Highlight> de quem precisa 
+                O ZenyFin nasceu para <S.Highlight>resolver o caos</S.Highlight> de quem precisa 
                 gerenciar finanças pessoais e empresariais em paralelo. Chega de 
                 <S.Highlight>planilhas perdidas, extratos espalhados e controle manual</S.Highlight>.
               </S.Paragraph>

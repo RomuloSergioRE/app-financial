@@ -28,7 +28,9 @@ export const TopBar = styled.div`
 `;
 
 export const TopBarTitle = styled.span`
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.xs};
   font-family: ${({ theme }) => theme.fonts.body};
   font-size: ${({ theme }) => theme.fontSize.lg};
   font-weight: 600;

@@ -7,7 +7,7 @@ const TESTIMONIALS = [
   {
     name: "Ana Silva",
     role: "CEO — Silva Tech",
-    quote: "O App Financial transformou a gestão financeira da minha empresa. Reduzimos o tempo gasto com relatórios em 80% e agora temos visibilidade total do fluxo de caixa.",
+    quote: "O ZenyFin transformou a gestão financeira da minha empresa. Reduzimos o tempo gasto com relatórios em 80% e agora temos visibilidade total do fluxo de caixa.",
     rating: 5,
   },
   {
