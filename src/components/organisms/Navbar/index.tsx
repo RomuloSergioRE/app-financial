@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, useRouter, usePathname } from "@/i18n/routing";
 import { Button } from "@/components/atoms/Button";
+import { Select } from "@/components/molecules/Select";
 import * as S from "./styles";
 
 export function Navbar() {
@@ -20,7 +21,7 @@ export function Navbar() {
   ];
 
   const handleLocaleChange = (newLocale: string) => {
-    router.replace(pathname, { locale: newLocale });
+    router.push(pathname, { locale: newLocale, scroll: false });
   };
 
   useEffect(() => {
@@ -80,13 +81,7 @@ export function Navbar() {
         </S.DesktopLinks>
 
         <S.DesktopActions>
-          <S.LocaleSelect value={locale} onChange={(e) => handleLocaleChange(e.target.value)}>
-            {LOCALE_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </S.LocaleSelect>
+          <Select value={locale} onChange={handleLocaleChange} options={LOCALE_OPTIONS} />
           <Button as={Link} href="/login" variant="outline" size="sm">
             {t("entrar")}
           </Button>
@@ -138,13 +133,7 @@ export function Navbar() {
             </S.MobileNavLink>
           ))}
           <S.MobileCtas>
-            <S.LocaleSelect value={locale} onChange={(e) => handleLocaleChange(e.target.value)}>
-              {LOCALE_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </S.LocaleSelect>
+            <Select value={locale} onChange={handleLocaleChange} options={LOCALE_OPTIONS} />
             <Button as={Link} href="/login" variant="outline" style={{ width: "100%" }}>
               {t("entrar")}
             </Button>

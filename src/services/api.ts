@@ -55,6 +55,7 @@ api.interceptors.response.use(
         if (
           typeof window !== "undefined" &&
           window.location.pathname !== "/" &&
+          !/^\/[a-z]{2}-[A-Z]{2}$/.test(window.location.pathname) &&
           !window.location.pathname.endsWith("/login") &&
           !window.location.pathname.endsWith("/register")
         ) {
