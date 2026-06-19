@@ -574,11 +574,6 @@
     "auditoria": "Auditoria",
     "analiticos": "Analíticos"
   },
-  "upgrade": {
-    "titulo": "Funcionalidade exclusiva",
-    "descricao": "Esta funcionalidade está disponível apenas para assinantes Faça o upgrade para desbloquear.",
-    "entendi": "Entendi"
-  },
   "error": {
     "paginaNaoEncontrada": "Página não encontrada",
     "voltarInicio": "Voltar ao início",

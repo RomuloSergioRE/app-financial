@@ -574,11 +574,6 @@
     "auditoria": "Audit",
     "analiticos": "Analytics"
   },
-  "upgrade": {
-    "titulo": "Exclusive feature",
-    "descricao": "This feature is available only for subscribers. Upgrade to unlock.",
-    "entendi": "Got it"
-  },
   "error": {
     "paginaNaoEncontrada": "Page not found",
     "voltarInicio": "Back to home",
