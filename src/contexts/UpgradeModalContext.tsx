@@ -40,7 +40,7 @@ export function UpgradeModalProvider({ children }: { children: ReactNode }) {
       >
         <ModalForm>
           <Text as="p" size="sm" align="center">
-            {t.rich("descricao", { plan: () => <strong>{planName}</strong> })}
+            {t("descricao", { plan: planName })}
           </Text>
           <ModalActions>
             <Button type="button" variant="outline" onClick={handleClose}>

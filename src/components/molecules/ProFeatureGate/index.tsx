@@ -38,7 +38,7 @@ export function ProFeatureGate({ feature, plan: explicitPlan, children }: ProFea
           {t("titulo")}
         </Text>
         <Text as="p" size="xs" color="textSecondary">
-          {t.rich("descricao", { plan: () => <strong>{planName}</strong> })}
+          {t("descricao", { plan: planName })}
         </Text>
         <Button size="sm" variant="outline" onClick={() => requirePlan(requiredPlan)}>
           Upgrade
