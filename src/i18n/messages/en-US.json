@@ -596,5 +596,10 @@
     "criar": "Create",
     "sim": "Yes",
     "nao": "No"
+  },
+  "upgrade": {
+    "titulo": "Exclusive feature",
+    "descricao": "This feature is only available for {plan} subscribers. Upgrade to unlock.",
+    "entendi": "Got it"
   }
 }

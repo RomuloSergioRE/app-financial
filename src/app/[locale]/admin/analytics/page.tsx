@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
@@ -66,7 +65,7 @@ function OverviewCards() {
 
 function GrowthChart() {
   const t = useTranslations("admin.analytics");
-  const today = useMemo(() => new Date(), []);
+  const today = new Date();
   const endDate = today.toISOString().split("T")[0];
   const startDate = new Date(today.getTime() - 365 * 24 * 60 * 60 * 1000)
     .toISOString()

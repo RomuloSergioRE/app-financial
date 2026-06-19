@@ -40,11 +40,13 @@ export function AppLayout({ children, navItems }: AppLayoutProps) {
     const requiredPlan = getRequiredPlan(pathname);
     if (requiredPlan && requiredPlan !== "free" && plan && PLAN_TIER[plan] < PLAN_TIER[requiredPlan]) {
       requirePlan(requiredPlan);
+      router.replace("/dashboard");
+      return;
     }
   }, [initializing, isAuthenticated, role, plan, pathname, router, requirePlan]);
 
-  const handleLogout = useCallback(() => {
-    logout();
+  const handleLogout = useCallback(async () => {
+    await logout();
     router.replace("/login");
   }, [logout, router]);
 

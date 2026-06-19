@@ -596,5 +596,10 @@
     "criar": "Criar",
     "sim": "Sim",
     "nao": "Não"
+  },
+  "upgrade": {
+    "titulo": "Funcionalidade exclusiva",
+    "descricao": "Esta funcionalidade está disponível apenas para assinantes {plan}. Faça o upgrade para desbloquear.",
+    "entendi": "Entendi"
   }
 }

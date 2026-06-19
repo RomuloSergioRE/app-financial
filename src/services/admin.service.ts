@@ -1,5 +1,6 @@
 import api from "./api";
 import { validateResponse } from "@/lib/validate-response";
+import { paginatedResponseSchema } from "@/schemas/api.schema";
 import {
   adminUserSchema,
   adminUserDetailsSchema,
@@ -33,10 +34,11 @@ export const adminService = {
     pagination: { page: number; limit: number; total: number; totalPages: number };
   }> => {
     const response = await api.get("/admin/users", { params });
-    return {
-      data: validateResponse(adminUserSchema.array(), response.data.data),
-      pagination: response.data.pagination,
-    };
+    const validated = validateResponse(
+      paginatedResponseSchema(adminUserSchema),
+      response.data,
+    );
+    return validated;
   },
 
   getUserDetails: async (userId: string): Promise<AdminUserDetails> => {
@@ -97,10 +99,11 @@ export const adminService = {
     pagination: { page: number; limit: number; total: number; totalPages: number };
   }> => {
     const response = await api.get("/admin/audit-logs", { params });
-    return {
-      data: validateResponse(auditLogSchema.array(), response.data.data),
-      pagination: response.data.pagination,
-    };
+    const validated = validateResponse(
+      paginatedResponseSchema(auditLogSchema),
+      response.data,
+    );
+    return validated;
   },
 
   getOverview: async (): Promise<Overview> => {
