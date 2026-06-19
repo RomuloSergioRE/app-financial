@@ -90,8 +90,6 @@ export function filterNavItems(items: NavItem[], role: Role, plan?: Plan | null)
       ? item.href.slice(0, -1)
       : item.href;
     const allowed = ROUTE_PERMISSIONS[normalized];
-    if (allowed && !allowed.includes(role)) return false;
-    if (item.planRequired && plan && PLAN_TIER[plan] < PLAN_TIER[item.planRequired]) return false;
-    return true;
+    return allowed ? allowed.includes(role) : true;
   });
 }
