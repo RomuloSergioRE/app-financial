@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import {
+  HiOutlineLockClosed,
   HiOutlinePencil,
   HiOutlineTrash,
   HiOutlinePlay,
@@ -11,12 +12,12 @@ import {
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { IconButton } from "@/components/atoms/IconButton";
-import { Can } from "@/components/atoms/Can";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
-import { UpgradeBanner } from "@/components/molecules/UpgradeBanner";
+import { ProFeatureGate } from "@/components/molecules/ProFeatureGate";
 import { RecurringForm } from "@/components/organisms/RecurringForm";
+import { canAccessFeature } from "@/lib/permissions";
 import { useCategories } from "@/hooks/useCategories";
 import {
   useRecurring,
@@ -34,7 +35,8 @@ import * as S from "./style";
 export default function RecurringRulesPage() {
   const t = useTranslations("recurring");
   const locale = useLocale();
-  const { currency } = useAuth();
+  const { plan, currency } = useAuth();
+  const canManage = canAccessFeature(plan, "recurring-rules");
   const [editingRule, setEditingRule] = useState<Recurring | null>(null);
   const [deletingRule, setDeletingRule] = useState<Recurring | null>(null);
 
@@ -139,14 +141,14 @@ export default function RecurringRulesPage() {
         {t("titulo")}
       </Text>
 
-      <Can feature="recurring-rules" fallback={<UpgradeBanner />}>
+      <ProFeatureGate feature="recurring-rules">
         <RecurringForm
           categories={categories}
           onSubmit={handleCreate}
           isLoading={createMutation.isPending}
           submitLabel={t("criar")}
         />
-      </Can>
+      </ProFeatureGate>
 
       {recurringState.status === "loading" ? (
         <S.List>
@@ -174,22 +176,20 @@ export default function RecurringRulesPage() {
                   </S.RuleMeta>
                 </S.RuleInfo>
                 <S.Actions>
-                  <Can feature="recurring-rules">
-                    <IconButton
-                      onClick={() => handleExecute(rule.id)}
-                      aria-label={t("executar")}
-                      title={t("executar")}
-                      disabled={!rule.active || executeMutation.isPending}
-                    >
-                      <HiOutlinePlay size={16} />
-                    </IconButton>
-                    <IconButton onClick={() => handleEdit(rule)} aria-label={t("editar")}>
-                      <HiOutlinePencil size={16} />
-                    </IconButton>
-                    <IconButton onClick={() => setDeletingRule(rule)} aria-label={t("excluir")}>
-                      <HiOutlineTrash size={16} />
-                    </IconButton>
-                  </Can>
+                  <IconButton
+                    disabled={!canManage || !rule.active || executeMutation.isPending}
+                    onClick={() => handleExecute(rule.id)}
+                    aria-label={t("executar")}
+                    title={t("executar")}
+                  >
+                    {canManage ? <HiOutlinePlay size={16} /> : <HiOutlineLockClosed size={16} />}
+                  </IconButton>
+                  <IconButton disabled={!canManage} onClick={() => handleEdit(rule)} aria-label={t("editar")}>
+                    {canManage ? <HiOutlinePencil size={16} /> : <HiOutlineLockClosed size={16} />}
+                  </IconButton>
+                  <IconButton disabled={!canManage} onClick={() => setDeletingRule(rule)} aria-label={t("excluir")}>
+                    {canManage ? <HiOutlineTrash size={16} /> : <HiOutlineLockClosed size={16} />}
+                  </IconButton>
                 </S.Actions>
               </S.RuleHeader>
 
