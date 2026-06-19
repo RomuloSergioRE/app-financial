@@ -54,12 +54,10 @@ api.interceptors.response.use(
         processQueue(refreshError);
         if (
           typeof window !== "undefined" &&
-          window.location.pathname !== "/" &&
-          !/^\/[a-z]{2}-[A-Z]{2}$/.test(window.location.pathname) &&
           !window.location.pathname.endsWith("/login") &&
           !window.location.pathname.endsWith("/register")
         ) {
-          const locale = window.location.pathname.split("/")[1] ?? "pt-BR";
+          const locale = document.cookie.match(/(?:^|;\s*)NEXT_LOCALE=([^;]*)/)?.[1] ?? "pt-BR";
           window.location.href = `/${locale}/login`;
         }
         return Promise.reject(refreshError);

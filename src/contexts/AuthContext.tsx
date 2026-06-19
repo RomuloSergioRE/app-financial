@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch {
     } finally {
       setUser(null);
-      const locale = user?.locale ?? window.location.pathname.split("/")[1] ?? "pt-BR";
+      const locale = user?.locale ?? "pt-BR";
       window.location.href = `/${locale}/login`;
     }
   }, [user?.locale]);
