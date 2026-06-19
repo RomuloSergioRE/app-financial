@@ -96,6 +96,7 @@
     "subtitulo": "From personal control to complete business management. Choose the ideal plan for your moment.",
     "free": {
       "nome": "Free",
+      "desc": "For those just starting out",
       "preco": "R$ 0",
       "periodo": "/month",
       "cta": "Get Started Free",
@@ -108,6 +109,7 @@
     },
     "pro": {
       "nome": "Pro",
+      "desc": "For professionals and businesses",
       "preco": "R$ 29",
       "periodo": "/month",
       "cta": "Subscribe to Pro",
@@ -123,6 +125,7 @@
     },
     "enterprise": {
       "nome": "Enterprise",
+      "desc": "For large organizations",
       "preco": "R$ 99",
       "periodo": "/month",
       "cta": "Talk to Sales",

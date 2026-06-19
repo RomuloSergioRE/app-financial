@@ -96,6 +96,7 @@
     "subtitulo": "Do controle pessoal à gestão empresarial completa. Escolha o plano ideal para seu momento.",
     "free": {
       "nome": "Free",
+      "desc": "Para quem está começando",
       "preco": "R$ 0",
       "periodo": "/mês",
       "cta": "Começar Grátis",
@@ -108,6 +109,7 @@
     },
     "pro": {
       "nome": "Pro",
+      "desc": "Para profissionais e empresas",
       "preco": "R$ 29",
       "periodo": "/mês",
       "cta": "Assinar Pro",
@@ -123,6 +125,7 @@
     },
     "enterprise": {
       "nome": "Enterprise",
+      "desc": "Para organizações de grande porte",
       "preco": "R$ 99",
       "periodo": "/mês",
       "cta": "Falar com Vendas",
