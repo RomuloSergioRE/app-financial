@@ -177,7 +177,7 @@ export default function AdminUsersPage() {
                       ]}
                     />
                   </S.Td>
-                  <S.Td data-label={t("criadoEm")}>{new Date(u.createdAt).toLocaleDateString("pt-BR")}</S.Td>
+                  <S.Td data-label={t("criadoEm")}>{new Date(u.createdAt).toLocaleDateString(locale)}</S.Td>
                   <S.Td data-label={t("acoes")}>
                     <IconButton onClick={() => setSelectedUserId(u.id)} title={t("detalhes")} variant="ghost">
                       <HiOutlineEye size={16} />
