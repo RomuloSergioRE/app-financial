@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, useRouter, usePathname } from "@/i18n/routing";
 import { Button } from "@/components/atoms/Button";
-import { Select } from "@/components/molecules/Select";
 import * as S from "./styles";
 
 export function Navbar() {
@@ -13,12 +12,6 @@ export function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const LOCALE_OPTIONS = [
-    { value: "pt-BR", label: "Português (BR)" },
-    { value: "en-US", label: "English (US)" },
-    { value: "es-ES", label: "Español (ES)" },
-  ];
 
   const handleLocaleChange = (newLocale: string) => {
     router.push(pathname, { locale: newLocale, scroll: false });
@@ -81,7 +74,17 @@ export function Navbar() {
         </S.DesktopLinks>
 
         <S.DesktopActions>
-          <Select value={locale} onChange={handleLocaleChange} options={LOCALE_OPTIONS} />
+          <S.FlagGroup>
+            <S.FlagButton $active={locale === "pt-BR"} onClick={() => handleLocaleChange("pt-BR")} title="Português (BR)">
+              🇧🇷
+            </S.FlagButton>
+            <S.FlagButton $active={locale === "en-US"} onClick={() => handleLocaleChange("en-US")} title="English (US)">
+              🇺🇸
+            </S.FlagButton>
+            <S.FlagButton $active={locale === "es-ES"} onClick={() => handleLocaleChange("es-ES")} title="Español (ES)">
+              🇪🇸
+            </S.FlagButton>
+          </S.FlagGroup>
           <Button as={Link} href="/login" variant="outline" size="sm">
             {t("entrar")}
           </Button>
@@ -133,7 +136,17 @@ export function Navbar() {
             </S.MobileNavLink>
           ))}
           <S.MobileCtas>
-            <Select value={locale} onChange={handleLocaleChange} options={LOCALE_OPTIONS} />
+            <S.FlagGroup>
+              <S.FlagButton $active={locale === "pt-BR"} onClick={() => handleLocaleChange("pt-BR")} title="Português (BR)">
+                🇧🇷
+              </S.FlagButton>
+              <S.FlagButton $active={locale === "en-US"} onClick={() => handleLocaleChange("en-US")} title="English (US)">
+                🇺🇸
+              </S.FlagButton>
+              <S.FlagButton $active={locale === "es-ES"} onClick={() => handleLocaleChange("es-ES")} title="Español (ES)">
+                🇪🇸
+              </S.FlagButton>
+            </S.FlagGroup>
             <Button as={Link} href="/login" variant="outline" style={{ width: "100%" }}>
               {t("entrar")}
             </Button>
