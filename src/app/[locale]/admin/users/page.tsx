@@ -7,6 +7,7 @@ import {
   HiOutlineDocumentArrowDown,
   HiOutlineEye,
 } from "react-icons/hi2";
+import { useAuth } from "@/contexts/AuthContext";
 import { formatCurrency } from "@/lib/format";
 import { fromCents } from "@/lib/currency";
 import { Text } from "@/components/atoms/Text";
@@ -30,6 +31,7 @@ import * as S from "./style";
 export default function AdminUsersPage() {
   const t = useTranslations("admin.users");
   const locale = useLocale();
+  const { currency } = useAuth();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("");
@@ -221,19 +223,19 @@ export default function AdminUsersPage() {
               <S.StatCard>
                 <S.StatLabel>{t("receitas")}</S.StatLabel>
                 <S.StatValue $positive>
-                  {formatCurrency(fromCents(userDetailsState.data.totalIncome), "BRL", locale)}
+                  {formatCurrency(fromCents(userDetailsState.data.totalIncome), currency, locale)}
                 </S.StatValue>
               </S.StatCard>
               <S.StatCard>
                 <S.StatLabel>{t("despesas")}</S.StatLabel>
                 <S.StatValue>
-                  {formatCurrency(fromCents(userDetailsState.data.totalOutcome), "BRL", locale)}
+                  {formatCurrency(fromCents(userDetailsState.data.totalOutcome), currency, locale)}
                 </S.StatValue>
               </S.StatCard>
               <S.StatCard>
                 <S.StatLabel>{t("saldo")}</S.StatLabel>
                 <S.StatValue $positive={userDetailsState.data.netBalance >= 0}>
-                  {formatCurrency(fromCents(userDetailsState.data.netBalance), "BRL", locale)}
+                  {formatCurrency(fromCents(userDetailsState.data.netBalance), currency, locale)}
                 </S.StatValue>
               </S.StatCard>
             </S.Row>

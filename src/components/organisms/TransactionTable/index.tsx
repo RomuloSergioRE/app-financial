@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/atoms/Skeleton";
 import { IconButton } from "@/components/atoms/IconButton";
 import { EmptyState } from "@/components/molecules/EmptyState";
 import { Pagination } from "@/components/molecules/Pagination";
+import { useAuth } from "@/contexts/AuthContext";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { fromCents } from "@/lib/currency";
 import type { Transaction } from "@/types";
@@ -41,6 +42,7 @@ export function TransactionTable({
 }: TransactionTableProps) {
   const t = useTranslations("transactions");
   const locale = useLocale();
+  const { currency } = useAuth();
 
   if (status === "loading") {
     return (
@@ -103,7 +105,7 @@ export function TransactionTable({
                     {tx.type === "income" ? t("entrada") : t("saida")}
                   </S.TypeBadge>
                 </S.Td>
-                <S.TdMono data-label={t("valor")}>{formatCurrency(fromCents(tx.amount), "BRL", locale)}</S.TdMono>
+                <S.TdMono data-label={t("valor")}>{formatCurrency(fromCents(tx.amount), currency, locale)}</S.TdMono>
                 <S.Td data-label="">
                   <S.Actions>
                     <IconButton onClick={() => onManageTags(tx)} aria-label={t("tags")}>

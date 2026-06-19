@@ -13,6 +13,7 @@ import { EmptyState } from "@/components/molecules/EmptyState";
 import { BudgetForm } from "@/components/molecules/BudgetForm";
 import { useCategories } from "@/hooks/useCategories";
 import { useBudgets, useCreateBudget, useUpdateBudget, useDeleteBudget } from "@/hooks/useBudgets";
+import { useAuth } from "@/contexts/AuthContext";
 import { formatCurrency } from "@/lib/format";
 import { fromCents, toCents } from "@/lib/currency";
 import type { Budget } from "@/types";
@@ -21,6 +22,7 @@ import * as S from "./style";
 export default function BudgetsPage() {
   const t = useTranslations("budgets");
   const locale = useLocale();
+  const { currency } = useAuth();
   const currentYear = new Date().getFullYear();
   const [monthFilter, setMonthFilter] = useState("");
   const [yearFilter, setYearFilter] = useState(String(currentYear));
@@ -167,18 +169,18 @@ export default function BudgetsPage() {
                 <S.ValueItem>
                   <S.ValueLabel>{t("gasto")}</S.ValueLabel>
                   <S.ValueAmount $type="spent">
-                    {formatCurrency(fromCents(budget.spent), "BRL", locale)}
+                    {formatCurrency(fromCents(budget.spent), currency, locale)}
                   </S.ValueAmount>
                 </S.ValueItem>
                 <S.ValueItem>
                   <S.ValueLabel>{t("limite")}</S.ValueLabel>
-                  <S.ValueAmount>{formatCurrency(fromCents(budget.limit), "BRL", locale)}</S.ValueAmount>
+                  <S.ValueAmount>{formatCurrency(fromCents(budget.limit), currency, locale)}</S.ValueAmount>
                 </S.ValueItem>
                 {budget.overBudget && (
                   <S.ValueItem>
                     <S.ValueLabel>{t("excedente")}</S.ValueLabel>
                     <S.ValueAmount $type="over">
-                      +{formatCurrency(fromCents(budget.spent - budget.limit), "BRL", locale)}
+                      +{formatCurrency(fromCents(budget.spent - budget.limit), currency, locale)}
                     </S.ValueAmount>
                   </S.ValueItem>
                 )}

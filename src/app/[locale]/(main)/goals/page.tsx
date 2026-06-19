@@ -12,6 +12,7 @@ import { EmptyState } from "@/components/molecules/EmptyState";
 import { GoalForm } from "@/components/organisms/GoalForm";
 import { useCategories } from "@/hooks/useCategories";
 import { useGoals, useCreateGoal, useUpdateGoal, useDeleteGoal } from "@/hooks/useGoals";
+import { useAuth } from "@/contexts/AuthContext";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { fromCents, toCents } from "@/lib/currency";
 import type { Goal } from "@/types";
@@ -20,6 +21,7 @@ import * as S from "./style";
 export default function GoalsPage() {
   const t = useTranslations("goals");
   const locale = useLocale();
+  const { currency } = useAuth();
   const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
   const [deletingGoal, setDeletingGoal] = useState<Goal | null>(null);
 
@@ -154,17 +156,17 @@ export default function GoalsPage() {
               <S.GoalValues>
                 <S.ValueItem>
                   <S.ValueLabel>{t("atual")}</S.ValueLabel>
-                  <S.ValueAmount>{formatCurrency(fromCents(goal.currentAmount), "BRL", locale)}</S.ValueAmount>
+                  <S.ValueAmount>{formatCurrency(fromCents(goal.currentAmount), currency, locale)}</S.ValueAmount>
                 </S.ValueItem>
                 <S.ValueItem>
                   <S.ValueLabel>{t("alvo")}</S.ValueLabel>
-                  <S.ValueAmount>{formatCurrency(fromCents(goal.targetAmount), "BRL", locale)}</S.ValueAmount>
+                  <S.ValueAmount>{formatCurrency(fromCents(goal.targetAmount), currency, locale)}</S.ValueAmount>
                 </S.ValueItem>
                 {!goal.achieved && goal.targetAmount > goal.currentAmount && (
                   <S.ValueItem>
                     <S.ValueLabel>{t("faltam")}</S.ValueLabel>
                     <S.ValueAmount>
-                      {formatCurrency(fromCents(goal.targetAmount - goal.currentAmount), "BRL", locale)}
+                      {formatCurrency(fromCents(goal.targetAmount - goal.currentAmount), currency, locale)}
                     </S.ValueAmount>
                   </S.ValueItem>
                 )}
