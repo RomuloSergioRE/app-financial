@@ -90,7 +90,7 @@ export function Select({
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
-        {displayText}
+        {selectedOption?.icon ?? displayText}
       </S.Trigger>
       <S.Chevron $isOpen={isOpen}>
         <HiOutlineChevronDown size={16} />
@@ -106,7 +106,7 @@ export function Select({
               $isSelected={opt.value === value}
               onClick={() => handleSelect(opt.value)}
             >
-              {opt.label}
+              {opt.icon && <span style={{ marginRight: 6 }}>{opt.icon}</span>}{opt.label}
             </S.OptionItem>
           ))}
         </S.Dropdown>

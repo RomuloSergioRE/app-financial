@@ -208,33 +208,6 @@ export const MobileCtas = styled.div`
   padding-top: ${({ theme }) => theme.spacing.lg};
 `;
 
-export const FlagGroup = styled.div`
-  display: flex;
-  gap: 4px;
-  align-items: center;
-`;
 
-export const FlagButton = styled.button<{ $active: boolean }>`
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 2px solid ${({ $active, theme }) => ($active ? theme.colors.primary : "transparent")};
-  background: transparent;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  transition: border-color ${({ theme }) => theme.transition.base};
-
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.primaryLight};
-  }
-
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.primary};
-    outline-offset: 2px;
-  }
-`;
 
 

@@ -33,7 +33,8 @@ api.interceptors.response.use(
       error.response?.status === 401 &&
       !originalRequest._retry &&
       !originalRequest.url?.includes("/auth/login") &&
-      !originalRequest.url?.includes("/auth/register")
+      !originalRequest.url?.includes("/auth/register") &&
+      !originalRequest.url?.includes("/auth/me")
     ) {
       if (isRefreshing) {
         return new Promise<void>((resolve, reject) => {
