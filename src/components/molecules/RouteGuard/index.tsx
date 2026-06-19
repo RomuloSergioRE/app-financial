@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, type ReactNode } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import { useAuth } from "@/contexts/AuthContext";
 import type { Role, Plan } from "@/lib/permissions";
 import { PLAN_TIER } from "@/lib/permissions";

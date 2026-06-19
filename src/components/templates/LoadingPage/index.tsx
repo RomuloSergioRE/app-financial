@@ -1,7 +1,9 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import * as S from "./style";
 
 export function LoadingPage() {
-  return <S.Wrapper>Carregando...</S.Wrapper>;
+  const t = useTranslations("common");
+  return <S.Wrapper>{t("carregando")}</S.Wrapper>;
 }

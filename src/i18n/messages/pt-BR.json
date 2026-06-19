@@ -545,6 +545,7 @@
       "crescimentoUsuarios": "Crescimento de Usuários (12 meses)",
       "semDados": "Nenhum dado de crescimento disponível.",
       "performance": "Performance do Sistema",
+      "categorias": "Categorias",
       "logsAuditoria": "Logs de Auditoria",
       "requisicoes": "Requisições",
       "erros": "Erros",
@@ -582,7 +583,9 @@
     "descricao": "Ocorreu um erro inesperado. Tente novamente.",
     "tentarNovamente": "Tentar novamente",
     "erroNaoTratado": "Erro não tratado:",
-    "naAplicacao": "Erro na aplicação:"
+    "naAplicacao": "Erro na aplicação:",
+    "dashboard": "Erro no dashboard:",
+    "admin": "Erro no admin:"
   },
   "common": {
     "carregando": "Carregando...",

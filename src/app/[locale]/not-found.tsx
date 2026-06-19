@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -36,11 +37,12 @@ const StyledLink = styled(Link)`
 `;
 
 export default function NotFound() {
+  const t = useTranslations("error");
   return (
     <Wrapper>
       <Title>404</Title>
-      <Description>Página não encontrada</Description>
-      <StyledLink href="/">Voltar ao início</StyledLink>
+      <Description>{t("paginaNaoEncontrada")}</Description>
+      <StyledLink href="/">{t("voltarInicio")}</StyledLink>
     </Wrapper>
   );
 }

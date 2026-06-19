@@ -545,6 +545,7 @@
       "crescimentoUsuarios": "User Growth (12 months)",
       "semDados": "No growth data available.",
       "performance": "System Performance",
+      "categorias": "Categories",
       "logsAuditoria": "Audit Logs",
       "requisicoes": "Requests",
       "erros": "Errors",
@@ -582,7 +583,9 @@
     "descricao": "An unexpected error occurred. Please try again.",
     "tentarNovamente": "Try again",
     "erroNaoTratado": "Unhandled error:",
-    "naAplicacao": "Application error:"
+    "naAplicacao": "Application error:",
+    "dashboard": "Dashboard error:",
+    "admin": "Admin error:"
   },
   "common": {
     "carregando": "Loading...",
