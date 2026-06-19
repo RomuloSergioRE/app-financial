@@ -1,18 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { HiOutlinePencil, HiOutlineTrash, HiOutlineCurrencyDollar } from "react-icons/hi2";
+import { HiOutlineLockClosed, HiOutlinePencil, HiOutlineTrash, HiOutlineCurrencyDollar } from "react-icons/hi2";
 import { useTranslations, useLocale } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { IconButton } from "@/components/atoms/IconButton";
-import { Can } from "@/components/atoms/Can";
 import { Select } from "@/components/molecules/Select";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
-import { UpgradeBanner } from "@/components/molecules/UpgradeBanner";
+import { ProFeatureGate } from "@/components/molecules/ProFeatureGate";
 import { BudgetForm } from "@/components/molecules/BudgetForm";
+import { canAccessFeature } from "@/lib/permissions";
 import { useCategories } from "@/hooks/useCategories";
 import { useBudgets, useCreateBudget, useUpdateBudget, useDeleteBudget } from "@/hooks/useBudgets";
 import { useAuth } from "@/contexts/AuthContext";
@@ -24,7 +24,8 @@ import * as S from "./style";
 export default function BudgetsPage() {
   const t = useTranslations("budgets");
   const locale = useLocale();
-  const { currency } = useAuth();
+  const { plan, currency } = useAuth();
+  const canManage = canAccessFeature(plan, "budgets");
   const currentYear = new Date().getFullYear();
   const [monthFilter, setMonthFilter] = useState("");
   const [yearFilter, setYearFilter] = useState(String(currentYear));
@@ -104,14 +105,14 @@ export default function BudgetsPage() {
         {t("titulo")}
       </Text>
 
-      <Can feature="budgets" fallback={<UpgradeBanner />}>
+      <ProFeatureGate feature="budgets">
         <BudgetForm
           categories={categories}
           onSubmit={handleCreate}
           isLoading={createMutation.isPending}
           submitLabel={t("criar")}
         />
-      </Can>
+      </ProFeatureGate>
 
       <S.FilterRow>
         <S.FormGroup>
@@ -160,14 +161,12 @@ export default function BudgetsPage() {
                   </S.MonthYear>
                 </S.BudgetInfo>
                 <S.Actions>
-                  <Can feature="budgets">
-                    <IconButton onClick={() => handleEdit(budget)} aria-label={t("editar")}>
-                      <HiOutlinePencil size={16} />
-                    </IconButton>
-                    <IconButton onClick={() => setDeletingBudget(budget)} aria-label={t("excluir")}>
-                      <HiOutlineTrash size={16} />
-                    </IconButton>
-                  </Can>
+                  <IconButton disabled={!canManage} onClick={() => handleEdit(budget)} aria-label={t("editar")}>
+                    {canManage ? <HiOutlinePencil size={16} /> : <HiOutlineLockClosed size={16} />}
+                  </IconButton>
+                  <IconButton disabled={!canManage} onClick={() => setDeletingBudget(budget)} aria-label={t("excluir")}>
+                    {canManage ? <HiOutlineTrash size={16} /> : <HiOutlineLockClosed size={16} />}
+                  </IconButton>
                 </S.Actions>
               </S.BudgetHeader>
 

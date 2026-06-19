@@ -1,23 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import { HiOutlinePencil, HiOutlineTrash, HiOutlineTag } from "react-icons/hi2";
+import { HiOutlineLockClosed, HiOutlinePencil, HiOutlineTrash, HiOutlineTag } from "react-icons/hi2";
 import { useTranslations } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { IconButton } from "@/components/atoms/IconButton";
-import { Can } from "@/components/atoms/Can";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
-import { UpgradeBanner } from "@/components/molecules/UpgradeBanner";
+import { ProFeatureGate } from "@/components/molecules/ProFeatureGate";
 import { TagForm } from "@/components/organisms/TagForm";
+import { useAuth } from "@/contexts/AuthContext";
+import { canAccessFeature } from "@/lib/permissions";
 import { useTags, useCreateTag, useUpdateTag, useDeleteTag } from "@/hooks/useTags";
 import type { Tag } from "@/types";
 import * as S from "./style";
 
 export default function TagsPage() {
   const t = useTranslations("tags");
+  const { plan } = useAuth();
+  const canManage = canAccessFeature(plan, "tags");
   const [editingTag, setEditingTag] = useState<Tag | null>(null);
   const [deletingTag, setDeletingTag] = useState<Tag | null>(null);
 
@@ -68,9 +71,9 @@ export default function TagsPage() {
         {t("titulo")}
       </Text>
 
-      <Can feature="tags" fallback={<UpgradeBanner />}>
+      <ProFeatureGate feature="tags">
         <TagForm onSubmit={handleCreate} isLoading={createMutation.isPending} submitLabel={t("criar")} />
-      </Can>
+      </ProFeatureGate>
 
       {tagsState.status === "loading" ? (
         <S.List>
@@ -90,14 +93,12 @@ export default function TagsPage() {
             <S.Item key={tag.id}>
               <S.TagBadge $color={tag.color ?? undefined}>{tag.name}</S.TagBadge>
               <S.Actions>
-                <Can feature="tags">
-                  <IconButton onClick={() => handleEdit(tag)} aria-label={t("editar")}>
-                    <HiOutlinePencil size={16} />
-                  </IconButton>
-                  <IconButton onClick={() => setDeletingTag(tag)} aria-label={t("excluir")}>
-                    <HiOutlineTrash size={16} />
-                  </IconButton>
-                </Can>
+                <IconButton disabled={!canManage} onClick={() => handleEdit(tag)} aria-label={t("editar")}>
+                  {canManage ? <HiOutlinePencil size={16} /> : <HiOutlineLockClosed size={16} />}
+                </IconButton>
+                <IconButton disabled={!canManage} onClick={() => setDeletingTag(tag)} aria-label={t("excluir")}>
+                  {canManage ? <HiOutlineTrash size={16} /> : <HiOutlineLockClosed size={16} />}
+                </IconButton>
               </S.Actions>
             </S.Item>
           ))}

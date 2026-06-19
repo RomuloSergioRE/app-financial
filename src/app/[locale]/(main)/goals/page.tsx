@@ -1,17 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { HiOutlinePencil, HiOutlineTrash, HiOutlineTrophy } from "react-icons/hi2";
+import { HiOutlineLockClosed, HiOutlinePencil, HiOutlineTrash, HiOutlineTrophy } from "react-icons/hi2";
 import { useTranslations, useLocale } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { IconButton } from "@/components/atoms/IconButton";
-import { Can } from "@/components/atoms/Can";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
-import { UpgradeBanner } from "@/components/molecules/UpgradeBanner";
+import { ProFeatureGate } from "@/components/molecules/ProFeatureGate";
 import { GoalForm } from "@/components/organisms/GoalForm";
+import { canAccessFeature } from "@/lib/permissions";
 import { useCategories } from "@/hooks/useCategories";
 import { useGoals, useCreateGoal, useUpdateGoal, useDeleteGoal } from "@/hooks/useGoals";
 import { useAuth } from "@/contexts/AuthContext";
@@ -23,7 +23,8 @@ import * as S from "./style";
 export default function GoalsPage() {
   const t = useTranslations("goals");
   const locale = useLocale();
-  const { currency } = useAuth();
+  const { plan, currency } = useAuth();
+  const canManage = canAccessFeature(plan, "goals");
   const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
   const [deletingGoal, setDeletingGoal] = useState<Goal | null>(null);
 
@@ -100,14 +101,14 @@ export default function GoalsPage() {
         {t("titulo")}
       </Text>
 
-      <Can feature="goals" fallback={<UpgradeBanner />}>
+      <ProFeatureGate feature="goals">
         <GoalForm
           categories={categories}
           onSubmit={handleCreate}
           isLoading={createMutation.isPending}
           submitLabel={t("criar")}
         />
-      </Can>
+      </ProFeatureGate>
 
       {goalsState.status === "loading" ? (
         <S.List>
@@ -136,14 +137,12 @@ export default function GoalsPage() {
                   </S.GoalMeta>
                 </S.GoalInfo>
                 <S.Actions>
-                  <Can feature="goals">
-                    <IconButton onClick={() => handleEdit(goal)} aria-label={t("editar")}>
-                      <HiOutlinePencil size={16} />
-                    </IconButton>
-                    <IconButton onClick={() => setDeletingGoal(goal)} aria-label={t("excluir")}>
-                      <HiOutlineTrash size={16} />
-                    </IconButton>
-                  </Can>
+                  <IconButton disabled={!canManage} onClick={() => handleEdit(goal)} aria-label={t("editar")}>
+                    {canManage ? <HiOutlinePencil size={16} /> : <HiOutlineLockClosed size={16} />}
+                  </IconButton>
+                  <IconButton disabled={!canManage} onClick={() => setDeletingGoal(goal)} aria-label={t("excluir")}>
+                    {canManage ? <HiOutlineTrash size={16} /> : <HiOutlineLockClosed size={16} />}
+                  </IconButton>
                 </S.Actions>
               </S.GoalHeader>
 

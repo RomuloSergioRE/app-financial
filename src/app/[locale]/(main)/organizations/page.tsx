@@ -1,17 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { HiOutlinePlus } from "react-icons/hi2";
+import { HiOutlineLockClosed, HiOutlinePlus } from "react-icons/hi2";
 import { useTranslations } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { Button } from "@/components/atoms/Button";
-import { Can } from "@/components/atoms/Can";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { Select } from "@/components/molecules/Select";
-import { UpgradeBanner } from "@/components/molecules/UpgradeBanner";
 import { OrganizationList } from "@/components/organisms/OrganizationList";
+import { useAuth } from "@/contexts/AuthContext";
+import { canAccessFeature } from "@/lib/permissions";
 import { MemberManager } from "@/components/organisms/MemberManager";
 import {
   useOrganizations,
@@ -32,6 +32,8 @@ import * as S from "./style";
 export default function OrganizationsPage() {
   const t = useTranslations("organizations");
   const ct = useTranslations("common");
+  const { plan } = useAuth();
+  const canManage = canAccessFeature(plan, "organizations");
   const [editingOrg, setEditingOrg] = useState<Organization | null>(null);
   const [deletingOrg, setDeletingOrg] = useState<Organization | null>(null);
   const [showCreate, setShowCreate] = useState(false);
@@ -107,31 +109,29 @@ export default function OrganizationsPage() {
           <Text as="h2" size="lg" weight="semibold" fontFamily="display">
             {t("minhas")}
           </Text>
-          <Can feature="organizations" fallback={null}>
-            <Button onClick={() => setShowCreate(true)}>
-              <HiOutlinePlus size={16} /> {t("nova")}
-            </Button>
-          </Can>
+          <Button disabled={!canManage} onClick={() => setShowCreate(true)}>
+            {canManage ? <HiOutlinePlus size={16} /> : <HiOutlineLockClosed size={16} />}
+            {t("nova")}
+          </Button>
         </S.Row>
       </S.Section>
 
-      <Can feature="organizations" fallback={<UpgradeBanner plan="enterprise" />}>
-        <OrganizationList
-          organizations={orgs}
-          status={orgsState.status}
-          onSelect={(id) => selectMutation.mutate(id)}
-          onManageMembers={(id) => setSelectedOrgId(id)}
-          onFiscalReport={(id) => {
-            setSelectedOrgId(id);
-            setShowFiscal(true);
-          }}
-          onEdit={(org) => {
-            setEditingOrg(org);
-            setEditName(org.name);
-          }}
-          onDelete={setDeletingOrg}
-        />
-      </Can>
+      <OrganizationList
+        organizations={orgs}
+        status={orgsState.status}
+        disabled={!canManage}
+        onSelect={(id) => selectMutation.mutate(id)}
+        onManageMembers={(id) => setSelectedOrgId(id)}
+        onFiscalReport={(id) => {
+          setSelectedOrgId(id);
+          setShowFiscal(true);
+        }}
+        onEdit={(org) => {
+          setEditingOrg(org);
+          setEditName(org.name);
+        }}
+        onDelete={setDeletingOrg}
+      />
 
       <Modal open={showCreate} onClose={() => setShowCreate(false)} title={t("criar")}>
         <S.Form onSubmit={handleCreate}>

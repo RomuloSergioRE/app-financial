@@ -8,6 +8,7 @@ import {
   HiOutlinePencil,
   HiOutlineTrash,
 } from "react-icons/hi2";
+import { HiOutlineLockClosed } from "react-icons/hi2";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { IconButton } from "@/components/atoms/IconButton";
 import { EmptyState } from "@/components/molecules/EmptyState";
@@ -17,6 +18,7 @@ import * as S from "./style";
 interface OrganizationListProps {
   organizations: Organization[];
   status: "loading" | "error" | "success";
+  disabled?: boolean;
   onSelect: (id: string) => void;
   onManageMembers: (id: string) => void;
   onFiscalReport: (id: string) => void;
@@ -27,6 +29,7 @@ interface OrganizationListProps {
 export function OrganizationList({
   organizations,
   status,
+  disabled = false,
   onSelect,
   onManageMembers,
   onFiscalReport,
@@ -63,20 +66,20 @@ export function OrganizationList({
             </S.OrgMeta>
           </S.OrgInfo>
           <S.Actions>
-            <IconButton onClick={() => onSelect(org.id)} title="Selecionar organização" variant="outline">
-              <HiOutlineCheck size={16} />
+            <IconButton disabled={disabled} onClick={() => onSelect(org.id)} title="Selecionar organização" variant="outline">
+              {disabled ? <HiOutlineLockClosed size={16} /> : <HiOutlineCheck size={16} />}
             </IconButton>
-            <IconButton onClick={() => onManageMembers(org.id)} title="Membros" variant="outline">
-              <HiOutlineUserGroup size={16} />
+            <IconButton disabled={disabled} onClick={() => onManageMembers(org.id)} title="Membros" variant="outline">
+              {disabled ? <HiOutlineLockClosed size={16} /> : <HiOutlineUserGroup size={16} />}
             </IconButton>
-            <IconButton onClick={() => onFiscalReport(org.id)} title="Relatório fiscal" variant="outline">
-              <HiOutlineDocumentText size={16} />
+            <IconButton disabled={disabled} onClick={() => onFiscalReport(org.id)} title="Relatório fiscal" variant="outline">
+              {disabled ? <HiOutlineLockClosed size={16} /> : <HiOutlineDocumentText size={16} />}
             </IconButton>
-            <IconButton onClick={() => onEdit(org)} title="Editar" variant="outline">
-              <HiOutlinePencil size={16} />
+            <IconButton disabled={disabled} onClick={() => onEdit(org)} title="Editar" variant="outline">
+              {disabled ? <HiOutlineLockClosed size={16} /> : <HiOutlinePencil size={16} />}
             </IconButton>
-            <IconButton onClick={() => onDelete(org)} title="Excluir" variant="outline">
-              <HiOutlineTrash size={16} />
+            <IconButton disabled={disabled} onClick={() => onDelete(org)} title="Excluir" variant="outline">
+              {disabled ? <HiOutlineLockClosed size={16} /> : <HiOutlineTrash size={16} />}
             </IconButton>
           </S.Actions>
         </S.OrgCard>
