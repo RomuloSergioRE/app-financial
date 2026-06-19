@@ -23,6 +23,7 @@ import {
   useDeleteRecurring,
   useExecuteRecurring,
 } from "@/hooks/useRecurring";
+import { useAuth } from "@/contexts/AuthContext";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { fromCents, toCents } from "@/lib/currency";
 import type { Recurring } from "@/types";
@@ -31,6 +32,7 @@ import * as S from "./style";
 export default function RecurringRulesPage() {
   const t = useTranslations("recurring");
   const locale = useLocale();
+  const { currency } = useAuth();
   const [editingRule, setEditingRule] = useState<Recurring | null>(null);
   const [deletingRule, setDeletingRule] = useState<Recurring | null>(null);
 
@@ -188,7 +190,7 @@ export default function RecurringRulesPage() {
               <S.RuleDetails>
                 <S.DetailItem>
                   <S.DetailLabel>{t("valor")}</S.DetailLabel>
-                  <S.DetailValue>{formatCurrency(fromCents(rule.amount), "BRL", locale)}</S.DetailValue>
+                  <S.DetailValue>{formatCurrency(fromCents(rule.amount), currency, locale)}</S.DetailValue>
                 </S.DetailItem>
                 <S.DetailItem>
                   <S.DetailLabel>{t("tipo")}</S.DetailLabel>

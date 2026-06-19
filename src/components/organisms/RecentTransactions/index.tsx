@@ -3,6 +3,7 @@
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { Text } from "@/components/atoms/Text";
+import { useAuth } from "@/contexts/AuthContext";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { fromCents } from "@/lib/currency";
 import * as S from "./style";
@@ -21,6 +22,7 @@ interface RecentTransactionsProps {
 }
 
 export function RecentTransactions({ transactions }: RecentTransactionsProps) {
+  const { currency } = useAuth();
   const locale = useLocale();
   const dt = useTranslations("dashboard");
   const tt = useTranslations("transactions");
@@ -59,7 +61,7 @@ export function RecentTransactions({ transactions }: RecentTransactionsProps) {
                     {tx.type === "income" ? dt("receitas") : dt("despesas")}
                   </S.TypeBadge>
                 </S.Td>
-                <S.TdMono data-label={tt("valor")}>{formatCurrency(fromCents(tx.amount), "BRL", locale)}</S.TdMono>
+                <S.TdMono data-label={tt("valor")}>{formatCurrency(fromCents(tx.amount), currency, locale)}</S.TdMono>
               </tr>
             ))}
           </tbody>

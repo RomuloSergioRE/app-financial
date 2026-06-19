@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
+import { useAuth } from "@/contexts/AuthContext";
 import { formatCurrency } from "@/lib/format";
 import { useAdminOverview, useUserGrowth, useAdminPerformance } from "@/hooks/useAdmin";
 import * as S from "./style";
@@ -11,6 +12,7 @@ import * as S from "./style";
 function OverviewCards() {
   const t = useTranslations("admin.analytics");
   const locale = useLocale();
+  const { currency } = useAuth();
   const overviewState = useAdminOverview();
 
   if (overviewState.status === "loading") {
@@ -46,16 +48,16 @@ function OverviewCards() {
       </S.StatCard>
       <S.StatCard>
         <S.StatLabel>{t("receitas")}</S.StatLabel>
-        <S.StatValue $positive>{formatCurrency(data.totalIncome / 100, "BRL", locale)}</S.StatValue>
+        <S.StatValue $positive>{formatCurrency(data.totalIncome / 100, currency, locale)}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
         <S.StatLabel>{t("despesas")}</S.StatLabel>
-        <S.StatValue>{formatCurrency(data.totalOutcome / 100, "BRL", locale)}</S.StatValue>
+        <S.StatValue>{formatCurrency(data.totalOutcome / 100, currency, locale)}</S.StatValue>
       </S.StatCard>
       <S.StatCard>
         <S.StatLabel>{t("saldoLiquido")}</S.StatLabel>
         <S.StatValue $positive={data.netPlatformBalance >= 0}>
-          {formatCurrency(data.netPlatformBalance / 100, "BRL", locale)}
+          {formatCurrency(data.netPlatformBalance / 100, currency, locale)}
         </S.StatValue>
       </S.StatCard>
     </S.StatsGrid>
