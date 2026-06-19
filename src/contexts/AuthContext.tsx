@@ -14,7 +14,7 @@ interface AuthContextData {
   locale: string;
   login: (data: LoginRequest) => Promise<User>;
   register: (data: RegisterRequest) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
 
@@ -52,11 +52,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const logout = useCallback(() => {
-    authService.logout().catch(() => {});
-    setUser(null);
-    window.location.href = "/login";
-  }, []);
+  const logout = useCallback(async () => {
+    try {
+      await authService.logout();
+    } catch {
+    } finally {
+      setUser(null);
+      const locale = user?.locale ?? window.location.pathname.split("/")[1] ?? "pt-BR";
+      window.location.href = `/${locale}/login`;
+    }
+  }, [user?.locale]);
 
   if (initializing) {
     return null;

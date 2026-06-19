@@ -12,10 +12,13 @@ import type {
   CashFlow,
 } from "@/types";
 
+const ANALYTICS_STALE_TIME = 30_000;
+
 export function useBalance(startDate?: string, endDate?: string): AsyncState<BalanceResponse> {
   const query = useQuery({
     queryKey: ["analytics", "balance", startDate, endDate],
     queryFn: () => analyticsService.balance({ startDate, endDate }),
+    staleTime: ANALYTICS_STALE_TIME,
   });
   return mapAsyncState(query);
 }
@@ -27,6 +30,7 @@ export function useCategoriesAnalytics(
   const query = useQuery({
     queryKey: ["analytics", "categories", startDate, endDate],
     queryFn: () => analyticsService.categories({ startDate, endDate }),
+    staleTime: ANALYTICS_STALE_TIME,
   });
   return mapAsyncState(query);
 }
@@ -35,6 +39,7 @@ export function useMonthlySeries(startDate: string, endDate: string): AsyncState
   const query = useQuery({
     queryKey: ["analytics", "monthly-series", startDate, endDate],
     queryFn: () => analyticsService.monthlySeries({ startDate, endDate }),
+    staleTime: ANALYTICS_STALE_TIME,
   });
   return mapAsyncState(query);
 }
@@ -43,6 +48,7 @@ export function useComparison(month: number, year: number): AsyncState<Compariso
   const query = useQuery({
     queryKey: ["analytics", "comparison", month, year],
     queryFn: () => analyticsService.comparison({ month, year }),
+    staleTime: ANALYTICS_STALE_TIME,
   });
   return mapAsyncState(query);
 }
@@ -55,6 +61,7 @@ export function useTopCategories(
   const query = useQuery({
     queryKey: ["analytics", "top-categories", startDate, endDate, limit],
     queryFn: () => analyticsService.topCategories({ startDate, endDate, limit }),
+    staleTime: ANALYTICS_STALE_TIME,
   });
   return mapAsyncState(query);
 }
@@ -63,6 +70,7 @@ export function useSummary(month?: number, year?: number): AsyncState<Summary> {
   const query = useQuery({
     queryKey: ["analytics", "summary", month, year],
     queryFn: () => analyticsService.summary({ month, year }),
+    staleTime: ANALYTICS_STALE_TIME,
   });
   return mapAsyncState(query);
 }
@@ -71,6 +79,7 @@ export function useCashFlow(months?: number): AsyncState<CashFlow[]> {
   const query = useQuery({
     queryKey: ["analytics", "cash-flow", months],
     queryFn: () => analyticsService.cashFlow({ months }),
+    staleTime: ANALYTICS_STALE_TIME,
   });
   return mapAsyncState(query);
 }

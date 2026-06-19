@@ -20,7 +20,7 @@ import type { NavItem } from "@/components/molecules/Sidebar/types";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const t = useTranslations("sidebar");
-  const { role } = useAuth();
+  const { role, plan } = useAuth();
 
   const allNavItems: NavItem[] = [
     { label: t("dashboard"), href: "/dashboard", icon: <HiOutlineViewColumns size={20} /> },
@@ -35,7 +35,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     { label: t("configuracoes"), href: "/settings", icon: <HiOutlineCog6Tooth size={20} /> },
   ];
 
-  const navItems = role ? filterNavItems(allNavItems, role) : allNavItems;
+  const navItems = role ? filterNavItems(allNavItems, role, plan) : allNavItems;
 
   return <AppLayout navItems={navItems}>{children}</AppLayout>;
 }

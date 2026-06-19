@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminService } from "@/services/admin.service";
 import { mapAsyncState } from "@/lib/map-async-state";
+import { downloadBlob } from "@/lib/download";
 import type { AsyncState } from "@/types/async";
 import type {
   AdminUserDetails,
@@ -9,15 +10,6 @@ import type {
   Performance,
   UserAnalytics,
 } from "@/types";
-
-function downloadBlob(blob: Blob, filename: string) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
-}
 
 export function useAdminUsers(params?: {
   page?: number;

@@ -55,10 +55,11 @@ api.interceptors.response.use(
         if (
           typeof window !== "undefined" &&
           window.location.pathname !== "/" &&
-          !window.location.pathname.startsWith("/login") &&
-          !window.location.pathname.startsWith("/register")
+          !window.location.pathname.endsWith("/login") &&
+          !window.location.pathname.endsWith("/register")
         ) {
-          window.location.href = "/login";
+          const locale = window.location.pathname.split("/")[1] ?? "pt-BR";
+          window.location.href = `/${locale}/login`;
         }
         return Promise.reject(refreshError);
       } finally {

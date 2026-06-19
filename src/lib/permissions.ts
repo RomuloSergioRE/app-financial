@@ -84,12 +84,14 @@ export function canAccessFeature(plan: Plan | null | undefined, feature: Feature
   return PLAN_TIER[plan] >= PLAN_TIER[required];
 }
 
-export function filterNavItems(items: NavItem[], role: Role): NavItem[] {
+export function filterNavItems(items: NavItem[], role: Role, plan?: Plan | null): NavItem[] {
   return items.filter((item) => {
     const normalized = item.href.endsWith("/")
       ? item.href.slice(0, -1)
       : item.href;
     const allowed = ROUTE_PERMISSIONS[normalized];
-    return allowed ? allowed.includes(role) : true;
+    if (allowed && !allowed.includes(role)) return false;
+    if (item.planRequired && plan && PLAN_TIER[plan] < PLAN_TIER[item.planRequired]) return false;
+    return true;
   });
 }

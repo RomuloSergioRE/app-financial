@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import { useTranslations } from "next-intl";
 import { Modal, ModalForm, ModalActions } from "@/components/molecules/Modal";
 import { Text } from "@/components/atoms/Text";
 import { Button } from "@/components/atoms/Button";
@@ -12,6 +13,7 @@ interface UpgradeModalContextData {
 const UpgradeModalContext = createContext<UpgradeModalContextData>({} as UpgradeModalContextData);
 
 export function UpgradeModalProvider({ children }: { children: ReactNode }) {
+  const t = useTranslations("upgrade");
   const [modalState, setModalState] = useState<{
     open: boolean;
     plan: "pro" | "enterprise";
@@ -34,16 +36,15 @@ export function UpgradeModalProvider({ children }: { children: ReactNode }) {
       <Modal
         open={modalState.open}
         onClose={handleClose}
-        title="Funcionalidade exclusiva"
+        title={t("titulo")}
       >
         <ModalForm>
           <Text as="p" size="sm" align="center">
-            Esta funcionalidade está disponível apenas para assinantes{" "}
-            <strong>{planName}</strong>. Faça o upgrade para desbloquear.
+            {t.rich("descricao", { plan: () => <strong>{planName}</strong> })}
           </Text>
           <ModalActions>
             <Button type="button" variant="outline" onClick={handleClose}>
-              Entendi
+              {t("entendi")}
             </Button>
           </ModalActions>
         </ModalForm>
