@@ -6,9 +6,11 @@ import { useTranslations, useLocale } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { IconButton } from "@/components/atoms/IconButton";
+import { Can } from "@/components/atoms/Can";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
+import { UpgradeBanner } from "@/components/molecules/UpgradeBanner";
 import { GoalForm } from "@/components/organisms/GoalForm";
 import { useCategories } from "@/hooks/useCategories";
 import { useGoals, useCreateGoal, useUpdateGoal, useDeleteGoal } from "@/hooks/useGoals";
@@ -98,12 +100,14 @@ export default function GoalsPage() {
         {t("titulo")}
       </Text>
 
-      <GoalForm
-        categories={categories}
-        onSubmit={handleCreate}
-        isLoading={createMutation.isPending}
-        submitLabel={t("criar")}
-      />
+      <Can feature="goals" fallback={<UpgradeBanner />}>
+        <GoalForm
+          categories={categories}
+          onSubmit={handleCreate}
+          isLoading={createMutation.isPending}
+          submitLabel={t("criar")}
+        />
+      </Can>
 
       {goalsState.status === "loading" ? (
         <S.List>
@@ -132,12 +136,14 @@ export default function GoalsPage() {
                   </S.GoalMeta>
                 </S.GoalInfo>
                 <S.Actions>
-                  <IconButton onClick={() => handleEdit(goal)} aria-label={t("editar")}>
-                    <HiOutlinePencil size={16} />
-                  </IconButton>
-                  <IconButton onClick={() => setDeletingGoal(goal)} aria-label={t("excluir")}>
-                    <HiOutlineTrash size={16} />
-                  </IconButton>
+                  <Can feature="goals">
+                    <IconButton onClick={() => handleEdit(goal)} aria-label={t("editar")}>
+                      <HiOutlinePencil size={16} />
+                    </IconButton>
+                    <IconButton onClick={() => setDeletingGoal(goal)} aria-label={t("excluir")}>
+                      <HiOutlineTrash size={16} />
+                    </IconButton>
+                  </Can>
                 </S.Actions>
               </S.GoalHeader>
 

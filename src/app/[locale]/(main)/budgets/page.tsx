@@ -6,10 +6,12 @@ import { useTranslations, useLocale } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { IconButton } from "@/components/atoms/IconButton";
+import { Can } from "@/components/atoms/Can";
 import { Select } from "@/components/molecules/Select";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
+import { UpgradeBanner } from "@/components/molecules/UpgradeBanner";
 import { BudgetForm } from "@/components/molecules/BudgetForm";
 import { useCategories } from "@/hooks/useCategories";
 import { useBudgets, useCreateBudget, useUpdateBudget, useDeleteBudget } from "@/hooks/useBudgets";
@@ -102,12 +104,14 @@ export default function BudgetsPage() {
         {t("titulo")}
       </Text>
 
-      <BudgetForm
-        categories={categories}
-        onSubmit={handleCreate}
-        isLoading={createMutation.isPending}
-        submitLabel={t("criar")}
-      />
+      <Can feature="budgets" fallback={<UpgradeBanner />}>
+        <BudgetForm
+          categories={categories}
+          onSubmit={handleCreate}
+          isLoading={createMutation.isPending}
+          submitLabel={t("criar")}
+        />
+      </Can>
 
       <S.FilterRow>
         <S.FormGroup>
@@ -156,12 +160,14 @@ export default function BudgetsPage() {
                   </S.MonthYear>
                 </S.BudgetInfo>
                 <S.Actions>
-                  <IconButton onClick={() => handleEdit(budget)} aria-label={t("editar")}>
-                    <HiOutlinePencil size={16} />
-                  </IconButton>
-                  <IconButton onClick={() => setDeletingBudget(budget)} aria-label={t("excluir")}>
-                    <HiOutlineTrash size={16} />
-                  </IconButton>
+                  <Can feature="budgets">
+                    <IconButton onClick={() => handleEdit(budget)} aria-label={t("editar")}>
+                      <HiOutlinePencil size={16} />
+                    </IconButton>
+                    <IconButton onClick={() => setDeletingBudget(budget)} aria-label={t("excluir")}>
+                      <HiOutlineTrash size={16} />
+                    </IconButton>
+                  </Can>
                 </S.Actions>
               </S.BudgetHeader>
 
