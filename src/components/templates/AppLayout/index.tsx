@@ -5,8 +5,7 @@ import { useRouter, usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { Sidebar } from "@/components/molecules/Sidebar";
 import { useAuth } from "@/contexts/AuthContext";
-import { useUpgradeModal } from "@/contexts/UpgradeModalContext";
-import { canAccess, getRequiredPlan, PLAN_TIER } from "@/lib/permissions";
+import { canAccess } from "@/lib/permissions";
 import type { NavItem } from "@/components/molecules/Sidebar/types";
 import { HiOutlineBars3, HiOutlineXMark } from "react-icons/hi2";
 import * as S from "./style";
@@ -18,8 +17,7 @@ interface AppLayoutProps {
 
 export function AppLayout({ children, navItems }: AppLayoutProps) {
   const t = useTranslations("nav");
-  const { isAuthenticated, initializing, role, plan, logout, user } = useAuth();
-  const { requirePlan } = useUpgradeModal();
+  const { isAuthenticated, initializing, role, logout, user } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -36,14 +34,7 @@ export function AppLayout({ children, navItems }: AppLayoutProps) {
       router.replace("/dashboard");
       return;
     }
-
-    const requiredPlan = getRequiredPlan(pathname);
-    if (requiredPlan && requiredPlan !== "free" && plan && PLAN_TIER[plan] < PLAN_TIER[requiredPlan]) {
-      requirePlan(requiredPlan);
-      router.replace("/dashboard");
-      return;
-    }
-  }, [initializing, isAuthenticated, role, plan, pathname, router, requirePlan]);
+  }, [initializing, isAuthenticated, role, pathname, router]);
 
   const handleLogout = useCallback(async () => {
     await logout();

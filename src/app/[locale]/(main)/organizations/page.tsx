@@ -6,9 +6,11 @@ import { useTranslations } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { Button } from "@/components/atoms/Button";
+import { Can } from "@/components/atoms/Can";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { Select } from "@/components/molecules/Select";
+import { UpgradeBanner } from "@/components/molecules/UpgradeBanner";
 import { OrganizationList } from "@/components/organisms/OrganizationList";
 import { MemberManager } from "@/components/organisms/MemberManager";
 import {
@@ -105,27 +107,31 @@ export default function OrganizationsPage() {
           <Text as="h2" size="lg" weight="semibold" fontFamily="display">
             {t("minhas")}
           </Text>
-          <Button onClick={() => setShowCreate(true)}>
-            <HiOutlinePlus size={16} /> {t("nova")}
-          </Button>
+          <Can feature="organizations" fallback={null}>
+            <Button onClick={() => setShowCreate(true)}>
+              <HiOutlinePlus size={16} /> {t("nova")}
+            </Button>
+          </Can>
         </S.Row>
       </S.Section>
 
-      <OrganizationList
-        organizations={orgs}
-        status={orgsState.status}
-        onSelect={(id) => selectMutation.mutate(id)}
-        onManageMembers={(id) => setSelectedOrgId(id)}
-        onFiscalReport={(id) => {
-          setSelectedOrgId(id);
-          setShowFiscal(true);
-        }}
-        onEdit={(org) => {
-          setEditingOrg(org);
-          setEditName(org.name);
-        }}
-        onDelete={setDeletingOrg}
-      />
+      <Can feature="organizations" fallback={<UpgradeBanner plan="enterprise" />}>
+        <OrganizationList
+          organizations={orgs}
+          status={orgsState.status}
+          onSelect={(id) => selectMutation.mutate(id)}
+          onManageMembers={(id) => setSelectedOrgId(id)}
+          onFiscalReport={(id) => {
+            setSelectedOrgId(id);
+            setShowFiscal(true);
+          }}
+          onEdit={(org) => {
+            setEditingOrg(org);
+            setEditName(org.name);
+          }}
+          onDelete={setDeletingOrg}
+        />
+      </Can>
 
       <Modal open={showCreate} onClose={() => setShowCreate(false)} title={t("criar")}>
         <S.Form onSubmit={handleCreate}>

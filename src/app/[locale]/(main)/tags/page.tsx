@@ -6,9 +6,11 @@ import { useTranslations } from "next-intl";
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { IconButton } from "@/components/atoms/IconButton";
+import { Can } from "@/components/atoms/Can";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
+import { UpgradeBanner } from "@/components/molecules/UpgradeBanner";
 import { TagForm } from "@/components/organisms/TagForm";
 import { useTags, useCreateTag, useUpdateTag, useDeleteTag } from "@/hooks/useTags";
 import type { Tag } from "@/types";
@@ -66,7 +68,9 @@ export default function TagsPage() {
         {t("titulo")}
       </Text>
 
-      <TagForm onSubmit={handleCreate} isLoading={createMutation.isPending} submitLabel={t("criar")} />
+      <Can feature="tags" fallback={<UpgradeBanner />}>
+        <TagForm onSubmit={handleCreate} isLoading={createMutation.isPending} submitLabel={t("criar")} />
+      </Can>
 
       {tagsState.status === "loading" ? (
         <S.List>
@@ -86,12 +90,14 @@ export default function TagsPage() {
             <S.Item key={tag.id}>
               <S.TagBadge $color={tag.color ?? undefined}>{tag.name}</S.TagBadge>
               <S.Actions>
-                <IconButton onClick={() => handleEdit(tag)} aria-label={t("editar")}>
-                  <HiOutlinePencil size={16} />
-                </IconButton>
-                <IconButton onClick={() => setDeletingTag(tag)} aria-label={t("excluir")}>
-                  <HiOutlineTrash size={16} />
-                </IconButton>
+                <Can feature="tags">
+                  <IconButton onClick={() => handleEdit(tag)} aria-label={t("editar")}>
+                    <HiOutlinePencil size={16} />
+                  </IconButton>
+                  <IconButton onClick={() => setDeletingTag(tag)} aria-label={t("excluir")}>
+                    <HiOutlineTrash size={16} />
+                  </IconButton>
+                </Can>
               </S.Actions>
             </S.Item>
           ))}

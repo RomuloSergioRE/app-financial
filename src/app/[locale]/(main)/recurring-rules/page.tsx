@@ -11,9 +11,11 @@ import {
 import { Text } from "@/components/atoms/Text";
 import { Skeleton } from "@/components/atoms/Skeleton";
 import { IconButton } from "@/components/atoms/IconButton";
+import { Can } from "@/components/atoms/Can";
 import { Modal } from "@/components/molecules/Modal";
 import { ConfirmDialog } from "@/components/molecules/ConfirmDialog";
 import { EmptyState } from "@/components/molecules/EmptyState";
+import { UpgradeBanner } from "@/components/molecules/UpgradeBanner";
 import { RecurringForm } from "@/components/organisms/RecurringForm";
 import { useCategories } from "@/hooks/useCategories";
 import {
@@ -137,12 +139,14 @@ export default function RecurringRulesPage() {
         {t("titulo")}
       </Text>
 
-      <RecurringForm
-        categories={categories}
-        onSubmit={handleCreate}
-        isLoading={createMutation.isPending}
-        submitLabel={t("criar")}
-      />
+      <Can feature="recurring-rules" fallback={<UpgradeBanner />}>
+        <RecurringForm
+          categories={categories}
+          onSubmit={handleCreate}
+          isLoading={createMutation.isPending}
+          submitLabel={t("criar")}
+        />
+      </Can>
 
       {recurringState.status === "loading" ? (
         <S.List>
@@ -170,20 +174,22 @@ export default function RecurringRulesPage() {
                   </S.RuleMeta>
                 </S.RuleInfo>
                 <S.Actions>
-                  <IconButton
-                    onClick={() => handleExecute(rule.id)}
-                    aria-label={t("executar")}
-                    title={t("executar")}
-                    disabled={!rule.active || executeMutation.isPending}
-                  >
-                    <HiOutlinePlay size={16} />
-                  </IconButton>
-                  <IconButton onClick={() => handleEdit(rule)} aria-label={t("editar")}>
-                    <HiOutlinePencil size={16} />
-                  </IconButton>
-                  <IconButton onClick={() => setDeletingRule(rule)} aria-label={t("excluir")}>
-                    <HiOutlineTrash size={16} />
-                  </IconButton>
+                  <Can feature="recurring-rules">
+                    <IconButton
+                      onClick={() => handleExecute(rule.id)}
+                      aria-label={t("executar")}
+                      title={t("executar")}
+                      disabled={!rule.active || executeMutation.isPending}
+                    >
+                      <HiOutlinePlay size={16} />
+                    </IconButton>
+                    <IconButton onClick={() => handleEdit(rule)} aria-label={t("editar")}>
+                      <HiOutlinePencil size={16} />
+                    </IconButton>
+                    <IconButton onClick={() => setDeletingRule(rule)} aria-label={t("excluir")}>
+                      <HiOutlineTrash size={16} />
+                    </IconButton>
+                  </Can>
                 </S.Actions>
               </S.RuleHeader>
 
