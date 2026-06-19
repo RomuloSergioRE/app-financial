@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   position: relative;
+  min-height: 180px;
   margin-bottom: ${({ theme }) => theme.spacing.lg};
 `;
 
