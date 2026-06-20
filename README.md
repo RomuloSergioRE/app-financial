@@ -1,26 +1,96 @@
-# App Financial
+# ZenyFin
 
-Dashboard financeiro para controle de receitas, despesas, categorias e métricas financeiras.
+Dashboard financeiro para pequenos negócios e freelancers — controle de receitas, despesas, orçamentos, metas e métricas em tempo real.
+
+> 🔗 **Produção:** [https://app-financial.vercel.app](https://app-financial.vercel.app)
+>
+> 📧 **Login de teste:** `teste@exemplo.com` / `senha123`
+
+---
+
+## Funcionalidades
+
+| Módulo | Descrição |
+|--------|-----------|
+| **Dashboard** | Resumo financeiro com gráficos (balanço, pizza, série mensal, top categorias) |
+| **Transações** | CRUD completo com filtros, importação/exportação (CSV, PDF) |
+| **Categorias** | Organização de receitas e despesas |
+| **Tags** | Classificação avançada (plano Pro) |
+| **Orçamentos** | Limites por categoria com alertas (plano Pro) |
+| **Metas** | Acompanhamento de objetivos financeiros (plano Pro) |
+| **Regras Recorrentes** | Automação de transações periódicas (plano Pro) |
+| **Organizações** | Multiusuário com gestão de membros (plano Enterprise) |
+| **Admin** | Painel administrativo com usuários, categorias globais, auditoria e analytics |
+| **i18n** | Internacionalização: português, inglês, espanhol |
+| **Temas** | Dark/Light mode |
+| **RBAC** | Controle de acesso por papel (user, company, admin) e plano (free, pro, enterprise) |
+
+---
 
 ## Stack
 
-- **Framework:** Next.js 16 (App Router)
-- **Linguagem:** TypeScript (strict mode)
-- **UI:** styled-components + Atomic Design (atoms → molecules → templates)
-- **Estado Server:** TanStack React Query
-- **Formulários:** react-hook-form + Zod + @hookform/resolvers
-- **Notificações:** sonner
-- **Gráficos:** recharts
-- **Ícones:** react-icons (Heroicons v2)
-- **HTTP:** Axios
-- **Cookies:** js-cookie
-- **Deploy:** Vercel
+| Camada | Tecnologia |
+|--------|------------|
+| **Framework** | Next.js 16 (App Router) |
+| **Linguagem** | TypeScript (strict mode) |
+| **Estilização** | styled-components v6 + Atomic Design |
+| **Estado Server** | TanStack React Query v5 |
+| **Formulários** | react-hook-form + Zod + @hookform/resolvers |
+| **Gráficos** | recharts |
+| **HTTP** | Axios (com interceptors para refresh token) |
+| **i18n** | next-intl v4 (pt-BR, en-US, es-ES) |
+| **Notificações** | sonner |
+| **Ícones** | react-icons (Heroicons v2) |
+| **Fontes** | Inter + JetBrains Mono (valores financeiros) |
+| **Deploy** | Vercel |
+
+---
+
+## Arquitetura
+
+```
+Pages (App Router)
+  │
+  ├─ layout.tsx / page.tsx
+  │
+  ▼
+Custom Hooks (useTransactions, useBudgets, ...)
+  │
+  ├─ TanStack Query (fetch / mutate / cache)
+  │
+  ▼
+Services (Axios instances)
+  │
+  ├─ Interceptor → refresh token on 401
+  │
+  ▼
+API Backend (Render)
+```
+
+### Camadas
+
+```
+src/
+├── app/          → Rotas e layouts (Next.js App Router)
+├── components/   → UI atômica (atoms → molecules → organisms → templates)
+├── hooks/        → TanStack Query hooks (1 por domínio)
+├── services/     → Chamadas HTTP com Axios
+├── schemas/      → Validação Zod (runtime + tipos)
+├── types/        → Tipos inferidos dos schemas
+├── contexts/     → Auth, Theme, UpgradeModal
+├── lib/          → Utilitários (currency, format, date, permissions, logger)
+├── i18n/         → Mensagens e roteamento i18n
+├── styles/       → Temas dark/light + global styles
+└── utils/        → Helpers (error handling)
+```
+
+---
 
 ## Pré-requisitos
 
 - Node.js 20 (`.nvmrc`)
 - Yarn
-- API backend rodando em `http://localhost:3000` (ou configurar `NEXT_PUBLIC_API_URL`)
+- API backend rodando (ou usar a de produção)
 
 ## Setup
 
@@ -29,32 +99,35 @@ cp .env.example .env
 yarn install
 ```
 
+### Variáveis de Ambiente
+
+| Variável | Descrição | Exemplo |
+|----------|-----------|---------|
+| `NEXT_PUBLIC_API_URL` | URL da API backend | `http://localhost:3000` |
+
+Edite `.env` com a URL da sua API local ou deixe a de produção.
+
+---
+
 ## Desenvolvimento
 
 ```bash
-yarn dev        # http://localhost:3001
-yarn lint       # ESLint
-yarn format     # Prettier
-yarn build      # Produção
+yarn dev           # http://localhost:3001
+yarn lint          # ESLint
+yarn format        # Prettier
+yarn format:check  # Prettier (check only)
+yarn build         # Build de produção
 ```
 
-## Estrutura
+### Gerar Componentes
 
+```bash
+yarn generate
 ```
-src/
-├── app/            # Next.js App Router (páginas e layouts)
-├── components/     # Atomic Design
-│   ├── atoms/      # Button, Input, Text, Skeleton, ThemeToggle
-│   ├── molecules/  # Modal, Sidebar, Toast, Select, forms
-│   └── templates/  # AppLayout, ErrorPage, LoadingPage, NotFoundPage
-├── contexts/       # AuthContext, ThemeContext
-├── hooks/          # Custom hooks com TanStack Query
-├── lib/            # Utilitários (format, currency, download, logger)
-├── schemas/        # Schemas Zod (validação runtime + tipos)
-├── services/       # API services com Axios
-├── styles/         # Temas dark/light + global styles
-└── types/          # Tipos inferidos dos schemas Zod
-```
+
+Gera `index.tsx` + `style.ts` + `types.ts` no padrão Atomic Design.
+
+---
 
 ## Scripts
 
@@ -68,19 +141,39 @@ src/
 | `yarn format:check` | Prettier (apenas verifica) |
 | `yarn generate` | Plop — gerar novo componente |
 
-## Geração de Componentes
+---
 
-```bash
-yarn generate
-```
+## Deploy na Vercel
 
-Segue o padrão Atomic Design com `index.tsx` + `style.ts` + `types.ts`.
+### Passo a Passo
 
-## Design System
+1. **Crie uma conta** em [vercel.com](https://vercel.com) (login com GitHub)
+2. **Importe o repositório**
+   - clique em **Add New → Project**
+   - conecte seu GitHub e selecione o repositório `app-financial`
+3. **Configuração automática** — a Vercel detecta Next.js e define:
+   - Framework Preset: `Next.js`
+   - Build: `next build`
+   - Install: `yarn install`
+4. **Adicione a variável de ambiente**:
+   - Vá em **Project Settings → Environment Variables**
+   - `NEXT_PUBLIC_API_URL` = `https://api-financial.onrender.com`
+5. **Ajuste a versão do Node**:
+   - Vá em **Project Settings → General → Node.js Version**
+   - Selecione **20.x**
+6. **Deploy automático** — na primeira vez clique em **Deploy**
+   - commits na branch `main` geram deploy automático
 
-Ver [DESIGN.md](./DESIGN.md) para tokens de design e diretrizes de UI.
+### Checklist
 
-## Deploy
+- [ ] Repositório importado na Vercel
+- [ ] `NEXT_PUBLIC_API_URL` configurada
+- [ ] Node.js Version 20.x
+- [ ] Build passa sem erros
+- [ ] Domínio configurado (opcional)
 
-O frontend é deployado na Vercel automaticamente a partir da branch principal.
-API backend hospedada no Render.
+---
+
+## Licença
+
+MIT
