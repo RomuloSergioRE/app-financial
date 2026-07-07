@@ -2,7 +2,8 @@
 
 Dashboard financeiro para pequenos negócios e freelancers — controle de receitas, despesas, orçamentos, metas e métricas em tempo real.
 
-> 🔗 **Produção:** [https://app-financial.vercel.app](https://app-financial.vercel.app)
+> 🔗 **Produção:** [https://app-financial.vercel.app](https://app-financial.vercel.app)  
+> 🔗 **API:** [https://api-financial-279h.onrender.com](https://api-financial-279h.onrender.com) · [Swagger](https://api-financial-279h.onrender.com/api-docs)
 
 ---
 
@@ -155,7 +156,7 @@ Gera `index.tsx` + `style.ts` + `types.ts` no padrão Atomic Design.
    - Install: `yarn install`
 4. **Adicione a variável de ambiente**:
    - Vá em **Project Settings → Environment Variables**
-   - `NEXT_PUBLIC_API_URL` = `https://api-financial.onrender.com`
+    - `NEXT_PUBLIC_API_URL` = `https://api-financial-279h.onrender.com`
 5. **Ajuste a versão do Node**:
    - Vá em **Project Settings → General → Node.js Version**
    - Selecione **20.x**
@@ -174,7 +175,7 @@ Gera `index.tsx` + `style.ts` + `types.ts` no padrão Atomic Design.
 
 ## Demonstração
 
-Acesse [https://app-financial.vercel.app](https://app-financial.vercel.app) e faça login:
+Acesse o frontend (após deploy na Vercel) e faça login:
 
 | Campo | Valor |
 |-------|-------|
