@@ -172,6 +172,20 @@ Gera `index.tsx` + `style.ts` + `types.ts` no padrão Atomic Design.
 
 ---
 
+## Demonstração
+
+Acesse [https://app-financial.vercel.app](https://app-financial.vercel.app) e faça login:
+
+| Campo | Valor |
+|-------|-------|
+| **Email** | `demo@zenyfin.app` |
+| **Senha** | `Demo@123456` |
+| **Plano** | Pro (todas as funcionalidades liberadas) |
+
+> O usuário de demonstração é criado automaticamente na primeira inicialização da API.
+
+---
+
 ## Licença
 
 MIT
