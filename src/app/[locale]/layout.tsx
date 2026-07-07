@@ -1,5 +1,5 @@
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, getLocale } from "next-intl/server";
+import { getMessages } from "next-intl/server";
 import { JetBrains_Mono } from "next/font/google";
 import type { Metadata } from "next";
 import { StyledComponentsRegistry } from "@/lib/registry";
@@ -11,8 +11,6 @@ const jetbrainsMono = JetBrains_Mono({
   style: ["normal", "italic"],
   variable: "--font-mono",
 });
-
-export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "ZenyFin",

@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
 import { authService } from "@/services/auth.service";
+import { LoadingPage } from "@/components/templates/LoadingPage";
 import type { User, LoginRequest, RegisterRequest } from "@/types";
 
 interface AuthContextData {
@@ -64,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [user?.locale]);
 
   if (initializing) {
-    return null;
+    return <LoadingPage />;
   }
 
   return (

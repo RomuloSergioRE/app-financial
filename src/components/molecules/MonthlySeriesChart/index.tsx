@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState, useEffect } from "react";
+import { memo } from "react";
 import { useTheme } from "styled-components";
 import {
   BarChart as RechartsBarChart,
@@ -66,17 +66,11 @@ export const MonthlySeriesChart = memo(function MonthlySeriesChart({
   data,
 }: MonthlySeriesChartProps) {
   const theme = useTheme();
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    setReady(true);
-  }, []);
 
   return (
     <S.Wrapper>
       <S.Title>Evolução Mensal</S.Title>
       <S.ChartContainer>
-        {ready ? (
           <ResponsiveContainer width="100%" height="100%">
             <RechartsBarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke={theme.colors.border} />
@@ -113,9 +107,6 @@ export const MonthlySeriesChart = memo(function MonthlySeriesChart({
               />
             </RechartsBarChart>
           </ResponsiveContainer>
-        ) : (
-          <div style={{ width: "100%", height: "100%" }} />
-        )}
       </S.ChartContainer>
     </S.Wrapper>
   );

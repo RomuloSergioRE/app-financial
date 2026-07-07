@@ -46,8 +46,8 @@ export function useCreateOrganization() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
@@ -69,8 +69,8 @@ export function useUpdateOrganization(id: string) {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
       queryClient.invalidateQueries({ queryKey: ["organizations", id] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
@@ -91,8 +91,8 @@ export function useDeleteOrganization() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
@@ -113,8 +113,8 @@ export function useSelectOrganization() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
@@ -135,8 +135,8 @@ export function useSelectNoneOrganization() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
@@ -166,8 +166,8 @@ export function useInviteMember(orgId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations", orgId, "members"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
@@ -190,8 +190,8 @@ export function useAcceptInvite(orgId: string) {
       queryClient.invalidateQueries({ queryKey: ["organizations", orgId, "members"] });
       selectMutation.mutate(orgId);
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
@@ -212,8 +212,8 @@ export function useUpdateMemberRole(orgId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations", orgId, "members"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }
@@ -234,8 +234,8 @@ export function useRemoveMember(orgId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["organizations", orgId, "members"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
     },
   });
 }

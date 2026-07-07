@@ -84,7 +84,7 @@ export function canAccessFeature(plan: Plan | null | undefined, feature: Feature
   return PLAN_TIER[plan] >= PLAN_TIER[required];
 }
 
-export function filterNavItems(items: NavItem[], role: Role, plan?: Plan | null): NavItem[] {
+export function filterNavItems(items: NavItem[], role: Role): NavItem[] {
   return items.filter((item) => {
     const normalized = item.href.endsWith("/")
       ? item.href.slice(0, -1)

@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState, useEffect } from "react";
+import { memo } from "react";
 import { useTheme } from "styled-components";
 import {
   BarChart as RechartsBarChart,
@@ -56,11 +56,6 @@ export const TopCategoriesChart = memo(function TopCategoriesChart({
   data,
 }: TopCategoriesChartProps) {
   const theme = useTheme();
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    setReady(true);
-  }, []);
 
   const chartData = data.map((d, i) => ({
     name: d.categoryName,
@@ -72,7 +67,6 @@ export const TopCategoriesChart = memo(function TopCategoriesChart({
     <S.Wrapper>
       <S.Title>Top Categorias</S.Title>
       <S.ChartContainer>
-        {ready ? (
           <ResponsiveContainer width="100%" height="100%">
             <RechartsBarChart
               data={chartData}
@@ -105,9 +99,6 @@ export const TopCategoriesChart = memo(function TopCategoriesChart({
               </Bar>
             </RechartsBarChart>
           </ResponsiveContainer>
-        ) : (
-          <div style={{ width: "100%", height: "100%" }} />
-        )}
       </S.ChartContainer>
     </S.Wrapper>
   );
