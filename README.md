@@ -2,7 +2,7 @@
 
 Dashboard financeiro para pequenos negócios e freelancers — controle de receitas, despesas, orçamentos, metas e métricas em tempo real.
 
-> 🔗 **Produção:** [https://app-financial.vercel.app](https://app-financial.vercel.app)  
+> 🔗 **Produção:** [https://app-financial-lemon.vercel.app](https://app-financial-lemon.vercel.app)  
 > 🔗 **API:** [https://api-financial-279h.onrender.com](https://api-financial-279h.onrender.com) · [Swagger](https://api-financial-279h.onrender.com/api-docs)
 
 ---
