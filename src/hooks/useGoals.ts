@@ -41,8 +41,8 @@ export function useCreateGoal() {
       toast.success("Meta criada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["goals"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao criar meta");
     },
   });
@@ -65,8 +65,8 @@ export function useUpdateGoal(id: string) {
       toast.success("Meta atualizada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["goals"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao atualizar meta");
     },
   });
@@ -89,8 +89,8 @@ export function useDeleteGoal() {
       toast.success("Meta excluída com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["goals"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao excluir meta");
     },
   });

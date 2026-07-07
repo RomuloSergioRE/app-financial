@@ -47,8 +47,8 @@ export function useCreateBudget() {
       toast.success("Orçamento criado com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["budgets"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao criar orçamento");
     },
   });
@@ -71,8 +71,8 @@ export function useUpdateBudget(id: string) {
       toast.success("Orçamento atualizado com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["budgets"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao atualizar orçamento");
     },
   });
@@ -95,8 +95,8 @@ export function useDeleteBudget() {
       toast.success("Orçamento excluído com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["budgets"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao excluir orçamento");
     },
   });

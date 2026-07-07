@@ -46,8 +46,8 @@ export function useCreateRecurring() {
       toast.success("Regra recorrente criada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["recurring"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao criar regra recorrente");
     },
   });
@@ -70,8 +70,8 @@ export function useUpdateRecurring(id: string) {
       toast.success("Regra recorrente atualizada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["recurring"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao atualizar regra recorrente");
     },
   });
@@ -94,8 +94,8 @@ export function useDeleteRecurring() {
       toast.success("Regra recorrente excluída com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["recurring"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao excluir regra recorrente");
     },
   });
@@ -120,8 +120,8 @@ export function useExecuteRecurring() {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["analytics"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao executar regra recorrente");
     },
   });

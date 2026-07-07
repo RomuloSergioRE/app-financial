@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState, useEffect } from "react";
+import { memo } from "react";
 import { useTheme } from "styled-components";
 import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import type { BalanceChartProps } from "./types";
@@ -38,11 +38,6 @@ export const BalanceChart = memo(function BalanceChart({
   netBalance,
 }: BalanceChartProps) {
   const theme = useTheme();
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    setReady(true);
-  }, []);
 
   const data = [
     { name: "Receitas", value: income },
@@ -53,7 +48,6 @@ export const BalanceChart = memo(function BalanceChart({
     <S.Wrapper>
       <S.Title>Receitas e Despesas</S.Title>
       <S.ChartContainer>
-        {ready ? (
           <ResponsiveContainer width="100%" height="100%">
             <RechartsPieChart>
               <Pie
@@ -73,9 +67,6 @@ export const BalanceChart = memo(function BalanceChart({
               <Tooltip content={CustomTooltip} />
             </RechartsPieChart>
           </ResponsiveContainer>
-        ) : (
-          <div style={{ width: "100%", height: "100%" }} />
-        )}
       </S.ChartContainer>
       <S.BalanceInfo>
         <S.BalanceLabel>Saldo</S.BalanceLabel>

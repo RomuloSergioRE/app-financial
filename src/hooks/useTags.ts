@@ -41,8 +41,8 @@ export function useCreateTag() {
       toast.success("Tag criada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["tags"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao criar tag");
     },
   });
@@ -65,8 +65,8 @@ export function useUpdateTag(id: string) {
       toast.success("Tag atualizada com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["tags"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao atualizar tag");
     },
   });
@@ -89,8 +89,8 @@ export function useDeleteTag() {
       toast.success("Tag excluída com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["tags"] });
     },
-    onError: (error) => {
-      if ((error as any) === "PLAN_UPGRADE_REQUIRED") return;
+    onError: (error: unknown) => {
+      if (error === "PLAN_UPGRADE_REQUIRED") return;
       toast.error("Erro ao excluir tag");
     },
   });

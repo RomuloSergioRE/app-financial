@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState, useEffect } from "react";
+import { memo } from "react";
 import { useTheme } from "styled-components";
 import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import type { PieChartProps } from "./types";
@@ -35,12 +35,6 @@ const CustomTooltip = (props: Record<string, unknown>) => {
 };
 
 export const PieChart = memo(function PieChart({ categories }: PieChartProps) {
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    setReady(true);
-  }, []);
-
   const COLORS = [
     "#3B82F6",
     "#0ECB81",
@@ -62,7 +56,6 @@ export const PieChart = memo(function PieChart({ categories }: PieChartProps) {
     <S.Wrapper>
       <S.Title>Gastos por Categoria</S.Title>
       <S.ChartContainer>
-        {ready ? (
           <ResponsiveContainer width="100%" height="100%">
             <RechartsPieChart>
               <Pie
@@ -83,9 +76,6 @@ export const PieChart = memo(function PieChart({ categories }: PieChartProps) {
               <Tooltip content={CustomTooltip} />
             </RechartsPieChart>
           </ResponsiveContainer>
-        ) : (
-          <div style={{ width: "100%", height: "100%" }} />
-        )}
       </S.ChartContainer>
       <S.Legend>
         {data.map((entry) => (

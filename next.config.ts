@@ -39,7 +39,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: `default-src 'self'; script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ""}; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;             img-src 'self' data: blob: ${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"}; connect-src 'self' ${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"}; frame-ancestors 'none';`,
+            value: `default-src 'self'; script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ""}; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: ${process.env.NEXT_PUBLIC_API_URL || "https://api-financial.onrender.com"}; connect-src 'self' ${process.env.NEXT_PUBLIC_API_URL || "https://api-financial.onrender.com"}; frame-ancestors 'none';`,
           },
           {
             key: "Cross-Origin-Embedder-Policy",

@@ -3,8 +3,6 @@
 Dashboard financeiro para pequenos negócios e freelancers — controle de receitas, despesas, orçamentos, metas e métricas em tempo real.
 
 > 🔗 **Produção:** [https://app-financial.vercel.app](https://app-financial.vercel.app)
->
-> 📧 **Login de teste:** `teste@exemplo.com` / `senha123`
 
 ---
 
