@@ -9,13 +9,13 @@ import { UpgradeModalProvider } from "@/contexts/UpgradeModalContext";
 import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
 import { Toast } from "@/components/molecules/Toast";
 
-function ThemedApp({ children }: { children: React.ReactNode }) {
+function ThemedWrapper({ children }: { children: React.ReactNode }) {
   const { themeObject } = useTheme();
   return (
     <StyledThemeProvider theme={themeObject}>
       <GlobalStyle />
       <Toast />
-      <UpgradeModalProvider>{children}</UpgradeModalProvider>
+      {children}
     </StyledThemeProvider>
   );
 }
@@ -37,9 +37,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <AuthProvider>
-          <ThemedApp>{children}</ThemedApp>
-        </AuthProvider>
+        <ThemedWrapper>
+          <AuthProvider>
+            <UpgradeModalProvider>{children}</UpgradeModalProvider>
+          </AuthProvider>
+        </ThemedWrapper>
       </ThemeProvider>
     </QueryClientProvider>
   );
